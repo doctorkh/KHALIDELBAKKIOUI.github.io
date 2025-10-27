@@ -1013,11 +1013,38 @@
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Appel initial
         
-        // Compteur de visiteurs (simulé)
-        let visitorCount = localStorage.getItem('visitorCount') || 0;
-        visitorCount = parseInt(visitorCount) + 1;
-        localStorage.setItem('visitorCount', visitorCount);
-        document.getElementById('visitor-count').textContent = visitorCount.toLocaleString('fr-FR');
+        // Compteur de visiteurs CORRIGÉ
+function updateVisitorCounters() {
+    // Gestion des visiteurs du jour
+    const today = new Date().toDateString();
+    let todayData = JSON.parse(localStorage.getItem('visitorData') || '{}');
+    
+    // Réinitialiser le compteur du jour si c'est un nouveau jour
+    if (todayData.date !== today) {
+        todayData = {
+            date: today,
+            todayCount: 0,
+            totalCount: parseInt(todayData.totalCount) || 0
+        };
+    }
+    
+    // Incrémenter les compteurs
+    todayData.todayCount = (parseInt(todayData.todayCount) || 0) + 1;
+    todayData.totalCount = (parseInt(todayData.totalCount) || 0) + 1;
+    
+    // Sauvegarder dans localStorage
+    localStorage.setItem('visitorData', JSON.stringify(todayData));
+    
+    // Mettre à jour l'affichage
+    document.getElementById('visitor-count').textContent = todayData.todayCount.toLocaleString('fr-FR');
+    document.getElementById('total-visitors').textContent = todayData.totalCount.toLocaleString('fr-FR');
+    
+    // Visiteurs en ligne (simulation)
+    document.getElementById('current-visitors').textContent = '1';
+}
+
+// Appeler la fonction
+updateVisitorCounters();
         
         // Navigation fluide
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
