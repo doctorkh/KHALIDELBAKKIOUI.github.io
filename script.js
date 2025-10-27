@@ -1304,3 +1304,7 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+// Exemple : changer la couleur au clic
+document.querySelector('.nav-logo').addEventListener('click', function() {
+    this.style.color = '#e74c3c';
+});
