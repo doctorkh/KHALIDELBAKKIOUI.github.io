@@ -872,34 +872,50 @@ class PortfolioApp {
         setInterval(updateDateTime, 1000);
         updateDateTime();
     }
-
-    // Compteur de visiteurs avec statistiques
-    initVisitorCounter() {
+    // Compteur de visiteurs avec statistiques - VERSION CORRIGÉE
+initVisitorCounter() {
+    try {
         const today = new Date().toDateString();
+        
+        // Charger ou initialiser les statistiques
         let stats = JSON.parse(localStorage.getItem('visitorStats') || '{}');
         
-        // Visiteurs totaux
-        stats.total = (stats.total || 0) + 1;
-        
-        // Visiteurs aujourd'hui
-        if (stats.lastVisit !== today) {
-            stats.daily = (stats.daily || 0) + 1;
-            stats.lastVisit = today;
+        // CORRECTION : Initialiser proprement les valeurs
+        if (!stats.total || typeof stats.total !== 'number') {
+            stats.total = 0;
+        }
+        if (!stats.daily || typeof stats.daily !== 'number') {
+            stats.daily = 0;
         }
         
+        // CORRECTION : Incrémenter TOUJOURS le total
+        stats.total = stats.total + 1;
+        
+        // Gestion des visites quotidiennes
+        if (stats.lastVisit !== today) {
+            stats.daily = 1; // Nouveau jour = recommencer à 1
+        } else {
+            stats.daily = stats.daily + 1; // Même jour = incrémenter
+        }
+        
+        stats.lastVisit = today;
+        
+        // Sauvegarder
         localStorage.setItem('visitorStats', JSON.stringify(stats));
         
-        // Mettre à jour l'interface
+        // Mettre à jour l'affichage
         const visitorElement = document.getElementById('visitor-count');
         const totalElement = document.getElementById('total-visitors');
         const currentElement = document.getElementById('current-visitors');
         
         if (visitorElement) visitorElement.textContent = stats.daily.toLocaleString('fr-FR');
         if (totalElement) totalElement.textContent = stats.total.toLocaleString('fr-FR');
-        if (currentElement) currentElement.textContent = '1'; // Simulation
+        if (currentElement) currentElement.textContent = '1';
         
-        console.log('👥 Statistiques visiteurs:', stats);
+    } catch (error) {
+        console.error('Erreur compteur visiteurs:', error);
     }
+}
 
     // Chargement différé des images
     initImageLazyLoading() {
