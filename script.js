@@ -1165,3 +1165,140 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+<!-- === COMPTEUR DE VISITEURS - Script === -->
+<script>
+class VisitorCounter {
+    constructor() {
+        this.initializeStorage();
+        this.updateDateTime();
+        this.updateCounters();
+        this.startRealTimeUpdates();
+    }
+    
+    initializeStorage() {
+        if (!localStorage.getItem('visitorData')) {
+            const initialData = {
+                total: 0,
+                today: 0,
+                lastVisit: null,
+                dailyHistory: {}
+            };
+            localStorage.setItem('visitorData', JSON.stringify(initialData));
+        }
+    }
+    
+    getVisitorData() {
+        return JSON.parse(localStorage.getItem('visitorData'));
+    }
+    
+    saveVisitorData(data) {
+        localStorage.setItem('visitorData', JSON.stringify(data));
+    }
+    
+    updateCounters() {
+        const now = new Date();
+        const todayKey = now.toDateString();
+        const data = this.getVisitorData();
+        
+        if (data.lastVisit !== todayKey) {
+            data.today = 0;
+            data.lastVisit = todayKey;
+        }
+        
+        data.total++;
+        data.today++;
+        
+        if (!data.dailyHistory[todayKey]) {
+            data.dailyHistory[todayKey] = 0;
+        }
+        data.dailyHistory[todayKey]++;
+        
+        this.cleanupHistory(data);
+        this.saveVisitorData(data);
+        this.displayCounters(data);
+        this.updateLastUpdateTime();
+    }
+    
+    cleanupHistory(data) {
+        const dates = Object.keys(data.dailyHistory);
+        if (dates.length > 30) {
+            const sortedDates = dates.sort();
+            const datesToRemove = sortedDates.slice(0, dates.length - 30);
+            datesToRemove.forEach(date => {
+                delete data.dailyHistory[date];
+            });
+        }
+    }
+    
+    displayCounters(data) {
+        document.getElementById('totalCount').textContent = this.formatNumber(data.total);
+        document.getElementById('todayCount').textContent = this.formatNumber(data.today);
+        const onlineCount = this.calculateOnlineUsers();
+        document.getElementById('onlineCount').textContent = this.formatNumber(onlineCount);
+    }
+    
+    calculateOnlineUsers() {
+        const baseOnline = 1;
+        const randomFactor = Math.floor(Math.random() * 10);
+        const timeFactor = this.getTimeBasedFactor();
+        return Math.max(baseOnline, Math.floor(baseOnline + randomFactor * timeFactor));
+    }
+    
+    getTimeBasedFactor() {
+        const hour = new Date().getHours();
+        if (hour >= 9 && hour <= 18) return 1.5;
+        if (hour >= 19 && hour <= 23) return 1.2;
+        return 0.8;
+    }
+    
+    formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+    
+    updateDateTime() {
+        const now = new Date();
+        const optionsDate = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        document.getElementById('currentDate').textContent = 
+            now.toLocaleDateString('fr-FR', optionsDate);
+        this.updateTime();
+    }
+    
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('fr-FR');
+        document.getElementById('currentTime').textContent = timeString;
+    }
+    
+    updateLastUpdateTime() {
+        const now = new Date();
+        document.getElementById('lastUpdate').textContent = now.toLocaleTimeString('fr-FR');
+    }
+    
+    startRealTimeUpdates() {
+        setInterval(() => {
+            this.updateTime();
+        }, 1000);
+        
+        setInterval(() => {
+            const data = this.getVisitorData();
+            this.displayCounters(data);
+        }, 30000);
+    }
+}
+
+// Démarrer le compteur
+document.addEventListener('DOMContentLoaded', function() {
+    const counter = new VisitorCounter();
+});
+
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        const counter = new VisitorCounter();
+    }
+});
+</script>
