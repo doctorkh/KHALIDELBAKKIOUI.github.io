@@ -393,7 +393,7 @@ body {
 }
 
 .logo-image {
-    max-width: 400px;
+    max-width: 450px;
     height: auto;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-xl);
