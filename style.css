@@ -1260,3 +1260,102 @@ body {
 .pdf-link:hover {
     background-color: #ffe3e3;
 }
+.hero-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+}
+
+.info-item i {
+    color: #4FC3F7;
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .hero-info-bar {
+        gap: 12px;
+    }
+    
+    .info-item {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .info-item {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-info-bar {
+        padding: 10px 15px;
+    }
+    
+    .info-item {
+        font-size: 0.75rem;
+    }
+}
+.hero-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 25px;
+    overflow-x: auto;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.info-item i {
+    color: #4FC3F7;
+    font-size: 0.75rem;
+}
+
+/* Masquer la scrollbar mais garder la fonctionnalité */
+.hero-info-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.hero-info-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
