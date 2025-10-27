@@ -1308,3 +1308,62 @@ if ('serviceWorker' in navigator) {
 document.querySelector('.nav-logo').addEventListener('click', function() {
     this.style.color = '#e74c3c';
 });
+// Mise à jour de la date et de l'heure
+function updateDateTime() {
+    const now = new Date();
+    
+    // Format de la date
+    const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = now.toLocaleDateString('fr-FR', optionsDate);
+    document.getElementById('current-date').textContent = dateString;
+    
+    // Format de l'heure
+    const timeString = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('current-time').textContent = timeString;
+}
+
+// Mise à jour du compteur de visiteurs (simulation)
+function updateVisitorCount() {
+    // Ces valeurs seraient normalement récupérées d'une base de données
+    const todayCount = Math.floor(Math.random() * 50) + 10;
+    const totalCount = Math.floor(Math.random() * 1000) + 500;
+    const currentCount = Math.floor(Math.random() * 5) + 1;
+    
+    document.getElementById('visitor-count').textContent = todayCount;
+    document.getElementById('total-visitors').textContent = totalCount;
+    document.getElementById('current-visitors').textContent = currentCount;
+}
+
+// Animation de l'indicateur de défilement
+function initScrollIndicator() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    
+    scrollIndicator.addEventListener('click', function() {
+        window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    updateDateTime();
+    updateVisitorCount();
+    initScrollIndicator();
+    
+    // Mettre à jour l'heure chaque minute
+    setInterval(updateDateTime, 60000);
+    
+    // Mettre à jour les compteurs toutes les 30 secondes (simulation)
+    setInterval(updateVisitorCount, 30000);
+});
+
+// Effet de parallaxe pour la section hero
+window.addEventListener('scroll', function() {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    const rate = scrolled * 0.5;
+    
+    hero.style.transform = `translateY(${rate}px)`;
+});
