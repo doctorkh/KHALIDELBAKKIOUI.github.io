@@ -35,6 +35,7 @@ class PortfolioApp {
         this.initImageLazyLoading();
         this.initKeyboardNavigation();
         this.initAccessibility();
+        this.initAllButtons(); // NOUVEAU: Initialisation de tous les boutons
     }
 
     // ===== INITIALISATION ET CONFIGURATION =====
@@ -164,7 +165,10 @@ class PortfolioApp {
             '.experience-tabs',
             '.research-tabs', 
             '.filiere-tabs',
-            '.documents-tabs'
+            '.documents-tabs',
+            '.conferences-tabs',
+            '.livres-tabs',
+            '.memoires-tabs'
         ];
 
         tabContainers.forEach(selector => {
@@ -252,6 +256,165 @@ class PortfolioApp {
             console.log('✅ Onglet activé:', tabId);
         } else {
             console.error('❌ Panneau non trouvé:', tabId);
+        }
+    }
+
+    // ===== INITIALISATION DE TOUS LES BOUTONS SPÉCIFIQUES =====
+    initAllButtons() {
+        console.log('🔘 Initialisation de tous les boutons spécifiques...');
+        
+        // Boutons ECT1, ECT2, ECS1, ECS2, MPSI
+        this.initFiliereButtons();
+        
+        // Boutons conférences
+        this.initConferenceButtons();
+        
+        // Boutons livres
+        this.initLivreButtons();
+        
+        // Boutons mémoires
+        this.initMemoireButtons();
+        
+        // Boutons généraux
+        this.initGeneralButtons();
+        
+        console.log('✅ Tous les boutons initialisés');
+    }
+
+    initFiliereButtons() {
+        const filiereButtons = [
+            'ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI'
+        ];
+        
+        filiereButtons.forEach(filiere => {
+            const buttons = document.querySelectorAll(`.btn-${filiere.toLowerCase()}, [data-filiere="${filiere}"]`);
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log(`🎓 Bouton ${filiere} cliqué`);
+                    this.handleFiliereClick(filiere);
+                });
+            });
+        });
+    }
+
+    initConferenceButtons() {
+        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
+        conferenceButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🎤 Bouton conférence cliqué');
+                this.handleConferenceClick(button);
+            });
+        });
+    }
+
+    initLivreButtons() {
+        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
+        livreButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📚 Bouton livre cliqué');
+                this.handleLivreClick(button);
+            });
+        });
+    }
+
+    initMemoireButtons() {
+        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
+        memoireButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📖 Bouton mémoire cliqué');
+                this.handleMemoireClick(button);
+            });
+        });
+    }
+
+    initGeneralButtons() {
+        // Boutons de téléchargement
+        const downloadButtons = document.querySelectorAll('.btn-download, [download]');
+        downloadButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const fileName = button.getAttribute('href')?.split('/').pop() || 'document';
+                console.log(`📥 Téléchargement: ${fileName}`);
+                this.trackDownload(fileName);
+            });
+        });
+
+        // Boutons de vue
+        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = button.getAttribute('data-target') || button.getAttribute('href');
+                console.log(`👀 Vue demandée: ${target}`);
+                this.handleViewClick(target, button);
+            });
+        });
+    }
+
+    handleFiliereClick(filiere) {
+        this.showNotification(`Filière ${filiere} sélectionnée`, 'info', 3000);
+        
+        // Scroll vers la section correspondante si elle existe
+        const targetSection = document.getElementById(`section-${filiere.toLowerCase()}`);
+        if (targetSection) {
+            this.scrollToElement(`#section-${filiere.toLowerCase()}`);
+        }
+        
+        // Déclencher un événement personnalisé
+        const event = new CustomEvent('filiereSelected', { 
+            detail: { filiere: filiere } 
+        });
+        document.dispatchEvent(event);
+    }
+
+    handleConferenceClick(button) {
+        const conferenceTitle = button.getAttribute('data-title') || button.textContent;
+        this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
+        
+        // Logique spécifique aux conférences
+        const targetId = button.getAttribute('data-target');
+        if (targetId) {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+
+    handleLivreClick(button) {
+        const livreTitle = button.getAttribute('data-title') || button.textContent;
+        this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
+        
+        // Logique spécifique aux livres
+        const url = button.getAttribute('href');
+        if (url && !url.startsWith('#')) {
+            window.open(url, '_blank');
+        }
+    }
+
+    handleMemoireClick(button) {
+        const memoireTitle = button.getAttribute('data-title') || button.textContent;
+        this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
+        
+        // Logique spécifique aux mémoires
+        const url = button.getAttribute('href');
+        if (url) {
+            if (url.startsWith('#')) {
+                this.scrollToElement(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+    }
+
+    handleViewClick(target, button) {
+        if (target && target.startsWith('#')) {
+            this.scrollToElement(target);
+        } else if (target) {
+            window.open(target, '_blank');
         }
     }
 
@@ -362,7 +525,7 @@ class PortfolioApp {
         const animatables = document.querySelectorAll(
             '.profile-card, .pub-card, .doc-card, .exp-card, ' +
             '.competence-category, .timeline-item, .stat, .ressource-item, ' +
-            '.contact-item, .conf-card'
+            '.contact-item, .conf-card, .filiere-card, .livre-card, .memoire-card'
         );
         
         animatables.forEach(el => {
@@ -634,51 +797,60 @@ class PortfolioApp {
             }, 300);
         }
     }
-    
-// ===== COMPTEUR DE VISITEURS =====
-initVisitorCounter() {
-    console.log('🔢 Initialisation du compteur de visiteurs RÉEL...');
-    
-    const storageKey = 'portfolioRealVisitorData';
-    const sessionKey = 'portfolioRealVisitTracked';
-    const onlineUsersKey = 'portfolioOnlineUsers';
-    
-    const initializeCounter = () => {
-        // Mettre à jour date/heure immédiatement
-        updateDateTime();
+
+    // ===== COMPTEUR DE VISITEURS CORRIGÉ =====
+    initVisitorCounter() {
+        console.log('🔢 Initialisation du compteur de visiteurs...');
         
-        // Gestion des visites RÉELLES
-        handleRealVisitCounting();
+        const storageKey = 'portfolioVisitorData';
+        const sessionKey = 'portfolioVisitTracked';
         
-        // Gestion des utilisateurs en ligne RÉELS
-        handleOnlineUsers();
+        // Vérifier si les éléments existent
+        const requiredElements = [
+            'total-visitors', 
+            'visitor-count', 
+            'current-visitors', 
+            'current-date', 
+            'current-time'
+        ];
         
-        // Afficher les compteurs
-        displayRealCounters();
+        const elementsExist = requiredElements.some(id => document.getElementById(id));
         
-        // Démarrer les mises à jour temps réel
-        startRealTimeUpdates();
-    };
-    
-    const handleRealVisitCounting = () => {
+        if (!elementsExist) {
+            console.warn('⚠️ Éléments du compteur non trouvés dans le DOM');
+            return;
+        }
+
+        const initializeCounter = () => {
+            this.updateDateTime();
+            this.handleVisitorCounting(storageKey, sessionKey);
+            this.displayVisitorCounters(storageKey);
+            this.startRealTimeUpdates();
+        };
+
+        initializeCounter();
+        console.log('✅ Compteur de visiteurs initialisé avec succès');
+    }
+
+    handleVisitorCounting(storageKey, sessionKey) {
         const now = new Date();
         const todayKey = now.toDateString();
-        const data = getVisitorData();
+        const data = this.getVisitorData(storageKey);
         
-        console.log('📊 Données actuelles - Total:', data.total, 'Aujourd\'hui:', data.today);
-        
+        console.log('📊 Données visiteurs - Total:', data.total, 'Aujourd\'hui:', data.today);
+
         // Vérifier si nouvelle visite
         const sessionVisitId = sessionStorage.getItem(sessionKey);
         const isNewVisit = !sessionVisitId;
-        
+
         if (isNewVisit) {
-            console.log('🆕 NOUVELLE VISITE RÉELLE DÉTECTÉE');
+            console.log('🆕 NOUVELLE VISITE DÉTECTÉE');
             
             // Générer un ID unique pour cette visite
             const visitId = 'visit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             sessionStorage.setItem(sessionKey, visitId);
             
-            // COMPTAGE RÉEL
+            // Incrémenter les compteurs
             data.total++;
             
             // Gestion du compteur quotidien
@@ -690,78 +862,32 @@ initVisitorCounter() {
             
             data.today++;
             data.lastVisit = now.toISOString();
-            
-            // Historique des visites (limité à 100 entrées)
+
+            // Historique des visites
             if (!data.visitHistory) data.visitHistory = [];
             data.visitHistory.push({
                 id: visitId,
                 timestamp: now.toISOString(),
                 date: todayKey
             });
-            
+
             // Garder seulement les 100 dernières visites
             if (data.visitHistory.length > 100) {
                 data.visitHistory = data.visitHistory.slice(-100);
             }
-            
-            console.log('📈 COMPTAGE RÉEL - Total:', data.total, 'Aujourd\'hui:', data.today);
-            saveVisitorData(data);
+
+            console.log('📈 COMPTAGE - Total:', data.total, 'Aujourd\'hui:', data.today);
+            this.saveVisitorData(storageKey, data);
         } else {
             console.log('🔁 Visite déjà comptée dans cette session');
         }
-    };
-    
-    const handleOnlineUsers = () => {
-        const now = new Date();
-        const currentMinute = now.toISOString().slice(0, 16); // Format: "2025-10-28T20:56"
-        
-        // Récupérer les données des utilisateurs en ligne
-        let onlineData = getOnlineUsersData();
-        
-        // Marquer l'utilisateur actuel comme en ligne
-        const userKey = 'user_' + sessionStorage.getItem(sessionKey) || 'anonymous_' + Date.now();
-        onlineData[userKey] = {
-            lastActive: now.toISOString(),
-            minute: currentMinute
-        };
-        
-        // Nettoyer les utilisateurs inactifs (plus de 5 minutes)
-        const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
-        Object.keys(onlineData).forEach(key => {
-            if (onlineData[key].lastActive < fiveMinutesAgo) {
-                delete onlineData[key];
-            }
-        });
-        
-        // Sauvegarder les données des utilisateurs en ligne
-        saveOnlineUsersData(onlineData);
-        
-        console.log('👥 Utilisateurs en ligne mis à jour');
-    };
-    
-    const getOnlineUsersData = () => {
-        try {
-            const stored = sessionStorage.getItem(onlineUsersKey);
-            return stored ? JSON.parse(stored) : {};
-        } catch (error) {
-            console.error('Erreur lecture utilisateurs en ligne:', error);
-            return {};
-        }
-    };
-    
-    const saveOnlineUsersData = (data) => {
-        try {
-            sessionStorage.setItem(onlineUsersKey, JSON.stringify(data));
-        } catch (error) {
-            console.error('Erreur sauvegarde utilisateurs en ligne:', error);
-        }
-    };
-    
-    const getVisitorData = () => {
+    }
+
+    getVisitorData(storageKey) {
         try {
             const stored = localStorage.getItem(storageKey);
             if (!stored) {
-                console.log('🌟 PREMIÈRE VISITE SUR LE SITE - Initialisation');
+                console.log('🌟 PREMIÈRE VISITE - Initialisation données');
                 return {
                     total: 0,
                     today: 0,
@@ -774,7 +900,7 @@ initVisitorCounter() {
             
             const data = JSON.parse(stored);
             
-            // VÉRIFICATION DE COHÉRENCE
+            // Vérification de cohérence
             if (data.today > data.total) {
                 console.warn('⚠️ Correction cohérence: today > total');
                 data.total = data.today;
@@ -800,151 +926,87 @@ initVisitorCounter() {
                 visitHistory: []
             };
         }
-    };
-    
-    const saveVisitorData = (data) => {
+    }
+
+    saveVisitorData(storageKey, data) {
         try {
             localStorage.setItem(storageKey, JSON.stringify(data));
             console.log('💾 Données visiteurs sauvegardées');
         } catch (error) {
             console.error('❌ Erreur sauvegarde données:', error);
         }
-    };
-    
-    const displayRealCounters = () => {
-        const data = getVisitorData();
-        const onlineUsers = calculateRealOnlineUsers();
+    }
+
+    displayVisitorCounters(storageKey) {
+        const data = this.getVisitorData(storageKey);
+        const onlineUsers = this.calculateOnlineUsers();
         
-        console.log('📊 AFFICHAGE RÉEL - Total:', data.total, 'Aujourd\'hui:', data.today, 'En ligne:', onlineUsers);
+        console.log('📊 AFFICHAGE - Total:', data.total, 'Aujourd\'hui:', data.today, 'En ligne:', onlineUsers);
         
         // Mettre à jour l'interface
-        updateElement('total-visitors', formatNumber(data.total));
-        updateElement('visitor-count', formatNumber(data.today));
-        updateElement('current-visitors', formatNumber(onlineUsers));
-    };
-    
-    const calculateRealOnlineUsers = () => {
-        const onlineData = getOnlineUsersData();
-        const now = new Date();
-        const twoMinutesAgo = new Date(now.getTime() - 2 * 60 * 1000).toISOString();
-        
-        // Compter les utilisateurs actifs dans les 2 dernières minutes
-        const activeUsers = Object.values(onlineData).filter(user => 
-            user.lastActive > twoMinutesAgo
-        ).length;
-        
-        // Au minimum 1 (l'utilisateur actuel)
-        return Math.max(1, activeUsers);
-    };
-    
-    const updateElement = (elementId, value) => {
+        this.updateElement('total-visitors', this.formatNumber(data.total));
+        this.updateElement('visitor-count', this.formatNumber(data.today));
+        this.updateElement('current-visitors', this.formatNumber(onlineUsers));
+    }
+
+    calculateOnlineUsers() {
+        // Simulation d'utilisateurs en ligne
+        // Dans une vraie application, cela viendrait d'un serveur
+        const baseOnline = Math.floor(Math.random() * 3) + 1; // 1-3 utilisateurs
+        return baseOnline;
+    }
+
+    updateElement(elementId, value) {
         const element = document.getElementById(elementId);
         if (element) {
             element.textContent = value;
         } else {
             console.warn('⚠️ Élément non trouvé:', elementId);
         }
-    };
-    
-    const formatNumber = (num) => {
+    }
+
+    formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    };
-    
-    const updateDateTime = () => {
+    }
+
+    updateDateTime() {
         const now = new Date();
         
-        updateElement('current-date', now.toLocaleDateString('fr-FR', {
+        this.updateElement('current-date', now.toLocaleDateString('fr-FR', {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
         }));
         
-        updateElement('current-time', now.toLocaleTimeString('fr-FR', {
+        this.updateElement('current-time', now.toLocaleTimeString('fr-FR', {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
         }));
-    };
-    
-    const startRealTimeUpdates = () => {
+    }
+
+    startRealTimeUpdates() {
         // Mettre à jour l'heure chaque seconde
         setInterval(() => {
-            updateDateTime();
+            this.updateDateTime();
         }, 1000);
-        
-        // Mettre à jour les utilisateurs en ligne toutes les 30 secondes
+
+        // Mettre à jour les compteurs toutes les 30 secondes
         setInterval(() => {
-            handleOnlineUsers();
-            displayRealCounters();
+            this.displayVisitorCounters('portfolioVisitorData');
         }, 30000);
-        
-        // Mettre à jour l'activité de l'utilisateur toutes les minutes
-        setInterval(() => {
-            handleOnlineUsers();
-        }, 60000);
-        
-        // Détecter les changements de visibilité de page
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                handleOnlineUsers();
-                displayRealCounters();
-            }
-        });
-        
-        // Détecter les interactions utilisateur
-        ['click', 'mousemove', 'keydown', 'scroll'].forEach(event => {
-            document.addEventListener(event, () => {
-                handleOnlineUsers();
-            }, { passive: true });
-        });
-    };
 
-    // Vérifier les éléments requis
-    const requiredElements = ['total-visitors', 'visitor-count', 'current-visitors', 'current-date', 'current-time'];
-    const elementsExist = requiredElements.some(id => document.getElementById(id));
-    
-    if (elementsExist) {
-        initializeCounter();
-        console.log('✅ Compteur de visiteurs RÉEL initialisé avec succès');
-    } else {
-        console.warn('❌ Éléments du compteur non trouvés');
+        console.log('🔄 Mises à jour temps réel démarrées');
     }
-}
 
-// ===== MISE À JOUR DATE/HEURE =====
-initDateTimeUpdater() {
-    console.log('🕐 Initialisation de la mise à jour date/heure...');
-    
-    const updateDateTime = () => {
-        const now = new Date();
+    // ===== MISE À JOUR DATE/HEURE =====
+    initDateTimeUpdater() {
+        console.log('🕐 Initialisation de la mise à jour date/heure...');
         
-        const dateElement = document.getElementById('current-date');
-        if (dateElement) {
-            dateElement.textContent = now.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-        }
-        
-        const timeElement = document.getElementById('current-time');
-        if (timeElement) {
-            timeElement.textContent = now.toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-        }
-    };
-    
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    
-    console.log('✅ Mise à jour date/heure initialisée');
-}
-
+        // Cette fonction est maintenant intégrée dans initVisitorCounter
+        console.log('✅ Mise à jour date/heure intégrée au compteur de visiteurs');
+    }
 
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
@@ -987,11 +1049,6 @@ initDateTimeUpdater() {
     }
 
     // ===== FONCTIONNALITÉS AVANCÉES =====
-    initDateTimeUpdater() {
-        // Géré par le compteur intégré
-        console.log('✅ Mise à jour date/heure intégrée');
-    }
-
     initDownloadTracking() {
         document.querySelectorAll('a[download]').forEach(link => {
             link.addEventListener('click', () => {
@@ -1301,6 +1358,39 @@ dynamicStyles.textContent = `
     .tab-button.active {
         background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
         color: white !important;
+    }
+    
+    /* Styles pour les boutons spécifiques */
+    .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover, .btn-ecs2:hover, .btn-mpsi:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-conference, .btn-livre, .btn-memoire {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 5px;
+    }
+    
+    .btn-conference:hover, .btn-livre:hover, .btn-memoire:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 147, 251, 0.3);
     }
 `;
 document.head.appendChild(dynamicStyles);
