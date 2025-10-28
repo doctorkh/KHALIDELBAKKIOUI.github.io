@@ -38,34 +38,37 @@
     <!-- Section Accueil -->
     <section id="accueil" class="hero">
         <div class="hero-container">
-            <!-- Barre d'information supérieure AMÉLIORÉE -->
-            <div class="hero-info-bar">
-                <div class="hero-info-container">
-                    <div class="info-item">
-                        <i class="far fa-calendar-alt"></i>
-                        <span id="current-date">--/--/----</span>
-                    </div>
-                    <div class="info-item">
-                        <i class="far fa-clock"></i>
-                        <span id="current-time">--:--:--</span>
-                    </div>
-                    
-                    <div class="visitor-stats">
-                        <div class="info-item">
-                            <i class="fas fa-chart-line"></i>
-                            <span id="total-visitors">0</span> total
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-users"></i>
-                            <span id="visitor-count">0</span> aujourd'hui
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-eye"></i>
-                            <span id="current-visitors">1</span> en ligne
-                        </div>
-                    </div>
-                </div>
+            <!-- Barre d'information supérieure AMÉLIORÉE & ACCESSIBLE -->
+<div class="hero-info-bar">
+    <div class="hero-info-container">
+        <div class="info-item">
+            <i class="far fa-calendar-alt"></i>
+            <span id="current-date" aria-live="polite">--/--/----</span>
+        </div>
+        <div class="info-item">
+            <i class="far fa-clock"></i>
+            <span id="current-time" aria-live="polite">--:--:--</span>
+        </div>
+
+        <div class="visitor-stats">
+            <div class="info-item">
+                <i class="fas fa-chart-line"></i>
+                <span id="total-visitors" class="counter" aria-live="polite">0</span>
+                <span class="label">visites totales</span>
             </div>
+            <div class="info-item">
+                <i class="fas fa-users"></i>
+                <span id="visitor-count" class="counter" aria-live="polite">0</span>
+                <span class="label">aujourd'hui</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-eye"></i>
+                <span id="current-visitors" class="counter" aria-live="polite">1</span>
+                <span class="label">en ligne</span>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Contenu principal -->
             <div class="hero-main-content">
