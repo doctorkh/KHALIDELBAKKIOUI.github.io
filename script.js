@@ -635,7 +635,7 @@ class PortfolioApp {
         }
     }
 
-  // ===== COMPTEUR DE VISITEURS CORRIGÉ - VERSION FINALE =====
+  // ===== COMPTEUR DE VISITEURS =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs...');
     
