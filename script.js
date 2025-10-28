@@ -636,10 +636,171 @@ class PortfolioApp {
     }
 
     // ===== COMPTEUR DE VISITEURS =====
-    initVisitorCounter() {
-        // Le compteur est déjà intégré dans le HTML
-        console.log('✅ Compteur de visiteurs intégré');
+    // === COMPTEUR DE VISITEURS - Version améliorée et corrigée ===
+class VisitorCounter {
+    constructor() {
+        this.storageKey = 'visitorData';
+        this.sessionKey = 'visitTracked';
+        this.initializeCounter();
+        this.startRealTimeUpdates();
     }
+    
+    initializeCounter() {
+        this.updateDateTime();
+        
+        // Vérifier si cette visite a déjà été comptée dans cette session
+        if (!sessionStorage.getItem(this.sessionKey)) {
+            this.incrementCounters();
+            sessionStorage.setItem(this.sessionKey, 'true');
+        }
+        
+        this.displayCounters();
+    }
+    
+    incrementCounters() {
+        const now = new Date();
+        const todayKey = now.toDateString();
+        const data = this.getVisitorData();
+        
+        // Réinitialiser le compteur du jour si c'est un nouveau jour
+        if (data.lastVisit !== todayKey) {
+            data.today = 0;
+            data.lastVisit = todayKey;
+        }
+        
+        // Incrémenter les compteurs
+        data.total++;
+        data.today++;
+        
+        // Sauvegarder les données
+        this.saveVisitorData(data);
+    }
+    
+    getVisitorData() {
+        try {
+            const stored = localStorage.getItem(this.storageKey);
+            if (!stored) {
+                return {
+                    total: 0,
+                    today: 0,
+                    lastVisit: null
+                };
+            }
+            return JSON.parse(stored);
+        } catch (error) {
+            console.error('Erreur lors de la lecture des données visiteurs:', error);
+            return {
+                total: 0,
+                today: 0,
+                lastVisit: null
+            };
+        }
+    }
+    
+    saveVisitorData(data) {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des données visiteurs:', error);
+        }
+    }
+    
+    displayCounters() {
+        const data = this.getVisitorData();
+        
+        // Mettre à jour les éléments avec vérification d'existence
+        this.updateElement('total-visitors', this.formatNumber(data.total));
+        this.updateElement('visitor-count', this.formatNumber(data.today));
+        this.updateElement('current-visitors', this.formatNumber(this.calculateOnlineUsers()));
+    }
+    
+    updateElement(elementId, value) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = value;
+        }
+    }
+    
+    calculateOnlineUsers() {
+        const hour = new Date().getHours();
+        let online = 1; // L'utilisateur actuel
+        
+        // Simulation d'utilisateurs en ligne selon l'heure
+        if (hour >= 9 && hour <= 18) { // Période de journée chargée
+            online += Math.floor(Math.random() * 5) + 2;
+        } else if (hour >= 19 && hour <= 23) { // Soirée
+            online += Math.floor(Math.random() * 3) + 1;
+        } else { // Nuit
+            online += Math.floor(Math.random() * 2);
+        }
+        
+        return Math.max(1, online); // Toujours au moins 1
+    }
+    
+    formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+    
+    updateDateTime() {
+        const now = new Date();
+        
+        // Mettre à jour la date
+        this.updateElement('current-date', now.toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }));
+        
+        // Mettre à jour l'heure
+        this.updateTime();
+    }
+    
+    updateTime() {
+        const now = new Date();
+        this.updateElement('current-time', now.toLocaleTimeString('fr-FR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }));
+    }
+    
+    startRealTimeUpdates() {
+        // Mettre à jour l'heure chaque seconde
+        setInterval(() => {
+            this.updateTime();
+        }, 1000);
+        
+        // Mettre à jour les compteurs d'utilisateurs en ligne toutes les 30 secondes
+        setInterval(() => {
+            this.displayCounters();
+        }, 30000);
+    }
+}
+
+// Initialisation du compteur
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier que les éléments nécessaires existent
+    const requiredElements = ['total-visitors', 'visitor-count', 'current-visitors', 'current-date', 'current-time'];
+    const elementsExist = requiredElements.some(id => document.getElementById(id));
+    
+    if (elementsExist) {
+        window.visitorCounter = new VisitorCounter();
+        console.log('Compteur de visiteurs initialisé avec succès');
+    } else {
+        console.warn('Compteur de visiteurs: éléments HTML non trouvés');
+    }
+});
+
+// Mise à jour lors du retour sur l'onglet
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && window.visitorCounter) {
+        setTimeout(() => {
+            window.visitorCounter.displayCounters();
+            window.visitorCounter.updateDateTime();
+        }, 100);
+    }
+});
 
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
