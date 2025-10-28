@@ -635,7 +635,7 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS CORRIGÉ =====
+    // ===== COMPTEUR DE VISITEURS =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs...');
     
@@ -790,10 +790,44 @@ initVisitorCounter() {
     }
 }
     // ===== MISE À JOUR DATE/HEURE =====
-    initDateTimeUpdater() {
-        // Maintenant géré par le compteur de visiteurs
-        console.log('✅ Mise à jour date/heure intégrée au compteur de visiteurs');
-    }
+initDateTimeUpdater() {
+    console.log('🕐 Initialisation de la mise à jour date/heure...');
+    
+    // Cette fonction est maintenant principalement gérée par initVisitorCounter()
+    // Mais nous gardons une version de secours au cas où
+    const updateDateTime = () => {
+        const now = new Date();
+        
+        // Mettre à jour la date
+        const dateElement = document.getElementById('current-date');
+        if (dateElement && !dateElement.textContent) {
+            dateElement.textContent = now.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        // Mettre à jour l'heure
+        const timeElement = document.getElementById('current-time');
+        if (timeElement && !timeElement.textContent) {
+            timeElement.textContent = now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+    };
+    
+    // Mettre à jour immédiatement
+    updateDateTime();
+    
+    // Mettre à jour l'heure chaque seconde (sécurité)
+    setInterval(updateDateTime, 1000);
+    
+    console.log('✅ Mise à jour date/heure initialisée');
+}
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
         // Créer le toggle si inexistant
