@@ -635,26 +635,29 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS CORRIGÉ =====
+  // ===== COMPTEUR DE VISITEURS CORRIGÉ - VERSION FINALE =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs...');
     
-    const storageKey = 'visitorData';
-    const sessionKey = 'visitTracked';
-    const sessionTimeKey = 'visitTime';
+    const storageKey = 'portfolioVisitorData';
+    const sessionKey = 'portfolioVisitTracked';
+    const sessionDateKey = 'portfolioVisitDate';
     
     const initializeCounter = () => {
         const now = new Date();
         const todayKey = now.toDateString();
         
-        // Vérifier si cette visite a déjà été comptée dans cette session
-        const lastVisitTime = sessionStorage.getItem(sessionTimeKey);
-        const isNewVisit = !sessionStorage.getItem(sessionKey) || lastVisitTime !== todayKey;
+        // Vérifier si c'est une nouvelle visite (nouvelle session ou nouveau jour)
+        const lastVisitDate = sessionStorage.getItem(sessionDateKey);
+        const isNewVisit = !sessionStorage.getItem(sessionKey) || lastVisitDate !== todayKey;
         
         if (isNewVisit) {
+            console.log('🆕 Nouvelle visite détectée');
             incrementCounters();
             sessionStorage.setItem(sessionKey, 'true');
-            sessionStorage.setItem(sessionTimeKey, todayKey);
+            sessionStorage.setItem(sessionDateKey, todayKey);
+        } else {
+            console.log('🔁 Visite déjà comptée aujourd\'hui');
         }
         
         updateDateTime();
@@ -668,31 +671,38 @@ initVisitorCounter() {
         
         console.log('📊 Avant incrémentation - Total:', data.total, 'Aujourd\'hui:', data.today, 'Dernière visite:', data.lastVisit);
         
-        // Si c'est un nouveau jour, réinitialiser le compteur du jour
+        // CORRECTION PRINCIPALE : Gestion robuste de la date
         if (data.lastVisit !== todayKey) {
-            console.log('🆕 Nouveau jour détecté, réinitialisation du compteur quotidien');
+            console.log('🆕 Nouveau jour - Réinitialisation du compteur quotidien');
+            
+            // Sauvegarder l'ancienne valeur d'aujourd'hui pour référence
+            const previousToday = data.today;
+            
+            // Réinitialiser le compteur du jour
             data.today = 0;
             data.lastVisit = todayKey;
+            
+            // GARANTIE : Le total ne doit JAMAIS diminuer
+            // Si pour une raison quelconque today était supérieur à total, on corrige
+            if (previousToday > data.total) {
+                console.warn('⚠️ Correction: today > total, ajustement du total');
+                data.total = previousToday;
+            }
         }
         
-        // CORRECTION : S'assurer que le total est toujours >= aujourd'hui
-        if (data.today > data.total) {
-            console.warn('⚠️ Correction anomalie: aujourd\'hui > total');
-            data.total = data.today;
-        }
-        
-        // Incrémenter les compteurs
+        // INCÉMENTATION SÉCURISÉE
         data.total++;
         data.today++;
         
-        // CORRECTION : Double vérification pour éviter les incohérences
+        // VERIFICATION FINALE ABSOLUE
+        // Le total DOIT être >= aujourd'hui, c'est mathématiquement obligatoire
         if (data.today > data.total) {
-            data.total = data.today;
+            console.error('🚨 ANOMALIE CRITIQUE: today > total après incrémentation');
+            data.total = data.today; // Correction forcée
         }
         
         console.log('📈 Après incrémentation - Total:', data.total, 'Aujourd\'hui:', data.today);
         
-        // Sauvegarder les données
         saveVisitorData(data);
     };
     
@@ -700,52 +710,63 @@ initVisitorCounter() {
         try {
             const stored = localStorage.getItem(storageKey);
             if (!stored) {
+                console.log('🌟 Première visite - Initialisation des données');
                 return {
                     total: 0,
                     today: 0,
-                    lastVisit: null
+                    lastVisit: null,
+                    firstVisit: new Date().toISOString()
                 };
             }
+            
             const data = JSON.parse(stored);
             
-            // CORRECTION : Vérifier la cohérence des données au chargement
+            // CORRECTION AU CHARGEMENT : Validation complète
             if (data.today > data.total) {
-                console.warn('🛠️ Correction des données incohérentes au chargement');
+                console.error('🚨 Données corrompues: today > total, correction automatique');
                 data.total = data.today;
+            }
+            
+            // S'assurer que lastVisit est une date valide
+            if (!data.lastVisit) {
+                data.lastVisit = new Date().toDateString();
             }
             
             return data;
         } catch (error) {
-            console.error('Erreur lors de la lecture des données visiteurs:', error);
+            console.error('❌ Erreur lecture données:', error);
             return {
                 total: 0,
                 today: 0,
-                lastVisit: null
+                lastVisit: new Date().toDateString(),
+                firstVisit: new Date().toISOString()
             };
         }
     };
     
     const saveVisitorData = (data) => {
         try {
-            // CORRECTION : Validation finale avant sauvegarde
+            // VERIFICATION FINALE AVANT SAUVEGARDE
             if (data.today > data.total) {
+                console.error('🚨 VERIFICATION FINALE ÉCHOUÉE: Correction d\'urgence');
                 data.total = data.today;
-                console.warn('🔧 Correction appliquée avant sauvegarde');
             }
             
             localStorage.setItem(storageKey, JSON.stringify(data));
-            console.log('💾 Données sauvegardées:', data);
+            console.log('💾 Données sauvegardées - Total:', data.total, 'Aujourd\'hui:', data.today);
         } catch (error) {
-            console.error('Erreur lors de la sauvegarde des données visiteurs:', error);
+            console.error('❌ Erreur sauvegarde:', error);
         }
     };
     
     const displayCounters = () => {
         const data = getVisitorData();
         
-        // CORRECTION : Affichage avec vérification de cohérence
-        const todayDisplay = Math.min(data.today, data.total);
-        const totalDisplay = Math.max(data.total, data.today);
+        // AFFICHAGE SÉCURISÉ
+        // Total représente TOUTES les visites depuis le début
+        // Aujourd'hui représente les visites du jour actuel
+        const totalDisplay = data.total;
+        const todayDisplay = data.today;
         
         console.log('📋 Affichage - Total:', totalDisplay, 'Aujourd\'hui:', todayDisplay);
         
@@ -759,9 +780,8 @@ initVisitorCounter() {
         const element = document.getElementById(elementId);
         if (element) {
             element.textContent = value;
-            console.log(`✅ ${elementId} mis à jour: ${value}`);
         } else {
-            console.warn(`❌ Élément ${elementId} non trouvé`);
+            console.warn(`⚠️ Élément ${elementId} non trouvé`);
         }
     };
     
@@ -769,8 +789,8 @@ initVisitorCounter() {
         const hour = new Date().getHours();
         let online = 1; // L'utilisateur actuel
         
-        // Simulation d'utilisateurs en ligne selon l'heure
-        if (hour >= 9 && hour <= 18) { // Période de journée chargée
+        // Simulation réaliste d'utilisateurs en ligne
+        if (hour >= 9 && hour <= 18) { // Journée active
             online += Math.floor(Math.random() * 5) + 2;
         } else if (hour >= 19 && hour <= 23) { // Soirée
             online += Math.floor(Math.random() * 3) + 1;
@@ -815,9 +835,10 @@ initVisitorCounter() {
             updateTime();
         }, 1000);
         
-        // Mettre à jour les compteurs d'utilisateurs en ligne toutes les 30 secondes
+        // Mettre à jour les utilisateurs en ligne toutes les 30 secondes
         setInterval(() => {
-            displayCounters();
+            const onlineUsers = calculateOnlineUsers();
+            updateElement('current-visitors', formatNumber(onlineUsers));
         }, 30000);
     };
 
@@ -830,21 +851,20 @@ initVisitorCounter() {
         startRealTimeUpdates();
         console.log('✅ Compteur de visiteurs initialisé avec succès');
     } else {
-        console.warn('❌ Compteur de visiteurs: éléments HTML non trouvés');
+        console.warn('❌ Éléments du compteur non trouvés dans la page');
     }
 }
-    // ===== MISE À JOUR DATE/HEURE =====
+
+// ===== MISE À JOUR DATE/HEURE =====
 initDateTimeUpdater() {
     console.log('🕐 Initialisation de la mise à jour date/heure...');
     
-    // Cette fonction est maintenant principalement gérée par initVisitorCounter()
-    // Mais nous gardons une version de secours au cas où
     const updateDateTime = () => {
         const now = new Date();
         
         // Mettre à jour la date
         const dateElement = document.getElementById('current-date');
-        if (dateElement && !dateElement.textContent) {
+        if (dateElement) {
             dateElement.textContent = now.toLocaleDateString('fr-FR', {
                 weekday: 'long',
                 day: 'numeric',
@@ -855,7 +875,7 @@ initDateTimeUpdater() {
         
         // Mettre à jour l'heure
         const timeElement = document.getElementById('current-time');
-        if (timeElement && !timeElement.textContent) {
+        if (timeElement) {
             timeElement.textContent = now.toLocaleTimeString('fr-FR', {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -867,7 +887,7 @@ initDateTimeUpdater() {
     // Mettre à jour immédiatement
     updateDateTime();
     
-    // Mettre à jour l'heure chaque seconde (sécurité)
+    // Mettre à jour l'heure chaque seconde
     setInterval(updateDateTime, 1000);
     
     console.log('✅ Mise à jour date/heure initialisée');
