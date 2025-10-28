@@ -635,8 +635,8 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS =====
-    // === COMPTEUR DE VISITEURS - Version améliorée et corrigée ===
+     <!-- Script pour le compteur de visiteurs -->
+    // === COMPTEUR DE VISITEURS ===
 class VisitorCounter {
     constructor() {
         this.storageKey = 'visitorData';
