@@ -635,22 +635,29 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS =====
+    // ===== COMPTEUR DE VISITEURS CORRIGÉ =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs...');
     
     const storageKey = 'visitorData';
     const sessionKey = 'visitTracked';
+    const sessionTimeKey = 'visitTime';
     
     const initializeCounter = () => {
-        updateDateTime();
+        const now = new Date();
+        const todayKey = now.toDateString();
         
         // Vérifier si cette visite a déjà été comptée dans cette session
-        if (!sessionStorage.getItem(sessionKey)) {
+        const lastVisitTime = sessionStorage.getItem(sessionTimeKey);
+        const isNewVisit = !sessionStorage.getItem(sessionKey) || lastVisitTime !== todayKey;
+        
+        if (isNewVisit) {
             incrementCounters();
             sessionStorage.setItem(sessionKey, 'true');
+            sessionStorage.setItem(sessionTimeKey, todayKey);
         }
         
+        updateDateTime();
         displayCounters();
     };
     
@@ -659,15 +666,31 @@ initVisitorCounter() {
         const todayKey = now.toDateString();
         const data = getVisitorData();
         
-        // Réinitialiser le compteur du jour si c'est un nouveau jour
+        console.log('📊 Avant incrémentation - Total:', data.total, 'Aujourd\'hui:', data.today, 'Dernière visite:', data.lastVisit);
+        
+        // Si c'est un nouveau jour, réinitialiser le compteur du jour
         if (data.lastVisit !== todayKey) {
+            console.log('🆕 Nouveau jour détecté, réinitialisation du compteur quotidien');
             data.today = 0;
             data.lastVisit = todayKey;
+        }
+        
+        // CORRECTION : S'assurer que le total est toujours >= aujourd'hui
+        if (data.today > data.total) {
+            console.warn('⚠️ Correction anomalie: aujourd\'hui > total');
+            data.total = data.today;
         }
         
         // Incrémenter les compteurs
         data.total++;
         data.today++;
+        
+        // CORRECTION : Double vérification pour éviter les incohérences
+        if (data.today > data.total) {
+            data.total = data.today;
+        }
+        
+        console.log('📈 Après incrémentation - Total:', data.total, 'Aujourd\'hui:', data.today);
         
         // Sauvegarder les données
         saveVisitorData(data);
@@ -683,7 +706,15 @@ initVisitorCounter() {
                     lastVisit: null
                 };
             }
-            return JSON.parse(stored);
+            const data = JSON.parse(stored);
+            
+            // CORRECTION : Vérifier la cohérence des données au chargement
+            if (data.today > data.total) {
+                console.warn('🛠️ Correction des données incohérentes au chargement');
+                data.total = data.today;
+            }
+            
+            return data;
         } catch (error) {
             console.error('Erreur lors de la lecture des données visiteurs:', error);
             return {
@@ -696,7 +727,14 @@ initVisitorCounter() {
     
     const saveVisitorData = (data) => {
         try {
+            // CORRECTION : Validation finale avant sauvegarde
+            if (data.today > data.total) {
+                data.total = data.today;
+                console.warn('🔧 Correction appliquée avant sauvegarde');
+            }
+            
             localStorage.setItem(storageKey, JSON.stringify(data));
+            console.log('💾 Données sauvegardées:', data);
         } catch (error) {
             console.error('Erreur lors de la sauvegarde des données visiteurs:', error);
         }
@@ -705,9 +743,15 @@ initVisitorCounter() {
     const displayCounters = () => {
         const data = getVisitorData();
         
-        // Mettre à jour les éléments avec vérification d'existence
-        updateElement('total-visitors', formatNumber(data.total));
-        updateElement('visitor-count', formatNumber(data.today));
+        // CORRECTION : Affichage avec vérification de cohérence
+        const todayDisplay = Math.min(data.today, data.total);
+        const totalDisplay = Math.max(data.total, data.today);
+        
+        console.log('📋 Affichage - Total:', totalDisplay, 'Aujourd\'hui:', todayDisplay);
+        
+        // Mettre à jour les éléments
+        updateElement('total-visitors', formatNumber(totalDisplay));
+        updateElement('visitor-count', formatNumber(todayDisplay));
         updateElement('current-visitors', formatNumber(calculateOnlineUsers()));
     };
     
@@ -734,7 +778,7 @@ initVisitorCounter() {
             online += Math.floor(Math.random() * 2);
         }
         
-        return Math.max(1, online); // Toujours au moins 1
+        return Math.max(1, online);
     };
     
     const formatNumber = (num) => {
