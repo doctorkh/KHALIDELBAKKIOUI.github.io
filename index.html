@@ -18,16 +18,16 @@
                 <h2>Dr. EL BAKKIOUI Khalid</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
-                <li><a href="#profil"><i class="fas fa-user"></i> Profil</a></li>
-                <li><a href="#formation"><i class="fas fa-graduation-cap"></i> Formation</a></li>
-                <li><a href="#experience"><i class="fas fa-briefcase"></i> Expérience</a></li>
-                <li><a href="#recherche"><i class="fas fa-flask"></i> Recherche</a></li>
-                <li><a href="#enseignement"><i class="fas fa-chalkboard-teacher"></i> Enseignement</a></li>
-                <li><a href="#documents"><i class="fas fa-folder"></i> Documents</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="#accueil" class="nav-link"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#profil" class="nav-link"><i class="fas fa-user"></i> Profil</a></li>
+                <li><a href="#formation" class="nav-link"><i class="fas fa-graduation-cap"></i> Formation</a></li>
+                <li><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i> Expérience</a></li>
+                <li><a href="#recherche" class="nav-link"><i class="fas fa-flask"></i> Recherche</a></li>
+                <li><a href="#enseignement" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Enseignement</a></li>
+                <li><a href="#documents" class="nav-link"><i class="fas fa-folder"></i> Documents</a></li>
+                <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            <div class="nav-toggle">
+            <div class="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -40,188 +40,37 @@
         <div class="hero-container">
             <!-- Barre d'information supérieure AMÉLIORÉE -->
             <div class="hero-info-bar">
-    <div class="hero-info-container">
-        <div class="info-item">
-            <i class="far fa-calendar-alt"></i>
-            <span id="current-date">--/--/----</span>
-        </div>
-        <div class="info-item">
-            <i class="far fa-clock"></i>
-            <span id="current-time">--:--:--</span>
-        </div>
-        
-        <div class="visitor-stats">
-            <div class="info-item">
-                <i class="fas fa-chart-line"></i>
-                <span id="total-visitors">0</span> total
+                <div class="hero-info-container">
+                    <div class="info-item">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">--/--/----</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-clock"></i>
+                        <span id="current-time">--:--:--</span>
+                    </div>
+                    
+                    <div class="visitor-stats">
+                        <div class="info-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="total-visitors">0</span> total
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <span id="visitor-count">0</span> aujourd'hui
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-eye"></i>
+                            <span id="current-visitors">1</span> en ligne
+                        </div>
+                    </div>
+                    
+                    <div class="stat-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                        Enseignant-Chercheur
+                    </div>
+                </div>
             </div>
-            <div class="info-item">
-                <i class="fas fa-users"></i>
-                <span id="visitor-count">0</span> aujourd'hui
-            </div>
-            <div class="info-item">
-                <i class="fas fa-eye"></i>
-                <span id="current-visitors">1</span> en ligne
-            </div>
-        </div>
-        
-        <div class="stat-badge">
-            <i class="fas fa-graduation-cap"></i>
-            Enseignant-Chercheur
-        </div>
-    </div>
-</div>
-
-<script>
-// === COMPTEUR DE VISITEURS - Version intégrée ===
-class VisitorCounter {
-    constructor() {
-        this.initializeStorage();
-        this.updateDateTime();
-        this.updateCounters();
-        this.startRealTimeUpdates();
-    }
-    
-    initializeStorage() {
-        if (!localStorage.getItem('visitorData')) {
-            const initialData = {
-                total: 0,
-                today: 0,
-                lastVisit: null,
-                dailyHistory: {}
-            };
-            localStorage.setItem('visitorData', JSON.stringify(initialData));
-        }
-    }
-    
-    getVisitorData() {
-        return JSON.parse(localStorage.getItem('visitorData'));
-    }
-    
-    saveVisitorData(data) {
-        localStorage.setItem('visitorData', JSON.stringify(data));
-    }
-    
-    updateCounters() {
-        const now = new Date();
-        const todayKey = now.toDateString();
-        const data = this.getVisitorData();
-        
-        // Réinitialiser le compteur du jour si nécessaire
-        if (data.lastVisit !== todayKey) {
-            data.today = 0;
-            data.lastVisit = todayKey;
-        }
-        
-        // Incrémenter les compteurs
-        data.total++;
-        data.today++;
-        
-        // Historique quotidien
-        if (!data.dailyHistory[todayKey]) {
-            data.dailyHistory[todayKey] = 0;
-        }
-        data.dailyHistory[todayKey]++;
-        
-        // Nettoyer l'historique ancien
-        this.cleanupHistory(data);
-        
-        // Sauvegarder
-        this.saveVisitorData(data);
-        
-        // Mettre à jour l'affichage
-        this.displayCounters(data);
-    }
-    
-    cleanupHistory(data) {
-        const dates = Object.keys(data.dailyHistory);
-        if (dates.length > 30) {
-            const sortedDates = dates.sort();
-            const datesToRemove = sortedDates.slice(0, dates.length - 30);
-            datesToRemove.forEach(date => {
-                delete data.dailyHistory[date];
-            });
-        }
-    }
-    
-    displayCounters(data) {
-        document.getElementById('total-visitors').textContent = this.formatNumber(data.total);
-        document.getElementById('visitor-count').textContent = this.formatNumber(data.today);
-        
-        // Calcul des utilisateurs en ligne
-        const onlineCount = this.calculateOnlineUsers();
-        document.getElementById('current-visitors').textContent = this.formatNumber(onlineCount);
-    }
-    
-    calculateOnlineUsers() {
-        const baseOnline = 1;
-        const randomFactor = Math.floor(Math.random() * 8);
-        const hour = new Date().getHours();
-        
-        // Facteur basé sur l'heure (plus d'activité en journée)
-        let timeFactor = 0.5; // Nuit
-        if (hour >= 9 && hour <= 18) timeFactor = 1.2;  // Journée
-        if (hour >= 19 && hour <= 23) timeFactor = 0.8; // Soirée
-        
-        return Math.max(baseOnline, Math.floor(baseOnline + randomFactor * timeFactor));
-    }
-    
-    formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
-    
-    updateDateTime() {
-        const now = new Date();
-        
-        // Mettre à jour la date
-        const dateOptions = { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
-        };
-        document.getElementById('current-date').textContent = 
-            now.toLocaleDateString('fr-FR', dateOptions);
-        
-        // Mettre à jour l'heure
-        this.updateTime();
-    }
-    
-    updateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('fr-FR', { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
-        });
-        document.getElementById('current-time').textContent = timeString;
-    }
-    
-    startRealTimeUpdates() {
-        // Mettre à jour l'heure toutes les secondes
-        setInterval(() => {
-            this.updateTime();
-        }, 1000);
-        
-        // Mettre à jour les compteurs en ligne toutes les 30 secondes
-        setInterval(() => {
-            const data = this.getVisitorData();
-            this.displayCounters(data);
-        }, 30000);
-    }
-}
-
-// Démarrer le compteur quand la page charge
-document.addEventListener('DOMContentLoaded', function() {
-    const counter = new VisitorCounter();
-});
-
-// Mettre à jour quand l'utilisateur revient sur l'onglet
-document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-        const counter = new VisitorCounter();
-    }
-});
-</script>
 
             <!-- Contenu principal -->
             <div class="hero-main-content">
@@ -424,13 +273,13 @@ document.addEventListener('visibilitychange', function() {
         <div class="container">
             <h2 class="section-title">Expérience Professionnelle</h2>
             <div class="experience-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="cpge">CPGE</button>
-                    <button class="tab-button" data-tab="lycee">Lycée</button>
-                    <button class="tab-button" data-tab="college">Collège</button>
+                <div class="tab-buttons" data-tab-group="experience">
+                    <button class="tab-button active" data-tab="cpge" aria-selected="true" aria-controls="cpge">CPGE</button>
+                    <button class="tab-button" data-tab="lycee" aria-selected="false" aria-controls="lycee">Lycée</button>
+                    <button class="tab-button" data-tab="college" aria-selected="false" aria-controls="college">Collège</button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="cpge">
+                    <div class="tab-pane active" id="cpge" aria-labelledby="cpge-tab" aria-hidden="false">
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -511,7 +360,7 @@ document.addEventListener('visibilitychange', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="lycee">
+                    <div class="tab-pane" id="lycee" aria-labelledby="lycee-tab" aria-hidden="true">
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -522,7 +371,7 @@ document.addEventListener('visibilitychange', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="college">
+                    <div class="tab-pane" id="college" aria-labelledby="college-tab" aria-hidden="true">
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -550,12 +399,12 @@ document.addEventListener('visibilitychange', function() {
         <div class="container">
             <h2 class="section-title">Activités de Recherche</h2>
             <div class="research-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="publications">Publications (6)</button>
-                    <button class="tab-button" data-tab="conferences">Conférences (4)</button>
+                <div class="tab-buttons" data-tab-group="research">
+                    <button class="tab-button active" data-tab="publications" aria-selected="true" aria-controls="publications">Publications (6)</button>
+                    <button class="tab-button" data-tab="conferences" aria-selected="false" aria-controls="conferences">Conférences (4)</button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="publications">
+                    <div class="tab-pane active" id="publications" aria-labelledby="publications-tab" aria-hidden="false">
                         <div class="publications-grid">
                             <div class="pub-card">
                                 <div class="pub-header">
@@ -648,7 +497,7 @@ document.addEventListener('visibilitychange', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="conferences">
+                    <div class="tab-pane" id="conferences" aria-labelledby="conferences-tab" aria-hidden="true">
                         <div class="conferences-grid">
                             <div class="conf-card">
                                 <div class="conf-header">
@@ -718,17 +567,17 @@ document.addEventListener('visibilitychange', function() {
         <div class="container">
             <h2 class="section-title">Ressources Pédagogiques CPGE</h2>
             <div class="filiere-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="psi">PSI</button>
-                    <button class="tab-button" data-tab="mpsi">MPSI</button>
-                    <button class="tab-button" data-tab="ect1">ECT 1ère</button>
-                    <button class="tab-button" data-tab="ect2">ECT 2ème</button>
-                    <button class="tab-button" data-tab="ecs1">ECS 1ère</button>
-                    <button class="tab-button" data-tab="ecs2">ECS 2ème</button>
+                <div class="tab-buttons" data-tab-group="enseignement">
+                    <button class="tab-button active" data-tab="psi" aria-selected="true" aria-controls="psi">PSI</button>
+                    <button class="tab-button" data-tab="mpsi" aria-selected="false" aria-controls="mpsi">MPSI</button>
+                    <button class="tab-button" data-tab="ect1" aria-selected="false" aria-controls="ect1">ECT 1ère</button>
+                    <button class="tab-button" data-tab="ect2" aria-selected="false" aria-controls="ect2">ECT 2ème</button>
+                    <button class="tab-button" data-tab="ecs1" aria-selected="false" aria-controls="ecs1">ECS 1ère</button>
+                    <button class="tab-button" data-tab="ecs2" aria-selected="false" aria-controls="ecs2">ECS 2ème</button>
                 </div>
                 <div class="tab-content">
                     <!-- PSI -->
-                    <div class="tab-pane active" id="psi">
+                    <div class="tab-pane active" id="psi" aria-labelledby="psi-tab" aria-hidden="false">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cahier de texte</h3>
@@ -882,7 +731,7 @@ document.addEventListener('visibilitychange', function() {
                     </div>
                     
                     <!-- Les autres filières suivent la même structure -->
-                    <div class="tab-pane" id="mpsi">
+                    <div class="tab-pane" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - MPSI</h3>
@@ -891,7 +740,7 @@ document.addEventListener('visibilitychange', function() {
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ect1">
+                    <div class="tab-pane" id="ect1" aria-labelledby="ect1-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECT 1ère année</h3>
@@ -900,7 +749,7 @@ document.addEventListener('visibilitychange', function() {
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ect2">
+                    <div class="tab-pane" id="ect2" aria-labelledby="ect2-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECT 2ème année</h3>
@@ -909,7 +758,7 @@ document.addEventListener('visibilitychange', function() {
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ecs1">
+                    <div class="tab-pane" id="ecs1" aria-labelledby="ecs1-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECS 1ère année</h3>
@@ -918,7 +767,7 @@ document.addEventListener('visibilitychange', function() {
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ecs2">
+                    <div class="tab-pane" id="ecs2" aria-labelledby="ecs2-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECS 2ème année</h3>
@@ -936,13 +785,13 @@ document.addEventListener('visibilitychange', function() {
         <div class="container">
             <h2 class="section-title">Documents Académiques</h2>
             <div class="documents-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="these">Thèse</button>
-                    <button class="tab-button" data-tab="memoires">Mémoires</button>
-                    <button class="tab-button" data-tab="livres">Livres & Manuels</button>
+                <div class="tab-buttons" data-tab-group="documents">
+                    <button class="tab-button active" data-tab="these" aria-selected="true" aria-controls="these">Thèse</button>
+                    <button class="tab-button" data-tab="memoires" aria-selected="false" aria-controls="memoires">Mémoires</button>
+                    <button class="tab-button" data-tab="livres" aria-selected="false" aria-controls="livres">Livres & Manuels</button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="these">
+                    <div class="tab-pane active" id="these" aria-labelledby="these-tab" aria-hidden="false">
                         <div class="documents-grid">
                             <div class="doc-card">
                                 <div class="doc-icon">
@@ -961,7 +810,7 @@ document.addEventListener('visibilitychange', function() {
                                     <a href="documents/these/these-francais.pdf" class="btn-download" download>
                                         <i class="fas fa-download"></i> Télécharger
                                     </a>
-                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank">
+                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank>
                                         <i class="fas fa-eye"></i> Aperçu
                                     </a>
                                 </div>
@@ -1012,7 +861,7 @@ document.addEventListener('visibilitychange', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="memoires">
+                    <div class="tab-pane" id="memoires" aria-labelledby="memoires-tab" aria-hidden="true">
                         <div class="documents-grid">
                             <div class="doc-card">
                                 <div class="doc-icon">
@@ -1054,7 +903,7 @@ document.addEventListener('visibilitychange', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="livres">
+                    <div class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
                         <div class="documents-grid">
                             <div class="doc-card">
                                 <div class="doc-icon">
@@ -1167,6 +1016,158 @@ document.addEventListener('visibilitychange', function() {
     <button id="backToTop" class="back-to-top">
         <i class="fas fa-chevron-up"></i>
     </button>
+
+    <!-- Script pour le compteur de visiteurs -->
+    <script>
+    // === COMPTEUR DE VISITEURS - Version intégrée ===
+    class VisitorCounter {
+        constructor() {
+            this.initializeStorage();
+            this.updateDateTime();
+            this.updateCounters();
+            this.startRealTimeUpdates();
+        }
+        
+        initializeStorage() {
+            if (!localStorage.getItem('visitorData')) {
+                const initialData = {
+                    total: 0,
+                    today: 0,
+                    lastVisit: null,
+                    dailyHistory: {}
+                };
+                localStorage.setItem('visitorData', JSON.stringify(initialData));
+            }
+        }
+        
+        getVisitorData() {
+            return JSON.parse(localStorage.getItem('visitorData'));
+        }
+        
+        saveVisitorData(data) {
+            localStorage.setItem('visitorData', JSON.stringify(data));
+        }
+        
+        updateCounters() {
+            const now = new Date();
+            const todayKey = now.toDateString();
+            const data = this.getVisitorData();
+            
+            // Réinitialiser le compteur du jour si nécessaire
+            if (data.lastVisit !== todayKey) {
+                data.today = 0;
+                data.lastVisit = todayKey;
+            }
+            
+            // Incrémenter les compteurs
+            data.total++;
+            data.today++;
+            
+            // Historique quotidien
+            if (!data.dailyHistory[todayKey]) {
+                data.dailyHistory[todayKey] = 0;
+            }
+            data.dailyHistory[todayKey]++;
+            
+            // Nettoyer l'historique ancien
+            this.cleanupHistory(data);
+            
+            // Sauvegarder
+            this.saveVisitorData(data);
+            
+            // Mettre à jour l'affichage
+            this.displayCounters(data);
+        }
+        
+        cleanupHistory(data) {
+            const dates = Object.keys(data.dailyHistory);
+            if (dates.length > 30) {
+                const sortedDates = dates.sort();
+                const datesToRemove = sortedDates.slice(0, dates.length - 30);
+                datesToRemove.forEach(date => {
+                    delete data.dailyHistory[date];
+                });
+            }
+        }
+        
+        displayCounters(data) {
+            document.getElementById('total-visitors').textContent = this.formatNumber(data.total);
+            document.getElementById('visitor-count').textContent = this.formatNumber(data.today);
+            
+            // Calcul des utilisateurs en ligne
+            const onlineCount = this.calculateOnlineUsers();
+            document.getElementById('current-visitors').textContent = this.formatNumber(onlineCount);
+        }
+        
+        calculateOnlineUsers() {
+            const baseOnline = 1;
+            const randomFactor = Math.floor(Math.random() * 8);
+            const hour = new Date().getHours();
+            
+            // Facteur basé sur l'heure (plus d'activité en journée)
+            let timeFactor = 0.5; // Nuit
+            if (hour >= 9 && hour <= 18) timeFactor = 1.2;  // Journée
+            if (hour >= 19 && hour <= 23) timeFactor = 0.8; // Soirée
+            
+            return Math.max(baseOnline, Math.floor(baseOnline + randomFactor * timeFactor));
+        }
+        
+        formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        updateDateTime() {
+            const now = new Date();
+            
+            // Mettre à jour la date
+            const dateOptions = { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric' 
+            };
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('fr-FR', dateOptions);
+            
+            // Mettre à jour l'heure
+            this.updateTime();
+        }
+        
+        updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fr-FR', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        startRealTimeUpdates() {
+            // Mettre à jour l'heure toutes les secondes
+            setInterval(() => {
+                this.updateTime();
+            }, 1000);
+            
+            // Mettre à jour les compteurs en ligne toutes les 30 secondes
+            setInterval(() => {
+                const data = this.getVisitorData();
+                this.displayCounters(data);
+            }, 30000);
+        }
+    }
+
+    // Démarrer le compteur quand la page charge
+    document.addEventListener('DOMContentLoaded', function() {
+        const counter = new VisitorCounter();
+    });
+
+    // Mettre à jour quand l'utilisateur revient sur l'onglet
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            const counter = new VisitorCounter();
+        }
+    });
+    </script>
 
     <script src="script.js"></script>
 </body>
