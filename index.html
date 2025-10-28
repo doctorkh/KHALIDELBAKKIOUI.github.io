@@ -1020,49 +1020,31 @@
     <!-- Script pour le compteur de visiteurs -->
     <script>
     // === COMPTEUR DE VISITEURS - Version corrigée ===
+// === COMPTEUR DE VISITEURS - Version FINALE corrigée ===
 class VisitorCounter {
     constructor() {
         this.storageKey = 'visitorData';
         this.sessionKey = 'visitTracked';
-        this.initializeCounter();
-        this.updateDateTime();
+        this.updateDateTime(); // D'ABORD la date et heure
+        this.initializeCounter(); // ENSUITE les compteurs
         this.startRealTimeUpdates();
     }
     
     initializeCounter() {
-        // Vérifier si cette visite a déjà été comptée dans cette session
+        // Vérifier si cette visite a déjà été comptée
         if (!sessionStorage.getItem(this.sessionKey)) {
-            this.updateCounters();
+            this.incrementCounters();
             sessionStorage.setItem(this.sessionKey, 'true');
-        } else {
-            // Afficher les compteurs existants sans incrémenter
-            this.displayCounters(this.getVisitorData());
         }
+        this.displayCounters();
     }
     
-    getVisitorData() {
-        if (!localStorage.getItem(this.storageKey)) {
-            const initialData = {
-                total: 0,
-                today: 0,
-                lastVisit: null,
-                dailyHistory: {}
-            };
-            localStorage.setItem(this.storageKey, JSON.stringify(initialData));
-        }
-        return JSON.parse(localStorage.getItem(this.storageKey));
-    }
-    
-    saveVisitorData(data) {
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
-    }
-    
-    updateCounters() {
+    incrementCounters() {
         const now = new Date();
         const todayKey = now.toDateString();
         const data = this.getVisitorData();
         
-        // Réinitialiser le compteur du jour si nécessaire
+        // Réinitialiser le compteur du jour si nouveau jour
         if (data.lastVisit !== todayKey) {
             data.today = 0;
             data.lastVisit = todayKey;
@@ -1072,53 +1054,50 @@ class VisitorCounter {
         data.total++;
         data.today++;
         
-        // Historique quotidien
-        if (!data.dailyHistory[todayKey]) {
-            data.dailyHistory[todayKey] = 0;
-        }
-        data.dailyHistory[todayKey]++;
-        
-        // Nettoyer l'historique ancien
-        this.cleanupHistory(data);
-        
         // Sauvegarder
         this.saveVisitorData(data);
-        
-        // Mettre à jour l'affichage
-        this.displayCounters(data);
     }
     
-    cleanupHistory(data) {
-        const dates = Object.keys(data.dailyHistory);
-        if (dates.length > 30) {
-            const sortedDates = dates.sort();
-            const datesToRemove = sortedDates.slice(0, dates.length - 30);
-            datesToRemove.forEach(date => {
-                delete data.dailyHistory[date];
-            });
+    getVisitorData() {
+        const stored = localStorage.getItem(this.storageKey);
+        if (!stored) {
+            return {
+                total: 0,
+                today: 0,
+                lastVisit: null
+            };
         }
+        return JSON.parse(stored);
     }
     
-    displayCounters(data) {
-        document.getElementById('total-visitors').textContent = this.formatNumber(data.total);
-        document.getElementById('visitor-count').textContent = this.formatNumber(data.today);
+    saveVisitorData(data) {
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+    }
+    
+    displayCounters() {
+        const data = this.getVisitorData();
         
-        // Calcul des utilisateurs en ligne
-        const onlineCount = this.calculateOnlineUsers();
-        document.getElementById('current-visitors').textContent = this.formatNumber(onlineCount);
+        // S'assurer que les éléments existent avant de les mettre à jour
+        const totalElement = document.getElementById('total-visitors');
+        const todayElement = document.getElementById('visitor-count');
+        const onlineElement = document.getElementById('current-visitors');
+        
+        if (totalElement) totalElement.textContent = this.formatNumber(data.total);
+        if (todayElement) todayElement.textContent = this.formatNumber(data.today);
+        if (onlineElement) onlineElement.textContent = this.formatNumber(this.calculateOnlineUsers());
     }
     
     calculateOnlineUsers() {
-        const baseOnline = 1;
-        const randomFactor = Math.floor(Math.random() * 8);
         const hour = new Date().getHours();
+        let online = 1; // Base
         
-        // Facteur basé sur l'heure (plus d'activité en journée)
-        let timeFactor = 0.5; // Nuit
-        if (hour >= 9 && hour <= 18) timeFactor = 1.2;  // Journée
-        if (hour >= 19 && hour <= 23) timeFactor = 0.8; // Soirée
+        if (hour >= 9 && hour <= 18) { // Journée
+            online += Math.floor(Math.random() * 3);
+        } else if (hour >= 19 && hour <= 23) { // Soirée
+            online += Math.floor(Math.random() * 2);
+        }
         
-        return Math.max(baseOnline, Math.floor(baseOnline + randomFactor * timeFactor));
+        return online;
     }
     
     formatNumber(num) {
@@ -1128,54 +1107,56 @@ class VisitorCounter {
     updateDateTime() {
         const now = new Date();
         
-        // Mettre à jour la date
-        const dateOptions = { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
-        };
-        document.getElementById('current-date').textContent = 
-            now.toLocaleDateString('fr-FR', dateOptions);
+        // Date
+        const dateElement = document.getElementById('current-date');
+        if (dateElement) {
+            dateElement.textContent = now.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit', 
+                year: 'numeric'
+            });
+        }
         
-        // Mettre à jour l'heure
+        // Heure
         this.updateTime();
     }
     
     updateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('fr-FR', { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
-        });
-        document.getElementById('current-time').textContent = timeString;
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
     }
     
     startRealTimeUpdates() {
-        // Mettre à jour l'heure toutes les secondes
+        // Heure en temps réel
         setInterval(() => {
             this.updateTime();
         }, 1000);
         
-        // Mettre à jour les compteurs en ligne toutes les 30 secondes
+        // Mettre à jour "en ligne" occasionnellement
         setInterval(() => {
-            const data = this.getVisitorData();
-            this.displayCounters(data);
-        }, 30000);
+            this.displayCounters();
+        }, 15000);
     }
 }
 
-// Démarrer le compteur quand la page charge
+// Démarrer le compteur
 document.addEventListener('DOMContentLoaded', function() {
-    const counter = new VisitorCounter();
+    new VisitorCounter();
 });
 
-// Mettre à jour quand l'utilisateur revient sur l'onglet
+// Simple mise à jour au retour sur l'onglet
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
-        const data = JSON.parse(localStorage.getItem('visitorData') || '{"total":0,"today":0}');
-        document.getElementById('total-visitors').textContent = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        document.getElementById('visitor-count').textContent = data.today.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        setTimeout(() => {
+            const counter = new VisitorCounter();
+        }, 100);
     }
 });
     </script>
