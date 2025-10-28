@@ -977,11 +977,8 @@ class RealVisitorCounter {
 // INITIALISATION AUTOMATIQUE AU CHARGEMENT DE LA PAGE
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Instanciation du compteur
     window.realVisitorCounter = new RealVisitorCounter();
-
-    // Optionnel : exposer dans la console pour débogage
-    console.info('🔧 RealVisitorCounter est disponible via `window.realVisitorCounter`');
+    console.info('RealVisitorCounter prêt → `window.realVisitorCounter`');
 });
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
