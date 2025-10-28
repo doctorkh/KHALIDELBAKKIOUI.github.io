@@ -635,297 +635,354 @@ class PortfolioApp {
         }
     }
 
- /**
-
-* ============================================================
-* COMPTEUR DE VISITEURS RÉEL - VERSION PROFESSIONNELLE AMÉLIORÉE
-* ============================================================
-* • Suivi en temps réel des visites et des utilisateurs actifs
-* • Gestion des sessions et du stockage local
-* • Rafraîchissement automatique et détection d’activité
-* • Système de sauvegarde résilient et cohérent
-  */
-
-function initVisitorCounter() {
-console.log('🔢 Initialisation du compteur de visiteurs RÉEL (version professionnelle)...');
-
-```
-// === Clés de stockage ===
-const STORAGE_KEY = 'portfolioRealVisitorData';
-const SESSION_KEY = 'portfolioRealVisitTracked';
-const ONLINE_USERS_KEY = 'portfolioOnlineUsers';
-
 /**
- * Point d’entrée principal
+ * ================================================================
+ * COMPTEUR DE VISITEURS RÉEL - VERSION PROFESSIONNELLE ET ROBUSTE
+ * ================================================================
+ * 
+ * Fonctionnalités :
+ *  - Comptage précis des visites uniques (par session)
+ *  - Compteur quotidien réinitialisé à minuit
+ *  - Suivi des utilisateurs en ligne (temps réel, 2 min d'inactivité)
+ *  - Historique des 100 dernières visites
+ *  - Affichage formaté avec séparateurs de milliers
+ *  - Mise à jour fluide de la date et de l'heure
+ *  - Détection de la visibilité de l'onglet et des interactions
+ *  - Gestion sécurisée du localStorage/sessionStorage
+ * 
+ * Conçu pour un portfolio professionnel, fiable et sans dépendances externes.
+ * ================================================================
  */
-const initializeCounter = () => {
-    updateDateTime();
-    handleRealVisitCounting();
-    handleOnlineUsers();
-    displayRealCounters();
-    startRealTimeUpdates();
-};
 
-/**
- * Gestion du comptage des visites réelles (session unique par onglet)
- */
-const handleRealVisitCounting = () => {
-    const now = new Date();
-    const todayKey = now.toDateString();
-    const data = getVisitorData();
+class RealVisitorCounter {
+    constructor() {
+        this.storageKey = 'portfolioRealVisitorData';
+        this.sessionKey = 'portfolioRealVisitTracked';
+        this.onlineUsersKey = 'portfolioOnlineUsers';
 
-    const hasSession = sessionStorage.getItem(SESSION_KEY);
-    const isNewVisit = !hasSession;
+        this.requiredElements = [
+            'total-visitors',
+            'visitor-count',
+            'current-visitors',
+            'current-date',
+            'current-time'
+        ];
 
-    if (isNewVisit) {
-        console.log('🆕 Nouvelle visite réelle détectée');
+        this.init();
+    }
 
-        // Génération d’un identifiant unique
-        const visitId = `visit_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-        sessionStorage.setItem(SESSION_KEY, visitId);
+    /**
+     * Initialisation complète du système de comptage
+     */
+    init() {
+        console.info('🔢 Initialisation du compteur de visiteurs réels (version professionnelle)...');
 
-        // Mise à jour du total et du journal des visites
+        if (!this.areRequiredElementsPresent()) {
+            console.warn('❌ Certains éléments DOM requis sont manquants. Le compteur ne sera pas initialisé.');
+            return;
+        }
+
+        this.updateDateTime();
+        this.handleRealVisitCounting();
+        this.startRealTimeUpdates();
+        this.displayCounters();
+
+        console.info('✅ Compteur de visiteurs réels initialisé avec succès.');
+    }
+
+    /**
+     * Vérifie la présence des éléments DOM nécessaires
+     */
+    areRequiredElementsPresent() {
+        return this.requiredElements.some(id => !!document.getElementById(id));
+    }
+
+    /**
+     * Gestion du comptage des visites réelles (uniques par session)
+     */
+    handleRealVisitCounting() {
+        const now = new Date();
+        const todayKey = now.toDateString();
+        const data = this.getVisitorData();
+        const sessionVisitId = sessionStorage.getItem(this.sessionKey);
+
+        if (sessionVisitId) {
+            console.info('🔁 Visite déjà enregistrée dans cette session.');
+            return;
+        }
+
+        console.info('🆕 Nouvelle visite réelle détectée.');
+
+        const visitId = `visit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        sessionStorage.setItem(this.sessionKey, visitId);
+
+        // Incrément du total global
+        data.total++;
+
+        // Réinitialisation quotidienne si nécessaire
         if (data.lastVisitDate !== todayKey) {
-            console.log('📅 Nouveau jour détecté - réinitialisation du compteur quotidien');
+            console.info('📅 Nouveau jour détecté → réinitialisation du compteur quotidien.');
             data.today = 0;
             data.lastVisitDate = todayKey;
         }
 
-        data.total++;
         data.today++;
         data.lastVisit = now.toISOString();
 
-        // Historique limité à 100 entrées
-        data.visitHistory = (data.visitHistory || []).concat({
+        // Mise à jour de la première visite (si non définie)
+        if (!data.firstVisit) {
+            data.firstVisit = now.toISOString();
+        }
+
+        // Historique des visites (limité à 100)
+        if (!Array.isArray(data.visitHistory)) data.visitHistory = [];
+        data.visitHistory.push({
             id: visitId,
             timestamp: now.toISOString(),
             date: todayKey
-        }).slice(-100);
+        });
 
-        saveVisitorData(data);
-        console.log(`📈 Compteurs mis à jour - Total: ${data.total}, Aujourd’hui: ${data.today}`);
-    } else {
-        console.log('🔁 Visite déjà comptabilisée pour cette session');
-    }
-};
-
-/**
- * Gestion du suivi des utilisateurs en ligne (avec nettoyage automatique)
- */
-const handleOnlineUsers = () => {
-    const now = new Date();
-    const onlineData = getOnlineUsersData();
-    const visitId = sessionStorage.getItem(SESSION_KEY) || `anon_${Date.now()}`;
-
-    // Enregistrer ou mettre à jour l’activité de l’utilisateur
-    onlineData[visitId] = { lastActive: now.toISOString() };
-
-    // Nettoyage des utilisateurs inactifs (> 5 min)
-    const expirationTime = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
-    for (const [key, user] of Object.entries(onlineData)) {
-        if (user.lastActive < expirationTime) delete onlineData[key];
-    }
-
-    saveOnlineUsersData(onlineData);
-    console.log('👥 Liste des utilisateurs en ligne mise à jour');
-};
-
-/**
- * Récupère les données du stockage local
- */
-const getVisitorData = () => {
-    try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-            console.log('🌟 Première visite détectée – Initialisation des données');
-            return {
-                total: 0,
-                today: 0,
-                lastVisitDate: new Date().toDateString(),
-                lastVisit: new Date().toISOString(),
-                firstVisit: new Date().toISOString(),
-                visitHistory: []
-            };
+        if (data.visitHistory.length > 100) {
+            data.visitHistory = data.visitHistory.slice(-100);
         }
 
-        const data = JSON.parse(stored);
-
-        // Correction de cohérence
+        // Cohérence des données
         if (data.today > data.total) {
-            console.warn('⚠️ Anomalie détectée (today > total) – Correction automatique');
+            console.warn('⚠️ Incohérence détectée (today > total) → correction automatique.');
             data.total = data.today;
         }
 
-        // Réinitialisation quotidienne
-        const todayKey = new Date().toDateString();
-        if (data.lastVisitDate !== todayKey) {
-            data.today = 0;
-            data.lastVisitDate = todayKey;
-        }
+        this.saveVisitorData(data);
+        console.info(`📈 Mise à jour : Total = ${data.total}, Aujourd'hui = ${data.today}`);
+    }
 
-        return data;
-    } catch (err) {
-        console.error('❌ Erreur lors de la lecture des données visiteurs:', err);
+    /**
+     * Gestion des utilisateurs en ligne (temps réel)
+     */
+    handleOnlineUsers() {
+        const now = new Date();
+        const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
+        let onlineData = this.getOnlineUsersData();
+
+        const userKey = sessionStorage.getItem(this.sessionKey)
+            ? `user_${sessionStorage.getItem(this.sessionKey)}`
+            : `anonymous_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+
+        onlineData[userKey] = {
+            lastActive: now.toISOString(),
+            minute: now.toISOString().slice(0, 16)
+        };
+
+        // Nettoyage des utilisateurs inactifs (> 5 min)
+        Object.keys(onlineData).forEach(key => {
+            if (onlineData[key].lastActive < fiveMinutesAgo) {
+                delete onlineData[key];
+            }
+        });
+
+        this.saveOnlineUsersData(onlineData);
+    }
+
+    /**
+     * Calcul du nombre d'utilisateurs actuellement en ligne (2 dernières minutes)
+     */
+    calculateOnlineUsers() {
+        const onlineData = this.getOnlineUsersData();
+        const now = new Date();
+        const twoMinutesAgo = new Date(now.getTime() - 2 * 60 * 1000).toISOString();
+
+        const activeCount = Object.values(onlineData).filter(
+            user => user.lastActive > twoMinutesAgo
+        ).length;
+
+        return Math.max(1, activeCount); // Au moins 1 (l'utilisateur actuel)
+    }
+
+    /**
+     * Affichage des compteurs dans l'interface
+     */
+    displayCounters() {
+        const data = this.getVisitorData();
+        const onlineUsers = this.calculateOnlineUsers();
+
+        this.updateElement('total-visitors', this.formatNumber(data.total));
+        this.updateElement('visitor-count', this.formatNumber(data.today));
+        this.updateElement('current-visitors', this.formatNumber(onlineUsers));
+
+        console.info(`📊 Affichage → Total: ${data.total} | Aujourd'hui: ${data.today} | En ligne: ${onlineUsers}`);
+    }
+
+    /**
+     * Mise à jour de la date et de l'heure en temps réel
+     */
+    updateDateTime() {
+        const now = new Date();
+
+        const optionsDate = {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        };
+        const optionsTime = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+
+        this.updateElement('current-date', now.toLocaleDateString('fr-FR', optionsDate));
+        this.updateElement('current-time', now.toLocaleTimeString('fr-FR', optionsTime));
+    }
+
+    /**
+     * Démarrage des mises à jour en temps réel
+     */
+    startRealTimeUpdates() {
+        // Mise à jour de l'heure chaque seconde
+        setInterval(() => this.updateDateTime(), 1000);
+
+        // Mise à jour des utilisateurs en ligne toutes les 30 secondes
+        setInterval(() => {
+            this.handleOnlineUsers();
+            this.displayCounters();
+        }, 30_000);
+
+        // Signal d'activité toutes les minutes
+        setInterval(() => this.handleOnlineUsers(), 60_000);
+
+        // Réactivation lors du retour sur l'onglet
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                this.handleOnlineUsers();
+                this.displayCounters();
+            }
+        });
+
+        // Détection des interactions utilisateur (clic, mouvement, scroll, touche)
+        ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+            document.addEventListener(event, () => this.handleOnlineUsers(), { passive: true });
+        });
+    }
+
+    // ==================== UTILITAIRES ====================
+
+    /**
+     * Récupération sécurisée des données visiteurs depuis localStorage
+     */
+    getVisitorData() {
+        try {
+            const stored = localStorage.getItem(this.storageKey);
+            if (!stored) {
+                console.info('🌟 Première visite détectée → initialisation des données.');
+                return this.getDefaultVisitorData();
+            }
+
+            const data = JSON.parse(stored);
+            this.validateAndFixVisitorData(data);
+            return data;
+        } catch (error) {
+            console.error('❌ Erreur lors de la lecture des données visiteurs :', error);
+            return this.getDefaultVisitorData();
+        }
+    }
+
+    /**
+     * Données par défaut pour une première visite
+     */
+    getDefaultVisitorData() {
+        const now = new Date();
+        const todayKey = now.toDateString();
         return {
             total: 0,
             today: 0,
-            lastVisitDate: new Date().toDateString(),
-            lastVisit: new Date().toISOString(),
-            firstVisit: new Date().toISOString(),
+            lastVisitDate: todayKey,
+            lastVisit: now.toISOString(),
+            firstVisit: now.toISOString(),
             visitHistory: []
         };
     }
-};
 
-/**
- * Sauvegarde sécurisée des données de visite
- */
-const saveVisitorData = (data) => {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        console.log('💾 Données visiteurs enregistrées avec succès');
-    } catch (err) {
-        console.error('❌ Échec de la sauvegarde des données visiteurs:', err);
-    }
-};
+    /**
+     * Validation et correction des données visiteurs
+     */
+    validateAndFixVisitorData(data) {
+        const todayKey = new Date().toDateString();
 
-/**
- * Gestion des données des utilisateurs en ligne
- */
-const getOnlineUsersData = () => {
-    try {
-        const stored = sessionStorage.getItem(ONLINE_USERS_KEY);
-        return stored ? JSON.parse(stored) : {};
-    } catch {
-        return {};
-    }
-};
-
-const saveOnlineUsersData = (data) => {
-    try {
-        sessionStorage.setItem(ONLINE_USERS_KEY, JSON.stringify(data));
-    } catch (err) {
-        console.error('Erreur sauvegarde utilisateurs en ligne:', err);
-    }
-};
-
-/**
- * Calcule le nombre réel d’utilisateurs actifs
- */
-const calculateRealOnlineUsers = () => {
-    const onlineData = getOnlineUsersData();
-    const now = new Date();
-    const threshold = new Date(now.getTime() - 2 * 60 * 1000).toISOString();
-    const activeCount = Object.values(onlineData).filter(u => u.lastActive > threshold).length;
-    return Math.max(1, activeCount);
-};
-
-/**
- * Met à jour les éléments de l’interface
- */
-const updateElement = (id, value) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-};
-
-const formatNumber = (num) => num.toLocaleString('fr-FR');
-
-const displayRealCounters = () => {
-    const data = getVisitorData();
-    const online = calculateRealOnlineUsers();
-
-    updateElement('total-visitors', formatNumber(data.total));
-    updateElement('visitor-count', formatNumber(data.today));
-    updateElement('current-visitors', formatNumber(online));
-
-    console.log(`📊 Affichage: Total ${data.total} | Aujourd’hui ${data.today} | En ligne ${online}`);
-};
-
-/**
- * Actualisation continue de la date et de l’heure
- */
-const updateDateTime = () => {
-    const now = new Date();
-    updateElement('current-date', now.toLocaleDateString('fr-FR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    }));
-    updateElement('current-time', now.toLocaleTimeString('fr-FR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    }));
-};
-
-/**
- * Mécanismes de mise à jour périodique
- */
-const startRealTimeUpdates = () => {
-    setInterval(updateDateTime, 1000);          // Heure en direct
-    setInterval(() => {                         // Rafraîchissement global
-        handleOnlineUsers();
-        displayRealCounters();
-    }, 30000);
-    setInterval(handleOnlineUsers, 60000);      // Actualisation activité
-
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-            handleOnlineUsers();
-            displayRealCounters();
+        if (data.today > data.total) {
+            console.warn('⚠️ Incohérence détectée (today > total) → correction.');
+            data.total = data.today;
         }
-    });
 
-    ['click', 'mousemove', 'keydown', 'scroll'].forEach(evt =>
-        document.addEventListener(evt, handleOnlineUsers, { passive: true })
-    );
-};
+        if (data.lastVisitDate !== todayKey) {
+            console.info('🔄 Changement de jour → réinitialisation du compteur quotidien.');
+            data.today = 0;
+            data.lastVisitDate = todayKey;
+        }
+    }
 
-// Vérification des éléments requis avant initialisation
-const requiredIds = ['total-visitors', 'visitor-count', 'current-visitors', 'current-date', 'current-time'];
-const allPresent = requiredIds.every(id => document.getElementById(id));
+    /**
+     * Sauvegarde sécurisée des données visiteurs
+     */
+    saveVisitorData(data) {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+            console.info('💾 Données visiteurs sauvegardées avec succès.');
+        } catch (error) {
+            console.error('❌ Erreur lors de la sauvegarde des données visiteurs :', error);
+        }
+    }
 
-if (allPresent) {
-    initializeCounter();
-    console.log('✅ Compteur de visiteurs RÉEL initialisé avec succès');
-} else {
-    console.warn('❌ Initialisation annulée – éléments du compteur introuvables dans le DOM');
+    /**
+     * Gestion sécurisée des utilisateurs en ligne (sessionStorage)
+     */
+    getOnlineUsersData() {
+        try {
+            const stored = sessionStorage.getItem(this.onlineUsersKey);
+            return stored ? JSON.parse(stored) : {};
+        } catch (error) {
+            console.error('❌ Erreur lecture utilisateurs en ligne :', error);
+            return {};
+        }
+    }
+
+    saveOnlineUsersData(data) {
+        try {
+            sessionStorage.setItem(this.onlineUsersKey, JSON.stringify(data));
+        } catch (error) {
+            console.error('❌ Erreur sauvegarde utilisateurs en ligne :', error);
+        }
+    }
+
+    /**
+     * Mise à jour sécurisée d'un élément DOM
+     */
+    updateElement(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        } else {
+            console.warn(`⚠️ Élément DOM introuvable : #${id}`);
+        }
+    }
+
+    /**
+     * Formatage des nombres avec séparateurs d'espaces
+     */
+    formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
 }
-```
 
-}
+// ================================================================
+// INITIALISATION AUTOMATIQUE AU CHARGEMENT DE LA PAGE
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Instanciation du compteur
+    window.realVisitorCounter = new RealVisitorCounter();
 
-/**
-
-* ============================================================
-* MODULE INDÉPENDANT – MISE À JOUR DATE / HEURE
-* ============================================================
-  */
-  function initDateTimeUpdater() {
-  console.log('🕐 Initialisation du module de mise à jour de la date/heure...');
-
-  const updateDateTime = () => {
-  const now = new Date();
-  const dateEl = document.getElementById('current-date');
-  const timeEl = document.getElementById('current-time');
-
-  ```
-   if (dateEl) dateEl.textContent = now.toLocaleDateString('fr-FR', {
-       weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-   });
-   if (timeEl) timeEl.textContent = now.toLocaleTimeString('fr-FR', {
-       hour: '2-digit', minute: '2-digit', second: '2-digit'
-   });
-  ```
-
-  };
-
-  updateDateTime();
-  setInterval(updateDateTime, 1000);
-  console.log('✅ Module date/heure prêt et opérationnel');
-  }
-
+    // Optionnel : exposer dans la console pour débogage
+    console.info('🔧 RealVisitorCounter est disponible via `window.realVisitorCounter`');
+});
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
         // Créer le toggle si inexistant
