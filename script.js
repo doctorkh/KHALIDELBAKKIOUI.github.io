@@ -634,10 +634,8 @@ class PortfolioApp {
             }, 300);
         }
     }
-
-Corriger, améliorer , soutenu et ajouter dans ce qui suit:
-
-// ===== COMPTEUR DE VISITEURS RÉEL - VERSION PROFESSIONNELLE =====
+    
+// ===== COMPTEUR DE VISITEURS =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs RÉEL...');
     
