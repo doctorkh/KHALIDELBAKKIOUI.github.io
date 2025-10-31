@@ -1160,6 +1160,10 @@ initDateTimeUpdater() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
+    // ===== MÉTHODE UTILITAIRE POUR FORMATER LES NOMBRES =====
+    formatNumber(num) {
+          return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+     }
 
     debounce(func, wait) {
         let timeout;
