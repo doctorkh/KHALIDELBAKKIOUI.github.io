@@ -799,124 +799,97 @@ class PortfolioApp {
     }
 
     // ===== COMPTEUR DE VISITEURS CORRIGÉ =====
-    initVisitorCounter() {
-        console.log('🔢 Initialisation du compteur de visiteurs...');
-        
-        const storageKey = 'portfolioVisitorData';
-        const sessionKey = 'portfolioVisitTracked';
-        
-        // Vérifier si les éléments existent
-        const requiredElements = [
-            'total-visitors', 
-            'visitor-count', 
-            'current-visitors', 
-            'current-date', 
-            'current-time'
-        ];
-        
-        const elementsExist = requiredElements.some(id => document.getElementById(id));
-        
-        if (!elementsExist) {
-            console.warn('⚠️ Éléments du compteur non trouvés dans le DOM');
-            return;
-        }
-
-        const initializeCounter = () => {
-            this.updateDateTime();
-            this.handleVisitorCounting(storageKey, sessionKey);
-            this.displayVisitorCounters(storageKey);
-            this.startRealTimeUpdates();
-        };
-
-        initializeCounter();
-        console.log('✅ Compteur de visiteurs initialisé avec succès');
+initVisitorCounter() {
+    console.log('🔢 Initialisation du compteur de visiteurs...');
+    
+    const storageKey = 'portfolioVisitorData';
+    const sessionKey = 'portfolioVisitTracked';
+    const onlineKey = 'portfolioOnlineUsers';
+    
+    // Vérifier si les éléments existent
+    const requiredElements = [
+        'total-visitors', 
+        'visitor-count', 
+        'current-visitors'
+    ];
+    
+    const elementsExist = requiredElements.some(id => document.getElementById(id));
+    
+    if (!elementsExist) {
+        console.warn('⚠️ Éléments du compteur non trouvés dans le DOM');
+        return;
     }
 
-    handleVisitorCounting(storageKey, sessionKey) {
-        const now = new Date();
-        const todayKey = now.toDateString();
-        const data = this.getVisitorData(storageKey);
+    const initializeCounter = () => {
+        this.updateDateTime();
+        this.handleVisitorCounting(storageKey, sessionKey, onlineKey);
+        this.displayVisitorCounters(storageKey, onlineKey);
+        this.startRealTimeUpdates(onlineKey);
+    };
+
+    initializeCounter();
+    console.log('✅ Compteur de visiteurs initialisé avec succès');
+}
+
+handleVisitorCounting(storageKey, sessionKey, onlineKey) {
+    const now = new Date();
+    const todayKey = now.toDateString();
+    const data = this.getVisitorData(storageKey);
+    
+    console.log('📊 Données visiteurs - Total:', data.total, 'Aujourd\'hui:', data.today);
+
+    // Vérifier si nouvelle visite dans cette session
+    const sessionVisitId = sessionStorage.getItem(sessionKey);
+    const isNewSessionVisit = !sessionVisitId;
+
+    if (isNewSessionVisit) {
+        console.log('🆕 NOUVELLE VISITE EN SESSION DÉTECTÉE');
         
-        console.log('📊 Données visiteurs - Total:', data.total, 'Aujourd\'hui:', data.today);
-
-        // Vérifier si nouvelle visite
-        const sessionVisitId = sessionStorage.getItem(sessionKey);
-        const isNewVisit = !sessionVisitId;
-
-        if (isNewVisit) {
-            console.log('🆕 NOUVELLE VISITE DÉTECTÉE');
-            
-            // Générer un ID unique pour cette visite
-            const visitId = 'visit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            sessionStorage.setItem(sessionKey, visitId);
-            
-            // Incrémenter les compteurs
+        // Générer un ID unique pour cette visite
+        const visitId = 'visit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        sessionStorage.setItem(sessionKey, visitId);
+        
+        // Incrémenter le compteur total seulement si nouvelle visite du jour
+        if (data.lastVisitDate !== todayKey) {
+            console.log('📅 NOUVEAU JOUR - Incrémentation compteur total');
             data.total++;
-            
-            // Gestion du compteur quotidien
-            if (data.lastVisitDate !== todayKey) {
-                console.log('📅 NOUVEAU JOUR - Réinitialisation compteur quotidien');
-                data.today = 0;
-                data.lastVisitDate = todayKey;
-            }
-            
-            data.today++;
-            data.lastVisit = now.toISOString();
-
-            // Historique des visites
-            if (!data.visitHistory) data.visitHistory = [];
-            data.visitHistory.push({
-                id: visitId,
-                timestamp: now.toISOString(),
-                date: todayKey
-            });
-
-            // Garder seulement les 100 dernières visites
-            if (data.visitHistory.length > 100) {
-                data.visitHistory = data.visitHistory.slice(-100);
-            }
-
-            console.log('📈 COMPTAGE - Total:', data.total, 'Aujourd\'hui:', data.today);
-            this.saveVisitorData(storageKey, data);
+            data.today = 1; // Réinitialiser pour le nouveau jour
+            data.lastVisitDate = todayKey;
         } else {
-            console.log('🔁 Visite déjà comptée dans cette session');
+            // Même jour, mais nouvelle session - compter comme visite du jour
+            data.today++;
         }
+        
+        data.lastVisit = now.toISOString();
+
+        // Historique des visites
+        if (!data.visitHistory) data.visitHistory = [];
+        data.visitHistory.push({
+            id: visitId,
+            timestamp: now.toISOString(),
+            date: todayKey
+        });
+
+        // Garder seulement les 100 dernières visites
+        if (data.visitHistory.length > 100) {
+            data.visitHistory = data.visitHistory.slice(-100);
+        }
+
+        console.log('📈 COMPTAGE - Total:', data.total, 'Aujourd\'hui:', data.today);
+        this.saveVisitorData(storageKey, data);
+    } else {
+        console.log('🔁 Visite déjà comptée dans cette session');
     }
 
-    getVisitorData(storageKey) {
-        try {
-            const stored = localStorage.getItem(storageKey);
-            if (!stored) {
-                console.log('🌟 PREMIÈRE VISITE - Initialisation données');
-                return {
-                    total: 0,
-                    today: 0,
-                    lastVisitDate: new Date().toDateString(),
-                    lastVisit: new Date().toISOString(),
-                    firstVisit: new Date().toISOString(),
-                    visitHistory: []
-                };
-            }
-            
-            const data = JSON.parse(stored);
-            
-            // Vérification de cohérence
-            if (data.today > data.total) {
-                console.warn('⚠️ Correction cohérence: today > total');
-                data.total = data.today;
-            }
-            
-            // Réinitialiser le compteur du jour si changement de date
-            const todayKey = new Date().toDateString();
-            if (data.lastVisitDate !== todayKey) {
-                console.log('🔄 Nouveau jour détecté, réinitialisation compteur quotidien');
-                data.today = 0;
-                data.lastVisitDate = todayKey;
-            }
-            
-            return data;
-        } catch (error) {
-            console.error('❌ Erreur lecture données visiteurs:', error);
+    // Mettre à jour les utilisateurs en ligne
+    this.updateOnlineUsers(onlineKey);
+}
+
+getVisitorData(storageKey) {
+    try {
+        const stored = localStorage.getItem(storageKey);
+        if (!stored) {
+            console.log('🌟 PREMIÈRE VISITE - Initialisation données');
             return {
                 total: 0,
                 today: 0,
@@ -926,80 +899,104 @@ class PortfolioApp {
                 visitHistory: []
             };
         }
-    }
-
-    saveVisitorData(storageKey, data) {
-        try {
-            localStorage.setItem(storageKey, JSON.stringify(data));
-            console.log('💾 Données visiteurs sauvegardées');
-        } catch (error) {
-            console.error('❌ Erreur sauvegarde données:', error);
+        
+        const data = JSON.parse(stored);
+        const todayKey = new Date().toDateString();
+        
+        // Réinitialiser le compteur du jour si changement de date
+        if (data.lastVisitDate !== todayKey) {
+            console.log('🔄 Nouveau jour détecté, réinitialisation compteur quotidien');
+            data.today = 0;
+            data.lastVisitDate = todayKey;
         }
-    }
-
-    displayVisitorCounters(storageKey) {
-        const data = this.getVisitorData(storageKey);
-        const onlineUsers = this.calculateOnlineUsers();
         
-        console.log('📊 AFFICHAGE - Total:', data.total, 'Aujourd\'hui:', data.today, 'En ligne:', onlineUsers);
-        
-        // Mettre à jour l'interface
-        this.updateElement('total-visitors', this.formatNumber(data.total));
-        this.updateElement('visitor-count', this.formatNumber(data.today));
-        this.updateElement('current-visitors', this.formatNumber(onlineUsers));
+        return data;
+    } catch (error) {
+        console.error('❌ Erreur lecture données visiteurs:', error);
+        return {
+            total: 0,
+            today: 0,
+            lastVisitDate: new Date().toDateString(),
+            lastVisit: new Date().toISOString(),
+            firstVisit: new Date().toISOString(),
+            visitHistory: []
+        };
     }
+}
 
-    calculateOnlineUsers() {
-        // Simulation d'utilisateurs en ligne
-        // Dans une vraie application, cela viendrait d'un serveur
-        const baseOnline = Math.floor(Math.random() * 3) + 1; // 1-3 utilisateurs
-        return baseOnline;
-    }
-
-    updateElement(elementId, value) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.textContent = value;
-        } else {
-            console.warn('⚠️ Élément non trouvé:', elementId);
+updateOnlineUsers(onlineKey) {
+    const now = Date.now();
+    const userSessionId = 'user_' + (sessionStorage.getItem('userUniqueId') || 
+        (sessionStorage.setItem('userUniqueId', Math.random().toString(36).substr(2, 16)), 
+         sessionStorage.getItem('userUniqueId')));
+    
+    let onlineData = JSON.parse(localStorage.getItem(onlineKey) || '{}');
+    
+    // Mettre à jour le timestamp de cet utilisateur
+    onlineData[userSessionId] = now;
+    
+    // Nettoyer les utilisateurs inactifs (plus de 5 minutes)
+    const fiveMinutesAgo = now - (5 * 60 * 1000);
+    Object.keys(onlineData).forEach(userId => {
+        if (onlineData[userId] < fiveMinutesAgo) {
+            delete onlineData[userId];
         }
-    }
+    });
+    
+    localStorage.setItem(onlineKey, JSON.stringify(onlineData));
+    console.log('👥 Utilisateurs en ligne:', Object.keys(onlineData).length);
+}
 
-    formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
-
-    updateDateTime() {
-        const now = new Date();
+calculateOnlineUsers(onlineKey) {
+    try {
+        const onlineData = JSON.parse(localStorage.getItem(onlineKey) || '{}');
+        const now = Date.now();
+        const fiveMinutesAgo = now - (5 * 60 * 1000);
         
-        this.updateElement('current-date', now.toLocaleDateString('fr-FR', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        }));
+        // Compter seulement les utilisateurs actifs dans les 5 dernières minutes
+        const activeUsers = Object.values(onlineData).filter(timestamp => 
+            timestamp > fiveMinutesAgo
+        ).length;
         
-        this.updateElement('current-time', now.toLocaleTimeString('fr-FR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        }));
+        // S'assurer d'avoir au moins 1 utilisateur (soi-même)
+        return Math.max(1, activeUsers);
+    } catch (error) {
+        console.error('❌ Erreur calcul utilisateurs en ligne:', error);
+        return 1;
     }
+}
 
-    startRealTimeUpdates() {
-        // Mettre à jour l'heure chaque seconde
-        setInterval(() => {
-            this.updateDateTime();
-        }, 1000);
+displayVisitorCounters(storageKey, onlineKey) {
+    const data = this.getVisitorData(storageKey);
+    const onlineUsers = this.calculateOnlineUsers(onlineKey);
+    
+    console.log('📊 AFFICHAGE - Total:', data.total, 'Aujourd\'hui:', data.today, 'En ligne:', onlineUsers);
+    
+    // Mettre à jour l'interface avec des valeurs minimales garanties
+    this.updateElement('total-visitors', this.formatNumber(Math.max(1, data.total)));
+    this.updateElement('visitor-count', this.formatNumber(Math.max(1, data.today)));
+    this.updateElement('current-visitors', this.formatNumber(onlineUsers));
+}
 
-        // Mettre à jour les compteurs toutes les 30 secondes
-        setInterval(() => {
-            this.displayVisitorCounters('portfolioVisitorData');
-        }, 30000);
+startRealTimeUpdates(onlineKey) {
+    // Mettre à jour l'heure chaque seconde
+    setInterval(() => {
+        this.updateDateTime();
+    }, 1000);
 
-        console.log('🔄 Mises à jour temps réel démarrées');
-    }
+    // Mettre à jour les utilisateurs en ligne toutes les 30 secondes
+    setInterval(() => {
+        this.updateOnlineUsers(onlineKey);
+        this.displayVisitorCounters('portfolioVisitorData', onlineKey);
+    }, 30000);
 
+    // Nettoyer périodiquement les données en ligne
+    setInterval(() => {
+        this.updateOnlineUsers(onlineKey);
+    }, 60000);
+
+    console.log('🔄 Mises à jour temps réel démarrées');
+}
     // ===== MISE À JOUR DATE/HEURE =====
     initDateTimeUpdater() {
         console.log('🕐 Initialisation de la mise à jour date/heure...');
