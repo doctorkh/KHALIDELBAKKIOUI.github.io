@@ -1650,3 +1650,45 @@ textarea:focus-visible {
     font-size: 12px;
     opacity: 0.7;
 }
+/* Ajoutez ceci à votre CSS */
+.counter {
+    transition: all 0.3s ease;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.visitor-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.hero-info-bar {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin: 20px 0;
+}
+
+.hero-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .hero-info-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .visitor-stats {
+        gap: 15px;
+    }
+}
