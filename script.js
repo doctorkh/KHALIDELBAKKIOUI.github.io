@@ -798,14 +798,14 @@ class PortfolioApp {
         }
     }
 
-   // ===== COMPTEUR DE VISITEURS FONCTIONNEL =====
+  // ===== COMPTEUR DE VISITEURS FONCTIONNEL =====
 initVisitorCounter() {
     console.log('🔢 Initialisation du compteur de visiteurs...');
     
-    // Initialiser d'abord la date et heure
-    this.initDateTimeUpdater();
+    // Démarrer la date et heure immédiatement
+    this.startDateTimeUpdates();
     
-    // Attendre que le DOM soit prêt
+    // Initialiser les compteurs de visiteurs
     setTimeout(() => {
         this.setupVisitorCounter();
     }, 100);
@@ -819,8 +819,6 @@ setupVisitorCounter() {
     const totalEl = document.getElementById('total-visitors');
     const todayEl = document.getElementById('visitor-count');
     const onlineEl = document.getElementById('current-visitors');
-    const dateEl = document.getElementById('current-date');
-    const timeEl = document.getElementById('current-time');
     
     if (!totalEl || !todayEl || !onlineEl) {
         console.warn('❌ Éléments du compteur non trouvés');
@@ -849,7 +847,16 @@ getStats(storageKey) {
     try {
         const stored = localStorage.getItem(storageKey);
         if (stored) {
-            return JSON.parse(stored);
+            const stats = JSON.parse(stored);
+            const today = new Date().toDateString();
+            
+            // Réinitialiser le compteur du jour si changement de date
+            if (stats.lastDate !== today) {
+                stats.today = 0;
+                stats.lastDate = today;
+            }
+            
+            return stats;
         }
     } catch (e) {
         console.error('Erreur lecture stats:', e);
@@ -857,7 +864,7 @@ getStats(storageKey) {
     
     // Stats par défaut
     return {
-        total: 15, // Valeur de départ réaliste
+        total: 15,
         today: 3,
         lastDate: new Date().toDateString(),
         visits: [],
@@ -910,60 +917,48 @@ handleCurrentVisit(stats, sessionKey) {
 }
 
 displayCounters(stats, totalEl, todayEl, onlineEl) {
-    // Calculer les utilisateurs en ligne (simulation réaliste)
+    // Calculer les utilisateurs en ligne
     const onlineCount = this.calculateOnlineUsers(stats);
     
-    // Animer les compteurs
-    this.animateCounter(totalEl, stats.total);
-    this.animateCounter(todayEl, stats.today);
-    this.animateCounter(onlineEl, onlineCount);
+    // Mettre à jour les compteurs avec animation
+    this.updateCounter(totalEl, stats.total);
+    this.updateCounter(todayEl, stats.today);
+    this.updateCounter(onlineEl, onlineCount);
 }
 
-animateCounter(element, target) {
+updateCounter(element, target) {
     if (!element) return;
     
     const current = parseInt(element.textContent) || 0;
-    if (current === target) {
-        element.textContent = target;
-        return;
-    }
     
-    let start = current;
-    const duration = 1500;
-    const startTime = performance.now();
-    
-    const updateCounter = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function
-        const easeOut = 1 - Math.pow(1 - progress, 3);
-        const value = Math.floor(start + (target - start) * easeOut);
-        
-        element.textContent = value;
-        
-        if (progress < 1) {
-            requestAnimationFrame(updateCounter);
-        } else {
+    // Animation simple si changement
+    if (current !== target) {
+        element.style.transform = 'scale(1.1)';
+        setTimeout(() => {
             element.textContent = target;
-        }
-    };
-    
-    requestAnimationFrame(updateCounter);
+            element.style.transform = 'scale(1)';
+        }, 150);
+    } else {
+        element.textContent = target;
+    }
 }
 
 calculateOnlineUsers(stats) {
     const now = Date.now();
     const fifteenMinutesAgo = now - (15 * 60 * 1000);
     
-    // Compter les sessions actives (visites dans les 15 dernières minutes)
-    const activeSessions = stats.visits.filter(visit => {
-        const visitTime = new Date(visit.timestamp).getTime();
-        return (now - visitTime) < fifteenMinutesAgo;
-    });
-    
-    // Retourner au moins 1 (l'utilisateur actuel)
-    return Math.max(1, activeSessions.length);
+    try {
+        // Compter les sessions actives (visites dans les 15 dernières minutes)
+        const activeSessions = stats.visits.filter(visit => {
+            const visitTime = new Date(visit.timestamp).getTime();
+            return (now - visitTime) < fifteenMinutesAgo;
+        });
+        
+        // Retourner au moins 1 (l'utilisateur actuel)
+        return Math.max(1, activeSessions.length);
+    } catch (e) {
+        return 1; // Valeur par défaut en cas d'erreur
+    }
 }
 
 startCounterUpdates(storageKey, sessionKey) {
@@ -980,14 +975,17 @@ startCounterUpdates(storageKey, sessionKey) {
     }, 30000);
 }
 
-// ===== MISE À JOUR DATE/HEURE CORRIGÉE =====
+// ===== MISE À JOUR DATE/HEURE =====
 initDateTimeUpdater() {
     console.log('🕐 Initialisation date/heure...');
-    
+    this.startDateTimeUpdates();
+}
+
+startDateTimeUpdates() {
     const updateDateTime = () => {
         const now = new Date();
         
-        // Formater la date
+        // Formater la date en français
         const dateOptions = {
             weekday: 'long',
             year: 'numeric',
@@ -1003,26 +1001,41 @@ initDateTimeUpdater() {
             hour12: false
         };
         
-        const dateStr = now.toLocaleDateString('fr-FR', dateOptions);
+        const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
         const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
         
         // Mettre à jour les éléments
         const dateEl = document.getElementById('current-date');
         const timeEl = document.getElementById('current-time');
         
-        if (dateEl) dateEl.textContent = dateStr;
-        if (timeEl) timeEl.textContent = timeStr;
+        if (dateEl) {
+            dateEl.textContent = dateStr;
+            dateEl.setAttribute('aria-label', `Date actuelle: ${dateStr}`);
+        }
+        if (timeEl) {
+            timeEl.textContent = timeStr;
+            timeEl.setAttribute('aria-label', `Heure actuelle: ${timeStr}`);
+        }
     };
     
     // Mettre à jour immédiatement
     updateDateTime();
     
     // Mettre à jour chaque seconde
-    setInterval(updateDateTime, 1000);
+    this.dateTimeInterval = setInterval(updateDateTime, 1000);
     
     console.log('✅ Date/heure initialisée');
 }
 
+// ===== MÉTHODE UTILITAIRE POUR CAPITALISER =====
+capitalizeFirst(str) {
+    return str.replace(/\b\w/g, l => l.toUpperCase());
+}
+
+// ===== MÉTHODE UTILITAIRE POUR FORMATER LES NOMBRES =====
+formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
         // Créer le toggle si inexistant
