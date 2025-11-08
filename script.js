@@ -1,4 +1,4 @@
-// ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ =====
+// ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
 console.log('🚀 Chargement du script portfolio...');
 
 class PortfolioApp {
@@ -8,19 +8,29 @@ class PortfolioApp {
         this.currentTheme = 'light';
         this.dateTimeInterval = null;
         this.visitorInterval = null;
+        this.isInitialized = false;
         this.init();
     }
 
     init() {
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ DOM chargé - Initialisation de l\'application');
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('✅ DOM chargé - Initialisation de l\'application');
+                this.setupConsoleWelcome();
+                this.setupErrorHandling();
+                this.initializeAll();
+            });
+        } else {
+            console.log('✅ DOM déjà chargé - Initialisation immédiate');
             this.setupConsoleWelcome();
             this.setupErrorHandling();
             this.initializeAll();
-        });
+        }
     }
 
     initializeAll() {
+        if (this.isInitialized) return;
+        
         this.initNavigation();
         this.initTabs();
         this.initSmoothScrolling();
@@ -38,6 +48,9 @@ class PortfolioApp {
         this.initKeyboardNavigation();
         this.initAccessibility();
         this.initAllButtons();
+        
+        this.isInitialized = true;
+        console.log('🎯 Application portfolio complètement initialisée');
     }
 
     // ===== INITIALISATION ET CONFIGURATION =====
@@ -55,17 +68,17 @@ class PortfolioApp {
             
             console.log('%c🎓 Portfolio Dr. Khalid EL BAKKIOUI', styles);
             console.log('%cMathématicien • Enseignant CPGE • Chercheur en Probabilités', 'color: #2c3e50; font-weight: 500;');
-            console.log('%c✨ JavaScript optimisé - Onglets fonctionnels', 'color: #27ae60;');
+            console.log('%c✨ JavaScript optimisé - Toutes les fonctionnalités activées', 'color: #27ae60;');
         }
     }
 
     setupErrorHandling() {
         window.addEventListener('error', (e) => {
-            console.error('Erreur JavaScript:', e.error);
+            console.error('❌ Erreur JavaScript:', e.error);
         });
 
         window.addEventListener('unhandledrejection', (e) => {
-            console.error('Promise rejetée:', e.reason);
+            console.error('❌ Promise rejetée:', e.reason);
             e.preventDefault();
         });
     }
@@ -81,26 +94,32 @@ class PortfolioApp {
             return;
         }
 
-        navToggle.addEventListener('click', (e) => {
+        // Réinitialiser les événements
+        const newNavToggle = navToggle.cloneNode(true);
+        const newNavMenu = navMenu.cloneNode(true);
+        navToggle.parentNode.replaceChild(newNavToggle, navToggle);
+        navMenu.parentNode.replaceChild(newNavMenu, navMenu);
+
+        newNavToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.toggleMobileMenu(navMenu, navToggle);
+            this.toggleMobileMenu(newNavMenu, newNavToggle);
         });
 
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-container')) {
-                this.closeMobileMenu(navMenu, navToggle);
+                this.closeMobileMenu(newNavMenu, newNavToggle);
             }
         });
 
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
-                this.closeMobileMenu(navMenu, navToggle);
+                this.closeMobileMenu(newNavMenu, newNavToggle);
             }
         });
 
-        navMenu.addEventListener('keydown', (e) => {
+        newNavMenu.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.closeMobileMenu(navMenu, navToggle);
+                this.closeMobileMenu(newNavMenu, newNavToggle);
             }
         });
 
@@ -122,9 +141,13 @@ class PortfolioApp {
         if (isOpening) {
             navMenu.style.transform = 'translateX(0)';
             navToggle.setAttribute('aria-expanded', 'true');
+            // Focus sur le premier lien du menu
+            const firstLink = navMenu.querySelector('a');
+            if (firstLink) firstLink.focus();
         } else {
             navMenu.style.transform = 'translateX(-100%)';
             navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.focus();
         }
     }
 
@@ -182,12 +205,6 @@ class PortfolioApp {
         console.log(`📁 ${tabButtons.length} boutons trouvés dans`, container.className);
 
         tabButtons.forEach(button => {
-            button.replaceWith(button.cloneNode(true));
-        });
-
-        const newTabButtons = container.querySelectorAll('.tab-button');
-
-        newTabButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -195,30 +212,30 @@ class PortfolioApp {
                 const tabId = button.getAttribute('data-tab');
                 console.log('🎯 Clic sur onglet:', tabId);
 
-                this.switchTab(container, button, newTabButtons, tabPanes, tabId);
+                this.switchTab(container, button, tabButtons, tabPanes, tabId);
             });
 
             button.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     const tabId = button.getAttribute('data-tab');
-                    this.switchTab(container, button, newTabButtons, tabPanes, tabId);
+                    this.switchTab(container, button, tabButtons, tabPanes, tabId);
                 }
             });
         });
 
-        if (newTabButtons.length > 0) {
-            const firstButton = newTabButtons[0];
+        // Activer le premier onglet par défaut
+        if (tabButtons.length > 0 && !container.querySelector('.tab-button.active')) {
+            const firstButton = tabButtons[0];
             const firstTabId = firstButton.getAttribute('data-tab');
-            if (!document.querySelector(`#${firstTabId}`).classList.contains('active')) {
-                this.switchTab(container, firstButton, newTabButtons, tabPanes, firstTabId);
-            }
+            this.switchTab(container, firstButton, tabButtons, tabPanes, firstTabId);
         }
     }
 
     switchTab(container, button, tabButtons, tabPanes, tabId) {
         console.log('🔄 Changement vers onglet:', tabId);
 
+        // Désactiver tous les boutons et panneaux
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
@@ -229,6 +246,7 @@ class PortfolioApp {
             pane.setAttribute('aria-hidden', 'true');
         });
 
+        // Activer le bouton et panneau sélectionnés
         button.classList.add('active');
         button.setAttribute('aria-selected', 'true');
 
@@ -236,7 +254,13 @@ class PortfolioApp {
         if (activePane) {
             activePane.classList.add('active');
             activePane.setAttribute('aria-hidden', 'false');
-            activePane.style.animation = 'fadeInUp 0.4s ease-out';
+            
+            // Animation d'entrée
+            activePane.style.animation = 'none';
+            setTimeout(() => {
+                activePane.style.animation = 'fadeInUp 0.4s ease-out';
+            }, 10);
+            
             console.log('✅ Onglet activé:', tabId);
         } else {
             console.error('❌ Panneau non trouvé:', tabId);
@@ -399,7 +423,10 @@ class PortfolioApp {
 
     scrollToElement(targetId) {
         const targetElement = document.querySelector(targetId);
-        if (!targetElement) return;
+        if (!targetElement) {
+            console.warn(`❌ Élément non trouvé: ${targetId}`);
+            return;
+        }
         
         const offsetTop = targetElement.offsetTop - 80;
         
@@ -764,20 +791,22 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS SIMPLIFIÉ =====
+    // ===== COMPTEUR DE VISITEURS CORRIGÉ ET AMÉLIORÉ =====
     initVisitorCounter() {
         console.log('🔢 Initialisation du compteur de visiteurs...');
         
+        // Démarrer les mises à jour date/heure
         this.startDateTimeUpdates();
         
+        // Initialiser le compteur de visiteurs
         setTimeout(() => {
             this.setupVisitorCounter();
         }, 100);
     }
 
     setupVisitorCounter() {
-        const storageKey = 'portfolioStats';
-        const sessionKey = 'visitSession';
+        const storageKey = 'portfolioVisitorStats';
+        const sessionKey = 'portfolioVisitSession';
         
         const totalEl = document.getElementById('total-visitors');
         const onlineEl = document.getElementById('current-visitors');
@@ -787,24 +816,29 @@ class PortfolioApp {
             return;
         }
         
-        let stats = this.getStats(storageKey);
-        this.handleCurrentVisit(stats, sessionKey);
-        this.saveStats(storageKey, stats);
-        this.displayCounters(stats, totalEl, onlineEl);
-        this.startCounterUpdates(storageKey, sessionKey);
+        let stats = this.getVisitorStats(storageKey);
+        this.handleNewVisit(stats, sessionKey);
+        this.saveVisitorStats(storageKey, stats);
+        this.displayVisitorCounters(stats, totalEl, onlineEl);
+        this.startVisitorCounterUpdates(storageKey, sessionKey);
         
-        console.log('✅ Compteur de visiteurs initialisé');
+        console.log('✅ Compteur de visiteurs initialisé - Total:', stats.total, 'En ligne:', this.calculateOnlineUsers(stats));
     }
 
-    getStats(storageKey) {
+    getVisitorStats(storageKey) {
         try {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                return stats;
+                // S'assurer que la structure est correcte
+                return {
+                    total: parseInt(stats.total) || 15,
+                    visits: Array.isArray(stats.visits) ? stats.visits : [],
+                    firstVisit: stats.firstVisit || new Date().toISOString()
+                };
             }
         } catch (e) {
-            console.error('Erreur lecture stats:', e);
+            console.error('❌ Erreur lecture stats visiteurs:', e);
         }
         
         // Stats par défaut
@@ -815,15 +849,15 @@ class PortfolioApp {
         };
     }
 
-    saveStats(storageKey, stats) {
+    saveVisitorStats(storageKey, stats) {
         try {
             localStorage.setItem(storageKey, JSON.stringify(stats));
         } catch (e) {
-            console.error('Erreur sauvegarde stats:', e);
+            console.error('❌ Erreur sauvegarde stats visiteurs:', e);
         }
     }
 
-    handleCurrentVisit(stats, sessionKey) {
+    handleNewVisit(stats, sessionKey) {
         const now = new Date();
         const sessionId = sessionStorage.getItem(sessionKey);
         
@@ -835,44 +869,69 @@ class PortfolioApp {
             // Incrémenter le compteur total
             stats.total++;
             
-            // Ajouter à l'historique
+            // Ajouter à l'historique des visites
             stats.visits.push({
                 sessionId: newSessionId,
-                timestamp: now.toISOString()
+                timestamp: now.toISOString(),
+                date: now.toLocaleDateString('fr-FR'),
+                time: now.toLocaleTimeString('fr-FR')
             });
             
-            // Garder seulement les 50 dernières visites
-            if (stats.visits.length > 50) {
-                stats.visits = stats.visits.slice(-50);
+            // Garder seulement les 100 dernières visites pour l'historique
+            if (stats.visits.length > 100) {
+                stats.visits = stats.visits.slice(-100);
             }
             
-            console.log('🆕 Nouvelle visite - Total:', stats.total);
+            console.log('🆕 Nouvelle visite enregistrée - Total:', stats.total);
+        } else {
+            console.log('🔄 Session existante - Total:', stats.total);
         }
     }
 
-    displayCounters(stats, totalEl, onlineEl) {
-        // Calculer les utilisateurs en ligne
+    displayVisitorCounters(stats, totalEl, onlineEl) {
+        // Calculer les utilisateurs en ligne (visites dans les 15 dernières minutes)
         const onlineCount = this.calculateOnlineUsers(stats);
         
         // Mettre à jour les compteurs avec animation
-        this.updateCounter(totalEl, stats.total);
-        this.updateCounter(onlineEl, onlineCount);
+        this.animateCounter(totalEl, stats.total);
+        this.animateCounter(onlineEl, onlineCount);
     }
 
-    updateCounter(element, target) {
+    animateCounter(element, target) {
         if (!element) return;
         
         const current = parseInt(element.textContent) || 0;
         
-        // Animation simple si changement
         if (current !== target) {
-            element.style.transform = 'scale(1.1)';
+            // Animation de compteur
+            let start = current;
+            const duration = 1000;
+            const startTime = performance.now();
+            
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const value = Math.floor(start + (target - start) * easeOut);
+                
+                element.textContent = value;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    element.textContent = target;
+                }
+            };
+            
+            requestAnimationFrame(animate);
+            
+            // Effet visuel
+            element.style.transform = 'scale(1.2)';
             setTimeout(() => {
-                element.textContent = target;
                 element.style.transform = 'scale(1)';
-            }, 150);
-        } else {
-            element.textContent = target;
+            }, 300);
         }
     }
 
@@ -887,22 +946,24 @@ class PortfolioApp {
                 return (now - visitTime) < fifteenMinutesAgo;
             });
             
-            // Retourner au moins 1 (l'utilisateur actuel)
-            return Math.max(1, activeSessions.length);
+            // Retourner le nombre d'utilisateurs en ligne (au moins 1 pour l'utilisateur actuel)
+            const onlineCount = Math.max(1, activeSessions.length);
+            return onlineCount;
         } catch (e) {
+            console.error('❌ Erreur calcul utilisateurs en ligne:', e);
             return 1; // Valeur par défaut en cas d'erreur
         }
     }
 
-    startCounterUpdates(storageKey, sessionKey) {
+    startVisitorCounterUpdates(storageKey, sessionKey) {
         // Mettre à jour les compteurs toutes les 30 secondes
         this.visitorInterval = setInterval(() => {
-            const stats = this.getStats(storageKey);
+            const stats = this.getVisitorStats(storageKey);
             const totalEl = document.getElementById('total-visitors');
             const onlineEl = document.getElementById('current-visitors');
             
             if (totalEl && onlineEl) {
-                this.displayCounters(stats, totalEl, onlineEl);
+                this.displayVisitorCounters(stats, totalEl, onlineEl);
             }
         }, 30000);
     }
@@ -966,25 +1027,27 @@ class PortfolioApp {
 
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
-        if (!document.querySelector('.theme-toggle')) {
-            const themeToggle = document.createElement('button');
+        let themeToggle = document.querySelector('.theme-toggle');
+        
+        if (!themeToggle) {
+            themeToggle = document.createElement('button');
             themeToggle.className = 'theme-toggle';
             themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
             themeToggle.title = 'Changer le thème';
             themeToggle.setAttribute('aria-label', 'Changer le thème');
             
             document.body.appendChild(themeToggle);
-            
-            themeToggle.addEventListener('click', () => {
-                this.toggleTheme(themeToggle);
-            });
         }
         
+        themeToggle.addEventListener('click', () => {
+            this.toggleTheme(themeToggle);
+        });
+        
+        // Appliquer le thème sauvegardé
         const savedTheme = localStorage.getItem('portfolio-theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            const toggle = document.querySelector('.theme-toggle');
-            if (toggle) toggle.innerHTML = '<i class="fas fa-sun"></i>';
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
     }
 
@@ -992,7 +1055,6 @@ class PortfolioApp {
         const isDark = document.body.classList.toggle('dark-mode');
         
         themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        themeToggle.style.background = isDark ? 'var(--gradient-warning)' : 'var(--gradient-primary)';
         
         localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
         
@@ -1025,9 +1087,9 @@ class PortfolioApp {
         
         console.log('📥 Téléchargement:', downloadEvent);
         
-        const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        const downloads = JSON.parse(localStorage.getItem('portfolioDownloads') || '[]');
         downloads.push(downloadEvent);
-        localStorage.setItem('downloads', JSON.stringify(downloads.slice(-50)));
+        localStorage.setItem('portfolioDownloads', JSON.stringify(downloads.slice(-50)));
     }
 
     initImageLazyLoading() {
@@ -1065,7 +1127,44 @@ class PortfolioApp {
                     document.querySelector('.nav-toggle')
                 );
             }
+            
+            // Navigation au clavier dans les onglets
+            if (e.key === 'Tab' && e.shiftKey) {
+                const activeElement = document.activeElement;
+                if (activeElement.classList.contains('tab-button')) {
+                    e.preventDefault();
+                    this.handleTabKeyboardNavigation(activeElement, 'previous');
+                }
+            } else if (e.key === 'Tab') {
+                const activeElement = document.activeElement;
+                if (activeElement.classList.contains('tab-button')) {
+                    e.preventDefault();
+                    this.handleTabKeyboardNavigation(activeElement, 'next');
+                }
+            }
         });
+    }
+
+    handleTabKeyboardNavigation(currentTab, direction) {
+        const tabContainer = currentTab.closest('.experience-tabs, .research-tabs, .filiere-tabs, .documents-tabs');
+        if (!tabContainer) return;
+        
+        const tabs = Array.from(tabContainer.querySelectorAll('.tab-button'));
+        const currentIndex = tabs.indexOf(currentTab);
+        let nextIndex;
+        
+        if (direction === 'next') {
+            nextIndex = (currentIndex + 1) % tabs.length;
+        } else {
+            nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        }
+        
+        const nextTab = tabs[nextIndex];
+        const tabId = nextTab.getAttribute('data-tab');
+        const tabPanes = tabContainer.querySelectorAll('.tab-pane');
+        
+        this.switchTab(tabContainer, nextTab, tabs, tabPanes, tabId);
+        nextTab.focus();
     }
 
     initAccessibility() {
@@ -1074,6 +1173,17 @@ class PortfolioApp {
             navToggle.setAttribute('aria-expanded', 'false');
             navToggle.setAttribute('aria-controls', 'nav-menu');
         }
+
+        // Ajouter les attributs ARIA aux onglets
+        document.querySelectorAll('.tab-button').forEach((button, index, buttons) => {
+            const tabId = button.getAttribute('data-tab');
+            const pane = document.getElementById(tabId);
+            
+            if (pane) {
+                button.setAttribute('aria-controls', tabId);
+                pane.setAttribute('aria-labelledby', button.id || `tab-${index}`);
+            }
+        });
 
         document.addEventListener('keyup', (e) => {
             if (e.key === 'Tab') {
@@ -1123,6 +1233,7 @@ class PortfolioApp {
         if (this.visitorInterval) {
             clearInterval(this.visitorInterval);
         }
+        this.isInitialized = false;
     }
 }
 
@@ -1142,6 +1253,15 @@ dynamicStyles.textContent = `
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
         }
     }
     
@@ -1194,6 +1314,10 @@ dynamicStyles.textContent = `
     
     .notification-warning {
         background: linear-gradient(135deg, #f39c12, #e67e22);
+    }
+    
+    .notification-info {
+        background: linear-gradient(135deg, #3498db, #2980b9);
     }
     
     .notification-content {
@@ -1260,7 +1384,7 @@ dynamicStyles.textContent = `
     }
     
     .dark-mode .section.bg-light {
-        background: #1e293b;
+        background: #1e293b !important;
     }
     
     .dark-mode .profile-card,
@@ -1270,6 +1394,7 @@ dynamicStyles.textContent = `
     .dark-mode .exp-card {
         background: #1e293b;
         border-color: #334155;
+        color: #e2e8f0;
     }
     
     /* Optimisation des performances */
@@ -1284,25 +1409,34 @@ dynamicStyles.textContent = `
     /* Correction pour les onglets */
     .tab-pane {
         display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
     .tab-pane.active {
         display: block;
-        animation: fadeInUp 0.5s ease;
+        opacity: 1;
+        animation: fadeIn 0.5s ease;
     }
     
     .tab-button {
         cursor: pointer;
         transition: all 0.3s ease;
+        border: none;
+        background: transparent;
+        padding: 10px 20px;
+        border-radius: 6px;
     }
     
     .tab-button:hover {
         transform: translateY(-2px);
+        background: rgba(0,0,0,0.05);
     }
     
     .tab-button.active {
-        background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+        background: linear-gradient(135deg, #667eea, #764ba2) !important;
         color: white !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
     
     /* Styles pour les boutons spécifiques */
@@ -1315,6 +1449,9 @@ dynamicStyles.textContent = `
         cursor: pointer;
         transition: all 0.3s ease;
         font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
     }
     
     .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover, .btn-ecs2:hover, .btn-mpsi:hover {
@@ -1331,13 +1468,38 @@ dynamicStyles.textContent = `
         cursor: pointer;
         transition: all 0.3s ease;
         margin: 5px;
+        text-decoration: none;
+        display: inline-block;
     }
     
     .btn-conference:hover, .btn-livre:hover, .btn-memoire:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(240, 147, 251, 0.3);
     }
+    
+    /* Compteurs de visiteurs */
+    .visitor-counter {
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    /* Bouton retour en haut */
+    #backToTop {
+        transition: all 0.3s ease;
+    }
+    
+    #backToTop.visible {
+        visibility: visible;
+        opacity: 1;
+    }
 `;
 document.head.appendChild(dynamicStyles);
+
+// ===== GESTIONNAIRES D'ÉVÉNEMENTS GLOBAUX =====
+window.addEventListener('beforeunload', () => {
+    if (portfolioApp) {
+        portfolioApp.destroy();
+    }
+});
 
 console.log('🎉 Script portfolio chargé avec succès!');
