@@ -1,100 +1,76 @@
-/* ================================================================= */
-/* SYSTEME DE DESIGN ACADEMIQUE - NIVELÉ EXCELLENCE                  */
-/* ================================================================= */
+/* ========================================================================= */
+/* SYSTÈME DE DESIGN ACADÉMIQUE - ÉQUILIBRE ENTRE PRESTIGE ET LISIBILITÉ     */
+/* ========================================================================= */
 
 :root {
-    /* ===== PALETTE CHROMATIQUE RAFFINÉE ===== */
-    --primary-ebony: #1a1f36;
-    --primary-oxford: #2c3e50;
-    --primary-charcoal: #34495e;
-    --secondary-crimson: #8b0000;
-    --secondary-vermillion: #e74c3c;
-    --accent-sapphire: #2c5aa0;
-    --accent-cerulean: #3498db;
-    --gold-vein: #d4af37;
-    --silver-filigree: #ecf0f1;
-    --parchment: #fdf6e3;
-    --ivory: #fffff0;
-    --slate-grey: #7f8c8d;
-    --graphite: #333333;
-    --obsidian: #000000;
-    
-    /* Dégradés académiques prestigieux */
-    --gradient-heritage: linear-gradient(135deg, var(--primary-ebony) 0%, var(--primary-oxford) 100%);
-    --gradient-cardinal: linear-gradient(45deg, var(--secondary-crimson), var(--secondary-vermillion));
-    --gradient-scholarly: linear-gradient(135deg, var(--accent-sapphire), #2980b9);
-    --gradient-gilded: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-parchment: linear-gradient(135deg, var(--parchment), var(--ivory));
-    
-    /* ===== TYPOGRAPHIE ACADEMIQUE ===== */
-    --font-scholarly: 'Georgia', 'Times New Roman', 'Palatino', serif;
-    --font-modern: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui;
-    --font-display: 'Playfair Display', 'Georgia', serif;
-    
-    --font-size-micro: 0.6875rem;  /* 11px */
-    --font-size-caption: 0.75rem;  /* 12px */
-    --font-size-annotation: 0.8125rem; /* 13px */
-    --font-size-body-sm: 0.875rem; /* 14px */
-    --font-size-body: 1rem;        /* 16px */
-    --font-size-lead: 1.125rem;    /* 18px */
-    --font-size-subheader: 1.25rem; /* 20px */
-    --font-size-header-sm: 1.5rem; /* 24px */
-    --font-size-header: 2rem;      /* 32px */
-    --font-size-display-sm: 2.5rem; /* 40px */
-    --font-size-display: 3rem;     /* 48px */
-    --font-size-hero: 3.5rem;      /* 56px */
-    
-    /* ===== SYSTEME METRIQUE ACADEMIQUE ===== */
-    --space-quantum: 0.125rem;     /* 2px */
-    --space-atomic: 0.25rem;       /* 4px */
-    --space-micro: 0.5rem;         /* 8px */
-    --space-minor: 0.75rem;        /* 12px */
-    --space-base: 1rem;            /* 16px */
-    --space-major: 1.5rem;         /* 24px */
-    --space-grand: 2rem;           /* 32px */
-    --space-imposing: 3rem;        /* 48px */
-    --space-monumental: 4rem;      /* 64px */
-    --space-colossal: 6rem;        /* 96px */
-    
-    /* ===== GEOMETRIE SACREE ===== */
-    --border-radius-subtle: 2px;
-    --border-radius-discreet: 4px;
-    --border-radius-harmonious: 8px;
-    --border-radius-elegant: 12px;
-    --border-radius-majestic: 20px;
-    --border-radius-heroic: 30px;
-    
-    /* ===== HIERARCHIE LUMINEUSE ===== */
-    --shadow-subtle: 0 1px 2px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-    --shadow-discreet: 0 2px 4px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-elevated: 0 4px 6px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.08);
-    --shadow-imposing: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.08);
-    --shadow-monumental: 0 20px 40px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1);
-    --shadow-celestial: 0 25px 50px rgba(0,0,0,0.2), 0 15px 30px rgba(0,0,0,0.15);
-    
-    /* ===== CHOREGRAPHIE TEMPORELLE ===== */
-    --transition-instant: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-swift: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-graceful: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-majestic: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-grandiose: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* ===== STRATIFICATION Z-AXIS ===== */
-    --z-abyss: -1;
-    --z-foundation: 0;
-    --z-surface: 10;
-    --z-elevated: 100;
-    --z-floating: 1000;
-    --z-modal: 2000;
-    --z-toast: 3000;
-    --z-celestial: 9999;
+    /* ==================== PALETTE ACADÉMIQUE CLAIRE ==================== */
+    --couleur-principale: #1a365d;        /* Bleu navy profond */
+    --couleur-secondaire: #b91c1c;        /* Rouge bordeaux */
+    --couleur-accent: #2563eb;            /* Bleu royal */
+    --couleur-or: #d97706;                /* Or sobre */
+    --couleur-argent: #f8fafc;            /* Blanc cassé */
+    --couleur-texte: #1e293b;             /* Gris anthracite */
+    --couleur-texte-secondaire: #64748b;  /* Gris moyen */
+    --couleur-fond: #fefefe;              /* Blanc pur */
+    --couleur-fond-secondaire: #f1f5f9;   /* Gris très clair */
+    --couleur-bordure: #e2e8f0;          /* Gris clair */
+
+    /* ==================== DÉGRADÉS FONCTIONNELS ==================== */
+    --degrade-header: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+    --degrade-accent: linear-gradient(45deg, #b91c1c, #dc2626);
+    --degrade-success: linear-gradient(135deg, #059669, #10b981);
+    --degrade-fond: linear-gradient(135deg, #fefefe, #f8fafc);
+
+    /* ==================== TYPOGRAPHIE OPTIMISÉE ==================== */
+    --police-texte: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --police-titres: 'Georgia', 'Times New Roman', serif;
+    --police-accent: 'Playfair Display', serif;
+
+    /* Hiérarchie typographique claire */
+    --taille-texte-tres-petit: 0.75rem;    /* 12px - légendes */
+    --taille-texte-petit: 0.875rem;        /* 14px - texte secondaire */
+    --taille-texte-base: 1rem;             /* 16px - corps de texte */
+    --taille-texte-grand: 1.125rem;        /* 18px - texte important */
+    --taille-sous-titre: 1.25rem;          /* 20px - sous-titres */
+    --taille-titre-petit: 1.5rem;          /* 24px - titres sections */
+    --taille-titre-moyen: 2rem;            /* 32px - titres principaux */
+    --taille-titre-grand: 2.5rem;          /* 40px - titres hero */
+    --taille-titre-tres-grand: 3rem;       /* 48px - titres page */
+
+    /* ==================== ESPACEMENTS LOGIQUES ==================== */
+    --espace-tres-petit: 0.25rem;   /* 4px  - espacement minimal */
+    --espace-petit: 0.5rem;         /* 8px  - espacement réduit */
+    --espace-moyen-petit: 0.75rem;  /* 12px - espacement compact */
+    --espace-base: 1rem;            /* 16px - espacement standard */
+    --espace-moyen-grand: 1.5rem;   /* 24px - espacement confortable */
+    --espace-grand: 2rem;           /* 32px - séparation sections */
+    --espace-tres-grand: 3rem;      /* 48px - espacement important */
+    --espace-enorme: 4rem;          /* 64px - séparation majeure */
+
+    /* ==================== RAYONS DE BORDURE ==================== */
+    --arrondi-minimal: 2px;
+    --arrondi-standard: 6px;
+    --arrondi-confortable: 10px;
+    --arrondi-generoux: 16px;
+    --arrondi-pilule: 9999px;
+
+    /* ==================== OMBRES HIÉRARCHISÉES ==================== */
+    --ombre-leger: 0 1px 3px rgba(0,0,0,0.1);
+    --ombre-moyen: 0 4px 6px rgba(0,0,0,0.1);
+    --ombre-prononce: 0 10px 15px rgba(0,0,0,0.1);
+    --ombre-intense: 0 20px 25px rgba(0,0,0,0.15);
+
+    /* ==================== TRANSITIONS ==================== */
+    --transition-rapide: 0.15s ease;
+    --transition-standard: 0.3s ease;
+    --transition-lente: 0.5s ease;
 }
 
-/* ================================================================= */
-/* RESET ACADEMIQUE RAFFINE                                          */
-/* ================================================================= */
+/* ========================================================================= */
+/* RÉINITIALISATION ET BASE TYPOGRAPHIQUE                                    */
+/* ========================================================================= */
 
-*, *::before, *::after {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -103,938 +79,792 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-    font-family: var(--font-modern);
-    line-height: 1.67;
-    color: var(--graphite);
-    background: var(--parchment);
-    overflow-x: hidden;
-    font-weight: 400;
+    font-family: var(--police-texte);
+    line-height: 1.6;
+    color: var(--couleur-texte);
+    background-color: var(--couleur-fond);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ================================================================= */
-/* TYPOGRAPHIE ACADEMIQUE EXCEPTIONNELLE                             */
-/* ================================================================= */
+/* ========================================================================= */
+/* HIÉRARCHIE TYPOGRAPHIQUE CLAIRE                                           */
+/* ========================================================================= */
 
-.scholarly-heading {
-    font-family: var(--font-display);
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-major);
-}
-
-.scholarly-title {
-    font-size: var(--font-size-hero);
+.titre-principal {
+    font-family: var(--police-titres);
+    font-size: var(--taille-titre-tres-grand);
     font-weight: 700;
     line-height: 1.1;
+    color: var(--couleur-principale);
+    margin-bottom: var(--espace-moyen-grand);
 }
 
-.scholarly-subtitle {
-    font-family: var(--font-scholarly);
-    font-size: var(--font-size-lead);
-    font-weight: 400;
+.titre-secondaire {
+    font-family: var(--police-titres);
+    font-size: var(--taille-titre-moyen);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--couleur-principale);
+    margin-bottom: var(--espace-base);
+}
+
+.titre-tertiaire {
+    font-family: var(--police-texte);
+    font-size: var(--taille-titre-petit);
+    font-weight: 600;
+    color: var(--couleur-principale);
+    margin-bottom: var(--espace-petit);
+}
+
+.texte-corps {
+    font-size: var(--taille-texte-base);
+    line-height: 1.6;
+    color: var(--couleur-texte);
+    margin-bottom: var(--espace-base);
+}
+
+.texte-secondaire {
+    font-size: var(--taille-texte-petit);
+    color: var(--couleur-texte-secondaire);
     line-height: 1.5;
-    color: var(--slate-grey);
-    font-style: italic;
 }
 
-.academic-caption {
-    font-size: var(--font-size-caption);
-    color: var(--slate-grey);
-    font-style: italic;
-    line-height: 1.4;
+.texte-accent {
+    color: var(--couleur-secondaire);
+    font-weight: 600;
 }
 
-.inscription {
-    font-family: var(--font-scholarly);
-    font-size: var(--font-size-body);
-    line-height: 1.7;
-    text-align: justify;
-    hyphens: auto;
+/* ========================================================================= */
+/* COMPOSANTS RÉUTILISABLES                                                  */
+/* ========================================================================= */
+
+/* === CARTES === */
+.carte {
+    background: var(--couleur-fond);
+    border-radius: var(--arrondi-confortable);
+    box-shadow: var(--ombre-leger);
+    border: 1px solid var(--couleur-bordure);
+    transition: all var(--transition-standard);
 }
 
-/* ================================================================= */
-/* BARRE D'INFORMATION PRESTIGIEUSE                                  */
-/* ================================================================= */
-
-.heraldic-bar {
-    background: var(--gradient-heritage);
-    color: var(--silver-filigree);
-    padding: var(--space-micro) 0;
-    font-size: var(--font-size-annotation);
-    border-bottom: 3px solid var(--gold-vein);
-    box-shadow: var(--shadow-elevated);
-    position: relative;
-    z-index: var(--z-elevated);
+.carte:hover {
+    box-shadow: var(--ombre-moyen);
+    transform: translateY(-2px);
 }
 
-.heraldic-container {
+.carte--accent {
+    border-left: 4px solid var(--couleur-secondaire);
+}
+
+.carte--success {
+    border-left: 4px solid #059669;
+}
+
+/* === BOUTONS === */
+.bouton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espace-petit);
+    padding: var(--espace-base) var(--espace-moyen-grand);
+    border: none;
+    border-radius: var(--arrondi-standard);
+    font-size: var(--taille-texte-base);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-standard);
+    min-height: 44px;
+}
+
+.bouton--primaire {
+    background: var(--degrade-accent);
+    color: white;
+    box-shadow: var(--ombre-leger);
+}
+
+.bouton--primaire:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ombre-moyen);
+}
+
+.bouton--secondaire {
+    background: transparent;
+    color: var(--couleur-principale);
+    border: 2px solid var(--couleur-principale);
+}
+
+.bouton--secondaire:hover {
+    background: var(--couleur-principale);
+    color: white;
+}
+
+/* === BADGES === */
+.badge {
+    display: inline-block;
+    padding: var(--espace-tres-petit) var(--espace-moyen-petit);
+    border-radius: var(--arrondi-pilule);
+    font-size: var(--taille-texte-tres-petit);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge--accent {
+    background: var(--degrade-accent);
+    color: white;
+}
+
+.badge--info {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* === GRILLES === */
+.grille {
+    display: grid;
+    gap: var(--espace-grand);
+}
+
+.grille-2-colonnes {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grille-3-colonnes {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ========================================================================= */
+/* STRUCTURE PRINCIPALE                                                      */
+/* ========================================================================= */
+
+.conteneur {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--espace-moyen-grand);
+}
+
+.section {
+    padding: var(--espace-enorme) 0;
+}
+
+.section--fond-alterne {
+    background: var(--couleur-fond-secondaire);
+}
+
+.en-tete-section {
+    text-align: center;
+    margin-bottom: var(--espace-tres-grand);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ========================================================================= */
+/* BARRE D'INFORMATION SUPÉRIEURE - SIMPLIFIÉE                               */
+/* ========================================================================= */
+
+.barre-information {
+    background: var(--degrade-header);
+    color: white;
+    padding: var(--espace-petit) 0;
+    font-size: var(--taille-texte-petit);
+}
+
+.conteneur-information {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-major);
     flex-wrap: wrap;
-    gap: var(--space-base);
+    gap: var(--espace-base);
 }
 
-.heraldic-item {
+.element-info {
     display: flex;
     align-items: center;
-    gap: var(--space-micro);
-    padding: var(--space-atomic) var(--space-base);
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: var(--border-radius-majestic);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    transition: all var(--transition-graceful);
-    font-weight: 500;
+    gap: var(--espace-petit);
+    padding: var(--espace-tres-petit) var(--espace-base);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--arrondi-generoux);
 }
 
-.heraldic-item:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-discreet);
+.icone-info {
+    color: var(--couleur-or);
+    font-size: var(--taille-texte-base);
 }
 
-.heraldic-icon {
-    color: var(--gold-vein);
-    font-size: var(--font-size-annotation);
-    width: 14px;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-.regalia-badge {
-    background: var(--gradient-cardinal);
-    color: var(--ivory);
-    padding: var(--space-atomic) var(--space-base);
-    border-radius: var(--border-radius-majestic);
-    font-size: var(--font-size-annotation);
-    font-weight: 600;
+.statistiques-visiteurs {
     display: flex;
+    gap: var(--espace-base);
     align-items: center;
-    gap: var(--space-atomic);
-    box-shadow: 0 2px 12px rgba(139, 0, 0, 0.4);
-    letter-spacing: 0.02em;
 }
 
-/* ================================================================= */
-/* NAVIGATION ACADEMIQUE DISTINGUEE                                  */
-/* ================================================================= */
+/* ========================================================================= */
+/* NAVIGATION PRINCIPALE - CLAIRE ET ACCESSIBLE                              */
+/* ========================================================================= */
 
-.academic-navigation {
+.navigation-principale {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(253, 246, 227, 0.94);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: var(--z-floating);
-    box-shadow: var(--shadow-subtle);
-    transition: all var(--transition-graceful);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: var(--ombre-leger);
+    transition: all var(--transition-standard);
 }
 
-.academic-navigation.ascended {
-    background: rgba(253, 246, 227, 0.98);
-    box-shadow: var(--shadow-imposing);
-    border-bottom-color: rgba(212, 175, 55, 0.2);
+.navigation-principale.fixe {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--ombre-prononce);
 }
 
-.navigation-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-major);
+.conteneur-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 70px;
 }
 
-.academic-brand {
-    font-family: var(--font-display);
-    font-size: var(--font-size-subheader);
-    color: var(--primary-ebony);
+.marque {
+    font-family: var(--police-accent);
+    font-size: var(--taille-sous-titre);
+    color: var(--couleur-principale);
     font-weight: 600;
-    letter-spacing: -0.01em;
 }
 
-.scholarly-menu {
+.menu {
     display: flex;
     list-style: none;
-    gap: var(--space-grand);
+    gap: var(--espace-grand);
 }
 
-.scholarly-link {
+.lien-menu {
     text-decoration: none;
-    color: var(--primary-oxford);
+    color: var(--couleur-texte);
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: var(--space-micro);
-    transition: all var(--transition-swift);
+    padding: var(--espace-base) 0;
     position: relative;
-    padding: var(--space-minor) 0;
-    font-size: var(--font-size-body-sm);
-    letter-spacing: 0.01em;
+    transition: color var(--transition-rapide);
 }
 
-.scholarly-link::before {
+.lien-menu:hover {
+    color: var(--couleur-secondaire);
+}
+
+.lien-menu::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--gold-vein);
-    transition: width var(--transition-graceful);
+    background: var(--couleur-secondaire);
+    transition: width var(--transition-standard);
 }
 
-.scholarly-link:hover {
-    color: var(--secondary-crimson);
-}
-
-.scholarly-link:hover::before,
-.scholarly-link.active::before {
+.lien-menu:hover::after {
     width: 100%;
 }
 
-/* ================================================================= */
-/* HERO SECTION - MANUSCRIT D'EXCELLENCE                             */
-/* ================================================================= */
+/* ========================================================================= */
+/* SECTION HERO - MISE EN PAGE CLAIRE                                        */
+/* ========================================================================= */
 
-.illuminated-hero {
+.hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: var(--gradient-gilded);
+    background: var(--degrade-header);
     position: relative;
     overflow: hidden;
 }
 
-.illuminated-hero::before {
+.hero::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(44, 62, 80, 0.1) 0%, transparent 50%),
-        linear-gradient(135deg, rgba(26, 31, 54, 0.92) 0%, rgba(44, 62, 80, 0.88) 100%);
+    background: rgba(26, 54, 93, 0.9);
 }
 
-.hero-manuscript {
+.contenu-hero {
     position: relative;
-    z-index: var(--z-surface);
+    z-index: 2;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-monumental) var(--space-major);
 }
 
-.manuscript-content {
+.grille-hero {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
-    gap: var(--space-imposing);
+    gap: var(--espace-tres-grand);
     align-items: center;
 }
 
-.calligraphic-content {
-    color: var(--ivory);
+/* Contenu texte */
+.contenu-texte-hero {
+    color: white;
 }
 
-.accolade-badge {
-    display: inline-block;
-    background: var(--gradient-cardinal);
-    color: var(--ivory);
-    padding: var(--space-micro) var(--space-major);
-    border-radius: var(--border-radius-heroic);
-    font-size: var(--font-size-body-sm);
+.badge-hero {
+    background: var(--degrade-accent);
+    color: white;
+    padding: var(--espace-petit) var(--espace-moyen-grand);
+    border-radius: var(--arrondi-generoux);
+    font-size: var(--taille-texte-petit);
     font-weight: 600;
-    margin-bottom: var(--space-major);
-    box-shadow: var(--shadow-imposing);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    animation: scholarlyPulse 3s ease-in-out infinite;
+    margin-bottom: var(--espace-moyen-grand);
+    display: inline-block;
 }
 
-@keyframes scholarlyPulse {
-    0%, 100% { 
-        transform: scale(1);
-        box-shadow: var(--shadow-imposing);
-    }
-    50% { 
-        transform: scale(1.02);
-        box-shadow: 0 8px 30px rgba(139, 0, 0, 0.4);
-    }
-}
-
-.hero-title-illuminated {
-    font-size: clamp(var(--font-size-display), 6vw, var(--font-size-hero));
+.titre-hero {
+    font-size: clamp(var(--taille-titre-moyen), 5vw, var(--taille-titre-tres-grand));
     font-weight: 700;
     line-height: 1.1;
-    margin-bottom: var(--space-base);
-    font-family: var(--font-display);
+    margin-bottom: var(--espace-base);
+    font-family: var(--police-titres);
 }
 
-.hero-title-illuminated .gilded-text {
-    background: linear-gradient(135deg, var(--gold-vein) 0%, #f4d03f 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-}
-
-.hero-title-illuminated .gilded-text::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold-vein), transparent);
-}
-
-.hero-subtitle-scholarly {
-    font-size: clamp(var(--font-size-lead), 2.5vw, var(--font-size-header-sm));
-    color: var(--silver-filigree);
-    margin-bottom: var(--space-grand);
-    font-weight: 400;
+.sous-titre-hero {
+    font-size: clamp(var(--taille-texte-grand), 2.5vw, var(--taille-sous-titre));
+    color: #e2e8f0;
+    margin-bottom: var(--espace-grand);
     line-height: 1.5;
-    font-family: var(--font-scholarly);
-    font-style: italic;
 }
 
-.contact-registry {
-    margin-bottom: var(--space-grand);
+/* Informations de contact */
+.info-contact {
+    margin-bottom: var(--espace-grand);
 }
 
-.contact-registry p {
+.ligne-contact {
     display: flex;
     align-items: center;
-    gap: var(--space-micro);
-    margin-bottom: var(--space-minor);
-    font-size: var(--font-size-lead);
-    font-family: var(--font-scholarly);
+    gap: var(--espace-base);
+    margin-bottom: var(--espace-petit);
+    font-size: var(--taille-texte-grand);
 }
 
-.regalia-icon {
-    color: var(--gold-vein);
+.icone-contact {
+    color: var(--couleur-or);
     width: 20px;
-    flex-shrink: 0;
-    font-size: var(--font-size-subheader);
 }
 
-.achievements-grid {
+/* Statistiques */
+.grille-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: var(--space-major);
-    margin: var(--space-grand) 0;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--espace-moyen-grand);
+    margin: var(--espace-grand) 0;
 }
 
-.achievement-medallion {
+.element-stat {
     text-align: center;
-    padding: var(--space-base);
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: var(--border-radius-elegant);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    transition: all var(--transition-graceful);
+    padding: var(--espace-base);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--arrondi-confortable);
 }
 
-.achievement-medallion:hover {
-    transform: translateY(-3px) scale(1.02);
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: var(--shadow-elevated);
-}
-
-.achievement-value {
-    font-size: var(--font-size-header);
-    color: var(--gold-vein);
+.valeur-stat {
+    font-size: var(--taille-titre-petit);
+    color: var(--couleur-or);
     font-weight: 700;
-    margin-bottom: var(--space-atomic);
-    font-variant-numeric: oldstyle-nums;
+    margin-bottom: var(--espace-tres-petit);
 }
 
-.achievement-label {
-    font-size: var(--font-size-caption);
-    color: var(--silver-filigree);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+.label-stat {
+    font-size: var(--taille-texte-petit);
+    color: #cbd5e1;
 }
 
-.hero-actions {
+/* Actions */
+.actions-hero {
     display: flex;
-    gap: var(--space-base);
-    margin-top: var(--space-grand);
+    gap: var(--espace-base);
+    margin-top: var(--espace-grand);
     flex-wrap: wrap;
 }
 
-.scholarly-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-micro);
-    padding: var(--space-base) var(--space-grand);
-    text-decoration: none;
-    border-radius: var(--border-radius-harmonious);
-    font-weight: 600;
-    transition: all var(--transition-graceful);
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-body);
-    text-align: center;
-    min-height: 52px;
-    position: relative;
-    overflow: hidden;
-    font-family: var(--font-modern);
-    letter-spacing: 0.02em;
-}
-
-.scholarly-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left var(--transition-majestic);
-}
-
-.scholarly-button:hover::before {
-    left: 100%;
-}
-
-.button-primary {
-    background: var(--gradient-cardinal);
-    color: var(--ivory);
-    box-shadow: var(--shadow-imposing);
-}
-
-.button-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-monumental);
-}
-
-.button-secondary {
-    background: transparent;
-    color: var(--ivory);
-    border: 2px solid var(--ivory);
-    backdrop-filter: blur(10px);
-}
-
-.button-secondary:hover {
-    background: var(--ivory);
-    color: var(--primary-ebony);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-elevated);
-}
-
-.illuminated-portrait {
+/* Image hero */
+.conteneur-image-hero {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
-.portrait-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-major);
-    align-items: center;
-    position: relative;
-}
-
-.academic-seal {
-    max-width: min(100%, 400px);
+.image-hero {
+    max-width: 100%;
     height: auto;
-    border-radius: var(--border-radius-elegant);
-    box-shadow: 
-        var(--shadow-monumental),
-        0 0 0 1px rgba(212, 175, 55, 0.3),
-        inset 0 0 50px rgba(212, 175, 55, 0.1);
-    transition: all var(--transition-majestic);
-    filter: sepia(0.1) brightness(1.05);
+    border-radius: var(--arrondi-confortable);
+    box-shadow: var(--ombre-intense);
 }
 
-.academic-seal:hover {
-    transform: scale(1.03) rotate(0.5deg);
-    box-shadow: 
-        var(--shadow-celestial),
-        0 0 0 1px rgba(212, 175, 55, 0.5),
-        inset 0 0 80px rgba(212, 175, 55, 0.15);
+/* ========================================================================= */
+/* SECTION PROFIL - ORGANISATION CLAIRE                                      */
+/* ========================================================================= */
+
+.grille-profil {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--espace-grand);
+    margin-bottom: var(--espace-tres-grand);
 }
 
-.scroll-summoner {
-    position: absolute;
-    bottom: var(--space-grand);
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--ivory);
-    font-size: var(--font-size-header);
-    animation: scholarlySummons 2.5s ease-in-out infinite;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+.carte-profil {
+    background: var(--couleur-fond);
+    padding: var(--espace-grand);
+    border-radius: var(--arrondi-confortable);
+    text-align: center;
+    box-shadow: var(--ombre-moyen);
+    transition: transform var(--transition-standard);
+}
+
+.carte-profil:hover {
+    transform: translateY(-5px);
+}
+
+.icone-profil {
+    font-size: 3rem;
+    color: var(--couleur-secondaire);
+    margin-bottom: var(--espace-base);
+}
+
+/* Compétences */
+.grille-competences {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--espace-grand);
+}
+
+.categorie-competence {
+    background: var(--couleur-fond);
+    padding: var(--espace-grand);
+    border-radius: var(--arrondi-confortable);
+    box-shadow: var(--ombre-leger);
+    border-left: 4px solid var(--couleur-secondaire);
+}
+
+.categorie-competence h3 {
+    color: var(--couleur-principale);
+    margin-bottom: var(--espace-moyen-grand);
     display: flex;
     align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    gap: var(--espace-petit);
+    font-size: var(--taille-texte-grand);
 }
 
-@keyframes scholarlySummons {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateX(-50%) translateY(0);
-    }
-    40% {
-        transform: translateX(-50%) translateY(-12px);
-    }
-    60% {
-        transform: translateX(-50%) translateY(-6px);
-    }
-}
-
-/* ================================================================= */
-/* SECTIONS ACADEMIQUES - ARCHITECTURE PRESTIGIEUSE                  */
-/* ================================================================= */
-
-.academic-section {
-    padding: var(--space-monumental) 0;
-    position: relative;
-}
-
-.section-parchment {
-    background: var(--gradient-parchment);
-}
-
-.section-velvet {
-    background: var(--primary-ebony);
-    color: var(--ivory);
-}
-
-.scholarly-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-major);
-}
-
-.section-prologue {
-    text-align: center;
-    margin-bottom: var(--space-imposing);
-}
-
-.section-title-heraldic {
-    font-size: clamp(var(--font-size-header), 4vw, var(--font-size-display));
-    font-weight: 700;
-    color: var(--primary-ebony);
-    margin-bottom: var(--space-base);
-    position: relative;
-    display: inline-block;
-    font-family: var(--font-display);
-}
-
-.section-title-heraldic::after {
-    content: '';
-    position: absolute;
-    bottom: -var(--space-base);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: var(--gradient-cardinal);
-    border-radius: var(--border-radius);
-}
-
-.section-subtitle-scholarly {
-    font-size: var(--font-size-lead);
-    color: var(--slate-grey);
-    max-width: 700px;
-    margin: 0 auto;
-    font-family: var(--font-scholarly);
-    line-height: 1.6;
-}
-
-/* ================================================================= */
-/* COMPOSANTS ACADEMIQUES REUTILISABLES                             */
-/* ================================================================= */
-
-.parchment-card {
-    background: var(--ivory);
-    border-radius: var(--border-radius-elegant);
-    box-shadow: var(--shadow-discreet);
-    transition: all var(--transition-graceful);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    position: relative;
-    overflow: hidden;
-}
-
-.parchment-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-cardinal);
-}
-
-.parchment-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-imposing);
-}
-
-.scholarly-grid {
-    display: grid;
-    gap: var(--space-grand);
-}
-
-.grid-bifold {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-}
-
-.grid-trifold {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* ================================================================= */
-/* SECTION PROFIL - CURRICULUM DISTINGUE                             */
-/* ================================================================= */
-
-.pedagogy-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--space-grand);
-    margin-bottom: var(--space-imposing);
-}
-
-.pedagogy-card {
-    background: var(--ivory);
-    padding: var(--space-grand);
-    border-radius: var(--border-radius-elegant);
-    text-align: center;
-    box-shadow: var(--shadow-elevated);
-    transition: transform var(--transition-graceful);
-    border: 1px solid rgba(0,0,0,0.08);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.pedagogy-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--gradient-cardinal);
-}
-
-.pedagogy-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-imposing);
-}
-
-.pedagogy-icon {
-    font-size: 3.5rem;
-    color: var(--secondary-crimson);
-    margin-bottom: var(--space-base);
-    opacity: 0.9;
-}
-
-.pedagogy-card h3 {
-    font-size: var(--font-size-subheader);
-    color: var(--primary-ebony);
-    margin-bottom: var(--space-base);
-    font-weight: 600;
-    font-family: var(--font-display);
-}
-
-.pedagogy-card p {
-    color: var(--slate-grey);
-    line-height: 1.6;
-    flex-grow: 1;
-    font-family: var(--font-scholarly);
-}
-
-.expertise-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: var(--space-grand);
-}
-
-.expertise-domain {
-    background: var(--ivory);
-    padding: var(--space-grand);
-    border-radius: var(--border-radius-elegant);
-    box-shadow: var(--shadow-discreet);
-    border-left: 6px solid var(--secondary-crimson);
-    height: 100%;
-    position: relative;
-}
-
-.expertise-domain::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, transparent 50%, var(--secondary-crimson) 50%);
-    border-radius: 0 var(--border-radius-elegant) 0 100px;
-}
-
-.expertise-domain h3 {
-    color: var(--primary-ebony);
-    margin-bottom: var(--space-major);
-    display: flex;
-    align-items: center;
-    gap: var(--space-micro);
-    font-size: var(--font-size-lead);
-    font-family: var(--font-display);
-}
-
-.expertise-icon {
-    color: var(--secondary-crimson);
-    font-size: var(--font-size-subheader);
-}
-
-.expertise-domain ul {
+.liste-competences {
     list-style: none;
 }
 
-.expertise-domain li {
-    padding: var(--space-minor) 0;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    color: var(--slate-grey);
+.element-competence {
+    padding: var(--espace-base) 0;
+    border-bottom: 1px solid var(--couleur-bordure);
+    color: var(--couleur-texte-secondaire);
     display: flex;
     align-items: center;
-    gap: var(--space-micro);
-    transition: all var(--transition-swift);
+    gap: var(--espace-petit);
 }
 
-.expertise-domain li:hover {
-    color: var(--primary-ebony);
-    padding-left: var(--space-micro);
-}
-
-.expertise-domain li::before {
-    content: '▶';
-    color: var(--secondary-crimson);
-    font-size: var(--font-size-caption);
-    transition: transform var(--transition-swift);
-}
-
-.expertise-domain li:hover::before {
-    transform: translateX(3px);
-}
-
-.expertise-domain li:last-child {
+.element-competence:last-child {
     border-bottom: none;
 }
 
-.expertise-domain strong {
-    color: var(--primary-ebony);
+.element-competence::before {
+    content: '•';
+    color: var(--couleur-secondaire);
+    font-weight: bold;
+}
+
+/* ========================================================================= */
+/* SECTION FORMATION - FRISE CHRONOLOGIQUE                                   */
+/* ========================================================================= */
+
+.frise {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.frise::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: var(--degrade-success);
+    border-radius: var(--arrondi-minimal);
+}
+
+.element-frise {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--espace-tres-grand);
+    position: relative;
+}
+
+.element-frise:nth-child(odd) {
+    flex-direction: row;
+}
+
+.element-frise:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.date-frise {
+    flex: 1;
+    text-align: center;
     font-weight: 600;
+    color: var(--couleur-principale);
+    font-size: var(--taille-texte-grand);
+    padding: var(--espace-base);
 }
 
-/* ================================================================= */
-/* ANIMATIONS ACADEMIQUES RAFFINEES                                  */
-/* ================================================================= */
-
-@keyframes scholarlyEntrance {
-    from { 
-        opacity: 0; 
-        transform: translateY(40px) scale(0.95); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
-    }
+.contenu-frise {
+    flex: 2;
+    background: var(--couleur-fond);
+    padding: var(--espace-grand);
+    border-radius: var(--arrondi-confortable);
+    box-shadow: var(--ombre-moyen);
+    border: 1px solid var(--couleur-bordure);
+    position: relative;
 }
 
-@keyframes parchmentReveal {
-    from { 
-        opacity: 0; 
-        transform: translateX(-30px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateX(0); 
-    }
+.contenu-frise::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: var(--couleur-fond);
+    border: 4px solid var(--couleur-accent);
+    border-radius: 50%;
 }
 
-.scholarly-fade-in {
-    animation: scholarlyEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.element-frise:nth-child(odd) .contenu-frise::before {
+    right: -28px;
+    transform: translateY(-50%);
 }
 
-.parchment-reveal {
-    animation: parchmentReveal 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.element-frise:nth-child(even) .contenu-frise::before {
+    left: -28px;
+    transform: translateY(-50%);
 }
 
-/* ================================================================= */
-/* RESPONSIVE DESIGN ACADEMIQUE                                      */
-/* ================================================================= */
+/* ========================================================================= */
+/* COMPTEUR DE VISITEURS - AMÉLIORÉ                                          */
+/* ========================================================================= */
 
-@media (max-width: 1200px) {
-    .manuscript-content {
+.compteur-visiteurs {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    color: white;
+    padding: var(--espace-moyen-grand);
+    border-radius: var(--arrondi-confortable);
+    max-width: 400px;
+    margin: var(--espace-base) auto;
+    box-shadow: var(--ombre-prononce);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.en-tete-stats {
+    text-align: center;
+    margin-bottom: var(--espace-moyen-grand);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: var(--espace-base);
+}
+
+.grille-stats-detail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--espace-base);
+}
+
+.element-stat-detail {
+    background: rgba(255,255,255,0.1);
+    padding: var(--espace-base);
+    border-radius: var(--arrondi-standard);
+    text-align: center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform var(--transition-standard);
+}
+
+.element-stat-detail:hover {
+    transform: translateY(-2px);
+}
+
+.label-stat-detail {
+    font-size: var(--taille-texte-tres-petit);
+    opacity: 0.8;
+    margin-bottom: var(--espace-tres-petit);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.valeur-stat-detail {
+    font-size: var(--taille-titre-petit);
+    font-weight: 700;
+    color: white;
+}
+
+.icone-stat {
+    font-size: var(--taille-sous-titre);
+    margin-bottom: var(--espace-tres-petit);
+    display: block;
+}
+
+/* ========================================================================= */
+/* RESPONSIVE DESIGN - ADAPTATION CLAIRE                                     */
+/* ========================================================================= */
+
+@media (max-width: 1024px) {
+    .grille-hero {
         grid-template-columns: 1fr;
-        gap: var(--space-grand);
+        gap: var(--espace-grand);
         text-align: center;
     }
     
-    .achievements-grid {
+    .grille-stats {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .frise::before {
+        left: 30px;
+    }
+    
+    .element-frise {
+        flex-direction: row !important;
+        align-items: flex-start;
+    }
+    
+    .date-frise {
+        flex: 0 0 100px;
+        text-align: left;
+        padding: 0;
+        margin-right: var(--espace-moyen-grand);
+    }
+    
+    .contenu-frise {
+        flex: 1;
+    }
+    
+    .contenu-frise::before {
+        left: -36px !important;
+        right: auto !important;
     }
 }
 
-@media (max-width: 968px) {
-    :root {
-        --space-monumental: 3rem;
-        --space-imposing: 2rem;
-    }
-    
-    .scholarly-menu {
+@media (max-width: 768px) {
+    .menu {
         position: fixed;
-        top: 80px;
+        top: 70px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 80px);
-        background: var(--ivory);
+        height: calc(100vh - 70px);
+        background: var(--couleur-fond);
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding-top: var(--space-imposing);
-        transition: left var(--transition-graceful);
-        box-shadow: var(--shadow-imposing);
+        padding-top: var(--espace-tres-grand);
+        transition: left var(--transition-standard);
+        box-shadow: var(--ombre-prononce);
         gap: 0;
     }
     
-    .scholarly-menu.manifest {
+    .menu.ouvert {
         left: 0;
     }
     
-    .scholarly-link {
-        padding: var(--space-base);
+    .lien-menu {
+        padding: var(--espace-moyen-grand);
         width: 100%;
         text-align: center;
         justify-content: center;
-        font-size: var(--font-size-lead);
     }
     
-    .navigation-toggle {
+    .bouton-menu-mobile {
         display: flex;
         flex-direction: column;
         cursor: pointer;
         background: none;
         border: none;
-        padding: var(--space-micro);
+        padding: var(--espace-petit);
     }
     
-    .navigation-toggle span {
-        width: 28px;
-        height: 3px;
-        background: var(--primary-ebony);
-        margin: 3px 0;
-        transition: var(--transition-graceful);
-        transform-origin: center;
-    }
-    
-    .navigation-toggle.activated span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-    }
-    
-    .navigation-toggle.activated span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .navigation-toggle.activated span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-    }
-    
-    .heraldic-container {
+    .conteneur-information {
         justify-content: center;
-        gap: var(--space-minor);
+        gap: var(--espace-petit);
     }
-}
-
-@media (max-width: 768px) {
-    .hero-actions {
+    
+    .element-info {
+        font-size: var(--taille-texte-tres-petit);
+        padding: var(--espace-tres-petit) var(--espace-petit);
+    }
+    
+    .actions-hero {
         flex-direction: column;
         align-items: center;
     }
     
-    .scholarly-button {
+    .bouton {
         width: 100%;
         max-width: 300px;
         justify-content: center;
     }
     
-    .achievements-grid {
+    .grille-profil,
+    .grille-competences {
         grid-template-columns: 1fr;
-    }
-    
-    .pedagogy-grid,
-    .expertise-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .academic-seal {
-        max-width: 280px;
     }
 }
 
 @media (max-width: 480px) {
-    .scholarly-container {
-        padding: 0 var(--space-base);
+    .conteneur {
+        padding: 0 var(--espace-base);
     }
     
-    .hero-manuscript {
-        padding: var(--space-imposing) var(--space-base);
+    .section {
+        padding: var(--espace-tres-grand) 0;
     }
     
-    .heraldic-bar {
-        padding: var(--space-atomic) 0;
+    .barre-information {
+        padding: var(--espace-tres-petit) 0;
     }
     
-    .heraldic-container {
+    .conteneur-information {
         flex-direction: column;
-        gap: var(--space-minor);
+        gap: var(--espace-petit);
     }
     
-    .heraldic-item {
+    .element-info {
         width: 100%;
         justify-content: center;
     }
     
-    .hero-title-illuminated {
-        font-size: var(--font-size-display);
+    .titre-hero {
+        font-size: var(--taille-titre-moyen);
     }
     
-    .hero-subtitle-scholarly {
-        font-size: var(--font-size-lead);
+    .sous-titre-hero {
+        font-size: var(--taille-texte-grand);
+    }
+    
+    .grille-stats {
+        grid-template-columns: 1fr;
     }
 }
 
-/* ================================================================= */
-/* ACCESSIBILITE ACADEMIQUE AVANCEE                                  */
-/* ================================================================= */
+/* ========================================================================= */
+/* ACCESSIBILITÉ ET AMÉLIORATIONS PROGRESSIVES                               */
+/* ========================================================================= */
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -1045,70 +875,67 @@ body {
     }
 }
 
-/* Focus visible académique */
+/* Focus visible pour l'accessibilité */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
-textarea:focus-visible,
-.navigation-toggle:focus-visible {
-    outline: 3px solid var(--accent-sapphire);
-    outline-offset: 3px;
-    border-radius: var(--border-radius-discreet);
+textarea:focus-visible {
+    outline: 3px solid var(--couleur-accent);
+    outline-offset: 2px;
+    border-radius: var(--arrondi-minimal);
 }
 
-.scholarly-link:focus-visible {
-    outline-offset: 6px;
+.lien-menu:focus-visible {
+    outline-offset: 4px;
 }
 
 /* Mode contraste élevé */
 @media (prefers-contrast: high) {
     :root {
-        --primary-ebony: #000000;
-        --secondary-crimson: #800000;
-        --accent-sapphire: #000080;
-        --gold-vein: #8b7500;
-        --graphite: #000000;
+        --couleur-texte: #000000;
+        --couleur-texte-secondaire: #333333;
+        --couleur-principale: #000000;
+        --couleur-secondaire: #800000;
+        --couleur-accent: #000080;
     }
     
-    .heraldic-bar,
-    .academic-navigation,
-    .button-primary,
-    .regalia-badge {
-        border: 2px solid var(--primary-ebony);
+    .barre-information,
+    .navigation-principale,
+    .bouton--primaire {
+        border: 2px solid var(--couleur-texte);
     }
 }
 
-/* Impression académique */
+/* Impression */
 @media print {
-    .heraldic-bar,
-    .navigation-toggle,
-    .scroll-summoner,
-    .hero-actions .button-secondary {
+    .barre-information,
+    .bouton-menu-mobile,
+    .actions-hero .bouton--secondaire {
         display: none !important;
     }
     
-    .illuminated-hero {
+    .hero {
         background: none !important;
         color: black !important;
         min-height: auto;
     }
     
-    .illuminated-hero::before {
+    .hero::before {
         display: none;
     }
     
-    .calligraphic-content {
+    .contenu-texte-hero {
         color: black !important;
     }
     
-    .academic-section {
+    .section {
         break-inside: avoid;
         padding: 2rem 0 !important;
     }
     
-    .parchment-card, .pedagogy-card, .expertise-domain {
+    .carte, .carte-profil, .categorie-competence {
         box-shadow: none !important;
-        border: 2px solid #000 !important;
+        border: 1px solid #000 !important;
     }
     
     a {
@@ -1116,34 +943,22 @@ textarea:focus-visible,
         text-decoration: underline !important;
     }
     
-    .scholarly-button {
-        border: 2px solid #000 !important;
+    .bouton {
+        border: 1px solid #000 !important;
         background: white !important;
         color: black !important;
     }
 }
 
-/* Support des navigateurs traditionnels */
+/* Support des navigateurs plus anciens */
 @supports not (backdrop-filter: blur(10px)) {
-    .heraldic-item,
-    .achievement-medallion,
-    .academic-navigation {
-        background: rgba(255, 255, 255, 0.95);
+    .element-info,
+    .element-stat-detail,
+    .navigation-principale {
+        background: rgba(255, 255, 255, 0.9);
     }
     
-    .heraldic-bar .heraldic-item {
+    .barre-information .element-info {
         background: rgba(255, 255, 255, 0.15);
-    }
-}
-
-/* Optimisation des performances académiques */
-@media (prefers-reduced-data: reduce) {
-    .illuminated-hero::before,
-    .academic-seal:hover {
-        transition: none;
-    }
-    
-    .accolade-badge {
-        animation: none;
     }
 }
