@@ -708,3 +708,61 @@ body {
     background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
     pointer-events: none;
 }
+/*   ce qui j'ai ajouter
+/* ========================================================================= */
+/* HERO SECTION AVEC LOGOS RÉDUITS                                          */
+/* ========================================================================= */
+
+.hero-image {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: var(--espace-petit);
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espace-micro);
+}
+
+.logo-top,
+.logo-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-image {
+    max-width: 150px;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .hero-image {
+        max-width: 300px;
+    }
+    
+    .logo-image {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-image {
+        max-width: 250px;
+    }
+    
+    .logo-image {
+        max-width: 100px;
+    }
+}
