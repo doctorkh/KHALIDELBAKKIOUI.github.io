@@ -63,9 +63,9 @@
     --espace-massif: 8rem;
 
     /* Espaces latéraux étendus */
-    --marge-gauche-section: 4rem;
-    --marge-gauche-contenu: 2rem;
-    --marge-gauche-sous-section: 1.5rem;
+    --marge-gauche-section: 3rem; /* Réduit de 4rem à 3rem */
+    --marge-gauche-contenu: 1.5rem; /* Réduit de 2rem à 1.5rem */
+    --marge-gauche-sous-section: 1rem; /* Réduit de 1.5rem à 1rem */
 
     /* ==================== TYPOGRAPHIE ÉTENDUE ==================== */
     --police-texte: 'Inter', system-ui, sans-serif;
@@ -122,23 +122,24 @@ body {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    padding: var(--espace-grand) 0;
+    padding: var(--espace-moyen) 0; /* Réduit de grand à moyen */
     box-shadow: 4px 0 20px rgba(0,0,0,0.1);
 }
 
 .niveau-academique {
-    padding: var(--espace-petit) var(--espace-base);
-    margin: 0 var(--espace-mini) var(--espace-mini);
-    border-radius: var(--espace-mini);
+    padding: var(--espace-micro) var(--espace-petit); /* Réduit le padding */
+    margin: 0 var(--espace-micro) var(--espace-micro); /* Réduit les marges */
+    border-radius: var(--espace-micro); /* Rayon réduit */
     color: white;
-    font-size: var(--taille-texte-mini);
+    font-size: 0.65rem; /* Taille de police réduite */
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px; /* Espacement réduit */
     text-align: center;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    line-height: 1.2; /* Hauteur de ligne réduite */
 }
 
 .niveau-academique::before {
@@ -147,13 +148,13 @@ body {
     left: 0;
     top: 0;
     height: 100%;
-    width: 4px;
+    width: 3px; /* Largeur réduite */
     background: rgba(255,255,255,0.3);
 }
 
 .niveau-academique:hover {
-    transform: translateX(4px);
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    transform: translateX(3px); /* Translation réduite */
+    box-shadow: 1px 1px 8px rgba(0,0,0,0.2); /* Ombre réduite */
 }
 
 /* Couleurs spécifiques pour chaque niveau */
@@ -173,7 +174,7 @@ body {
     left: var(--marge-gauche-section);
     top: 0;
     width: calc(100% - var(--marge-gauche-section));
-    height: 4px;
+    height: 3px; /* Hauteur réduite */
     background: var(--couleur-fond-secondaire);
     z-index: 1001;
 }
@@ -197,21 +198,21 @@ body {
 
 .navigation-principale {
     position: fixed;
-    top: 4px; /* Sous la barre de progression */
+    top: 3px; /* Ajusté pour la barre de progression réduite */
     left: var(--marge-gauche-section);
     width: calc(100% - var(--marge-gauche-section));
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     z-index: 1000;
     box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-    padding: 0 var(--espace-grand);
+    padding: 0 var(--espace-moyen); /* Padding réduit */
 }
 
 .conteneur-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 60px; /* Hauteur réduite */
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -220,7 +221,7 @@ body {
 .menu-academique {
     display: flex;
     list-style: none;
-    gap: var(--espace-large);
+    gap: var(--espace-moyen); /* Espacement réduit */
     position: relative;
 }
 
@@ -232,19 +233,19 @@ body {
     text-decoration: none;
     color: var(--couleur-texte);
     font-weight: 600;
-    padding: var(--espace-base) var(--espace-petit);
+    padding: var(--espace-petit) var(--espace-micro); /* Padding réduit */
     display: flex;
     align-items: center;
-    gap: var(--espace-mini);
+    gap: var(--espace-micro); /* Espacement réduit */
     transition: all 0.3s ease;
-    border-radius: var(--espace-mini);
-    font-size: var(--taille-texte-base);
+    border-radius: var(--espace-micro); /* Rayon réduit */
+    font-size: var(--taille-texte-petit); /* Taille réduite */
 }
 
 .lien-categorie:hover {
     background: var(--couleur-fond-secondaire);
     color: var(--couleur-primaire-1);
-    transform: translateY(-2px);
+    transform: translateY(-1px); /* Translation réduite */
 }
 
 /* Sous-menus académiques */
@@ -253,13 +254,13 @@ body {
     top: 100%;
     left: 0;
     background: white;
-    min-width: 280px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    border-radius: var(--espace-petit);
-    padding: var(--espace-base);
+    min-width: 240px; /* Largeur réduite */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-radius: var(--espace-micro); /* Rayon réduit */
+    padding: var(--espace-petit); /* Padding réduit */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px);
+    transform: translateY(8px); /* Translation réduite */
     transition: all 0.3s ease;
     z-index: 1000;
     border: 1px solid var(--couleur-bordure);
@@ -272,16 +273,16 @@ body {
 }
 
 .groupe-sous-menu {
-    margin-bottom: var(--espace-base);
+    margin-bottom: var(--espace-petit); /* Marge réduite */
 }
 
 .titre-sous-menu {
-    font-size: var(--taille-texte-mini);
+    font-size: 0.7rem; /* Taille réduite */
     color: var(--couleur-texte-secondaire);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: var(--espace-petit);
-    padding-bottom: var(--espace-mini);
+    letter-spacing: 0.8px; /* Espacement réduit */
+    margin-bottom: var(--espace-micro); /* Marge réduite */
+    padding-bottom: var(--espace-micro); /* Padding réduit */
     border-bottom: 1px solid var(--couleur-bordure);
 }
 
@@ -290,37 +291,37 @@ body {
 }
 
 .element-sous-menu {
-    margin-bottom: var(--espace-mini);
+    margin-bottom: var(--espace-micro); /* Marge réduite */
 }
 
 .lien-sous-menu {
     text-decoration: none;
     color: var(--couleur-texte);
-    padding: var(--espace-petit) var(--espace-base);
+    padding: var(--espace-micro) var(--espace-petit); /* Padding réduit */
     display: block;
-    border-radius: var(--espace-mini);
+    border-radius: var(--espace-micro); /* Rayon réduit */
     transition: all 0.2s ease;
-    font-size: var(--taille-texte-petit);
+    font-size: 0.8rem; /* Taille réduite */
 }
 
 .lien-sous-menu:hover {
     background: var(--couleur-fond-secondaire);
     color: var(--couleur-primaire-1);
-    transform: translateX(4px);
+    transform: translateX(3px); /* Translation réduite */
 }
 
 /* Couleurs spécifiques pour les types de documents */
-.lien-memoire { border-left: 3px solid var(--couleur-memoire); }
-.lien-these { border-left: 3px solid var(--couleur-these); }
-.lien-livre { border-left: 3px solid var(--couleur-livre); }
-.lien-manuel { border-left: 3px solid var(--couleur-manuel); }
+.lien-memoire { border-left: 2px solid var(--couleur-memoire); } /* Largeur réduite */
+.lien-these { border-left: 2px solid var(--couleur-these); }
+.lien-livre { border-left: 2px solid var(--couleur-livre); }
+.lien-manuel { border-left: 2px solid var(--couleur-manuel); }
 
 /* ========================================================================= */
 /* SECTIONS AVEC ESPACES LATÉRAUX RENFORCÉS                                  */
 /* ========================================================================= */
 
 .section {
-    padding: var(--espace-xxlarge) 0;
+    padding: var(--espace-xlarge) 0; /* Padding réduit */
     margin-left: var(--marge-gauche-contenu);
     position: relative;
 }
@@ -331,7 +332,7 @@ body {
     left: calc(-1 * var(--marge-gauche-contenu));
     top: 0;
     height: 100%;
-    width: 3px;
+    width: 2px; /* Largeur réduite */
     background: linear-gradient(180deg, 
         var(--couleur-college),
         var(--couleur-lycee),
@@ -339,7 +340,7 @@ body {
         var(--couleur-licence),
         var(--couleur-master),
         var(--couleur-doctorat));
-    border-radius: var(--espace-mini);
+    border-radius: var(--espace-micro); /* Rayon réduit */
 }
 
 .section--fond-alterne {
@@ -349,12 +350,12 @@ body {
 .conteneur {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--espace-grand);
+    padding: 0 var(--espace-moyen); /* Padding réduit */
 }
 
 /* En-tête de section avec icônes académiques */
 .en-tete-section {
-    margin-bottom: var(--espace-xlarge);
+    margin-bottom: var(--espace-large); /* Marge réduite */
     padding-left: var(--marge-gauche-sous-section);
     position: relative;
 }
@@ -364,7 +365,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    font-size: var(--taille-titre-3);
+    font-size: var(--taille-titre-4); /* Taille réduite */
     opacity: 0.1;
 }
 
@@ -374,17 +375,17 @@ body {
 
 .grille-niveaux {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--espace-grand);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Largeur minimale réduite */
+    gap: var(--espace-moyen); /* Espacement réduit */
     margin-left: var(--marge-gauche-sous-section);
 }
 
 .carte-niveau {
     background: white;
-    padding: var(--espace-large);
-    border-radius: var(--espace-petit);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border-left: 6px solid;
+    padding: var(--espace-moyen); /* Padding réduit */
+    border-radius: var(--espace-micro); /* Rayon réduit */
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    border-left: 4px solid; /* Largeur réduite */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -395,16 +396,16 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Taille réduite */
+    height: 60px;
     background: linear-gradient(135deg, transparent 50%, currentColor 50%);
     opacity: 0.1;
-    border-radius: 0 0 0 80px;
+    border-radius: 0 0 0 60px; /* Rayon réduit */
 }
 
 .carte-niveau:hover {
-    transform: translateY(-5px) translateX(5px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    transform: translateY(-3px) translateX(3px); /* Translation réduite */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
 /* Couleurs spécifiques pour chaque carte de niveau */
@@ -425,42 +426,42 @@ body {
 
 .grille-documents {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--espace-grand);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Largeur minimale réduite */
+    gap: var(--espace-moyen); /* Espacement réduit */
     margin-left: var(--marge-gauche-sous-section);
 }
 
 .carte-document {
     background: white;
-    padding: var(--espace-large);
-    border-radius: var(--espace-petit);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: var(--espace-moyen); /* Padding réduit */
+    border-radius: var(--espace-micro); /* Rayon réduit */
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
-    border-top: 4px solid;
+    border-top: 3px solid; /* Largeur réduite */
     position: relative;
 }
 
 .carte-document:hover {
-    transform: translateY(-8px) translateX(4px);
-    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+    transform: translateY(-5px) translateX(3px); /* Translation réduite */
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
 }
 
 .icone-document {
-    font-size: 3rem;
-    margin-bottom: var(--espace-base);
+    font-size: 2.5rem; /* Taille réduite */
+    margin-bottom: var(--espace-petit); /* Marge réduite */
     opacity: 0.9;
 }
 
 .badge-type-document {
     position: absolute;
-    top: var(--espace-large);
-    right: var(--espace-large);
-    padding: var(--espace-mini) var(--espace-base);
-    border-radius: var(--espace-mini);
-    font-size: var(--taille-texte-mini);
+    top: var(--espace-moyen); /* Position ajustée */
+    right: var(--espace-moyen);
+    padding: var(--espace-micro) var(--espace-petit); /* Padding réduit */
+    border-radius: var(--espace-micro); /* Rayon réduit */
+    font-size: 0.65rem; /* Taille réduite */
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px; /* Espacement réduit */
     color: white;
 }
 
@@ -485,17 +486,17 @@ body {
     position: relative;
     max-width: 1000px;
     margin: 0 auto;
-    margin-left: calc(var(--marge-gauche-sous-section) + 2rem);
-    padding: var(--espace-xlarge) 0;
+    margin-left: calc(var(--marge-gauche-sous-section) + 1.5rem); /* Marge réduite */
+    padding: var(--espace-large) 0; /* Padding réduit */
 }
 
 .timeline-academique::before {
     content: '';
     position: absolute;
-    left: -2rem;
+    left: -1.5rem; /* Position ajustée */
     top: 0;
     height: 100%;
-    width: 4px;
+    width: 3px; /* Largeur réduite */
     background: linear-gradient(180deg, 
         var(--couleur-college),
         var(--couleur-lycee),
@@ -503,32 +504,32 @@ body {
         var(--couleur-licence),
         var(--couleur-master),
         var(--couleur-doctorat));
-    border-radius: var(--espace-mini);
+    border-radius: var(--espace-micro); /* Rayon réduit */
 }
 
 .etape-timeline {
     position: relative;
-    margin-bottom: var(--espace-xlarge);
-    padding-left: var(--espace-large);
+    margin-bottom: var(--espace-large); /* Marge réduite */
+    padding-left: var(--espace-moyen); /* Padding réduit */
 }
 
 .marqueur-timeline {
     position: absolute;
-    left: -2.5rem;
+    left: -1.75rem; /* Position ajustée */
     top: 0;
-    width: 20px;
-    height: 20px;
+    width: 16px; /* Taille réduite */
+    height: 16px;
     border-radius: 50%;
-    border: 4px solid white;
-    box-shadow: 0 0 0 3px;
+    border: 3px solid white; /* Largeur réduite */
+    box-shadow: 0 0 0 2px; /* Ombre réduite */
 }
 
-.etape-college .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-college); background: var(--couleur-college); }
-.etape-lycee .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-lycee); background: var(--couleur-lycee); }
-.etape-cpge .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-cpge); background: var(--couleur-cpge); }
-.etape-licence .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-licence); background: var(--couleur-licence); }
-.etape-master .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-master); background: var(--couleur-master); }
-.etape-doctorat .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-doctorat); background: var(--couleur-doctorat); }
+.etape-college .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-college); background: var(--couleur-college); }
+.etape-lycee .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-lycee); background: var(--couleur-lycee); }
+.etape-cpge .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-cpge); background: var(--couleur-cpge); }
+.etape-licence .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-licence); background: var(--couleur-licence); }
+.etape-master .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-master); background: var(--couleur-master); }
+.etape-doctorat .marqueur-timeline { box-shadow: 0 0 0 2px var(--couleur-doctorat); background: var(--couleur-doctorat); }
 
 /* ========================================================================= */
 /* COMPOSANT BIBLIOTHÈQUE AVEC CATÉGORIES                                    */
@@ -540,27 +541,27 @@ body {
 
 .categories-bibliotheque {
     display: flex;
-    gap: var(--espace-base);
-    margin-bottom: var(--espace-large);
+    gap: var(--espace-petit); /* Espacement réduit */
+    margin-bottom: var(--espace-moyen); /* Marge réduite */
     flex-wrap: wrap;
 }
 
 .bouton-categorie {
-    padding: var(--espace-petit) var(--espace-grand);
-    border: 2px solid var(--couleur-bordure);
+    padding: var(--espace-micro) var(--espace-moyen); /* Padding réduit */
+    border: 1px solid var(--couleur-bordure); /* Largeur réduite */
     background: white;
-    border-radius: var(--espace-mini);
+    border-radius: var(--espace-micro); /* Rayon réduit */
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    font-size: var(--taille-texte-petit);
+    font-size: 0.8rem; /* Taille réduite */
 }
 
 .bouton-categorie.active {
     background: var(--couleur-primaire-1);
     color: white;
     border-color: var(--couleur-primaire-1);
-    transform: translateY(-2px);
+    transform: translateY(-1px); /* Translation réduite */
 }
 
 .bouton-categorie[data-categorie="memoires"]:hover { border-color: var(--couleur-memoire); color: var(--couleur-memoire); }
@@ -574,15 +575,15 @@ body {
 
 @media (max-width: 1200px) {
     :root {
-        --marge-gauche-section: 3rem;
-        --marge-gauche-contenu: 1.5rem;
+        --marge-gauche-section: 2.5rem; /* Réduit */
+        --marge-gauche-contenu: 1rem; /* Réduit */
     }
 }
 
 @media (max-width: 968px) {
     :root {
         --marge-gauche-section: 0;
-        --marge-gauche-contenu: 1rem;
+        --marge-gauche-contenu: 0.75rem; /* Réduit */
     }
     
     body {
@@ -615,12 +616,12 @@ body {
     .menu-academique {
         flex-direction: column;
         position: fixed;
-        top: 74px;
+        top: 63px; /* Ajusté pour la hauteur réduite */
         left: 0;
         width: 100%;
         background: white;
-        padding: var(--espace-grand);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: var(--espace-moyen); /* Padding réduit */
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
@@ -646,7 +647,7 @@ body {
     }
     
     .timeline-academique {
-        margin-left: var(--espace-grand);
+        margin-left: var(--espace-moyen); /* Marge réduite */
     }
     
     .categories-bibliotheque {
@@ -656,18 +657,18 @@ body {
 
 @media (max-width: 480px) {
     :root {
-        --espace-grand: 1.5rem;
-        --espace-large: 2rem;
-        --espace-xlarge: 2.5rem;
+        --espace-grand: 1.25rem; /* Réduit */
+        --espace-large: 1.5rem; /* Réduit */
+        --espace-xlarge: 2rem; /* Réduit */
     }
     
     .conteneur {
-        padding: 0 var(--espace-base);
+        padding: 0 var(--espace-petit); /* Padding réduit */
     }
     
     .carte-niveau,
     .carte-document {
-        padding: var(--espace-grand);
+        padding: var(--espace-petit); /* Padding réduit */
     }
 }
 
