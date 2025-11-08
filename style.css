@@ -63,9 +63,9 @@
     --espace-massif: 8rem;
 
     /* Espaces latéraux étendus */
-    --marge-gauche-section: 3rem; /* Réduit de 4rem à 3rem */
-    --marge-gauche-contenu: 1.5rem; /* Réduit de 2rem à 1.5rem */
-    --marge-gauche-sous-section: 1rem; /* Réduit de 1.5rem à 1rem */
+    --marge-gauche-section: 4rem; /* Réduit de 4rem à 3rem */
+    --marge-gauche-contenu: 2rem; /* Réduit de 2rem à 1.5rem */
+    --marge-gauche-sous-section: 1.5rem; /* Réduit de 1.5rem à 1rem */
 
     /* ==================== TYPOGRAPHIE ÉTENDUE ==================== */
     --police-texte: 'Inter', system-ui, sans-serif;
@@ -718,14 +718,14 @@ body {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-    padding: var(--espace-petit);
+    padding: var(--espace-base);
 }
 
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espace-micro);
+    gap: var(--espace-base);
 }
 
 .logo-top,
