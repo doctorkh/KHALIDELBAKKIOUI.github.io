@@ -4,7 +4,7 @@
 
 :root {
     /* ==================== TAILLES DE LOGOS RÉDUITES ==================== */
-    --taille-logo-hero: 280px;           /* Logo principal réduit */
+    --taille-logo-hero: 120px;           /* Logo principal réduit */
     --taille-logo-section: 120px;        /* Logo section réduit */
     --taille-logo-mini: 60px;            /* Logo miniature */
     --taille-logo-navbar: 40px;          /* Logo navigation */
