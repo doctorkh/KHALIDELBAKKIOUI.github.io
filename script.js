@@ -764,7 +764,7 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS FONCTIONNEL =====
+    // ===== COMPTEUR DE VISITEURS SIMPLIFIÉ =====
     initVisitorCounter() {
         console.log('🔢 Initialisation du compteur de visiteurs...');
         
@@ -780,10 +780,9 @@ class PortfolioApp {
         const sessionKey = 'visitSession';
         
         const totalEl = document.getElementById('total-visitors');
-        const todayEl = document.getElementById('visitor-count');
         const onlineEl = document.getElementById('current-visitors');
         
-        if (!totalEl || !todayEl || !onlineEl) {
+        if (!totalEl || !onlineEl) {
             console.warn('❌ Éléments du compteur non trouvés');
             return;
         }
@@ -791,7 +790,7 @@ class PortfolioApp {
         let stats = this.getStats(storageKey);
         this.handleCurrentVisit(stats, sessionKey);
         this.saveStats(storageKey, stats);
-        this.displayCounters(stats, totalEl, todayEl, onlineEl);
+        this.displayCounters(stats, totalEl, onlineEl);
         this.startCounterUpdates(storageKey, sessionKey);
         
         console.log('✅ Compteur de visiteurs initialisé');
@@ -802,23 +801,15 @@ class PortfolioApp {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                const today = new Date().toDateString();
-                
-                if (stats.lastDate !== today) {
-                    stats.today = 0;
-                    stats.lastDate = today;
-                }
-                
                 return stats;
             }
         } catch (e) {
             console.error('Erreur lecture stats:', e);
         }
         
+        // Stats par défaut
         return {
             total: 15,
-            today: 3,
-            lastDate: new Date().toDateString(),
             visits: [],
             firstVisit: new Date().toISOString()
         };
@@ -834,40 +825,37 @@ class PortfolioApp {
 
     handleCurrentVisit(stats, sessionKey) {
         const now = new Date();
-        const today = now.toDateString();
         const sessionId = sessionStorage.getItem(sessionKey);
         
-        if (stats.lastDate !== today) {
-            stats.today = 0;
-            stats.lastDate = today;
-        }
-        
+        // Vérifier si nouvelle visite dans cette session
         if (!sessionId) {
             const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             sessionStorage.setItem(sessionKey, newSessionId);
             
+            // Incrémenter le compteur total
             stats.total++;
-            stats.today++;
             
+            // Ajouter à l'historique
             stats.visits.push({
                 sessionId: newSessionId,
-                timestamp: now.toISOString(),
-                date: today
+                timestamp: now.toISOString()
             });
             
+            // Garder seulement les 50 dernières visites
             if (stats.visits.length > 50) {
                 stats.visits = stats.visits.slice(-50);
             }
             
-            console.log('🆕 Nouvelle visite - Total:', stats.total, 'Aujourd\'hui:', stats.today);
+            console.log('🆕 Nouvelle visite - Total:', stats.total);
         }
     }
 
-    displayCounters(stats, totalEl, todayEl, onlineEl) {
+    displayCounters(stats, totalEl, onlineEl) {
+        // Calculer les utilisateurs en ligne
         const onlineCount = this.calculateOnlineUsers(stats);
         
+        // Mettre à jour les compteurs avec animation
         this.updateCounter(totalEl, stats.total);
-        this.updateCounter(todayEl, stats.today);
         this.updateCounter(onlineEl, onlineCount);
     }
 
@@ -876,6 +864,7 @@ class PortfolioApp {
         
         const current = parseInt(element.textContent) || 0;
         
+        // Animation simple si changement
         if (current !== target) {
             element.style.transform = 'scale(1.1)';
             setTimeout(() => {
@@ -892,26 +881,28 @@ class PortfolioApp {
         const fifteenMinutesAgo = now - (15 * 60 * 1000);
         
         try {
+            // Compter les sessions actives (visites dans les 15 dernières minutes)
             const activeSessions = stats.visits.filter(visit => {
                 const visitTime = new Date(visit.timestamp).getTime();
                 return (now - visitTime) < fifteenMinutesAgo;
             });
             
+            // Retourner au moins 1 (l'utilisateur actuel)
             return Math.max(1, activeSessions.length);
         } catch (e) {
-            return 1;
+            return 1; // Valeur par défaut en cas d'erreur
         }
     }
 
     startCounterUpdates(storageKey, sessionKey) {
+        // Mettre à jour les compteurs toutes les 30 secondes
         this.visitorInterval = setInterval(() => {
             const stats = this.getStats(storageKey);
             const totalEl = document.getElementById('total-visitors');
-            const todayEl = document.getElementById('visitor-count');
             const onlineEl = document.getElementById('current-visitors');
             
-            if (totalEl && todayEl && onlineEl) {
-                this.displayCounters(stats, totalEl, todayEl, onlineEl);
+            if (totalEl && onlineEl) {
+                this.displayCounters(stats, totalEl, onlineEl);
             }
         }, 30000);
     }
@@ -926,6 +917,7 @@ class PortfolioApp {
         const updateDateTime = () => {
             const now = new Date();
             
+            // Formater la date en français
             const dateOptions = {
                 weekday: 'long',
                 year: 'numeric',
@@ -933,6 +925,7 @@ class PortfolioApp {
                 day: 'numeric'
             };
             
+            // Formater l'heure
             const timeOptions = {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -943,6 +936,7 @@ class PortfolioApp {
             const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
             const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
             
+            // Mettre à jour les éléments
             const dateEl = document.getElementById('current-date');
             const timeEl = document.getElementById('current-time');
             
@@ -956,13 +950,16 @@ class PortfolioApp {
             }
         };
         
+        // Mettre à jour immédiatement
         updateDateTime();
         
+        // Mettre à jour chaque seconde
         this.dateTimeInterval = setInterval(updateDateTime, 1000);
         
         console.log('✅ Date/heure initialisée');
     }
 
+    // ===== MÉTHODE UTILITAIRE POUR CAPITALISER =====
     capitalizeFirst(str) {
         return str.replace(/\b\w/g, l => l.toUpperCase());
     }
