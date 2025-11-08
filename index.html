@@ -17,7 +17,7 @@
             <div class="nav-logo">
                 <h2>Lycée Moulay Al Hassan (LMH) -Tanger-</h2>
             </div>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="#accueil" class="nav-link"><i class="fas fa-home"></i> Accueil</a></li>
                 <li><a href="#profil" class="nav-link"><i class="fas fa-user"></i> Profil</a></li>
                 <li><a href="#formation" class="nav-link"><i class="fas fa-graduation-cap"></i> Formation</a></li>
@@ -27,11 +27,11 @@
                 <li><a href="#documents" class="nav-link"><i class="fas fa-folder"></i> Documents</a></li>
                 <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            <div class="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
@@ -39,31 +39,31 @@
     <section id="accueil" class="hero">
         <div class="hero-container">
             <!-- Barre d'information supérieure AMÉLIORÉE & ACCESSIBLE -->
-<div class="hero-info-bar">
-    <div class="hero-info-container">
-        <div class="info-item">
-            <i class="far fa-calendar-alt"></i>
-            <span id="current-date" aria-live="polite">--/--/----</span>
-        </div>
-        <div class="info-item">
-            <i class="far fa-clock"></i>
-            <span id="current-time" aria-live="polite">--:--:--</span>
-        </div>
+            <div class="hero-info-bar">
+                <div class="hero-info-container">
+                    <div class="info-item">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date" aria-live="polite">--/--/----</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-clock"></i>
+                        <span id="current-time" aria-live="polite">--:--:--</span>
+                    </div>
 
-        <div class="visitor-stats">
-            <div class="info-item">
-                <i class="fas fa-chart-line"></i>
-                <span id="total-visitors" class="counter" aria-live="polite">0</span>
-                <span class="label">visites totales</span>
+                    <div class="visitor-stats">
+                        <div class="info-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="total-visitors" class="counter" aria-live="polite">0</span>
+                            <span class="label">visites totales</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-eye"></i>
+                            <span id="current-visitors" class="counter" aria-live="polite">1</span>
+                            <span class="label">en ligne</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="info-item">
-                <i class="fas fa-eye"></i>
-                <span id="current-visitors" class="counter" aria-live="polite">1</span>
-                <span class="label">en ligne</span>
-            </div>
-        </div>
-    </div>
-</div>
 
             <!-- Contenu principal -->
             <div class="hero-main-content">
@@ -570,225 +570,225 @@
                 </div>
                 <div class="tab-content">
                     <!-- PSI -->
-<div class="tab-pane active" id="psi" aria-labelledby="psi-tab" aria-hidden="false">
-    <div class="enseignement-grid">
-        <div class="ressource-category">
-            <h3><i class="fas fa-book"></i> Cahier de texte</h3>
-            <a href="documents/enseignement/psi/cahier-texte.pdf" class="download-btn" download>
-                <i class="fas fa-download"></i>
-            </a>
-        </div>
-        <div class="ressource-category">
-            <h3><i class="fas fa-book"></i> Cours Complets</h3>
-            <div class="ressources-list">
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Algèbre Linéaire - PSI</h4>
-                        <p>Cours complet avec exercices d'application</p>
-                        <span class="file-size">PDF - 2.1 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-algebre-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Analyse Avancée - PSI</h4>
-                        <p>Suites, séries, intégrales et équations différentielles</p>
-                        <span class="file-size">PDF - 3.4 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-analyse-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Probabilités - PSI</h4>
-                        <p>Dénombrements, Espaces probabilisés, Variables et couple aléatoires</p>
-                        <span class="file-size">PDF - 3.4 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-probabilites-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="ressource-category">
-            <h3><i class="fas fa-pencil-alt"></i> Travaux Dirigés</h3>
-            <div class="td-grid">
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td1.pdf" class="download-btn" download>TD 1</a>
-                    <span class="td-title">Espaces vectoriels rappels et compléments</span>
-                </div>
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td2.pdf" class="download-btn" download>TD 2,3</a>
-                    <span class="td-title">Applications et formes linéaires rappels et compléments</span>
-                </div>
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td4.pdf" class="download-btn" download>TD 4</a>
-                    <span class="td-title">Calculs matriciels rappels et compléments</span>
-                </div>
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td5.pdf" class="download-btn" download>TD 5</a>
-                    <span class="td-title">Determinants</span>
-                </div>
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td6.pdf" class="download-btn" download>TD 6</a>
-                    <span class="td-title">Réductions d'endomorphismes</span>
-                </div>
-                <div class="td-item">
-                    <a href="documents/enseignement/psi/td7.pdf" class="download-btn" download>TD 7,8</a>
-                    <span class="td-title">Espaces vectoriels normés</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="ressource-category">
-            <h3><i class="fas fa-tasks"></i> Devoirs en temps limité</h3>
-            <div class="ds-container">
-                <div class="ds-item">
-                    <div class="ds-header">
-                        <span class="ds-title">DS 1 : Algèbre linéaire avancée - Espaces vectoriels, matrices et endomorphismes</span>
-                    </div>
-                    <div class="ds-buttons">
-                        <a href="documents/enseignement/psi/ds1-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> Sujet
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-ds1-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-                <div class="ds-item">
-                    <div class="ds-header">
-                        <span class="ds-title">DS 2 : Des événements à venir</span>
-                    </div>
-                    <div class="ds-buttons">
-                        <a href="documents/enseignement/psi/ds2-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> Sujet
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-ds2-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <div class="tab-pane active" id="psi" aria-labelledby="psi-tab" aria-hidden="false">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cahier de texte</h3>
+                                <a href="documents/enseignement/psi/cahier-texte.pdf" class="download-btn" download>
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets</h3>
+                                <div class="ressources-list">
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div class="ressource-info">
+                                            <h4>Algèbre Linéaire - PSI</h4>
+                                            <p>Cours complet avec exercices d'application</p>
+                                            <span class="file-size">PDF - 2.1 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-algebre-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div class="ressource-info">
+                                            <h4>Analyse Avancée - PSI</h4>
+                                            <p>Suites, séries, intégrales et équations différentielles</p>
+                                            <span class="file-size">PDF - 3.4 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-analyse-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div class="ressource-info">
+                                            <h4>Probabilités - PSI</h4>
+                                            <p>Dénombrements, Espaces probabilisés, Variables et couple aléatoires</p>
+                                            <span class="file-size">PDF - 3.4 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-probabilites-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-pencil-alt"></i> Travaux Dirigés</h3>
+                                <div class="td-grid">
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td1.pdf" class="download-btn" download>TD 1</a>
+                                        <span class="td-title">Espaces vectoriels rappels et compléments</span>
+                                    </div>
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td2.pdf" class="download-btn" download>TD 2,3</a>
+                                        <span class="td-title">Applications et formes linéaires rappels et compléments</span>
+                                    </div>
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td4.pdf" class="download-btn" download>TD 4</a>
+                                        <span class="td-title">Calculs matriciels rappels et compléments</span>
+                                    </div>
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td5.pdf" class="download-btn" download>TD 5</a>
+                                        <span class="td-title">Determinants</span>
+                                    </div>
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td6.pdf" class="download-btn" download>TD 6</a>
+                                        <span class="td-title">Réductions d'endomorphismes</span>
+                                    </div>
+                                    <div class="td-item">
+                                        <a href="documents/enseignement/psi/td7.pdf" class="download-btn" download>TD 7,8</a>
+                                        <span class="td-title">Espaces vectoriels normés</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-tasks"></i> Devoirs en temps limité</h3>
+                                <div class="ds-container">
+                                    <div class="ds-item">
+                                        <div class="ds-header">
+                                            <span class="ds-title">DS 1 : Algèbre linéaire avancée - Espaces vectoriels, matrices et endomorphismes</span>
+                                        </div>
+                                        <div class="ds-buttons">
+                                            <a href="documents/enseignement/psi/ds1-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> Sujet
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-ds1-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ds-item">
+                                        <div class="ds-header">
+                                            <span class="ds-title">DS 2 : Des événements à venir</span>
+                                        </div>
+                                        <div class="ds-buttons">
+                                            <a href="documents/enseignement/psi/ds2-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> Sujet
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-ds2-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="ressource-category">
-            <h3><i class="fas fa-tasks"></i> Devoirs en temps libre</h3>
-            <div class="dm-container">
-                <div class="dm-item">
-                    <div class="dm-header">
-                        <span class="dm-title">DL1: Deux problèmes: Polynôme de légende et splines cubiques</span>
-                    </div>
-                    <div class="dm-buttons">
-                        <a href="documents/enseignement/psi/dm1-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> DM 1
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-dm1-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-                <div class="dm-item">
-                    <div class="dm-header">
-                        <span class="dm-title">DL2: Problème : Suites récurrentes linéaires d'ordre 2</span>
-                    </div>
-                    <div class="dm-buttons">
-                        <a href="documents/enseignement/psi/dm2-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> DM 2
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-dm2-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-                <div class="dm-item">
-                    <div class="dm-header">
-                        <span class="dm-title">DL3: Problème : Racines carrées d’endomorphismes</span>
-                    </div>
-                    <div class="dm-buttons">
-                        <a href="documents/enseignement/psi/dm3-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> DM 3
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-dm3-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-tasks"></i> Devoirs en temps libre</h3>
+                                <div class="dm-container">
+                                    <div class="dm-item">
+                                        <div class="dm-header">
+                                            <span class="dm-title">DL1: Deux problèmes: Polynôme de légende et splines cubiques</span>
+                                        </div>
+                                        <div class="dm-buttons">
+                                            <a href="documents/enseignement/psi/dm1-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> DM 1
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-dm1-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="dm-item">
+                                        <div class="dm-header">
+                                            <span class="dm-title">DL2: Problème : Suites récurrentes linéaires d'ordre 2</span>
+                                        </div>
+                                        <div class="dm-buttons">
+                                            <a href="documents/enseignement/psi/dm2-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> DM 2
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-dm2-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="dm-item">
+                                        <div class="dm-header">
+                                            <span class="dm-title">DL3: Problème : Racines carrées d'endomorphismes</span>
+                                        </div>
+                                        <div class="dm-buttons">
+                                            <a href="documents/enseignement/psi/dm3-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> DM 3
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-dm3-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="ressource-category">
-            <h3><i class="fas fa-tasks"></i> Interrogations de cours</h3>
-            <div class="dm-container">
-                <div class="dm-item">
-                    <div class="dm-header">
-                        <span class="dm-title">Interrogation 1: Algèbre linéaire</span>
-                    </div>
-                    <div class="dm-buttons">
-                        <a href="documents/enseignement/psi/interro1-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> INTERRO 1
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-interro1-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-                <div class="dm-item">
-                    <div class="dm-header">
-                        <span class="dm-title">Interrogation 2: </span>
-                    </div>
-                    <div class="dm-buttons">
-                        <a href="documents/enseignement/psi/interro2-psi.pdf" class="download-btn" download>
-                            <i class="fas fa-download"></i> INTERRO 2
-                        </a>
-                        <a href="documents/enseignement/psi/corrige-interro2-psi.pdf" class="download-btn corrige-btn" download>
-                            <i class="fas fa-check-circle"></i> Corrigé
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-tasks"></i> Interrogations de cours</h3>
+                                <div class="dm-container">
+                                    <div class="dm-item">
+                                        <div class="dm-header">
+                                            <span class="dm-title">Interrogation 1: Algèbre linéaire</span>
+                                        </div>
+                                        <div class="dm-buttons">
+                                            <a href="documents/enseignement/psi/interro1-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> INTERRO 1
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-interro1-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="dm-item">
+                                        <div class="dm-header">
+                                            <span class="dm-title">Interrogation 2: </span>
+                                        </div>
+                                        <div class="dm-buttons">
+                                            <a href="documents/enseignement/psi/interro2-psi.pdf" class="download-btn" download>
+                                                <i class="fas fa-download"></i> INTERRO 2
+                                            </a>
+                                            <a href="documents/enseignement/psi/corrige-interro2-psi.pdf" class="download-btn corrige-btn" download>
+                                                <i class="fas fa-check-circle"></i> Corrigé
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="ressource-category">
-            <h3><i class="fas fa-flask"></i> Travaux Pratiques</h3>
-            <div class="ressources-list">
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>TP Python - PSI</h4>
-                        <p>Implémentation d'algorithmes mathématiques</p>
-                        <span class="file-size">PDF - 1.5 MB</span>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-flask"></i> Travaux Pratiques</h3>
+                                <div class="ressources-list">
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div class="ressource-info">
+                                            <h4>TP Python - PSI</h4>
+                                            <p>Implémentation d'algorithmes mathématiques</p>
+                                            <span class="file-size">PDF - 1.5 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/tp-python-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-flask"></i> Colles</h3>
+                                <div class="ressources-list">
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div class="ressource-info">
+                                            <h4>Colles - PSI</h4>
+                                            <p>Fichier de colle</p>
+                                            <span class="file-size">PDF - 1.5 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/colle-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <a href="documents/enseignement/psi/tp-python-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="ressource-category">
-            <h3><i class="fas fa-flask"></i> Colles</h3>
-            <div class="ressources-list">
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Colles - PSI</h4>
-                        <p>Fichier de colle</p>
-                        <span class="file-size">PDF - 1.5 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/colle-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
                     
                     <!-- Les autres filières suivent la même structure -->
                     <div class="tab-pane" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="true">
@@ -870,7 +870,7 @@
                                     <a href="documents/these/these-francais.pdf" class="btn-download" download>
                                         <i class="fas fa-download"></i> Télécharger
                                     </a>
-                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank>
+                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank">
                                         <i class="fas fa-eye"></i> Aperçu
                                     </a>
                                 </div>
@@ -892,7 +892,7 @@
                                     <a href="documents/these/thesis-english.pdf" class="btn-download" download>
                                         <i class="fas fa-download"></i> Download
                                     </a>
-                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank>
+                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank">
                                         <i class="fas fa-eye"></i> Preview
                                     </a>
                                 </div>
@@ -914,7 +914,7 @@
                                     <a href="documents/these/diapositives.pdf" class="btn-download" download>
                                         <i class="fas fa-download"></i> Télécharger
                                     </a>
-                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank>
+                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank">
                                         <i class="fas fa-eye"></i> Aperçu
                                     </a>
                                 </div>
@@ -964,68 +964,43 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
-    <div class="documents-grid">
-        <!-- VOTRE LIVRE - Mettez-le en premier -->
-        <div class="doc-card book-featured">
-            <div class="doc-icon">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="doc-content">
-                <h3>Spacial Subgroups of the General Linear Group</h3>
-                <p>Mon livre publié sur les sous-groupes spatiaux du groupe linéaire général</p>
-                <div class="doc-meta">
-                    <span><i class="fas fa-calendar"></i> 2025</span>
-                    <span><i class="fas fa-language"></i> English</span>
-                    <span><i class="fas fa-file-alt"></i> 124 pages</span>
-                    <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-19243-2</span>
-                </div>
-                <div class="book-offer">
-                    <span class="offer-badge">🚀 Offre de lancement</span>
-                    <div class="countdown-small">
-                        <span>Offre spéciale limitée dans le temps</span>
+                        <div class="documents-grid">
+                            <!-- VOTRE LIVRE - Mettez-le en premier -->
+                            <div class="doc-card book-featured">
+                                <div class="doc-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Spacial Subgroups of the General Linear Group</h3>
+                                    <p>Mon livre publié sur les sous-groupes spatiaux du groupe linéaire général</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2025</span>
+                                        <span><i class="fas fa-language"></i> English</span>
+                                        <span><i class="fas fa-file-alt"></i> 124 pages</span>
+                                        <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-19243-2</span>
+                                    </div>
+                                    <div class="book-offer">
+                                        <span class="offer-badge">🚀 Offre de lancement</span>
+                                        <div class="countdown-small">
+                                            <span>Offre spéciale limitée dans le temps</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                                       class="btn-buy" 
+                                       target="_blank">
+                                        <i class="fas fa-shopping-cart"></i> Acheter
+                                    </a>
+                                    <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                                       class="btn-preview" 
+                                       target="_blank">
+                                        <i class="fas fa-external-link-alt"></i> Voir
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="doc-actions">
-                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
-                   class="btn-buy" 
-                   target="_blank">
-                    <i class="fas fa-shopping-cart"></i> Acheter
-                </a>
-                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
-                   class="btn-preview" 
-                   target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Voir
-                </a>
-            </div>
-        </div>
-
-        <!-- LIVRE EXISTANT - DÉSACTIVÉ POUR LE MOMENT -->
-        <!-- 
-        <div class="doc-card">
-            <div class="doc-icon">
-                <i class="fas fa-book"></i>
-            </div>
-            <div class="doc-content">
-                <h3>Mathématiques</h3>
-                <p>Manuel complet de mathématiques</p>
-                <div class="doc-meta">
-                    <span><i class="fas fa-calendar"></i> 2024</span>
-                    <span><i class="fas fa-file-pdf"></i> PDF - 5.2 MB</span>
-                    <span><i class="fas fa-pages"></i> 245 pages</span>
-                </div>
-            </div>
-            <div class="doc-actions">
-                <a href="documents/livres/groupe-lineaire.pdf" class="btn-download" download>
-                    <i class="fas fa-download"></i> Télécharger
-                </a>
-            </div>
-        </div>
-        -->
-
-        <!-- Vous pouvez ajouter d'autres livres ici -->
-    </div>
-</div>
                 </div>
             </div>
         </div>
@@ -1099,9 +1074,9 @@
                     <p>Mathématicien • Enseignant CPGE • Chercheur en Probabilités</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
-                    <a href="#" title="Google Scholar"><i class="fab fa-google-scholar"></i></a>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://researchgate.net/profile/votre-profil" target="_blank" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
+                    <a href="https://scholar.google.com/citations?user=votre-id" target="_blank" title="Google Scholar"><i class="fab fa-google-scholar"></i></a>
                     <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
@@ -1116,6 +1091,7 @@
     <button id="backToTop" class="back-to-top">
         <i class="fas fa-chevron-up"></i>
     </button>
- <script src="script.js"></script>   
+    
+    <script src="script.js"></script>   
 </body>
 </html>
