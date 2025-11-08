@@ -254,7 +254,7 @@
 
 @media (max-width: 1024px) {
     :root {
-        --taille-logo-hero: 220px;
+        --taille-logo-hero: 100px;
         --taille-logo-section: 100px;
         --taille-logo-mini: 50px;
     }
@@ -266,7 +266,7 @@
 
 @media (max-width: 768px) {
     :root {
-        --taille-logo-hero: 180px;
+        --taille-logo-hero: 100px;
         --taille-logo-section: 80px;
         --taille-logo-footer: 60px;
         --taille-logo-navbar: 32px;
@@ -289,7 +289,7 @@
 
 @media (max-width: 480px) {
     :root {
-        --taille-logo-hero: 140px;
+        --taille-logo-hero: 100px;
         --taille-logo-section: 60px;
         --taille-logo-mini: 40px;
     }
