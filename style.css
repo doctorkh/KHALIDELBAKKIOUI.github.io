@@ -710,22 +710,22 @@ body {
 }
 /*   ce qui j'ai ajouter
 /* ========================================================================= */
-/* HERO SECTION AVEC LOGOS TAILLE STANDARD                                  */
+/* HERO SECTION AVEC LOGOS TAILLE GRANDE                                    */
 /* ========================================================================= */
 
 .hero-image {
     position: relative;
     width: 100%;
-    max-width: 600px; /* Largeur normale */
+    max-width: 800px;
     margin: 0 auto;
-    padding: var(--espace-base);
+    padding: var(--espace-moyen);
 }
 
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espace-base); /* Espacement normal */
+    gap: var(--espace-moyen);
 }
 
 .logo-top,
@@ -737,7 +737,7 @@ body {
 }
 
 .logo-image {
-    max-width: 250px; /* Taille normale et visible */
+    max-width: 350px; /* Grande taille */
     height: auto;
     object-fit: contain;
     transition: transform 0.3s ease;
@@ -749,20 +749,20 @@ body {
 
 @media (max-width: 768px) {
     .hero-image {
-        max-width: 500px;
+        max-width: 600px;
     }
     
     .logo-image {
-        max-width: 200px;
+        max-width: 280px;
     }
 }
 
 @media (max-width: 480px) {
     .hero-image {
-        max-width: 400px;
+        max-width: 500px;
     }
     
     .logo-image {
-        max-width: 150px;
+        max-width: 200px;
     }
 }
