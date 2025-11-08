@@ -710,22 +710,22 @@ body {
 }
 /*   ce qui j'ai ajouter
 /* ========================================================================= */
-/* HERO SECTION AVEC LOGOS RÉDUITS                                          */
+/* HERO SECTION AVEC LOGOS ULTRA-COMPACTS                                   */
 /* ========================================================================= */
 
 .hero-image {
     position: relative;
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
     margin: 0 auto;
-    padding: var(--espace-petit);
+    padding: var(--espace-micro);
 }
 
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espace-micro);
+    gap: 0.25rem;
 }
 
 .logo-top,
@@ -737,32 +737,28 @@ body {
 }
 
 .logo-image {
-    max-width: 150px;
+    max-width: 80px;
     height: auto;
     object-fit: contain;
-    transition: transform 0.3s ease;
-}
-
-.logo-image:hover {
-    transform: scale(1.02);
+    filter: brightness(1.05);
 }
 
 @media (max-width: 768px) {
-    .hero-image {
-        max-width: 300px;
-    }
-    
-    .logo-image {
-        max-width: 120px;
-    }
-}
-
-@media (max-width: 480px) {
     .hero-image {
         max-width: 250px;
     }
     
     .logo-image {
-        max-width: 100px;
+        max-width: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-image {
+        max-width: 200px;
+    }
+    
+    .logo-image {
+        max-width: 60px;
     }
 }
