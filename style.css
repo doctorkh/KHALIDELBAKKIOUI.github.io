@@ -722,10 +722,11 @@ body {
 
 .hero-image {
     position: relative;
-    width: 200%;
+    width: 100%; /* Corrigé de 200% à 100% */
     max-width: 1600px;
     margin: 0 auto;
     padding: var(--espace-moyen);
+    overflow: hidden; /* Empêche le débordement lors du hover */
 }
 
 .logo-container {
@@ -740,30 +741,22 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200%;
+    width: 100%; /* Corrigé de 200% à 100% */
 }
 
 .logo-image {
     max-width: 700px; /* Grande taille */
+    width: 100%; /* Responsive */
     height: auto;
     object-fit: contain;
     transition: transform 0.3s ease;
 }
 
 .logo-image:hover {
-    transform: scale(2.05);
+    transform: scale(1.05); /* Réduit de 2.05 à 1.05 pour être plus raisonnable */
 }
 
-@media (max-width: 768px) {
-    .hero-image {
-        max-width: 1200px;
-    }
-    
-    .logo-image {
-        max-width: 560px;
-    }
-}
-
+/* Réorganisation des media queries pour mobile-first */
 @media (max-width: 960px) {
     .hero-image {
         max-width: 1000px;
@@ -771,6 +764,32 @@ body {
     
     .logo-image {
         max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-image {
+        max-width: 100%;
+        padding: var(--espace-petit); /* Padding réduit sur mobile */
+    }
+    
+    .logo-image {
+        max-width: 300px; /* Taille plus adaptée pour mobile */
+    }
+    
+    .logo-image:hover {
+        transform: scale(1.02); /* Effet plus subtil sur mobile */
+    }
+}
+
+/* Ajout pour les très petits écrans */
+@media (max-width: 480px) {
+    .logo-image {
+        max-width: 250px;
+    }
+    
+    .logo-container {
+        gap: var(--espace-petit);
     }
 }
 
