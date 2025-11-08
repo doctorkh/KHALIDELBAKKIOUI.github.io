@@ -6,6 +6,8 @@ class PortfolioApp {
         this.isScrolling = false;
         this.lastScrollTop = 0;
         this.currentTheme = 'light';
+        this.dateTimeInterval = null;
+        this.visitorInterval = null;
         this.init();
     }
 
@@ -35,7 +37,7 @@ class PortfolioApp {
         this.initImageLazyLoading();
         this.initKeyboardNavigation();
         this.initAccessibility();
-        this.initAllButtons(); // NOUVEAU: Initialisation de tous les boutons
+        this.initAllButtons();
     }
 
     // ===== INITIALISATION ET CONFIGURATION =====
@@ -79,34 +81,29 @@ class PortfolioApp {
             return;
         }
 
-        // Toggle menu mobile
         navToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleMobileMenu(navMenu, navToggle);
         });
 
-        // Fermer le menu en cliquant à l'extérieur
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-container')) {
                 this.closeMobileMenu(navMenu, navToggle);
             }
         });
 
-        // Fermer le menu au redimensionnement
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 this.closeMobileMenu(navMenu, navToggle);
             }
         });
 
-        // Navigation clavier dans le menu mobile
         navMenu.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeMobileMenu(navMenu, navToggle);
             }
         });
 
-        // Animation navbar au scroll
         if (navbar) {
             this.handleNavbarScroll(navbar);
             window.addEventListener('scroll', () => this.handleNavbarScroll(navbar), { passive: true });
@@ -165,10 +162,7 @@ class PortfolioApp {
             '.experience-tabs',
             '.research-tabs', 
             '.filiere-tabs',
-            '.documents-tabs',
-            '.conferences-tabs',
-            '.livres-tabs',
-            '.memoires-tabs'
+            '.documents-tabs'
         ];
 
         tabContainers.forEach(selector => {
@@ -188,11 +182,9 @@ class PortfolioApp {
         console.log(`📁 ${tabButtons.length} boutons trouvés dans`, container.className);
 
         tabButtons.forEach(button => {
-            // Supprimer les anciens écouteurs
             button.replaceWith(button.cloneNode(true));
         });
 
-        // Référencer à nouveau après le clone
         const newTabButtons = container.querySelectorAll('.tab-button');
 
         newTabButtons.forEach(button => {
@@ -215,7 +207,6 @@ class PortfolioApp {
             });
         });
 
-        // Activer le premier onglet par défaut
         if (newTabButtons.length > 0) {
             const firstButton = newTabButtons[0];
             const firstTabId = firstButton.getAttribute('data-tab');
@@ -228,31 +219,24 @@ class PortfolioApp {
     switchTab(container, button, tabButtons, tabPanes, tabId) {
         console.log('🔄 Changement vers onglet:', tabId);
 
-        // Désactiver tous les boutons
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
         });
 
-        // Désactiver tous les panneaux
         tabPanes.forEach(pane => {
             pane.classList.remove('active');
             pane.setAttribute('aria-hidden', 'true');
         });
 
-        // Activer le bouton cliqué
         button.classList.add('active');
         button.setAttribute('aria-selected', 'true');
 
-        // Activer le panneau correspondant
         const activePane = document.getElementById(tabId);
         if (activePane) {
             activePane.classList.add('active');
             activePane.setAttribute('aria-hidden', 'false');
-            
-            // Animation
             activePane.style.animation = 'fadeInUp 0.4s ease-out';
-            
             console.log('✅ Onglet activé:', tabId);
         } else {
             console.error('❌ Panneau non trouvé:', tabId);
@@ -263,28 +247,17 @@ class PortfolioApp {
     initAllButtons() {
         console.log('🔘 Initialisation de tous les boutons spécifiques...');
         
-        // Boutons ECT1, ECT2, ECS1, ECS2, MPSI
         this.initFiliereButtons();
-        
-        // Boutons conférences
         this.initConferenceButtons();
-        
-        // Boutons livres
         this.initLivreButtons();
-        
-        // Boutons mémoires
         this.initMemoireButtons();
-        
-        // Boutons généraux
         this.initGeneralButtons();
         
         console.log('✅ Tous les boutons initialisés');
     }
 
     initFiliereButtons() {
-        const filiereButtons = [
-            'ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI'
-        ];
+        const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI'];
         
         filiereButtons.forEach(filiere => {
             const buttons = document.querySelectorAll(`.btn-${filiere.toLowerCase()}, [data-filiere="${filiere}"]`);
@@ -332,7 +305,6 @@ class PortfolioApp {
     }
 
     initGeneralButtons() {
-        // Boutons de téléchargement
         const downloadButtons = document.querySelectorAll('.btn-download, [download]');
         downloadButtons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -342,7 +314,6 @@ class PortfolioApp {
             });
         });
 
-        // Boutons de vue
         const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
         viewButtons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -357,13 +328,11 @@ class PortfolioApp {
     handleFiliereClick(filiere) {
         this.showNotification(`Filière ${filiere} sélectionnée`, 'info', 3000);
         
-        // Scroll vers la section correspondante si elle existe
         const targetSection = document.getElementById(`section-${filiere.toLowerCase()}`);
         if (targetSection) {
             this.scrollToElement(`#section-${filiere.toLowerCase()}`);
         }
         
-        // Déclencher un événement personnalisé
         const event = new CustomEvent('filiereSelected', { 
             detail: { filiere: filiere } 
         });
@@ -374,7 +343,6 @@ class PortfolioApp {
         const conferenceTitle = button.getAttribute('data-title') || button.textContent;
         this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
         
-        // Logique spécifique aux conférences
         const targetId = button.getAttribute('data-target');
         if (targetId) {
             const targetElement = document.getElementById(targetId);
@@ -388,7 +356,6 @@ class PortfolioApp {
         const livreTitle = button.getAttribute('data-title') || button.textContent;
         this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
         
-        // Logique spécifique aux livres
         const url = button.getAttribute('href');
         if (url && !url.startsWith('#')) {
             window.open(url, '_blank');
@@ -399,7 +366,6 @@ class PortfolioApp {
         const memoireTitle = button.getAttribute('data-title') || button.textContent;
         this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
         
-        // Logique spécifique aux mémoires
         const url = button.getAttribute('href');
         if (url) {
             if (url.startsWith('#')) {
@@ -525,7 +491,7 @@ class PortfolioApp {
         const animatables = document.querySelectorAll(
             '.profile-card, .pub-card, .doc-card, .exp-card, ' +
             '.competence-category, .timeline-item, .stat, .ressource-item, ' +
-            '.contact-item, .conf-card, .filiere-card, .livre-card, .memoire-card'
+            '.contact-item, .conf-card'
         );
         
         animatables.forEach(el => {
@@ -798,247 +764,211 @@ class PortfolioApp {
         }
     }
 
-  // ===== COMPTEUR DE VISITEURS FONCTIONNEL =====
-initVisitorCounter() {
-    console.log('🔢 Initialisation du compteur de visiteurs...');
-    
-    // Démarrer la date et heure immédiatement
-    this.startDateTimeUpdates();
-    
-    // Initialiser les compteurs de visiteurs
-    setTimeout(() => {
-        this.setupVisitorCounter();
-    }, 100);
-}
-
-setupVisitorCounter() {
-    const storageKey = 'portfolioStats';
-    const sessionKey = 'visitSession';
-    
-    // Vérifier les éléments
-    const totalEl = document.getElementById('total-visitors');
-    const todayEl = document.getElementById('visitor-count');
-    const onlineEl = document.getElementById('current-visitors');
-    
-    if (!totalEl || !todayEl || !onlineEl) {
-        console.warn('❌ Éléments du compteur non trouvés');
-        return;
-    }
-    
-    // Initialiser ou récupérer les données
-    let stats = this.getStats(storageKey);
-    
-    // Gérer la visite actuelle
-    this.handleCurrentVisit(stats, sessionKey);
-    
-    // Sauvegarder les stats mises à jour
-    this.saveStats(storageKey, stats);
-    
-    // Afficher les compteurs
-    this.displayCounters(stats, totalEl, todayEl, onlineEl);
-    
-    // Démarrer les mises à jour en temps réel
-    this.startCounterUpdates(storageKey, sessionKey);
-    
-    console.log('✅ Compteur de visiteurs initialisé');
-}
-
-getStats(storageKey) {
-    try {
-        const stored = localStorage.getItem(storageKey);
-        if (stored) {
-            const stats = JSON.parse(stored);
-            const today = new Date().toDateString();
-            
-            // Réinitialiser le compteur du jour si changement de date
-            if (stats.lastDate !== today) {
-                stats.today = 0;
-                stats.lastDate = today;
-            }
-            
-            return stats;
-        }
-    } catch (e) {
-        console.error('Erreur lecture stats:', e);
-    }
-    
-    // Stats par défaut
-    return {
-        total: 15,
-        today: 3,
-        lastDate: new Date().toDateString(),
-        visits: [],
-        firstVisit: new Date().toISOString()
-    };
-}
-
-saveStats(storageKey, stats) {
-    try {
-        localStorage.setItem(storageKey, JSON.stringify(stats));
-    } catch (e) {
-        console.error('Erreur sauvegarde stats:', e);
-    }
-}
-
-handleCurrentVisit(stats, sessionKey) {
-    const now = new Date();
-    const today = now.toDateString();
-    const sessionId = sessionStorage.getItem(sessionKey);
-    
-    // Vérifier si nouveau jour
-    if (stats.lastDate !== today) {
-        stats.today = 0;
-        stats.lastDate = today;
-    }
-    
-    // Vérifier si nouvelle visite dans cette session
-    if (!sessionId) {
-        const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem(sessionKey, newSessionId);
+    // ===== COMPTEUR DE VISITEURS FONCTIONNEL =====
+    initVisitorCounter() {
+        console.log('🔢 Initialisation du compteur de visiteurs...');
         
-        // Incrémenter les compteurs
-        stats.total++;
-        stats.today++;
+        this.startDateTimeUpdates();
         
-        // Ajouter à l'historique
-        stats.visits.push({
-            sessionId: newSessionId,
-            timestamp: now.toISOString(),
-            date: today
-        });
-        
-        // Garder seulement les 50 dernières visites
-        if (stats.visits.length > 50) {
-            stats.visits = stats.visits.slice(-50);
-        }
-        
-        console.log('🆕 Nouvelle visite - Total:', stats.total, 'Aujourd\'hui:', stats.today);
-    }
-}
-
-displayCounters(stats, totalEl, todayEl, onlineEl) {
-    // Calculer les utilisateurs en ligne
-    const onlineCount = this.calculateOnlineUsers(stats);
-    
-    // Mettre à jour les compteurs avec animation
-    this.updateCounter(totalEl, stats.total);
-    this.updateCounter(todayEl, stats.today);
-    this.updateCounter(onlineEl, onlineCount);
-}
-
-updateCounter(element, target) {
-    if (!element) return;
-    
-    const current = parseInt(element.textContent) || 0;
-    
-    // Animation simple si changement
-    if (current !== target) {
-        element.style.transform = 'scale(1.1)';
         setTimeout(() => {
-            element.textContent = target;
-            element.style.transform = 'scale(1)';
-        }, 150);
-    } else {
-        element.textContent = target;
+            this.setupVisitorCounter();
+        }, 100);
     }
-}
 
-calculateOnlineUsers(stats) {
-    const now = Date.now();
-    const fifteenMinutesAgo = now - (15 * 60 * 1000);
-    
-    try {
-        // Compter les sessions actives (visites dans les 15 dernières minutes)
-        const activeSessions = stats.visits.filter(visit => {
-            const visitTime = new Date(visit.timestamp).getTime();
-            return (now - visitTime) < fifteenMinutesAgo;
-        });
+    setupVisitorCounter() {
+        const storageKey = 'portfolioStats';
+        const sessionKey = 'visitSession';
         
-        // Retourner au moins 1 (l'utilisateur actuel)
-        return Math.max(1, activeSessions.length);
-    } catch (e) {
-        return 1; // Valeur par défaut en cas d'erreur
-    }
-}
-
-startCounterUpdates(storageKey, sessionKey) {
-    // Mettre à jour les compteurs toutes les 30 secondes
-    setInterval(() => {
-        const stats = this.getStats(storageKey);
         const totalEl = document.getElementById('total-visitors');
         const todayEl = document.getElementById('visitor-count');
         const onlineEl = document.getElementById('current-visitors');
         
-        if (totalEl && todayEl && onlineEl) {
-            this.displayCounters(stats, totalEl, todayEl, onlineEl);
+        if (!totalEl || !todayEl || !onlineEl) {
+            console.warn('❌ Éléments du compteur non trouvés');
+            return;
         }
-    }, 30000);
-}
+        
+        let stats = this.getStats(storageKey);
+        this.handleCurrentVisit(stats, sessionKey);
+        this.saveStats(storageKey, stats);
+        this.displayCounters(stats, totalEl, todayEl, onlineEl);
+        this.startCounterUpdates(storageKey, sessionKey);
+        
+        console.log('✅ Compteur de visiteurs initialisé');
+    }
 
-// ===== MISE À JOUR DATE/HEURE =====
-initDateTimeUpdater() {
-    console.log('🕐 Initialisation date/heure...');
-    this.startDateTimeUpdates();
-}
+    getStats(storageKey) {
+        try {
+            const stored = localStorage.getItem(storageKey);
+            if (stored) {
+                const stats = JSON.parse(stored);
+                const today = new Date().toDateString();
+                
+                if (stats.lastDate !== today) {
+                    stats.today = 0;
+                    stats.lastDate = today;
+                }
+                
+                return stats;
+            }
+        } catch (e) {
+            console.error('Erreur lecture stats:', e);
+        }
+        
+        return {
+            total: 15,
+            today: 3,
+            lastDate: new Date().toDateString(),
+            visits: [],
+            firstVisit: new Date().toISOString()
+        };
+    }
 
-startDateTimeUpdates() {
-    const updateDateTime = () => {
+    saveStats(storageKey, stats) {
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(stats));
+        } catch (e) {
+            console.error('Erreur sauvegarde stats:', e);
+        }
+    }
+
+    handleCurrentVisit(stats, sessionKey) {
         const now = new Date();
+        const today = now.toDateString();
+        const sessionId = sessionStorage.getItem(sessionKey);
         
-        // Formater la date en français
-        const dateOptions = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        if (stats.lastDate !== today) {
+            stats.today = 0;
+            stats.lastDate = today;
+        }
+        
+        if (!sessionId) {
+            const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            sessionStorage.setItem(sessionKey, newSessionId);
+            
+            stats.total++;
+            stats.today++;
+            
+            stats.visits.push({
+                sessionId: newSessionId,
+                timestamp: now.toISOString(),
+                date: today
+            });
+            
+            if (stats.visits.length > 50) {
+                stats.visits = stats.visits.slice(-50);
+            }
+            
+            console.log('🆕 Nouvelle visite - Total:', stats.total, 'Aujourd\'hui:', stats.today);
+        }
+    }
+
+    displayCounters(stats, totalEl, todayEl, onlineEl) {
+        const onlineCount = this.calculateOnlineUsers(stats);
+        
+        this.updateCounter(totalEl, stats.total);
+        this.updateCounter(todayEl, stats.today);
+        this.updateCounter(onlineEl, onlineCount);
+    }
+
+    updateCounter(element, target) {
+        if (!element) return;
+        
+        const current = parseInt(element.textContent) || 0;
+        
+        if (current !== target) {
+            element.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                element.textContent = target;
+                element.style.transform = 'scale(1)';
+            }, 150);
+        } else {
+            element.textContent = target;
+        }
+    }
+
+    calculateOnlineUsers(stats) {
+        const now = Date.now();
+        const fifteenMinutesAgo = now - (15 * 60 * 1000);
+        
+        try {
+            const activeSessions = stats.visits.filter(visit => {
+                const visitTime = new Date(visit.timestamp).getTime();
+                return (now - visitTime) < fifteenMinutesAgo;
+            });
+            
+            return Math.max(1, activeSessions.length);
+        } catch (e) {
+            return 1;
+        }
+    }
+
+    startCounterUpdates(storageKey, sessionKey) {
+        this.visitorInterval = setInterval(() => {
+            const stats = this.getStats(storageKey);
+            const totalEl = document.getElementById('total-visitors');
+            const todayEl = document.getElementById('visitor-count');
+            const onlineEl = document.getElementById('current-visitors');
+            
+            if (totalEl && todayEl && onlineEl) {
+                this.displayCounters(stats, totalEl, todayEl, onlineEl);
+            }
+        }, 30000);
+    }
+
+    // ===== MISE À JOUR DATE/HEURE =====
+    initDateTimeUpdater() {
+        console.log('🕐 Initialisation date/heure...');
+        this.startDateTimeUpdates();
+    }
+
+    startDateTimeUpdates() {
+        const updateDateTime = () => {
+            const now = new Date();
+            
+            const dateOptions = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            
+            const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
+            const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
+            
+            const dateEl = document.getElementById('current-date');
+            const timeEl = document.getElementById('current-time');
+            
+            if (dateEl) {
+                dateEl.textContent = dateStr;
+                dateEl.setAttribute('aria-label', `Date actuelle: ${dateStr}`);
+            }
+            if (timeEl) {
+                timeEl.textContent = timeStr;
+                timeEl.setAttribute('aria-label', `Heure actuelle: ${timeStr}`);
+            }
         };
         
-        // Formater l'heure
-        const timeOptions = {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
+        updateDateTime();
         
-        const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
-        const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
+        this.dateTimeInterval = setInterval(updateDateTime, 1000);
         
-        // Mettre à jour les éléments
-        const dateEl = document.getElementById('current-date');
-        const timeEl = document.getElementById('current-time');
-        
-        if (dateEl) {
-            dateEl.textContent = dateStr;
-            dateEl.setAttribute('aria-label', `Date actuelle: ${dateStr}`);
-        }
-        if (timeEl) {
-            timeEl.textContent = timeStr;
-            timeEl.setAttribute('aria-label', `Heure actuelle: ${timeStr}`);
-        }
-    };
-    
-    // Mettre à jour immédiatement
-    updateDateTime();
-    
-    // Mettre à jour chaque seconde
-    this.dateTimeInterval = setInterval(updateDateTime, 1000);
-    
-    console.log('✅ Date/heure initialisée');
-}
+        console.log('✅ Date/heure initialisée');
+    }
 
-// ===== MÉTHODE UTILITAIRE POUR CAPITALISER =====
-capitalizeFirst(str) {
-    return str.replace(/\b\w/g, l => l.toUpperCase());
-}
+    capitalizeFirst(str) {
+        return str.replace(/\b\w/g, l => l.toUpperCase());
+    }
 
-// ===== MÉTHODE UTILITAIRE POUR FORMATER LES NOMBRES =====
-formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
     // ===== THÈME SOMBRE/CLAIR =====
     initThemeToggle() {
-        // Créer le toggle si inexistant
         if (!document.querySelector('.theme-toggle')) {
             const themeToggle = document.createElement('button');
             themeToggle.className = 'theme-toggle';
@@ -1126,9 +1056,7 @@ formatNumber(num) {
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                // Recréer les observateurs si nécessaire
-            }, 250);
+            resizeTimeout = setTimeout(() => {}, 250);
         }, { passive: true });
     }
 
@@ -1173,10 +1101,10 @@ formatNumber(num) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-    // ===== MÉTHODE UTILITAIRE POUR FORMATER LES NOMBRES =====
+
     formatNumber(num) {
-          return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-     }
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
 
     debounce(func, wait) {
         let timeout;
@@ -1188,6 +1116,16 @@ formatNumber(num) {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    // ===== NETTOYAGE =====
+    destroy() {
+        if (this.dateTimeInterval) {
+            clearInterval(this.dateTimeInterval);
+        }
+        if (this.visitorInterval) {
+            clearInterval(this.visitorInterval);
+        }
     }
 }
 
@@ -1207,28 +1145,6 @@ dynamicStyles.textContent = `
         to {
             opacity: 1;
             transform: translateY(0);
-        }
-    }
-    
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
         }
     }
     
