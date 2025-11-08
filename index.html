@@ -4,101 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Khalid EL BAKKIOUI - Chercheur Mathématicien & Enseignant CPGE</title>
-    <meta name="description" content="Dr. Khalid EL BAKKIOUI - Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE avec 29+ ans d'expérience">
-    <meta name="keywords" content="mathématiques, probabilités, CPGE, enseignement, recherche, systèmes dynamiques">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Meta améliorées pour le SEO -->
+    <meta name="description" content="Dr. Khalid EL BAKKIOUI - Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE avec 29+ ans d'expérience. Publications scientifiques et ressources pédagogiques.">
+    <meta name="keywords" content="mathématiques, probabilités, CPGE, enseignement, recherche, systèmes dynamiques, Tanger, Maroc">
+    <meta name="author" content="Dr. Khalid EL BAKKIOUI">
+    
+    <!-- Open Graph pour les réseaux sociaux -->
+    <meta property="og:title" content="Dr. Khalid EL BAKKIOUI - Chercheur Mathématicien & Enseignant CPGE">
+    <meta property="og:description" content="Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE avec 29+ ans d'expérience">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="documents/favicon.ico">
+    
+    <!-- Préchargement des polices critiques -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Dr. Khalid EL BAKKIOUI",
+        "jobTitle": "Chercheur Mathématicien & Enseignant CPGE",
+        "description": "Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE",
+        "email": "khalid.elbakkioui@etu.uae.ac.ma",
+        "telephone": "+212-661-645-600",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tanger",
+            "addressCountry": "MA"
+        },
+        "alumniOf": [
+            "Université Abdelmalek Essaâdi",
+            "ENS Casablanca",
+            "Université Hassan II"
+        ],
+        "knowsAbout": [
+            "Mathématiques",
+            "Probabilités", 
+            "Systèmes Dynamiques",
+            "Enseignement CPGE"
+        ],
+        "identifier": "ORCID: 0009-0009-4252-4607"
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation Fixe -->
-    <nav id="navbar">
+    <nav id="navbar" aria-label="Navigation principale">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>Lycée Moulay Al Hassan (LMH) -Tanger-</h2>
+                <h2>Lycée Moulay Al Hassan (LMH) - Tanger</h2>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#accueil" class="nav-link"><i class="fas fa-home"></i> Accueil</a></li>
-                <li><a href="#profil" class="nav-link"><i class="fas fa-user"></i> Profil</a></li>
-                <li><a href="#formation" class="nav-link"><i class="fas fa-graduation-cap"></i> Formation</a></li>
-                <li><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i> Expérience</a></li>
-                <li><a href="#recherche" class="nav-link"><i class="fas fa-flask"></i> Recherche</a></li>
-                <li><a href="#enseignement" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Enseignement</a></li>
-                <li><a href="#documents" class="nav-link"><i class="fas fa-folder"></i> Documents</a></li>
-                <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+            
+            <!-- Menu principal -->
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none">
+                    <a href="#accueil" class="nav-link" role="menuitem" aria-current="page">
+                        <i class="fas fa-home" aria-hidden="true"></i> Accueil
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#profil" class="nav-link" role="menuitem">
+                        <i class="fas fa-user" aria-hidden="true"></i> Profil
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#formation" class="nav-link" role="menuitem">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i> Formation
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#experience" class="nav-link" role="menuitem">
+                        <i class="fas fa-briefcase" aria-hidden="true"></i> Expérience
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#recherche" class="nav-link" role="menuitem">
+                        <i class="fas fa-flask" aria-hidden="true"></i> Recherche
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#enseignement" class="nav-link" role="menuitem">
+                        <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i> Enseignement
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#documents" class="nav-link" role="menuitem">
+                        <i class="fas fa-folder" aria-hidden="true"></i> Documents
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#contact" class="nav-link" role="menuitem">
+                        <i class="fas fa-envelope" aria-hidden="true"></i> Contact
+                    </a>
+                </li>
             </ul>
-            <div class="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            
+            <!-- Bouton menu mobile -->
+            <button class="nav-toggle" 
+                    id="nav-toggle"
+                    aria-label="Menu mobile" 
+                    aria-expanded="false" 
+                    aria-controls="nav-menu"
+                    aria-haspopup="true">
+                <span class="hamburger-line" aria-hidden="true"></span>
+                <span class="hamburger-line" aria-hidden="true"></span>
+                <span class="hamburger-line" aria-hidden="true"></span>
+            </button>
         </div>
     </nav>
 
     <!-- Section Accueil -->
-    <section id="accueil" class="hero">
+    <section id="accueil" class="hero" aria-labelledby="hero-title">
         <div class="hero-container">
-            <!-- Barre d'information supérieure AMÉLIORÉE & ACCESSIBLE -->
-<div class="hero-info-bar">
-    <div class="hero-info-container">
-        <div class="info-item">
-            <i class="far fa-calendar-alt"></i>
-            <span id="current-date" aria-live="polite">--/--/----</span>
-        </div>
-        <div class="info-item">
-            <i class="far fa-clock"></i>
-            <span id="current-time" aria-live="polite">--:--:--</span>
-        </div>
+            <!-- Barre d'information supérieure -->
+            <div class="hero-info-bar" role="status" aria-live="polite">
+                <div class="hero-info-container">
+                    <div class="info-item">
+                        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+                        <span id="current-date">--/--/----</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-clock" aria-hidden="true"></i>
+                        <span id="current-time">--:--:--</span>
+                    </div>
 
-        <div class="visitor-stats">
-            <div class="info-item">
-                <i class="fas fa-chart-line"></i>
-                <span id="total-visitors" class="counter" aria-live="polite">0</span>
-                <span class="label">visites totales</span>
+                    <div class="visitor-stats">
+                        <div class="info-item">
+                            <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            <span id="total-visitors" class="counter">0</span>
+                            <span class="label">visites totales</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users" aria-hidden="true"></i>
+                            <span id="visitor-count" class="counter">0</span>
+                            <span class="label">aujourd'hui</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                            <span id="current-visitors" class="counter">1</span>
+                            <span class="label">en ligne</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="info-item">
-                <i class="fas fa-users"></i>
-                <span id="visitor-count" class="counter" aria-live="polite">0</span>
-                <span class="label">aujourd'hui</span>
-            </div>
-            <div class="info-item">
-                <i class="fas fa-eye"></i>
-                <span id="current-visitors" class="counter" aria-live="polite">1</span>
-                <span class="label">en ligne</span>
-            </div>
-        </div>
-    </div>
-</div>
 
             <!-- Contenu principal -->
             <div class="hero-main-content">
                 <!-- Contenu texte -->
                 <div class="hero-content">
-                    <div class="hero-badge">Chercheur & Enseignant CPGE</div>
-                    <h1 class="hero-title">Dr. Khalid <span>EL BAKKIOUI</span></h1>
+                    <span class="hero-badge" role="note">Chercheur & Enseignant CPGE</span>
+                    <h1 id="hero-title" class="hero-title">
+                        Dr. Khalid <span class="highlight">EL BAKKIOUI</span>
+                    </h1>
                     <p class="hero-subtitle">Mathématicien Spécialiste en Probabilités & Systèmes Dynamiques</p>
                     
-                    <div class="hero-contact">
-                        <p><i class="fas fa-envelope"></i> khalid.elbakkioui@etu.uae.ac.ma</p>
-                        <p><i class="fas fa-phone"></i> +212 661 645 600</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Tanger, Maroc</p>
-                        <p><i class="fas fa-id-card"></i> ORCID: 0009-0009-4252-4607</p>
+                    <div class="hero-contact" role="contentinfo">
+                        <p><i class="fas fa-envelope" aria-hidden="true"></i> khalid.elbakkioui@etu.uae.ac.ma</p>
+                        <p><i class="fas fa-phone" aria-hidden="true"></i> +212 661 645 600</p>
+                        <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Tanger, Maroc</p>
+                        <p><i class="fas fa-id-card" aria-hidden="true"></i> ORCID: 0009-0009-4252-4607</p>
                     </div>
                     
-                    <div class="hero-stats">
-                        <div class="stat">
+                    <div class="hero-stats" role="group" aria-label="Statistiques professionnelles">
+                        <div class="stat" role="figure">
                             <h3>29+</h3>
                             <p>Années d'Enseignement</p>
                         </div>
-                        <div class="stat">
+                        <div class="stat" role="figure">
                             <h3>6</h3>
                             <p>Publications</p>
                         </div>
-                        <div class="stat">
+                        <div class="stat" role="figure">
                             <h3>4</h3>
                             <p>Conférences</p>
                         </div>
-                        <div class="stat">
+                        <div class="stat" role="figure">
                             <h3>4</h3>
                             <p>Filières CPGE</p>
                         </div>
@@ -106,10 +199,13 @@
                     
                     <div class="hero-buttons">
                         <a href="#contact" class="btn btn-primary">
-                            <i class="fas fa-envelope"></i> Me Contacter
+                            <i class="fas fa-envelope" aria-hidden="true"></i> Me Contacter
                         </a>
-                        <a href="documents/cv-khalid-elbakkioui.pdf" class="btn btn-secondary" download>
-                            <i class="fas fa-download"></i> Télécharger CV
+                        <a href="documents/cv-khalid-elbakkioui.pdf" 
+                           class="btn btn-secondary" 
+                           download="CV_Khalid_EL_BAKKIOUI.pdf"
+                           aria-label="Télécharger le CV de Dr. Khalid EL BAKKIOUI">
+                            <i class="fas fa-download" aria-hidden="true"></i> Télécharger CV
                         </a>
                     </div>
                 </div>
@@ -118,43 +214,49 @@
                 <div class="hero-image">
                    <div class="logo-container">
                       <div class="logo-top">
-                         <img src="documents/logo_dessus.jpg" alt="Logo supérieur - Dr. Khalid EL BAKKIOUI" class="logo-image">
+                         <img src="documents/logo_dessus.jpg" 
+                              alt="Logo supérieur - Dr. Khalid EL BAKKIOUI" 
+                              class="logo-image"
+                              loading="lazy">
                       </div>
                       <div class="logo-bottom">
-                          <img src="documents/logo_dessous.png" alt="Logo inférieur - Dr. Khalid EL BAKKIOUI" class="logo-image">
+                          <img src="documents/logo_dessous.png" 
+                               alt="Logo inférieur - Dr. Khalid EL BAKKIOUI" 
+                               class="logo-image"
+                               loading="lazy">
                       </div>
                   </div>
                </div>
             </div>
             
             <!-- Indicateur de défilement -->
-            <div class="scroll-indicator">
+            <div class="scroll-indicator" aria-hidden="true">
                 <i class="fas fa-chevron-down"></i>
             </div>
         </div>
     </section>
 
     <!-- Section Profil -->
-    <section id="profil" class="section">
+    <section id="profil" class="section" aria-labelledby="profil-title">
         <div class="container">
-            <h2 class="section-title">Profil Professionnel</h2>
+            <h2 id="profil-title" class="section-title">Profil Professionnel</h2>
             <div class="profile-grid">
-                <div class="profile-card">
-                    <div class="profile-icon">
+                <div class="profile-card" role="article">
+                    <div class="profile-icon" aria-hidden="true">
                         <i class="fas fa-brain"></i>
                     </div>
                     <h3>Expertise Mathématique</h3>
                     <p>Spécialiste en probabilités, statistiques, systèmes dynamiques et analyse stochastique avec applications aux modèles épidémiologiques.</p>
                 </div>
-                <div class="profile-card">
-                    <div class="profile-icon">
+                <div class="profile-card" role="article">
+                    <div class="profile-icon" aria-hidden="true">
                         <i class="fas fa-chalkboard-teacher"></i>
                     </div>
                     <h3>Enseignement CPGE</h3>
                     <p>29+ ans d'expérience dans l'enseignement des mathématiques en CPGE (PSI, MPSI, ECT, ECS, Lycée, Collège).</p>
                 </div>
-                <div class="profile-card">
-                    <div class="profile-icon">
+                <div class="profile-card" role="article">
+                    <div class="profile-icon" aria-hidden="true">
                         <i class="fas fa-researchgate"></i>
                     </div>
                     <h3>Recherche Innovante</h3>
@@ -163,8 +265,8 @@
             </div>
             
             <div class="competences-grid">
-                <div class="competence-category">
-                    <h3><i class="fas fa-laptop-code"></i> Compétences Informatiques</h3>
+                <div class="competence-category" role="region" aria-labelledby="competences-informatiques">
+                    <h3 id="competences-informatiques"><i class="fas fa-laptop-code" aria-hidden="true"></i> Compétences Informatiques</h3>
                     <ul>
                        <li><strong>Environnements :</strong> macOS, Windows</li>
                        <li><strong>Outils mathématiques :</strong> Maple, Scilab, R, Python (NumPy, SciPy, Pandas)</li>
@@ -173,16 +275,16 @@
                        <li><strong>Visualisation :</strong> Matplotlib, Seaborn, ggplot2</li>
                     </ul>
                 </div>
-                <div class="competence-category">
-                    <h3><i class="fas fa-language"></i> Langues</h3>
+                <div class="competence-category" role="region" aria-labelledby="competences-langues">
+                    <h3 id="competences-langues"><i class="fas fa-language" aria-hidden="true"></i> Langues</h3>
                     <ul>
                         <li><strong>Arabe :</strong> Langue maternelle</li>
                         <li><strong>Français :</strong> Courant</li>
                         <li><strong>Anglais :</strong> Maîtrise des concepts fondamentaux et des termes techniques, avec une expérience en rédaction d'articles et de livres</li>
                     </ul>
                 </div>
-                <div class="competence-category">
-                    <h3><i class="fas fa-star"></i> Compétences Transversales</h3>
+                <div class="competence-category" role="region" aria-labelledby="competences-transversales">
+                    <h3 id="competences-transversales"><i class="fas fa-star" aria-hidden="true"></i> Compétences Transversales</h3>
                     <ul>
                         <li>Encadrement d'étudiants en recherche</li>
                         <li>Animation de séminaires et travaux dirigés</li>
@@ -196,11 +298,11 @@
     </section>
 
     <!-- Section Formation -->
-    <section id="formation" class="section bg-light">
+    <section id="formation" class="section bg-light" aria-labelledby="formation-title">
         <div class="container">
-            <h2 class="section-title">Parcours Académique</h2>
-            <div class="timeline">
-                <div class="timeline-item">
+            <h2 id="formation-title" class="section-title">Parcours Académique</h2>
+            <div class="timeline" role="list" aria-label="Chronologie du parcours académique">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">2021-2025</div>
                     <div class="timeline-content">
                         <h3>Doctorat en Probabilités et Statistiques</h3>
@@ -209,7 +311,7 @@
                         <div class="timeline-badge">Très honorable</div>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">2005-2008</div>
                     <div class="timeline-content">
                         <h3>Agrégation de Mathématiques — Système français</h3>
@@ -218,7 +320,7 @@
                         <div class="timeline-badge">Première session</div>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">2003-2005</div>
                     <div class="timeline-content">
                         <h3>DESA en Mathématiques — Option : Analyse fonctionnelle</h3>
@@ -227,35 +329,35 @@
                         <div class="timeline-badge">Reçu avec mention Très Bien et classé majorant</div>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">2001-2002</div>
                     <div class="timeline-content">
                         <h3>Formation en Informatique et Bureautique</h3>
                         <p class="institution">École spécialisée en Informatique et Bureautique, Taounate</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">1999-2001</div>
                     <div class="timeline-content">
                         <h3>Maîtrise en Mathématiques fondamentales</h3>
                         <p class="institution">Université Sidi Mohamed Ben Abdellah, Fès</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">1996-1997</div>
                     <div class="timeline-content">
                         <h3>Formation professionnelle en Mathématiques</h3>
                         <p class="institution">CPR, Casablanca</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">1994-1996</div>
                     <div class="timeline-content">
                         <h3>DEUG Mathématiques-Physique</h3>
                         <p class="institution">Université Sultan Moulay Slimane, Beni Mellal</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item" role="listitem">
                     <div class="timeline-date">1993-1994</div>
                     <div class="timeline-content">
                         <h3>Baccalauréat Sciences Mathématiques</h3>
@@ -267,17 +369,44 @@
     </section>
 
     <!-- Section Expérience -->
-    <section id="experience" class="section">
+    <section id="experience" class="section" aria-labelledby="experience-title">
         <div class="container">
-            <h2 class="section-title">Expérience Professionnelle</h2>
-            <div class="experience-tabs">
+            <h2 id="experience-title" class="section-title">Expérience Professionnelle</h2>
+            <div class="experience-tabs" role="tablist" aria-label="Types d'expérience professionnelle">
                 <div class="tab-buttons" data-tab-group="experience">
-                    <button class="tab-button active" data-tab="cpge" aria-selected="true" aria-controls="cpge">CPGE</button>
-                    <button class="tab-button" data-tab="lycee" aria-selected="false" aria-controls="lycee">Lycée</button>
-                    <button class="tab-button" data-tab="college" aria-selected="false" aria-controls="college">Collège</button>
+                    <button class="tab-button active" 
+                            data-tab="cpge" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="cpge-content"
+                            id="cpge-tab">
+                        CPGE
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="lycee" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="lycee-content"
+                            id="lycee-tab"
+                            tabindex="-1">
+                        Lycée
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="college" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="college-content"
+                            id="college-tab"
+                            tabindex="-1">
+                        Collège
+                    </button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="cpge" aria-labelledby="cpge-tab" aria-hidden="false">
+                    <div class="tab-pane active" 
+                         id="cpge-content" 
+                         role="tabpanel" 
+                         aria-labelledby="cpge-tab" 
+                         tabindex="0">
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -358,7 +487,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="lycee" aria-labelledby="lycee-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="lycee-content" 
+                         role="tabpanel" 
+                         aria-labelledby="lycee-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -369,7 +503,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="college" aria-labelledby="college-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="college-content" 
+                         role="tabpanel" 
+                         aria-labelledby="college-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="experience-grid">
                             <div class="exp-card">
                                 <div class="exp-header">
@@ -393,16 +532,35 @@
     </section>
 
     <!-- Section Recherche -->
-    <section id="recherche" class="section bg-light">
+    <section id="recherche" class="section bg-light" aria-labelledby="recherche-title">
         <div class="container">
-            <h2 class="section-title">Activités de Recherche</h2>
-            <div class="research-tabs">
+            <h2 id="recherche-title" class="section-title">Activités de Recherche</h2>
+            <div class="research-tabs" role="tablist" aria-label="Types d'activités de recherche">
                 <div class="tab-buttons" data-tab-group="research">
-                    <button class="tab-button active" data-tab="publications" aria-selected="true" aria-controls="publications">Publications (6)</button>
-                    <button class="tab-button" data-tab="conferences" aria-selected="false" aria-controls="conferences">Conférences (4)</button>
+                    <button class="tab-button active" 
+                            data-tab="publications" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="publications-content"
+                            id="publications-tab">
+                        Publications (6)
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="conferences" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="conferences-content"
+                            id="conferences-tab"
+                            tabindex="-1">
+                        Conférences (4)
+                    </button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="publications" aria-labelledby="publications-tab" aria-hidden="false">
+                    <div class="tab-pane active" 
+                         id="publications-content" 
+                         role="tabpanel" 
+                         aria-labelledby="publications-tab" 
+                         tabindex="0">
                         <div class="publications-grid">
                             <div class="pub-card">
                                 <div class="pub-header">
@@ -412,11 +570,11 @@
                                 <p class="pub-authors">El Bakkioui, K., El Khalfi, Y., Boutouil, S., Harchaoui, B., El Idrissi, M., Settati, A., & Lahrouz, A.</p>
                                 <p class="pub-journal">Applied Mathematics, 19(3), 671–681</p>
                                 <div class="pub-links">
-                                    <a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    <a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" class="pub-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Lire en ligne
                                     </a>
                                     <a href="documents/publications/exploring-jump-perturbations.pdf" class="pub-link" download>
-                                        <i class="fas fa-download"></i> PDF
+                                        <i class="fas fa-download" aria-hidden="true"></i> PDF
                                     </a>
                                 </div>
                             </div>
@@ -428,11 +586,11 @@
                                 <p class="pub-authors">Esseroukh, M., Harchaoui, B., El Khatib, B., El Bakkioui, K., Aznague, S., Lahrouz, A., & Settati, A.</p>
                                 <p class="pub-journal">Applied Mathematics, 19(4), 739–750</p>
                                 <div class="pub-links">
-                                    <a href="https://doi.org/10.1234/am.2025.19739" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    <a href="https://doi.org/10.1234/am.2025.19739" target="_blank" class="pub-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Lire en ligne
                                     </a>
                                     <a href="documents/publications/logistic-growth-relapse.pdf" class="pub-link" download>
-                                        <i class="fas fa-download"></i> PDF
+                                        <i class="fas fa-download" aria-hidden="true"></i> PDF
                                     </a>
                                 </div>
                             </div>
@@ -444,11 +602,11 @@
                                 <p class="pub-authors">Aznague, S., Settati, A., Lahrouz, A., Harchaoui, B., El Bakkioui, K., & Nait Brahim, A.</p>
                                 <p class="pub-journal">New Mathematics and Natural Computation, 1–24. World Scientific</p>
                                 <div class="pub-links">
-                                    <a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    <a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" class="pub-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Lire en ligne
                                     </a>
                                     <a href="documents/publications/threshold-dynamics.pdf" class="pub-link" download>
-                                        <i class="fas fa-download"></i> PDF
+                                        <i class="fas fa-download" aria-hidden="true"></i> PDF
                                     </a>
                                 </div>
                             </div>
@@ -460,11 +618,11 @@
                                 <p class="pub-authors">El Khatib, B., Harchaoui, B., Esseroukh, M., Aznague, S., El Bakkioui, K., El Khalfi, Y., Settati, A., & Lahrouz, A.</p>
                                 <p class="pub-journal">New Mathematics and Natural Computation. World Scientific</p>
                                 <div class="pub-links">
-                                    <a href="https://doi.org/10.1142/S1793005727500244" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    <a href="https://doi.org/10.1142/S1793005727500244" target="_blank" class="pub-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Lire en ligne
                                     </a>
                                     <a href="documents/publications/covid19-quarantine.pdf" class="pub-link" download>
-                                        <i class="fas fa-download"></i> PDF
+                                        <i class="fas fa-download" aria-hidden="true"></i> PDF
                                     </a>
                                 </div>
                             </div>
@@ -476,11 +634,11 @@
                                 <p class="pub-authors">Settati, A., Caraballo, T., Harchaoui, B., Lahrouz, A., El Bakkioui, K., & El Haitami, A.</p>
                                 <p class="pub-journal">Journal of Theoretical Biology, 123456, 128745</p>
                                 <div class="pub-links">
-                                    <a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    <a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" class="pub-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Lire en ligne
                                     </a>
                                     <a href="documents/publications/scale-free-networks.pdf" class="pub-link" download>
-                                        <i class="fas fa-download"></i> PDF
+                                        <i class="fas fa-download" aria-hidden="true"></i> PDF
                                     </a>
                                 </div>
                             </div>
@@ -495,7 +653,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="conferences" aria-labelledby="conferences-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="conferences-content" 
+                         role="tabpanel" 
+                         aria-labelledby="conferences-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="conferences-grid">
                             <div class="conf-card">
                                 <div class="conf-header">
@@ -504,8 +667,8 @@
                                 </div>
                                 <p class="conf-title">International Conference on Artificial Intelligence and Applied Mathematics</p>
                                 <p class="conf-location">Faculty of Sciences and Technologies of Al Hoceima, Morocco, May 11, 2024</p>
-                                <a href="https://jiama24.sciencesconf.org/" target="_blank" class="conf-link">
-                                    <i class="fas fa-external-link-alt"></i> Site web
+                                <a href="https://jiama24.sciencesconf.org/" target="_blank" class="conf-link" rel="noopener noreferrer">
+                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i> Site web
                                 </a>
                             </div>
                             <div class="conf-card">
@@ -515,8 +678,8 @@
                                 </div>
                                 <p class="conf-title">The First International School on Fractional Calculus and Systems Theory</p>
                                 <p class="conf-location">Meknes, Morocco, December 12-14, 2024</p>
-                                <a href="https://sisfca24.sciencesconf.org/" target="_blank" class="conf-link">
-                                    <i class="fas fa-external-link-alt"></i> Site web
+                                <a href="https://sisfca24.sciencesconf.org/" target="_blank" class="conf-link" rel="noopener noreferrer">
+                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i> Site web
                                 </a>
                             </div>
                             <div class="conf-card">
@@ -528,11 +691,11 @@
                                 <p class="conf-location">Communication orale : Influence of Stochastic Jumps on the Dynamics of SIRS Systems</p>
                                 <p class="conf-location">Fez, Morocco, April 07-11, 2025</p>
                                 <div class="conf-links">
-                                    <a href="https://idts25.sciencesconf.org/" target="_blank" class="conf-link">
-                                        <i class="fas fa-external-link-alt"></i> Site web
+                                    <a href="https://idts25.sciencesconf.org/" target="_blank" class="conf-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Site web
                                     </a>
-                                    <a href="documents/communications/presentation-iwnam2025.pdf" target="_blank" class="conf-link pdf-link">
-                                        <i class="fas fa-file-pdf"></i> Télécharger PDF
+                                    <a href="documents/communications/presentation-iwnam2025.pdf" target="_blank" class="conf-link pdf-link" rel="noopener noreferrer">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i> Télécharger PDF
                                     </a>
                                 </div>
                             </div>
@@ -545,11 +708,11 @@
                                 <p class="conf-location">Communication : Etude de l'effet des perturbations par sauts sur la dynamique stochastique des modèles SIRS</p>
                                 <p class="conf-location">Marrakech, Morocco, April 24-26, 2025</p>
                                 <div class="conf-links">
-                                    <a href="https://icramcs2025.sciencesconf.org/data/" target="_blank" class="conf-link">
-                                        <i class="fas fa-external-link-alt"></i> Site web
+                                    <a href="https://icramcs2025.sciencesconf.org/data/" target="_blank" class="conf-link" rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Site web
                                     </a>
-                                    <a href="documents/communications/presentation-icramcs2025.pdf" target="_blank" class="conf-link pdf-link">
-                                        <i class="fas fa-file-pdf"></i> Télécharger PDF
+                                    <a href="documents/communications/presentation-icramcs2025.pdf" target="_blank" class="conf-link pdf-link" rel="noopener noreferrer">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i> Télécharger PDF
                                     </a>
                                 </div>
                             </div>
@@ -561,67 +724,118 @@
     </section>
 
     <!-- Section Enseignement -->
-    <section id="enseignement" class="section">
+    <section id="enseignement" class="section" aria-labelledby="enseignement-title">
         <div class="container">
-            <h2 class="section-title">Ressources Pédagogiques CPGE</h2>
-            <div class="filiere-tabs">
+            <h2 id="enseignement-title" class="section-title">Ressources Pédagogiques CPGE</h2>
+            <div class="filiere-tabs" role="tablist" aria-label="Filières CPGE">
                 <div class="tab-buttons" data-tab-group="enseignement">
-                    <button class="tab-button active" data-tab="psi" aria-selected="true" aria-controls="psi">PSI</button>
-                    <button class="tab-button" data-tab="mpsi" aria-selected="false" aria-controls="mpsi">MPSI</button>
-                    <button class="tab-button" data-tab="ect1" aria-selected="false" aria-controls="ect1">ECT 1ère</button>
-                    <button class="tab-button" data-tab="ect2" aria-selected="false" aria-controls="ect2">ECT 2ème</button>
-                    <button class="tab-button" data-tab="ecs1" aria-selected="false" aria-controls="ecs1">ECS 1ère</button>
-                    <button class="tab-button" data-tab="ecs2" aria-selected="false" aria-controls="ecs2">ECS 2ème</button>
+                    <button class="tab-button active" 
+                            data-tab="psi" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="psi-content"
+                            id="psi-tab">
+                        PSI
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="mpsi" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="mpsi-content"
+                            id="mpsi-tab"
+                            tabindex="-1">
+                        MPSI
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="ect1" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="ect1-content"
+                            id="ect1-tab"
+                            tabindex="-1">
+                        ECT 1ère
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="ect2" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="ect2-content"
+                            id="ect2-tab"
+                            tabindex="-1">
+                        ECT 2ème
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="ecs1" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="ecs1-content"
+                            id="ecs1-tab"
+                            tabindex="-1">
+                        ECS 1ère
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="ecs2" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="ecs2-content"
+                            id="ecs2-tab"
+                            tabindex="-1">
+                        ECS 2ème
+                    </button>
                 </div>
                 <div class="tab-content">
                     <!-- PSI -->
-<div class="tab-pane active" id="psi" aria-labelledby="psi-tab" aria-hidden="false">
-    <div class="enseignement-grid">
-        <div class="ressource-category">
-            <h3><i class="fas fa-book"></i> Cahier de texte</h3>
-            <a href="documents/enseignement/psi/cahier-texte.pdf" class="download-btn" download>
-                <i class="fas fa-download"></i>
-            </a>
-        </div>
-        <div class="ressource-category">
-            <h3><i class="fas fa-book"></i> Cours Complets</h3>
-            <div class="ressources-list">
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Algèbre Linéaire - PSI</h4>
-                        <p>Cours complet avec exercices d'application</p>
-                        <span class="file-size">PDF - 2.1 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-algebre-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Analyse Avancée - PSI</h4>
-                        <p>Suites, séries, intégrales et équations différentielles</p>
-                        <span class="file-size">PDF - 3.4 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-analyse-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-                <div class="ressource-item">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="ressource-info">
-                        <h4>Probabilités - PSI</h4>
-                        <p>Dénombrements, Espaces probabilisés, Variables et couple aléatoires</p>
-                        <span class="file-size">PDF - 3.4 MB</span>
-                    </div>
-                    <a href="documents/enseignement/psi/cours-probabilites-psi.pdf" class="download-btn" download>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="ressource-category">
+                    <div class="tab-pane active" 
+                         id="psi-content" 
+                         role="tabpanel" 
+                         aria-labelledby="psi-tab" 
+                         tabindex="0">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cahier de texte</h3>
+                                <a href="documents/enseignement/psi/cahier-texte.pdf" class="download-btn" download>
+                                    <i class="fas fa-download" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets</h3>
+                                <div class="ressources-list">
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                        <div class="ressource-info">
+                                            <h4>Algèbre Linéaire - PSI</h4>
+                                            <p>Cours complet avec exercices d'application</p>
+                                            <span class="file-size">PDF - 2.1 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-algebre-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                        <div class="ressource-info">
+                                            <h4>Analyse Avancée - PSI</h4>
+                                            <p>Suites, séries, intégrales et équations différentielles</p>
+                                            <span class="file-size">PDF - 3.4 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-analyse-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="ressource-item">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                        <div class="ressource-info">
+                                            <h4>Probabilités - PSI</h4>
+                                            <p>Dénombrements, Espaces probabilisés, Variables et couple aléatoires</p>
+                                            <span class="file-size">PDF - 3.4 MB</span>
+                                        </div>
+                                        <a href="documents/enseignement/psi/cours-probabilites-psi.pdf" class="download-btn" download>
+                                            <i class="fas fa-download" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ressource-category">
             <h3><i class="fas fa-pencil-alt"></i> Travaux Dirigés</h3>
             <div class="td-grid">
                 <div class="td-item">
@@ -792,50 +1006,75 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+                        </div>
+                    </div>
                     
-                    <!-- Les autres filières suivent la même structure -->
-                    <div class="tab-pane" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="true">
+                    <!-- Les autres filières -->
+                    <div class="tab-pane" 
+                         id="mpsi-content" 
+                         role="tabpanel" 
+                         aria-labelledby="mpsi-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="enseignement-grid">
                             <div class="ressource-category">
-                                <h3><i class="fas fa-book"></i> Cours Complets - MPSI</h3>
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets - MPSI</h3>
                                 <p>Ressources en cours de préparation pour la filière MPSI.</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ect1" aria-labelledby="ect1-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="ect1-content" 
+                         role="tabpanel" 
+                         aria-labelledby="ect1-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="enseignement-grid">
                             <div class="ressource-category">
-                                <h3><i class="fas fa-book"></i> Cours Complets - ECT 1ère année</h3>
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets - ECT 1ère année</h3>
                                 <p>Ressources en cours de préparation pour la filière ECT 1ère année.</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ect2" aria-labelledby="ect2-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="ect2-content" 
+                         role="tabpanel" 
+                         aria-labelledby="ect2-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="enseignement-grid">
                             <div class="ressource-category">
-                                <h3><i class="fas fa-book"></i> Cours Complets - ECT 2ème année</h3>
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets - ECT 2ème année</h3>
                                 <p>Ressources en cours de préparation pour la filière ECT 2ème année.</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ecs1" aria-labelledby="ecs1-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="ecs1-content" 
+                         role="tabpanel" 
+                         aria-labelledby="ecs1-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="enseignement-grid">
                             <div class="ressource-category">
-                                <h3><i class="fas fa-book"></i> Cours Complets - ECS 1ère année</h3>
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets - ECS 1ère année</h3>
                                 <p>Ressources en cours de préparation pour la filière ECS 1ère année.</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="tab-pane" id="ecs2" aria-labelledby="ecs2-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="ecs2-content" 
+                         role="tabpanel" 
+                         aria-labelledby="ecs2-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="enseignement-grid">
                             <div class="ressource-category">
-                                <h3><i class="fas fa-book"></i> Cours Complets - ECS 2ème année</h3>
+                                <h3><i class="fas fa-book" aria-hidden="true"></i> Cours Complets - ECS 2ème année</h3>
                                 <p>Ressources en cours de préparation pour la filière ECS 2ème année.</p>
                             </div>
                         </div>
@@ -846,218 +1085,231 @@
     </section>
 
     <!-- Section Documents -->
-    <section id="documents" class="section bg-light">
+    <section id="documents" class="section bg-light" aria-labelledby="documents-title">
         <div class="container">
-            <h2 class="section-title">Documents Académiques</h2>
-            <div class="documents-tabs">
+            <h2 id="documents-title" class="section-title">Documents Académiques</h2>
+            <div class="documents-tabs" role="tablist" aria-label="Types de documents académiques">
                 <div class="tab-buttons" data-tab-group="documents">
-                    <button class="tab-button active" data-tab="these" aria-selected="true" aria-controls="these">Thèse</button>
-                    <button class="tab-button" data-tab="memoires" aria-selected="false" aria-controls="memoires">Mémoires</button>
-                    <button class="tab-button" data-tab="livres" aria-selected="false" aria-controls="livres">Livres & Manuels</button>
+                    <button class="tab-button active" 
+                            data-tab="these" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="these-content"
+                            id="these-tab">
+                        Thèse
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="memoires" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="memoires-content"
+                            id="memoires-tab"
+                            tabindex="-1">
+                        Mémoires
+                    </button>
+                    <button class="tab-button" 
+                            data-tab="livres" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="livres-content"
+                            id="livres-tab"
+                            tabindex="-1">
+                        Livres & Manuels
+                    </button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="these" aria-labelledby="these-tab" aria-hidden="false">
+                    <div class="tab-pane active" 
+                         id="these-content" 
+                         role="tabpanel" 
+                         aria-labelledby="these-tab" 
+                         tabindex="0">
                         <div class="documents-grid">
                             <div class="doc-card">
                                 <div class="doc-icon">
-                                    <i class="fas fa-file-alt"></i>
+                                    <i class="fas fa-file-alt" aria-hidden="true"></i>
                                 </div>
                                 <div class="doc-content">
                                     <h3>Thèse de Doctorat - Version Française</h3>
                                     <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
                                     <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.2 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF - 4.2 MB</span>
+                                        <span><i class="fas fa-university" aria-hidden="true"></i> Université Abdelmalek Essaâdi</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
                                     <a href="documents/these/these-francais.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
+                                        <i class="fas fa-download" aria-hidden="true"></i> Télécharger
                                     </a>
-                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank>
-                                        <i class="fas fa-eye"></i> Aperçu
+                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank" rel="noopener noreferrer">
+                                        <i class="fas fa-eye" aria-hidden="true"></i> Aperçu
                                     </a>
                                 </div>
                             </div>
                             <div class="doc-card">
                                 <div class="doc-icon">
-                                    <i class="fas fa-file-alt"></i>
+                                    <i class="fas fa-file-alt" aria-hidden="true"></i>
                                 </div>
                                 <div class="doc-content">
                                     <h3>PhD Thesis - English Version</h3>
                                     <p>« Innovative Stochastic Methods for the Study of Dynamic Systems »</p>
                                     <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.5 MB</span>
-                                        <span><i class="fas fa-university"></i> Abdelmalek Essaâdi University</span>
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF - 4.5 MB</span>
+                                        <span><i class="fas fa-university" aria-hidden="true"></i> Abdelmalek Essaâdi University</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
                                     <a href="documents/these/thesis-english.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Download
+                                        <i class="fas fa-download" aria-hidden="true"></i> Download
                                     </a>
-                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank>
-                                        <i class="fas fa-eye"></i> Preview
+                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank" rel="noopener noreferrer">
+                                        <i class="fas fa-eye" aria-hidden="true"></i> Preview
                                     </a>
                                 </div>
                             </div>
                             <div class="doc-card">
                                 <div class="doc-icon">
-                                    <i class="fas fa-presentation"></i>
+                                    <i class="fas fa-presentation" aria-hidden="true"></i>
                                 </div>
                                 <div class="doc-content">
                                     <h3>Diapositives de Soutenance</h3>
                                     <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
                                     <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.8 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF - 3.8 MB</span>
+                                        <span><i class="fas fa-university" aria-hidden="true"></i> Université Abdelmalek Essaâdi</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
                                     <a href="documents/these/diapositives.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
+                                        <i class="fas fa-download" aria-hidden="true"></i> Télécharger
                                     </a>
-                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank>
-                                        <i class="fas fa-eye"></i> Aperçu
+                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank" rel="noopener noreferrer">
+                                        <i class="fas fa-eye" aria-hidden="true"></i> Aperçu
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="memoires" aria-labelledby="memoires-tab" aria-hidden="true">
+                    <div class="tab-pane" 
+                         id="memoires-content" 
+                         role="tabpanel" 
+                         aria-labelledby="memoires-tab" 
+                         tabindex="0"
+                         hidden>
                         <div class="documents-grid">
                             <div class="doc-card">
                                 <div class="doc-icon">
-                                    <i class="fas fa-graduation-cap"></i>
+                                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                                 </div>
                                 <div class="doc-content">
                                     <h3>Mémoire d'Agrégation</h3>
                                     <p>« Le groupe linéaire d'un espace vectoriel E de dimension finie, sous-groupes de GL(IE) et applications »</p>
                                     <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2005-2008</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.1 MB</span>
-                                        <span><i class="fas fa-university"></i> ENS Casablanca</span>
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2005-2008</span>
+                                        <span><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF - 3.1 MB</span>
+                                        <span><i class="fas fa-university" aria-hidden="true"></i> ENS Casablanca</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
                                     <a href="documents/memoires/memoire-agregation.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
+                                        <i class="fas fa-download" aria-hidden="true"></i> Télécharger
                                     </a>
                                 </div>
                             </div>
                             <div class="doc-card">
                                 <div class="doc-icon">
-                                    <i class="fas fa-graduation-cap"></i>
+                                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                                 </div>
                                 <div class="doc-content">
                                     <h3>Mémoire de DESA</h3>
                                     <p>« Opérateurs compacts et propriété d'Orlicz-Pettis en analyse p-adique »</p>
                                     <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2003-2005</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 2.8 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Sidi Mohamed Ben Abdellah</span>
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2003-2005</span>
+                                        <span><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF - 2.8 MB</span>
+                                        <span><i class="fas fa-university" aria-hidden="true"></i> Université Sidi Mohamed Ben Abdellah</span>
                                     </div>
                                 </div>
                                 <div class="doc-actions">
                                     <a href="documents/memoires/memoire-desa.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
+                                        <i class="fas fa-download" aria-hidden="true"></i> Télécharger
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
-    <div class="documents-grid">
-        <!-- VOTRE LIVRE - Mettez-le en premier -->
-        <div class="doc-card book-featured">
-            <div class="doc-icon">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="doc-content">
-                <h3>Spacial Subgroups of the General Linear Group</h3>
-                <p>Mon livre publié sur les sous-groupes spatiaux du groupe linéaire général</p>
-                <div class="doc-meta">
-                    <span><i class="fas fa-calendar"></i> 2025</span>
-                    <span><i class="fas fa-language"></i> English</span>
-                    <span><i class="fas fa-file-alt"></i> 124 pages</span>
-                    <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-19243-2</span>
-                </div>
-                <div class="book-offer">
-                    <span class="offer-badge">🚀 Offre de lancement</span>
-                    <div class="countdown-small">
-                        <span>Offre spéciale limitée dans le temps</span>
+                    <div class="tab-pane" 
+                         id="livres-content" 
+                         role="tabpanel" 
+                         aria-labelledby="livres-tab" 
+                         tabindex="0"
+                         hidden>
+                        <div class="documents-grid">
+                            <div class="doc-card book-featured">
+                                <div class="doc-icon">
+                                    <i class="fas fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Spacial Subgroups of the General Linear Group</h3>
+                                    <p>Mon livre publié sur les sous-groupes spatiaux du groupe linéaire général</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar" aria-hidden="true"></i> 2025</span>
+                                        <span><i class="fas fa-language" aria-hidden="true"></i> English</span>
+                                        <span><i class="fas fa-file-alt" aria-hidden="true"></i> 124 pages</span>
+                                        <span><i class="fas fa-barcode" aria-hidden="true"></i> ISBN: 978-620-9-19243-2</span>
+                                    </div>
+                                    <div class="book-offer">
+                                        <span class="offer-badge">🚀 Offre de lancement</span>
+                                        <div class="countdown-small">
+                                            <span>Offre spéciale limitée dans le temps</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                                       class="btn-buy" 
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        <i class="fas fa-shopping-cart" aria-hidden="true"></i> Acheter
+                                    </a>
+                                    <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                                       class="btn-preview" 
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Voir
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="doc-actions">
-                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
-                   class="btn-buy" 
-                   target="_blank">
-                    <i class="fas fa-shopping-cart"></i> Acheter
-                </a>
-                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
-                   class="btn-preview" 
-                   target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Voir
-                </a>
-            </div>
-        </div>
-
-        <!-- LIVRE EXISTANT - DÉSACTIVÉ POUR LE MOMENT -->
-        <!-- 
-        <div class="doc-card">
-            <div class="doc-icon">
-                <i class="fas fa-book"></i>
-            </div>
-            <div class="doc-content">
-                <h3>Mathématiques</h3>
-                <p>Manuel complet de mathématiques</p>
-                <div class="doc-meta">
-                    <span><i class="fas fa-calendar"></i> 2024</span>
-                    <span><i class="fas fa-file-pdf"></i> PDF - 5.2 MB</span>
-                    <span><i class="fas fa-pages"></i> 245 pages</span>
-                </div>
-            </div>
-            <div class="doc-actions">
-                <a href="documents/livres/groupe-lineaire.pdf" class="btn-download" download>
-                    <i class="fas fa-download"></i> Télécharger
-                </a>
-            </div>
-        </div>
-        -->
-
-        <!-- Vous pouvez ajouter d'autres livres ici -->
-    </div>
-</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Section Contact -->
-    <section id="contact" class="section">
+    <section id="contact" class="section" aria-labelledby="contact-title">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 id="contact-title" class="section-title">Contact</h2>
             <div class="contact-grid">
                 <div class="contact-info">
                     <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
                         <div>
                             <h3>Email</h3>
                             <p>khalid.elbakkioui@etu.uae.ac.ma</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-phone" aria-hidden="true"></i>
                         <div>
                             <h3>Téléphone</h3>
                             <p>+212 661 645 600 (Mobile)</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                         <div>
                             <h3>Adresse</h3>
                             <p>Branes 1, rue Ibn Hicham N°108, étage 2</p>
@@ -1065,7 +1317,7 @@
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-id-card"></i>
+                        <i class="fas fa-id-card" aria-hidden="true"></i>
                         <div>
                             <h3>Identifiant Recherche</h3>
                             <p>ORCID: 0009-0009-4252-4607</p>
@@ -1073,21 +1325,25 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form id="contactForm">
+                    <form id="contactForm" aria-labelledby="contact-title">
                         <div class="form-group">
-                            <input type="text" placeholder="Votre nom" required>
+                            <label for="name" class="sr-only">Votre nom</label>
+                            <input type="text" id="name" placeholder="Votre nom" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Votre email" required>
+                            <label for="email" class="sr-only">Votre email</label>
+                            <input type="email" id="email" placeholder="Votre email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Sujet" required>
+                            <label for="subject" class="sr-only">Sujet</label>
+                            <input type="text" id="subject" placeholder="Sujet" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Votre message" rows="5" required></textarea>
+                            <label for="message" class="sr-only">Votre message</label>
+                            <textarea id="message" placeholder="Votre message" rows="5" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Envoyer le message
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i> Envoyer le message
                         </button>
                     </form>
                 </div>
@@ -1096,7 +1352,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
@@ -1104,10 +1360,18 @@
                     <p>Mathématicien • Enseignant CPGE • Chercheur en Probabilités</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
-                    <a href="#" title="Google Scholar"><i class="fab fa-google-scholar"></i></a>
-                    <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="#" title="LinkedIn" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" title="ResearchGate" aria-label="ResearchGate">
+                        <i class="fab fa-researchgate" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" title="Google Scholar" aria-label="Google Scholar">
+                        <i class="fab fa-google-scholar" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email" aria-label="Envoyer un email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -1118,9 +1382,11 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top">
-        <i class="fas fa-chevron-up"></i>
+    <button id="backToTop" class="back-to-top" aria-label="Retour en haut de la page">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
     </button>
- <script src="script.js"></script>   
+
+    <!-- Scripts -->
+    <script src="script.js" defer></script>
 </body>
 </html>
