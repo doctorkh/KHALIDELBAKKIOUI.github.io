@@ -37,6 +37,7 @@ class PortfolioApp {
         this.initBackToTop();
         this.initScrollEffects();
         this.initAnimations();
+        this.initHeroAnimations();
         this.initContactForm();
         this.initCounters();
         this.initDownloadTracking();
@@ -81,6 +82,33 @@ class PortfolioApp {
             console.error('❌ Promise rejetée:', e.reason);
             e.preventDefault();
         });
+    }
+
+    // ===== ANIMATIONS HERO =====
+    initHeroAnimations() {
+        const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-buttons');
+        
+        if (heroElements.length === 0) {
+            console.warn('❌ Aucun élément Hero trouvé pour l\'animation');
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = `fadeInUp 0.8s ease-out both`;
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        heroElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.2}s`;
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        console.log('✅ Animations Hero initialisées');
     }
 
     // ===== NAVIGATION AMÉLIORÉE =====
@@ -526,15 +554,7 @@ class PortfolioApp {
             observer.observe(el);
         });
 
-        this.animateHero();
-    }
-
-    animateHero() {
-        const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-stats, .hero-buttons');
-        
-        heroElements.forEach((el, index) => {
-            el.style.animation = `fadeInUp 0.8s ease-out ${index * 0.15}s both`;
-        });
+        console.log('✅ Animations initialisées');
     }
 
     // ===== COMPTEURS ANIMÉS =====
@@ -830,7 +850,14 @@ class PortfolioApp {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                // S'assurer que la structure est correcte
+                // Nettoyer les visites trop anciennes (plus de 24h)
+                const now = Date.now();
+                const oneDayAgo = now - (24 * 60 * 60 * 1000);
+                stats.visits = stats.visits.filter(visit => {
+                    const visitTime = new Date(visit.timestamp).getTime();
+                    return (now - visitTime) < oneDayAgo;
+                });
+                
                 return {
                     total: parseInt(stats.total) || 15,
                     visits: Array.isArray(stats.visits) ? stats.visits : [],
@@ -943,7 +970,7 @@ class PortfolioApp {
             // Compter les sessions actives (visites dans les 15 dernières minutes)
             const activeSessions = stats.visits.filter(visit => {
                 const visitTime = new Date(visit.timestamp).getTime();
-                return (now - visitTime) < fifteenMinutesAgo;
+                return visitTime > fifteenMinutesAgo;
             });
             
             // Retourner le nombre d'utilisateurs en ligne (au moins 1 pour l'utilisateur actuel)
