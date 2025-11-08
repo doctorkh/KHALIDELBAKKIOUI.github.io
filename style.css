@@ -1,379 +1,709 @@
 /* ========================================================================= */
-/* CORRECTION DES TAILLES DE LOGOS POUR LA FENÊTRE DE SORTIE                */
+/* SYSTÈME DE DESIGN ACADÉMIQUE ÉLARGI - ESPACES ÉTENDUS                    */
 /* ========================================================================= */
 
 :root {
-    /* ==================== TAILLES DE LOGOS CORRIGÉES ==================== */
-    --taille-logo-hero: 180px;           /* Logo principal - TRÈS réduit */
-    --taille-logo-section: 80px;         /* Logo section - réduit */
-    --taille-logo-mini: 40px;            /* Logo miniature */
-    --taille-logo-navbar: 35px;          /* Logo navigation */
-    --taille-logo-footer: 60px;          /* Logo pied de page */
-    --taille-logo-partenaire: 70px;      /* Logo partenaire */
+    /* ==================== PALETTE ACADÉMIQUE ÉTENDUE ==================== */
+    --couleur-primaire-1: #1a365d;        /* Bleu navy profond */
+    --couleur-primaire-2: #2d4a80;        /* Bleu royal */
+    --couleur-primaire-3: #3c5a9c;        /* Bleu académique */
+    
+    --couleur-secondaire-1: #b91c1c;      /* Rouge bordeaux */
+    --couleur-secondaire-2: #dc2626;      /* Rouge vif */
+    --couleur-secondaire-3: #ef4444;      /* Rouge clair */
+    
+    --couleur-tertiaire-1: #d97706;       /* Or foncé */
+    --couleur-tertiaire-2: #f59e0b;       /* Or moyen */
+    --couleur-tertiaire-3: #fbbf24;       /* Or clair */
+    
+    --couleur-quaternaire-1: #059669;     /* Vert foncé */
+    --couleur-quaternaire-2: #10b981;     /* Vert moyen */
+    --couleur-quaternaire-3: #34d399;     /* Vert clair */
+    
+    /* Couleurs de statut académique */
+    --couleur-college: #7c3aed;           /* Violet - Collège */
+    --couleur-lycee: #dc2626;             /* Rouge - Lycée */
+    --couleur-cpge: #059669;              /* Vert - CPGE */
+    --couleur-licence: #2563eb;           /* Bleu - Licence */
+    --couleur-master: #d97706;            /* Orange - Master */
+    --couleur-doctorat: #b91c1c;          /* Bordeaux - Doctorat */
+    --couleur-memoire: #7c3aed;           /* Violet - Mémoire */
+    --couleur-these: #dc2626;             /* Rouge - Thèse */
+    --couleur-livre: #059669;             /* Vert - Livre */
+    --couleur-manuel: #2563eb;            /* Bleu - Manuel */
 
-    /* ==================== ESPACEMENTS OPTIMISÉS ==================== */
+    /* Dégradés par niveau académique */
+    --degrade-college: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    --degrade-lycee: linear-gradient(135deg, #dc2626, #ef4444);
+    --degrade-cpge: linear-gradient(135deg, #059669, #10b981);
+    --degrade-licence: linear-gradient(135deg, #2563eb, #3b82f6);
+    --degrade-master: linear-gradient(135deg, #d97706, #f59e0b);
+    --degrade-doctorat: linear-gradient(135deg, #b91c1c, #dc2626);
+    --degrade-memoire: linear-gradient(135deg, #7c3aed, #a78bfa);
+    --degrade-these: linear-gradient(135deg, #b91c1c, #f87171);
+    --degrade-livre: linear-gradient(135deg, #059669, #34d399);
+    --degrade-manuel: linear-gradient(135deg, #1d4ed8, #60a5fa);
+
+    --couleur-texte: #1e293b;
+    --couleur-texte-secondaire: #64748b;
+    --couleur-fond: #fefefe;
+    --couleur-fond-secondaire: #f8fafc;
+    --couleur-bordure: #e2e8f0;
+
+    /* ==================== ESPACEMENTS ÉTENDUS ==================== */
     --espace-micro: 0.25rem;
     --espace-mini: 0.5rem;
     --espace-petit: 0.75rem;
     --espace-base: 1rem;
     --espace-moyen: 1.5rem;
     --espace-grand: 2rem;
+    --espace-large: 3rem;
+    --espace-xlarge: 4rem;
+    --espace-xxlarge: 6rem;
+    --espace-massif: 8rem;
+
+    /* Espaces latéraux étendus */
+    --marge-gauche-section: 4rem;
+    --marge-gauche-contenu: 2rem;
+    --marge-gauche-sous-section: 1.5rem;
+
+    /* ==================== TYPOGRAPHIE ÉTENDUE ==================== */
+    --police-texte: 'Inter', system-ui, sans-serif;
+    --police-titres: 'Georgia', 'Times New Roman', serif;
+    --police-accent: 'Playfair Display', serif;
+
+    --taille-texte-mini: 0.75rem;
+    --taille-texte-petit: 0.875rem;
+    --taille-texte-base: 1rem;
+    --taille-texte-leger: 1.125rem;
+    --taille-sous-titre: 1.25rem;
+    --taille-titre-4: 1.5rem;
+    --taille-titre-3: 2rem;
+    --taille-titre-2: 2.5rem;
+    --taille-titre-1: 3rem;
+    --taille-titre-hero: 3.5rem;
 }
 
 /* ========================================================================= */
-/* RÉINITIALISATION DES TAILLES D'IMAGES                                     */
+/* RÉINITIALISATION AVEC ESPACES LATÉRAUX ÉTENDUS                           */
 /* ========================================================================= */
 
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--police-texte);
+    line-height: 1.6;
+    color: var(--couleur-texte);
+    background-color: var(--couleur-fond);
+    -webkit-font-smoothing: antialiased;
+    margin-left: var(--marge-gauche-section);
 }
 
 /* ========================================================================= */
-/* LOGO HERO - TAILLE CORRIGÉE                                               */
+/* BARRES LATÉRALES ACADÉMIQUES - HIÉRARCHIE VISUELLE                        */
 /* ========================================================================= */
 
-.conteneur-image-hero {
+.barre-laterale-academique {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--marge-gauche-section);
+    height: 100vh;
+    background: linear-gradient(180deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
+    z-index: 1000;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--espace-base);
-    margin-top: var(--espace-moyen);
+    flex-direction: column;
+    padding: var(--espace-grand) 0;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
 }
 
-.image-hero {
-    width: var(--taille-logo-hero) !important;
-    height: var(--taille-logo-hero) !important;
-    max-width: var(--taille-logo-hero) !important;
-    max-height: var(--taille-logo-hero) !important;
-    object-fit: contain;
+.niveau-academique {
+    padding: var(--espace-petit) var(--espace-base);
+    margin: 0 var(--espace-mini) var(--espace-mini);
     border-radius: var(--espace-mini);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    color: white;
+    font-size: var(--taille-texte-mini);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
     transition: all 0.3s ease;
-    background: white;
-    padding: var(--espace-mini);
+    position: relative;
+    overflow: hidden;
 }
 
-.image-hero:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+.niveau-academique::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: rgba(255,255,255,0.3);
+}
+
+.niveau-academique:hover {
+    transform: translateX(4px);
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Couleurs spécifiques pour chaque niveau */
+.niveau-college { background: var(--degrade-college); }
+.niveau-lycee { background: var(--degrade-lycee); }
+.niveau-cpge { background: var(--degrade-cpge); }
+.niveau-licence { background: var(--degrade-licence); }
+.niveau-master { background: var(--degrade-master); }
+.niveau-doctorat { background: var(--degrade-doctorat); }
+
+/* ========================================================================= */
+/* BARRE DE PROGRESSION ACADÉMIQUE                                           */
+/* ========================================================================= */
+
+.barre-progression-academique {
+    position: fixed;
+    left: var(--marge-gauche-section);
+    top: 0;
+    width: calc(100% - var(--marge-gauche-section));
+    height: 4px;
+    background: var(--couleur-fond-secondaire);
+    z-index: 1001;
+}
+
+.progression-niveaux {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        var(--couleur-college) 0%, 
+        var(--couleur-lycee) 20%, 
+        var(--couleur-cpge) 40%, 
+        var(--couleur-licence) 60%, 
+        var(--couleur-master) 80%, 
+        var(--couleur-doctorat) 100%);
+    width: 0%;
+    transition: width 0.3s ease;
 }
 
 /* ========================================================================= */
-/* LOGOS DANS LES SECTIONS - TAILLES FIXES                                   */
+/* MENU PRINCIPAL AVEC CATÉGORIES ÉTENDUES                                   */
 /* ========================================================================= */
 
-.logo-section {
-    width: var(--taille-logo-section) !important;
-    height: var(--taille-logo-section) !important;
-    max-width: var(--taille-logo-section) !important;
-    max-height: var(--taille-logo-section) !important;
-    object-fit: contain;
+.navigation-principale {
+    position: fixed;
+    top: 4px; /* Sous la barre de progression */
+    left: var(--marge-gauche-section);
+    width: calc(100% - var(--marge-gauche-section));
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    padding: 0 var(--espace-grand);
+}
+
+.conteneur-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Menu étendu avec sous-catégories */
+.menu-academique {
+    display: flex;
+    list-style: none;
+    gap: var(--espace-large);
+    position: relative;
+}
+
+.categorie-menu {
+    position: relative;
+}
+
+.lien-categorie {
+    text-decoration: none;
+    color: var(--couleur-texte);
+    font-weight: 600;
+    padding: var(--espace-base) var(--espace-petit);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-mini);
+    transition: all 0.3s ease;
     border-radius: var(--espace-mini);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin: 0 auto var(--espace-base) auto;
+    font-size: var(--taille-texte-base);
+}
+
+.lien-categorie:hover {
+    background: var(--couleur-fond-secondaire);
+    color: var(--couleur-primaire-1);
+    transform: translateY(-2px);
+}
+
+/* Sous-menus académiques */
+.sous-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
     background: white;
-    padding: var(--espace-micro);
+    min-width: 280px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: var(--espace-petit);
+    padding: var(--espace-base);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
     border: 1px solid var(--couleur-bordure);
 }
 
-/* Logo dans le profil */
-.carte-profil .logo-section {
+.categorie-menu:hover .sous-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.groupe-sous-menu {
     margin-bottom: var(--espace-base);
 }
 
-/* ========================================================================= */
-/* LOGO NAVIGATION - COMPACT                                                 */
-/* ========================================================================= */
-
-.logo-navbar {
-    width: var(--taille-logo-navbar) !important;
-    height: var(--taille-logo-navbar) !important;
-    max-width: var(--taille-logo-navbar) !important;
-    max-height: var(--taille-logo-navbar) !important;
-    object-fit: contain;
-    border-radius: var(--espace-micro);
-    margin-right: var(--espace-petit);
-    vertical-align: middle;
+.titre-sous-menu {
+    font-size: var(--taille-texte-mini);
+    color: var(--couleur-texte-secondaire);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--espace-petit);
+    padding-bottom: var(--espace-mini);
+    border-bottom: 1px solid var(--couleur-bordure);
 }
 
-.marque {
-    display: flex;
-    align-items: center;
-    gap: var(--espace-petit);
-    font-family: var(--police-accent);
-    font-size: 1.1rem;
-    color: var(--couleur-primaire-1);
-    font-weight: 600;
+.liste-sous-menu {
+    list-style: none;
+}
+
+.element-sous-menu {
+    margin-bottom: var(--espace-mini);
+}
+
+.lien-sous-menu {
     text-decoration: none;
+    color: var(--couleur-texte);
+    padding: var(--espace-petit) var(--espace-base);
+    display: block;
+    border-radius: var(--espace-mini);
+    transition: all 0.2s ease;
+    font-size: var(--taille-texte-petit);
+}
+
+.lien-sous-menu:hover {
+    background: var(--couleur-fond-secondaire);
+    color: var(--couleur-primaire-1);
+    transform: translateX(4px);
+}
+
+/* Couleurs spécifiques pour les types de documents */
+.lien-memoire { border-left: 3px solid var(--couleur-memoire); }
+.lien-these { border-left: 3px solid var(--couleur-these); }
+.lien-livre { border-left: 3px solid var(--couleur-livre); }
+.lien-manuel { border-left: 3px solid var(--couleur-manuel); }
+
+/* ========================================================================= */
+/* SECTIONS AVEC ESPACES LATÉRAUX RENFORCÉS                                  */
+/* ========================================================================= */
+
+.section {
+    padding: var(--espace-xxlarge) 0;
+    margin-left: var(--marge-gauche-contenu);
+    position: relative;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--marge-gauche-contenu));
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(180deg, 
+        var(--couleur-college),
+        var(--couleur-lycee),
+        var(--couleur-cpge),
+        var(--couleur-licence),
+        var(--couleur-master),
+        var(--couleur-doctorat));
+    border-radius: var(--espace-mini);
+}
+
+.section--fond-alterne {
+    background: var(--couleur-fond-secondaire);
+}
+
+.conteneur {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--espace-grand);
+}
+
+/* En-tête de section avec icônes académiques */
+.en-tete-section {
+    margin-bottom: var(--espace-xlarge);
+    padding-left: var(--marge-gauche-sous-section);
+    position: relative;
+}
+
+.en-tete-section::before {
+    content: '📚';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: var(--taille-titre-3);
+    opacity: 0.1;
 }
 
 /* ========================================================================= */
-/* LOGOS MINIATURES DANS LES CARTES                                          */
+/* GRILLES ACADÉMIQUES AVEC ESPACES AMÉLIORÉS                                */
 /* ========================================================================= */
 
-.logo-miniature {
-    width: var(--taille-logo-mini) !important;
-    height: var(--taille-logo-mini) !important;
-    max-width: var(--taille-logo-mini) !important;
-    max-height: var(--taille-logo-mini) !important;
-    object-fit: contain;
-    border-radius: var(--espace-micro);
-    margin-right: var(--espace-petit);
-    background: white;
-    padding: 2px;
-    border: 1px solid var(--couleur-bordure);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-/* ========================================================================= */
-/* GRILLE DE LOGOS PARTENAIRES COMPACTE                                      */
-/* ========================================================================= */
-
-.grille-logos-partenaires {
+.grille-niveaux {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: var(--espace-base);
-    margin: var(--espace-grand) 0;
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--espace-grand);
+    margin-left: var(--marge-gauche-sous-section);
 }
 
-.logo-partenaire {
-    width: var(--taille-logo-partenaire) !important;
-    height: var(--taille-logo-partenaire) !important;
-    max-width: var(--taille-logo-partenaire) !important;
-    max-height: var(--taille-logo-partenaire) !important;
-    object-fit: contain;
-    padding: var(--espace-micro);
+.carte-niveau {
+    background: white;
+    padding: var(--espace-large);
+    border-radius: var(--espace-petit);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-left: 6px solid;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.carte-niveau::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, transparent 50%, currentColor 50%);
+    opacity: 0.1;
+    border-radius: 0 0 0 80px;
+}
+
+.carte-niveau:hover {
+    transform: translateY(-5px) translateX(5px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+/* Couleurs spécifiques pour chaque carte de niveau */
+.carte-college { border-left-color: var(--couleur-college); color: var(--couleur-college); }
+.carte-lycee { border-left-color: var(--couleur-lycee); color: var(--couleur-lycee); }
+.carte-cpge { border-left-color: var(--couleur-cpge); color: var(--couleur-cpge); }
+.carte-licence { border-left-color: var(--couleur-licence); color: var(--couleur-licence); }
+.carte-master { border-left-color: var(--couleur-master); color: var(--couleur-master); }
+.carte-doctorat { border-left-color: var(--couleur-doctorat); color: var(--couleur-doctorat); }
+
+/* ========================================================================= */
+/* SECTION DOCUMENTS ACADÉMIQUES ÉTENDUE                                     */
+/* ========================================================================= */
+
+.section-documents {
+    background: linear-gradient(135deg, var(--couleur-fond-secondaire), #f0f4f8);
+}
+
+.grille-documents {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--espace-grand);
+    margin-left: var(--marge-gauche-sous-section);
+}
+
+.carte-document {
+    background: white;
+    padding: var(--espace-large);
+    border-radius: var(--espace-petit);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-top: 4px solid;
+    position: relative;
+}
+
+.carte-document:hover {
+    transform: translateY(-8px) translateX(4px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+}
+
+.icone-document {
+    font-size: 3rem;
+    margin-bottom: var(--espace-base);
+    opacity: 0.9;
+}
+
+.badge-type-document {
+    position: absolute;
+    top: var(--espace-large);
+    right: var(--espace-large);
+    padding: var(--espace-mini) var(--espace-base);
+    border-radius: var(--espace-mini);
+    font-size: var(--taille-texte-mini);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+/* Couleurs pour les types de documents */
+.carte-memoire { border-top-color: var(--couleur-memoire); }
+.carte-memoire .badge-type-document { background: var(--degrade-memoire); }
+
+.carte-these { border-top-color: var(--couleur-these); }
+.carte-these .badge-type-document { background: var(--degrade-these); }
+
+.carte-livre { border-top-color: var(--couleur-livre); }
+.carte-livre .badge-type-document { background: var(--degrade-livre); }
+
+.carte-manuel { border-top-color: var(--couleur-manuel); }
+.carte-manuel .badge-type-document { background: var(--degrade-manuel); }
+
+/* ========================================================================= */
+/* TIMELINE ACADÉMIQUE AVEC ESPACES RENFORCÉS                                */
+/* ========================================================================= */
+
+.timeline-academique {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-left: calc(var(--marge-gauche-sous-section) + 2rem);
+    padding: var(--espace-xlarge) 0;
+}
+
+.timeline-academique::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(180deg, 
+        var(--couleur-college),
+        var(--couleur-lycee),
+        var(--couleur-cpge),
+        var(--couleur-licence),
+        var(--couleur-master),
+        var(--couleur-doctorat));
+    border-radius: var(--espace-mini);
+}
+
+.etape-timeline {
+    position: relative;
+    margin-bottom: var(--espace-xlarge);
+    padding-left: var(--espace-large);
+}
+
+.marqueur-timeline {
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 0 0 3px;
+}
+
+.etape-college .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-college); background: var(--couleur-college); }
+.etape-lycee .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-lycee); background: var(--couleur-lycee); }
+.etape-cpge .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-cpge); background: var(--couleur-cpge); }
+.etape-licence .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-licence); background: var(--couleur-licence); }
+.etape-master .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-master); background: var(--couleur-master); }
+.etape-doctorat .marqueur-timeline { box-shadow: 0 0 0 3px var(--couleur-doctorat); background: var(--couleur-doctorat); }
+
+/* ========================================================================= */
+/* COMPOSANT BIBLIOTHÈQUE AVEC CATÉGORIES                                    */
+/* ========================================================================= */
+
+.bibliotheque-academique {
+    margin-left: var(--marge-gauche-sous-section);
+}
+
+.categories-bibliotheque {
+    display: flex;
+    gap: var(--espace-base);
+    margin-bottom: var(--espace-large);
+    flex-wrap: wrap;
+}
+
+.bouton-categorie {
+    padding: var(--espace-petit) var(--espace-grand);
+    border: 2px solid var(--couleur-bordure);
     background: white;
     border-radius: var(--espace-mini);
-    border: 1px solid var(--couleur-bordure);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: var(--taille-texte-petit);
 }
 
-.logo-partenaire:hover {
-    transform: scale(1.05);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+.bouton-categorie.active {
+    background: var(--couleur-primaire-1);
+    color: white;
+    border-color: var(--couleur-primaire-1);
+    transform: translateY(-2px);
 }
+
+.bouton-categorie[data-categorie="memoires"]:hover { border-color: var(--couleur-memoire); color: var(--couleur-memoire); }
+.bouton-categorie[data-categorie="theses"]:hover { border-color: var(--couleur-these); color: var(--couleur-these); }
+.bouton-categorie[data-categorie="livres"]:hover { border-color: var(--couleur-livre); color: var(--couleur-livre); }
+.bouton-categorie[data-categorie="manuels"]:hover { border-color: var(--couleur-manuel); color: var(--couleur-manuel); }
 
 /* ========================================================================= */
-/* LOGOS CIRCULAIRES POUR PROFIL                                             */
+/* RESPONSIVE DESIGN AVEC ESPACES ADAPTATIFS                                 */
 /* ========================================================================= */
 
-.logo-circulaire {
-    width: var(--taille-logo-section) !important;
-    height: var(--taille-logo-section) !important;
-    max-width: var(--taille-logo-section) !important;
-    max-height: var(--taille-logo-section) !important;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.logo-circulaire:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-/* ========================================================================= */
-/* FORCER LA TAILLE DES IMAGES DANS TOUTES LES SECTIONS                      */
-/* ========================================================================= */
-
-/* Section compétences */
-.competence-category img,
-.expertise-domain img {
-    width: var(--taille-logo-mini) !important;
-    height: var(--taille-logo-mini) !important;
-    max-width: var(--taille-logo-mini) !important;
-    max-height: var(--taille-logo-mini) !important;
-    object-fit: contain;
-}
-
-/* Section formation */
-.timeline-content img {
-    width: 50px !important;
-    height: 50px !important;
-    max-width: 50px !important;
-    max-height: 50px !important;
-    object-fit: contain;
-    margin-bottom: var(--espace-petit);
-}
-
-/* Section expérience */
-.exp-card img {
-    width: 40px !important;
-    height: 40px !important;
-    max-width: 40px !important;
-    max-height: 40px !important;
-    object-fit: contain;
-    margin-right: var(--espace-petit);
-}
-
-/* Section recherche */
-.pub-card img,
-.conf-card img {
-    width: 30px !important;
-    height: 30px !important;
-    max-width: 30px !important;
-    max-height: 30px !important;
-    object-fit: contain;
-    margin-right: var(--espace-petit);
-}
-
-/* ========================================================================= */
-/* OVERRIDE DES STYLES EXISTANTS POUR LES IMAGES                             */
-/* ========================================================================= */
-
-/* Correction spécifique pour l'image hero */
-.hero-image img,
-.logo-container img,
-.logo-image {
-    width: var(--taille-logo-hero) !important;
-    height: var(--taille-logo-hero) !important;
-    max-width: var(--taille-logo-hero) !important;
-    max-height: var(--taille-logo-hero) !important;
-    object-fit: contain !important;
-}
-
-/* Correction pour les images dans les documents */
-.doc-card img,
-.doc-icon {
-    width: 50px !important;
-    height: 50px !important;
-    max-width: 50px !important;
-    max-height: 50px !important;
-    object-fit: contain;
-}
-
-/* ========================================================================= */
-/* RESPONSIVE DESIGN - TAILLES ADAPTATIVES                                   */
-/* ========================================================================= */
-
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     :root {
-        --taille-logo-hero: 150px;
-        --taille-logo-section: 70px;
-        --taille-logo-partenaire: 60px;
+        --marge-gauche-section: 3rem;
+        --marge-gauche-contenu: 1.5rem;
+    }
+}
+
+@media (max-width: 968px) {
+    :root {
+        --marge-gauche-section: 0;
+        --marge-gauche-contenu: 1rem;
     }
     
-    .conteneur-image-hero {
-        padding: var(--espace-petit);
+    body {
+        margin-left: 0;
+    }
+    
+    .barre-laterale-academique {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .barre-laterale-academique.ouverte {
+        transform: translateX(0);
+    }
+    
+    .navigation-principale {
+        left: 0;
+        width: 100%;
+    }
+    
+    .barre-progression-academique {
+        left: 0;
+        width: 100%;
+    }
+    
+    .section::before {
+        display: none;
+    }
+    
+    .menu-academique {
+        flex-direction: column;
+        position: fixed;
+        top: 74px;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: var(--espace-grand);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .menu-academique.ouvert {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
     }
 }
 
 @media (max-width: 768px) {
-    :root {
-        --taille-logo-hero: 120px;
-        --taille-logo-section: 60px;
-        --taille-logo-mini: 35px;
-        --taille-logo-navbar: 30px;
-        --taille-logo-footer: 50px;
-        --taille-logo-partenaire: 50px;
+    .grille-niveaux,
+    .grille-documents {
+        grid-template-columns: 1fr;
+        margin-left: 0;
     }
     
-    .image-hero {
-        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    .en-tete-section {
+        padding-left: 0;
     }
     
-    .grille-logos-partenaires {
-        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-        gap: var(--espace-petit);
+    .timeline-academique {
+        margin-left: var(--espace-grand);
     }
     
-    .marque {
-        font-size: 1rem;
+    .categories-bibliotheque {
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
     :root {
-        --taille-logo-hero: 100px;
-        --taille-logo-section: 50px;
-        --taille-logo-mini: 30px;
-        --taille-logo-navbar: 25px;
-        --taille-logo-partenaire: 40px;
+        --espace-grand: 1.5rem;
+        --espace-large: 2rem;
+        --espace-xlarge: 2.5rem;
     }
     
-    .conteneur-image-hero {
-        padding: var(--espace-mini);
-        margin-top: var(--espace-base);
+    .conteneur {
+        padding: 0 var(--espace-base);
     }
     
-    .image-hero {
-        padding: var(--espace-micro);
-    }
-    
-    .logo-navbar {
-        margin-right: var(--espace-mini);
-    }
-    
-    .grille-logos-partenaires {
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-        gap: var(--espace-mini);
+    .carte-niveau,
+    .carte-document {
+        padding: var(--espace-grand);
     }
 }
 
 /* ========================================================================= */
-/* CORRECTIONS SPÉCIFIQUES POUR LES ANCIENS STYLES                           */
+/* ANIMATIONS ET INTERACTIONS AMÉLIORÉES                                     */
 /* ========================================================================= */
 
-/* Override des anciennes tailles */
-.logo-image {
-    max-width: var(--taille-logo-hero) !important;
-    height: auto !important;
+@keyframes progressionAcademique {
+    0% { width: 0%; }
+    100% { width: 100%; }
 }
 
-.academic-seal {
-    max-width: var(--taille-logo-hero) !important;
-    height: auto !important;
+.animation-progression {
+    animation: progressionAcademique 2s ease-in-out forwards;
 }
 
-/* Correction pour les images dans le hero */
-.illuminated-portrait img,
-.portrait-container img {
-    width: var(--taille-logo-hero) !important;
-    height: auto !important;
-    max-width: var(--taille-logo-hero) !important;
+/* Highlight des sections au scroll */
+.section.active::before {
+    background: linear-gradient(180deg, 
+        var(--couleur-college),
+        var(--couleur-lycee),
+        var(--couleur-cpge),
+        var(--couleur-licence),
+        var(--couleur-master),
+        var(--couleur-doctorat));
+    opacity: 1;
 }
 
-/* ========================================================================= */
-/* STYLES DE FALLBACK POUR LES IMAGES                                        */
-/* ========================================================================= */
-
-/* Style par défaut pour toutes les images non stylisées */
-img:not([class]) {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--espace-micro);
-}
-
-/* Contrôle des images dans le contenu texte */
-.texte-corps img,
-.inscription img {
-    max-width: 200px !important;
-    height: auto !important;
-    margin: var(--espace-base) auto;
-    display: block;
-    border-radius: var(--espace-mini);
-}
-
-/* ========================================================================= */
-/* UTILITAIRES POUR LE DÉBUGAGE DES IMAGES                                   */
-/* ========================================================================= */
-
-/* Afficher les bordures pour debuguer les tailles */
-.debug-images img {
-    border: 1px solid red;
-}
-
-/* Log les tailles d'images dans la console */
-@media (max-width: 768px) {
-    .image-hero::after {
-        content: "Mobile: " var(--taille-logo-hero);
-        display: none;
-    }
+/* Effet de profondeur pour les cartes */
+.carte-niveau:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    pointer-events: none;
 }
