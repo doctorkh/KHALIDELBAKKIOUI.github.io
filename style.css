@@ -744,7 +744,7 @@ body {
 }
 
 .logo-image {
-    max-width: 500px; /* Taille considérablement agrandie */
+    max-width: 600px; /* Taille considérablement agrandie */
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -762,7 +762,7 @@ body {
     }
     
     .logo-image {
-        max-width: 450px;
+        max-width: 500px;
     }
 }
 
@@ -772,7 +772,7 @@ body {
     }
     
     .logo-image {
-        max-width: 400px;
+        max-width: 450px;
     }
 }
 
