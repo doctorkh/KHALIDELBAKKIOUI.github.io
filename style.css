@@ -717,13 +717,13 @@ body {
 }
 /*   ce qui j'ai ajouter
 /* ========================================================================= */
-/* HERO SECTION AVEC LOGOS TAILLE GRANDE                                    */
+/* HERO SECTION AVEC LOGOS TAILLE TRÈS GRANDE                               */
 /* ========================================================================= */
 
 .hero-image {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px; /* Container élargi */
     margin: 0 auto;
     padding: var(--espace-moyen);
 }
@@ -732,7 +732,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espace-moyen);
+    gap: var(--espace-grand); /* Espacement augmenté */
 }
 
 .logo-top,
@@ -744,7 +744,7 @@ body {
 }
 
 .logo-image {
-    max-width: 350px; /* Grande taille */
+    max-width: 500px; /* Taille considérablement agrandie */
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -756,13 +756,23 @@ body {
 }
 
 /* Media queries organisées du plus grand au plus petit */
+@media (max-width: 1024px) {
+    .hero-image {
+        max-width: 1000px;
+    }
+    
+    .logo-image {
+        max-width: 450px;
+    }
+}
+
 @media (max-width: 768px) {
     .hero-image {
         max-width: 90%;
     }
     
     .logo-image {
-        max-width: 300px;
+        max-width: 400px;
     }
 }
 
@@ -773,13 +783,13 @@ body {
     }
     
     .logo-image {
-        max-width: 250px;
+        max-width: 320px;
     }
 }
 
 @media (max-width: 384px) {
     .logo-image {
-        max-width: 200px;
+        max-width: 280px;
     }
 }
 
