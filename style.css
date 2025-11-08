@@ -1,37 +1,15 @@
 /* ========================================================================= */
-/* SYSTÈME DE DESIGN ACADÉMIQUE - LOGOS OPTIMISÉS                           */
+/* CORRECTION DES TAILLES DE LOGOS POUR LA FENÊTRE DE SORTIE                */
 /* ========================================================================= */
 
 :root {
-    /* ==================== TAILLES DE LOGOS RÉDUITES ==================== */
-    --taille-logo-hero: 60px;           /* Logo principal réduit */
-    --taille-logo-section: 60px;        /* Logo section réduit */
-    --taille-logo-mini: 60px;            /* Logo miniature */
-    --taille-logo-navbar: 40px;          /* Logo navigation */
-    --taille-logo-footer: 80px;          /* Logo pied de page */
-
-    /* ==================== PALETTE ACADÉMIQUE ÉTENDUE ==================== */
-    --couleur-primaire-1: #1a365d;
-    --couleur-primaire-2: #2d4a80;
-    --couleur-primaire-3: #3c5a9c;
-    --couleur-secondaire-1: #b91c1c;
-    --couleur-secondaire-2: #dc2626;
-    --couleur-secondaire-3: #ef4444;
-    --couleur-tertiaire-1: #d97706;
-    --couleur-tertiaire-2: #f59e0b;
-    --couleur-tertiaire-3: #fbbf24;
-
-    /* Couleurs de statut académique */
-    --couleur-college: #7c3aed;
-    --couleur-lycee: #dc2626;
-    --couleur-cpge: #059669;
-    --couleur-licence: #2563eb;
-    --couleur-master: #d97706;
-    --couleur-doctorat: #b91c1c;
-    --couleur-memoire: #7c3aed;
-    --couleur-these: #dc2626;
-    --couleur-livre: #059669;
-    --couleur-manuel: #2563eb;
+    /* ==================== TAILLES DE LOGOS CORRIGÉES ==================== */
+    --taille-logo-hero: 180px;           /* Logo principal - TRÈS réduit */
+    --taille-logo-section: 80px;         /* Logo section - réduit */
+    --taille-logo-mini: 40px;            /* Logo miniature */
+    --taille-logo-navbar: 35px;          /* Logo navigation */
+    --taille-logo-footer: 60px;          /* Logo pied de page */
+    --taille-logo-partenaire: 70px;      /* Logo partenaire */
 
     /* ==================== ESPACEMENTS OPTIMISÉS ==================== */
     --espace-micro: 0.25rem;
@@ -40,77 +18,80 @@
     --espace-base: 1rem;
     --espace-moyen: 1.5rem;
     --espace-grand: 2rem;
-    --espace-large: 3rem;
-    --espace-xlarge: 4rem;
-
-    /* Espaces latéraux ajustés */
-    --marge-gauche-section: 3rem;
-    --marge-gauche-contenu: 1.5rem;
 }
 
 /* ========================================================================= */
-/* LOGOS DANS LA SECTION HERO - TAILLES RÉDUITES                             */
+/* RÉINITIALISATION DES TAILLES D'IMAGES                                     */
+/* ========================================================================= */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================================================= */
+/* LOGO HERO - TAILLE CORRIGÉE                                               */
 /* ========================================================================= */
 
 .conteneur-image-hero {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--espace-moyen);
+    padding: var(--espace-base);
+    margin-top: var(--espace-moyen);
 }
 
 .image-hero {
-    width: var(--taille-logo-hero);
-    height: var(--taille-logo-hero);
-    object-fit: contain;
-    border-radius: var(--espace-petit);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-    background: white;
-    padding: var(--espace-petit);
-}
-
-.image-hero:hover {
-    transform: scale(1.05) rotate(1deg);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-}
-
-/* Version miniature pour mobile */
-.image-hero--mini {
-    width: calc(var(--taille-logo-hero) * 0.7);
-    height: calc(var(--taille-logo-hero) * 0.7);
-}
-
-/* ========================================================================= */
-/* LOGOS DANS LES SECTIONS - TAILLES ADAPTÉES                                */
-/* ========================================================================= */
-
-.logo-section {
-    width: var(--taille-logo-section);
-    height: var(--taille-logo-section);
+    width: var(--taille-logo-hero) !important;
+    height: var(--taille-logo-hero) !important;
+    max-width: var(--taille-logo-hero) !important;
+    max-height: var(--taille-logo-hero) !important;
     object-fit: contain;
     border-radius: var(--espace-mini);
     box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    margin-bottom: var(--espace-base);
+    transition: all 0.3s ease;
     background: white;
     padding: var(--espace-mini);
+}
+
+.image-hero:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* ========================================================================= */
+/* LOGOS DANS LES SECTIONS - TAILLES FIXES                                   */
+/* ========================================================================= */
+
+.logo-section {
+    width: var(--taille-logo-section) !important;
+    height: var(--taille-logo-section) !important;
+    max-width: var(--taille-logo-section) !important;
+    max-height: var(--taille-logo-section) !important;
+    object-fit: contain;
+    border-radius: var(--espace-mini);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: 0 auto var(--espace-base) auto;
+    background: white;
+    padding: var(--espace-micro);
     border: 1px solid var(--couleur-bordure);
 }
 
-.logo-section--inline {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: var(--espace-petit);
-    margin-bottom: 0;
+/* Logo dans le profil */
+.carte-profil .logo-section {
+    margin-bottom: var(--espace-base);
 }
 
 /* ========================================================================= */
-/* LOGOS DANS LA NAVIGATION - COMPACTS                                       */
+/* LOGO NAVIGATION - COMPACT                                                 */
 /* ========================================================================= */
 
 .logo-navbar {
-    width: var(--taille-logo-navbar);
-    height: var(--taille-logo-navbar);
+    width: var(--taille-logo-navbar) !important;
+    height: var(--taille-logo-navbar) !important;
+    max-width: var(--taille-logo-navbar) !important;
+    max-height: var(--taille-logo-navbar) !important;
     object-fit: contain;
     border-radius: var(--espace-micro);
     margin-right: var(--espace-petit);
@@ -122,51 +103,32 @@
     align-items: center;
     gap: var(--espace-petit);
     font-family: var(--police-accent);
-    font-size: var(--taille-sous-titre);
+    font-size: 1.1rem;
     color: var(--couleur-primaire-1);
     font-weight: 600;
     text-decoration: none;
 }
 
 /* ========================================================================= */
-/* LOGOS DANS LE FOOTER - TAILLE ÉQUILIBRÉE                                  */
-/* ========================================================================= */
-
-.logo-footer {
-    width: var(--taille-logo-footer);
-    height: var(--taille-logo-footer);
-    object-fit: contain;
-    border-radius: var(--espace-mini);
-    margin-bottom: var(--espace-base);
-    background: white;
-    padding: var(--espace-mini);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* ========================================================================= */
-/* LOGOS DANS LES CARTES - FORMAT MINIATURE                                  */
+/* LOGOS MINIATURES DANS LES CARTES                                          */
 /* ========================================================================= */
 
 .logo-miniature {
-    width: var(--taille-logo-mini);
-    height: var(--taille-logo-mini);
+    width: var(--taille-logo-mini) !important;
+    height: var(--taille-logo-mini) !important;
+    max-width: var(--taille-logo-mini) !important;
+    max-height: var(--taille-logo-mini) !important;
     object-fit: contain;
     border-radius: var(--espace-micro);
     margin-right: var(--espace-petit);
     background: white;
-    padding: var(--espace-micro);
+    padding: 2px;
     border: 1px solid var(--couleur-bordure);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Utilisation dans les cartes de compétences */
-.carte-competence .logo-miniature {
-    float: left;
-    margin: 0 var(--espace-petit) var(--espace-petit) 0;
-}
-
 /* ========================================================================= */
-/* GRILLE DE LOGOS PARTENAIRES - COMPACTE                                    */
+/* GRILLE DE LOGOS PARTENAIRES COMPACTE                                      */
 /* ========================================================================= */
 
 .grille-logos-partenaires {
@@ -174,13 +136,16 @@
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: var(--espace-base);
     margin: var(--espace-grand) 0;
+    justify-items: center;
 }
 
 .logo-partenaire {
-    width: 100%;
-    height: 60px;
+    width: var(--taille-logo-partenaire) !important;
+    height: var(--taille-logo-partenaire) !important;
+    max-width: var(--taille-logo-partenaire) !important;
+    max-height: var(--taille-logo-partenaire) !important;
     object-fit: contain;
-    padding: var(--espace-mini);
+    padding: var(--espace-micro);
     background: white;
     border-radius: var(--espace-mini);
     border: 1px solid var(--couleur-bordure);
@@ -189,38 +154,8 @@
 }
 
 .logo-partenaire:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: var(--couleur-secondaire-1);
-}
-
-/* ========================================================================= */
-/* LOGOS AVEC BADGES ACADÉMIQUES                                             */
-/* ========================================================================= */
-
-.conteneur-logo-badge {
-    position: relative;
-    display: inline-block;
-}
-
-.logo-avec-badge {
-    width: var(--taille-logo-section);
-    height: var(--taille-logo-section);
-    object-fit: contain;
-    border-radius: var(--espace-mini);
-}
-
-.badge-logo {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: var(--degrade-accent);
-    color: white;
-    padding: var(--espace-micro) var(--espace-petit);
-    border-radius: var(--espace-pilule);
-    font-size: var(--taille-texte-tres-petit);
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 /* ========================================================================= */
@@ -228,194 +163,217 @@
 /* ========================================================================= */
 
 .logo-circulaire {
-    width: var(--taille-logo-section);
-    height: var(--taille-logo-section);
+    width: var(--taille-logo-section) !important;
+    height: var(--taille-logo-section) !important;
+    max-width: var(--taille-logo-section) !important;
+    max-height: var(--taille-logo-section) !important;
     object-fit: cover;
     border-radius: 50%;
-    border: 4px solid white;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border: 3px solid white;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
 }
 
 .logo-circulaire:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 25px rgba(0,0,0,0.2);
-}
-
-.logo-circulaire--petit {
-    width: var(--taille-logo-mini);
-    height: var(--taille-logo-mini);
-    border-width: 2px;
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 /* ========================================================================= */
-/* OPTIMISATIONS RESPONSIVE POUR LES LOGOS                                   */
+/* FORCER LA TAILLE DES IMAGES DANS TOUTES LES SECTIONS                      */
+/* ========================================================================= */
+
+/* Section compétences */
+.competence-category img,
+.expertise-domain img {
+    width: var(--taille-logo-mini) !important;
+    height: var(--taille-logo-mini) !important;
+    max-width: var(--taille-logo-mini) !important;
+    max-height: var(--taille-logo-mini) !important;
+    object-fit: contain;
+}
+
+/* Section formation */
+.timeline-content img {
+    width: 50px !important;
+    height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+    object-fit: contain;
+    margin-bottom: var(--espace-petit);
+}
+
+/* Section expérience */
+.exp-card img {
+    width: 40px !important;
+    height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    object-fit: contain;
+    margin-right: var(--espace-petit);
+}
+
+/* Section recherche */
+.pub-card img,
+.conf-card img {
+    width: 30px !important;
+    height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    object-fit: contain;
+    margin-right: var(--espace-petit);
+}
+
+/* ========================================================================= */
+/* OVERRIDE DES STYLES EXISTANTS POUR LES IMAGES                             */
+/* ========================================================================= */
+
+/* Correction spécifique pour l'image hero */
+.hero-image img,
+.logo-container img,
+.logo-image {
+    width: var(--taille-logo-hero) !important;
+    height: var(--taille-logo-hero) !important;
+    max-width: var(--taille-logo-hero) !important;
+    max-height: var(--taille-logo-hero) !important;
+    object-fit: contain !important;
+}
+
+/* Correction pour les images dans les documents */
+.doc-card img,
+.doc-icon {
+    width: 50px !important;
+    height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+    object-fit: contain;
+}
+
+/* ========================================================================= */
+/* RESPONSIVE DESIGN - TAILLES ADAPTATIVES                                   */
 /* ========================================================================= */
 
 @media (max-width: 1024px) {
     :root {
-        --taille-logo-hero: 100px;
-        --taille-logo-section: 100px;
-        --taille-logo-mini: 50px;
+        --taille-logo-hero: 150px;
+        --taille-logo-section: 70px;
+        --taille-logo-partenaire: 60px;
     }
     
     .conteneur-image-hero {
-        padding: var(--espace-base);
+        padding: var(--espace-petit);
     }
 }
 
 @media (max-width: 768px) {
     :root {
-        --taille-logo-hero: 100px;
-        --taille-logo-section: 80px;
-        --taille-logo-footer: 60px;
-        --taille-logo-navbar: 32px;
+        --taille-logo-hero: 120px;
+        --taille-logo-section: 60px;
+        --taille-logo-mini: 35px;
+        --taille-logo-navbar: 30px;
+        --taille-logo-footer: 50px;
+        --taille-logo-partenaire: 50px;
     }
     
     .image-hero {
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     }
     
     .grille-logos-partenaires {
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
         gap: var(--espace-petit);
     }
     
-    .logo-partenaire {
-        height: 50px;
-        padding: var(--espace-micro);
+    .marque {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     :root {
         --taille-logo-hero: 100px;
-        --taille-logo-section: 60px;
-        --taille-logo-mini: 40px;
+        --taille-logo-section: 50px;
+        --taille-logo-mini: 30px;
+        --taille-logo-navbar: 25px;
+        --taille-logo-partenaire: 40px;
     }
     
     .conteneur-image-hero {
-        padding: var(--espace-petit);
+        padding: var(--espace-mini);
+        margin-top: var(--espace-base);
     }
     
     .image-hero {
-        padding: var(--espace-mini);
+        padding: var(--espace-micro);
     }
     
     .logo-navbar {
         margin-right: var(--espace-mini);
     }
     
-    .marque {
-        font-size: var(--taille-texte-leger);
+    .grille-logos-partenaires {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: var(--espace-mini);
     }
 }
 
 /* ========================================================================= */
-/* ANIMATIONS SPÉCIFIQUES POUR LOGOS                                         */
+/* CORRECTIONS SPÉCIFIQUES POUR LES ANCIENS STYLES                           */
 /* ========================================================================= */
 
-@keyframes pulseLogo {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-    }
+/* Override des anciennes tailles */
+.logo-image {
+    max-width: var(--taille-logo-hero) !important;
+    height: auto !important;
 }
 
-.logo-anime {
-    animation: pulseLogo 3s ease-in-out infinite;
+.academic-seal {
+    max-width: var(--taille-logo-hero) !important;
+    height: auto !important;
 }
 
-.logo-anime--lent {
-    animation-duration: 5s;
-}
-
-/* ========================================================================= */
-/* ÉTATS DE CHARGEMENT POUR LOGOS                                            */
-/* ========================================================================= */
-
-.logo-chargement {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
+/* Correction pour les images dans le hero */
+.illuminated-portrait img,
+.portrait-container img {
+    width: var(--taille-logo-hero) !important;
+    height: auto !important;
+    max-width: var(--taille-logo-hero) !important;
 }
 
 /* ========================================================================= */
-/* VARIANTES DE STYLE POUR LOGOS                                             */
+/* STYLES DE FALLBACK POUR LES IMAGES                                        */
 /* ========================================================================= */
 
-/* Logo avec bordure académique */
-.logo-bordure-academique {
-    border: 3px solid;
-    border-image: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-secondaire-1)) 1;
-    padding: var(--espace-mini);
+/* Style par défaut pour toutes les images non stylisées */
+img:not([class]) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--espace-micro);
 }
 
-/* Logo avec effet vintage */
-.logo-vintage {
-    filter: sepia(0.3) brightness(1.1);
-    border: 2px solid #d4af37;
-    background: #fef6e6;
-}
-
-/* Logo moderne minimaliste */
-.logo-minimal {
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    background: transparent;
+/* Contrôle des images dans le contenu texte */
+.texte-corps img,
+.inscription img {
+    max-width: 200px !important;
+    height: auto !important;
+    margin: var(--espace-base) auto;
+    display: block;
+    border-radius: var(--espace-mini);
 }
 
 /* ========================================================================= */
-/* ACCESSIBILITÉ POUR LES LOGOS                                              */
+/* UTILITAIRES POUR LE DÉBUGAGE DES IMAGES                                   */
 /* ========================================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-    .image-hero:hover,
-    .logo-partenaire:hover,
-    .logo-circulaire:hover {
-        transform: none;
-    }
-    
-    .logo-anime {
-        animation: none;
-    }
+/* Afficher les bordures pour debuguer les tailles */
+.debug-images img {
+    border: 1px solid red;
 }
 
-/* Contraste élevé */
-@media (prefers-contrast: high) {
-    .image-hero,
-    .logo-section,
-    .logo-partenaire {
-        border: 2px solid var(--couleur-texte);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-}
-
-/* Mode sombre */
-@media (prefers-color-scheme: dark) {
-    .image-hero,
-    .logo-section,
-    .logo-partenaire,
-    .logo-miniature {
-        background: #2d3748;
-        border-color: #4a5568;
-    }
-    
-    .logo-vintage {
-        background: #4a5568;
-        border-color: #d4af37;
+/* Log les tailles d'images dans la console */
+@media (max-width: 768px) {
+    .image-hero::after {
+        content: "Mobile: " var(--taille-logo-hero);
+        display: none;
     }
 }
