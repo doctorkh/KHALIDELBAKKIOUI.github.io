@@ -82,6 +82,13 @@
     --taille-titre-2: 2.5rem;
     --taille-titre-1: 3rem;
     --taille-titre-hero: 3.5rem;
+
+    /* Nouvelles variables pour les composants agrandis */
+    --taille-titre-hero: 4rem;
+    --taille-titre-massif: 5rem;
+    --espace-xxxlarge: 8rem;
+    --espace-massif: 10rem;
+}
 }
 
 /* ========================================================================= */
@@ -765,4 +772,446 @@ body {
     .logo-image {
         max-width: 200px;
     }
+}
+
+/*    ce qui j'ai ajouté  */
+/* ========================================================================= */
+/* AMÉLIORATIONS VISUELLES - COMPOSANTS AGRANDIS                            */
+/* ========================================================================= */
+
+/* ==================== HERO SECTION ÉLARGIE ==================== */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--couleur-fond-secondaire) 0%, #f0f4f8 100%);
+    margin-left: 0;
+    padding: var(--espace-xxlarge) 0;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 1200px;
+    padding: 0 var(--espace-large);
+}
+
+.hero-title {
+    font-size: var(--taille-titre-hero);
+    font-family: var(--police-accent);
+    color: var(--couleur-primaire-1);
+    margin-bottom: var(--espace-large);
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: var(--taille-titre-3);
+    color: var(--couleur-texte-secondaire);
+    margin-bottom: var(--espace-xlarge);
+    font-weight: 300;
+}
+
+/* ==================== LISTE DES NIVEAUX ACADÉMIQUES AGRANDIE ==================== */
+.liste-niveaux-academiques {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-petit);
+    margin-left: var(--marge-gauche-sous-section);
+    margin-bottom: var(--espace-xlarge);
+}
+
+.element-niveau {
+    display: flex;
+    align-items: center;
+    padding: var(--espace-grand) var(--espace-large);
+    margin-bottom: var(--espace-petit);
+    background: white;
+    border-radius: var(--espace-base);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-left: 8px solid;
+    transition: all 0.4s ease;
+    font-weight: 700;
+    font-size: var(--taille-sous-titre);
+    position: relative;
+    overflow: hidden;
+}
+
+.element-niveau::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.element-niveau:hover::before {
+    left: 100%;
+}
+
+.element-niveau:hover {
+    transform: translateX(15px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+}
+
+/* Couleurs spécifiques pour chaque niveau */
+.element-niveau.college { 
+    border-left-color: var(--couleur-college); 
+    color: var(--couleur-college);
+    background: linear-gradient(135deg, white 0%, #faf5ff 100%);
+}
+.element-niveau.lycee { 
+    border-left-color: var(--couleur-lycee); 
+    color: var(--couleur-lycee);
+    background: linear-gradient(135deg, white 0%, #fef2f2 100%);
+}
+.element-niveau.cpge { 
+    border-left-color: var(--couleur-cpge); 
+    color: var(--couleur-cpge);
+    background: linear-gradient(135deg, white 0%, #f0fdf4 100%);
+}
+
+/* ==================== COMPTEURS DE PUBLICATIONS AGRANDIS ==================== */
+.compteurs-academiques {
+    display: flex;
+    gap: var(--espace-grand);
+    margin-left: var(--marge-gauche-sous-section);
+    margin-bottom: var(--espace-xlarge);
+    justify-content: center;
+}
+
+.compteur-item {
+    background: white;
+    padding: var(--espace-large);
+    border-radius: var(--espace-base);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.1);
+    border-top: 6px solid;
+    min-width: 220px;
+    transition: all 0.4s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.compteur-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, currentColor, transparent);
+    opacity: 0.3;
+}
+
+.compteur-item:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+}
+
+.compteur-chiffre {
+    font-size: var(--taille-titre-1);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: var(--espace-petit);
+    background: linear-gradient(135deg, currentColor, var(--couleur-texte));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.compteur-label {
+    font-size: var(--taille-texte-base);
+    color: var(--couleur-texte-secondaire);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Couleurs pour les types de compteurs */
+.compteur-publications { 
+    border-top-color: var(--couleur-primaire-1); 
+    color: var(--couleur-primaire-1);
+}
+.compteur-conferences { 
+    border-top-color: var(--couleur-secondaire-1); 
+    color: var(--couleur-secondaire-1);
+}
+
+/* ==================== LISTE DES FILIÈRES CPGE AGRANDIE ==================== */
+.liste-filieres {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--espace-base);
+    margin-left: var(--marge-gauche-sous-section);
+    margin-bottom: var(--espace-xlarge);
+}
+
+.filiere-item {
+    background: white;
+    padding: var(--espace-grand);
+    border-radius: var(--espace-base);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    font-weight: 700;
+    font-size: var(--taille-texte-base);
+    border: 2px solid var(--couleur-bordure);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.filiere-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--couleur-cpge), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.filiere-item:hover::before {
+    opacity: 0.1;
+}
+
+.filiere-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    border-color: var(--couleur-cpge);
+    color: var(--couleur-cpge);
+}
+
+/* ==================== TYPES DE DOCUMENTS AGRANDIS ==================== */
+.types-documents {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-base);
+    margin-left: var(--marge-gauche-sous-section);
+    margin-bottom: var(--espace-xlarge);
+}
+
+.type-document {
+    display: flex;
+    align-items: center;
+    padding: var(--espace-grand) var(--espace-large);
+    background: white;
+    border-radius: var(--espace-base);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    border-left: 8px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.type-document::after {
+    content: '→';
+    position: absolute;
+    right: var(--espace-large);
+    font-size: var(--taille-titre-4);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
+}
+
+.type-document:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.type-document:hover {
+    transform: translateX(20px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+}
+
+.icone-type-document {
+    font-size: 2.5rem;
+    margin-right: var(--espace-base);
+    opacity: 0.9;
+    transition: transform 0.3s ease;
+}
+
+.type-document:hover .icone-type-document {
+    transform: scale(1.2);
+}
+
+.label-type-document {
+    font-size: var(--taille-sous-titre);
+    font-weight: 700;
+}
+
+/* Couleurs pour les types de documents */
+.type-these { 
+    border-left-color: var(--couleur-these); 
+    color: var(--couleur-these);
+    background: linear-gradient(135deg, white 0%, #fef2f2 100%);
+}
+.type-memoire { 
+    border-left-color: var(--couleur-memoire); 
+    color: var(--couleur-memoire);
+    background: linear-gradient(135deg, white 0%, #faf5ff 100%);
+}
+.type-livre { 
+    border-left-color: var(--couleur-livre); 
+    color: var(--couleur-livre);
+    background: linear-gradient(135deg, white 0%, #f0fdf4 100%);
+}
+
+/* ==================== SECTIONS AGRANDIES ==================== */
+.section-agrandie {
+    padding: var(--espace-xxlarge) 0;
+    margin-left: var(--marge-gauche-contenu);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.section-agrandie::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--marge-gauche-contenu));
+    top: 0;
+    height: 100%;
+    width: 6px;
+    background: linear-gradient(180deg, 
+        var(--couleur-college),
+        var(--couleur-lycee),
+        var(--couleur-cpge),
+        var(--couleur-licence),
+        var(--couleur-master),
+        var(--couleur-doctorat));
+    border-radius: var(--espace-micro);
+}
+
+/* ==================== TITRES AGRANDIS ==================== */
+.titre-section-grand {
+    font-size: var(--taille-titre-hero);
+    font-family: var(--police-accent);
+    color: var(--couleur-primaire-1);
+    margin-bottom: var(--espace-xlarge);
+    text-align: center;
+    position: relative;
+}
+
+.titre-section-grand::after {
+    content: '';
+    position: absolute;
+    bottom: -var(--espace-base);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--couleur-primaire-1), var(--couleur-secondaire-1));
+    border-radius: 2px;
+}
+
+/* ==================== RESPONSIVE DESIGN AGRANDI ==================== */
+@media (max-width: 1200px) {
+    .hero-title {
+        font-size: var(--taille-titre-1);
+    }
+    
+    .hero-subtitle {
+        font-size: var(--taille-titre-4);
+    }
+    
+    .compteur-chiffre {
+        font-size: var(--taille-titre-2);
+    }
+}
+
+@media (max-width: 968px) {
+    .section-agrandie {
+        min-height: auto;
+        padding: var(--espace-xlarge) 0;
+    }
+    
+    .compteurs-academiques {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .compteur-item {
+        min-width: 280px;
+    }
+    
+    .liste-filieres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .liste-niveaux-academiques,
+    .compteurs-academiques,
+    .liste-filieres,
+    .types-documents {
+        margin-left: 0;
+    }
+    
+    .element-niveau,
+    .type-document {
+        padding: var(--espace-moyen) var(--espace-base);
+    }
+    
+    .filiere-item {
+        padding: var(--espace-base);
+    }
+    
+    .titre-section-grand {
+        font-size: var(--taille-titre-2);
+    }
+}
+
+@media (max-width: 480px) {
+    .liste-filieres {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: var(--taille-titre-2);
+    }
+    
+    .compteur-item {
+        min-width: 250px;
+        padding: var(--espace-moyen);
+    }
+    
+    .compteur-chiffre {
+        font-size: var(--taille-titre-3);
+    }
+}
+
+/* ==================== ANIMATIONS ENTRANCE ==================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fadeInLeft {
+    animation: fadeInLeft 0.8s ease-out;
 }
