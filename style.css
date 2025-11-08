@@ -1215,3 +1215,298 @@ body {
 .animate-fadeInLeft {
     animation: fadeInLeft 0.8s ease-out;
 }
+/*  ajouter par Khalid */
+
+/* ========================================================================= */
+/* SYSTÈME DE TABS AGRANDI ET AMÉLIORÉ                                      */
+/* ========================================================================= */
+
+/* ==================== CONTENEUR PRINCIPAL DES TABS ==================== */
+.tab-buttons {
+    display: flex;
+    gap: var(--espace-petit);
+    margin-left: var(--marge-gauche-sous-section);
+    margin-bottom: var(--espace-xlarge);
+    flex-wrap: wrap;
+    background: var(--couleur-fond-secondaire);
+    padding: var(--espace-base);
+    border-radius: var(--espace-base);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* ==================== BOUTONS DE TAB AGRANDIS ==================== */
+.tab-button {
+    padding: var(--espace-grand) var(--espace-large);
+    border: none;
+    background: white;
+    border-radius: var(--espace-base);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-weight: 700;
+    font-size: var(--taille-texte-base);
+    color: var(--couleur-texte-secondaire);
+    position: relative;
+    overflow: hidden;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 2px solid transparent;
+}
+
+.tab-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: left 0.6s ease;
+}
+
+.tab-button:hover::before {
+    left: 100%;
+}
+
+.tab-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    color: var(--couleur-primaire-1);
+    border-color: var(--couleur-bordure);
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(26, 54, 93, 0.3);
+    border-color: var(--couleur-primaire-1);
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+}
+
+/* ==================== COULEURS SPÉCIFIQUES PAR GROUPE ==================== */
+
+/* Groupe Expérience (CPGE, Lycée, Collège) */
+[data-tab-group="experience"] .tab-button.active {
+    background: linear-gradient(135deg, var(--couleur-cpge), var(--couleur-licence));
+}
+
+[data-tab-group="experience"] .tab-button:hover {
+    color: var(--couleur-cpge);
+    border-color: var(--couleur-cpge);
+}
+
+/* Groupe Research (Publications, Conférences) */
+[data-tab-group="research"] .tab-button.active {
+    background: linear-gradient(135deg, var(--couleur-secondaire-1), var(--couleur-secondaire-2));
+}
+
+[data-tab-group="research"] .tab-button:hover {
+    color: var(--couleur-secondaire-1);
+    border-color: var(--couleur-secondaire-1);
+}
+
+/* Groupe Enseignement (PSI, MPSI, ECT, ECS) */
+[data-tab-group="enseignement"] .tab-button.active {
+    background: linear-gradient(135deg, var(--couleur-tertiaire-1), var(--couleur-tertiaire-2));
+}
+
+[data-tab-group="enseignement"] .tab-button:hover {
+    color: var(--couleur-tertiaire-1);
+    border-color: var(--couleur-tertiaire-1);
+}
+
+/* Groupe Documents (Thèse, Mémoires, Livres) */
+[data-tab-group="documents"] .tab-button.active {
+    background: linear-gradient(135deg, var(--couleur-quaternaire-1), var(--couleur-quaternaire-2));
+}
+
+[data-tab-group="documents"] .tab-button:hover {
+    color: var(--couleur-quaternaire-1);
+    border-color: var(--couleur-quaternaire-1);
+}
+
+/* ==================== INDICATEUR DE COMPTEUR ==================== */
+.tab-button::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--couleur-secondaire-2);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-button[data-count]:not([data-count=""])::after {
+    transform: scale(1);
+}
+
+/* ==================== VERSION AGRANDIE POUR SECTIONS IMPORTANTES ==================== */
+.tab-buttons.large {
+    gap: var(--espace-base);
+    padding: var(--espace-grand);
+    margin-bottom: var(--espace-xxlarge);
+}
+
+.tab-buttons.large .tab-button {
+    padding: var(--espace-xlarge) var(--espace-grand);
+    font-size: var(--taille-sous-titre);
+    min-width: 180px;
+    border-radius: var(--espace-moyen);
+    flex: 1;
+}
+
+.tab-buttons.large .tab-button.active {
+    transform: translateY(-8px) scale(1.08);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+/* ==================== ANIMATIONS DE TRANSITION ==================== */
+@keyframes tabPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.tab-button.active {
+    animation: tabPulse 0.6s ease;
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-button {
+    animation: slideInFromBottom 0.5s ease;
+}
+
+/* Délai d'animation pour chaque bouton */
+.tab-button:nth-child(1) { animation-delay: 0.1s; }
+.tab-button:nth-child(2) { animation-delay: 0.2s; }
+.tab-button:nth-child(3) { animation-delay: 0.3s; }
+.tab-button:nth-child(4) { animation-delay: 0.4s; }
+.tab-button:nth-child(5) { animation-delay: 0.5s; }
+.tab-button:nth-child(6) { animation-delay: 0.6s; }
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1200px) {
+    .tab-buttons {
+        margin-left: var(--marge-gauche-contenu);
+    }
+    
+    .tab-buttons.large .tab-button {
+        min-width: 160px;
+        padding: var(--espace-large) var(--espace-moyen);
+    }
+}
+
+@media (max-width: 968px) {
+    .tab-buttons {
+        margin-left: 0;
+        gap: var(--espace-micro);
+        padding: var(--espace-petit);
+    }
+    
+    .tab-button {
+        padding: var(--espace-moyen) var(--espace-base);
+        min-width: 120px;
+        font-size: var(--taille-texte-petit);
+        flex: 1;
+    }
+    
+    .tab-buttons.large {
+        flex-direction: column;
+    }
+    
+    .tab-buttons.large .tab-button {
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-buttons {
+        flex-direction: column;
+    }
+    
+    .tab-button {
+        width: 100%;
+        min-width: auto;
+        margin-bottom: var(--espace-micro);
+    }
+    
+    .tab-button:hover {
+        transform: translateY(-3px) scale(1.02);
+    }
+    
+    .tab-button.active {
+        transform: translateY(-2px) scale(1.03);
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-button {
+        padding: var(--espace-base) var(--espace-petit);
+        font-size: var(--taille-texte-petit);
+    }
+    
+    .tab-buttons.large .tab-button {
+        padding: var(--espace-base) var(--espace-petit);
+    }
+}
+
+/* ==================== EFFET DE SURBRillance AU FOCUS ==================== */
+.tab-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.3);
+}
+
+.tab-button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.5);
+}
+
+/* ==================== INDICATEUR DE CHARGEMENT ==================== */
+.tab-button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
