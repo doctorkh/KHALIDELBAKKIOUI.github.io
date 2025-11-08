@@ -1,1783 +1,1126 @@
-voici maintenant le fichier style.css meme demande svp complet entier corriger et améliorer/
-
-
-
-/* ===== VARIABLES ET RESET ===== */
-:root {
-    /* Couleurs principales */
-    --primary-color: #2c3e50;
-    --secondary-color: #e74c3c;
-    --accent-color: #3498db;
-    --dark-color: #2c3e50;
-    --light-color: #ecf0f1;
-    --text-color: #333;
-    --text-light: #7f8c8d;
-    --white: #ffffff;
-    --bg-light: #f8f9fa;
-    
-    /* Dégradés */
-    --gradient-primary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    --gradient-accent: linear-gradient(45deg, #e74c3c, #c0392b);
-    --gradient-blue: linear-gradient(135deg, #3498db, #2980b9);
-    
-    /* Typographie */
-    --font-primary: 'Inter', sans-serif;
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 0.75rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 2rem;
-    --font-size-4xl: 2.5rem;
-    
-    /* Espacements */
-    --space-xs: 0.25rem;
-    --space-sm: 0.5rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    
-    /* Bordures */
-    --border-radius: 8px;
-    --border-radius-lg: 12px;
-    --border-radius-xl: 20px;
-    
-    /* Ombres */
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
-    --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
-    --shadow-xl: 0 12px 24px rgba(0,0,0,0.25);
-    
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
-}
-
-/* Reset et base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: var(--font-primary);
-    line-height: 1.6;
-    color: var(--text-color);
-    overflow-x: hidden;
-}
-
-/* ===== BARRE D'INFORMATION SUPÉRIEURE ===== */
-.hero-info-bar {
-    background: var(--gradient-primary);
-    color: var(--white);
-    padding: var(--space-sm) 0;
-    font-size: var(--font-size-sm);
-    border-bottom: 3px solid var(--secondary-color);
-    box-shadow: var(--shadow-md);
-    position: relative;
-    z-index: 1000;
-}
-
-.hero-info-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
-    flex-wrap: wrap;
-    gap: var(--space-md);
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-xs) var(--space-md);
-    background: rgba(255,255,255,0.1);
-    border-radius: var(--border-radius-xl);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: all var(--transition-normal);
-}
-
-.info-item:hover {
-    background: rgba(255,255,255,0.15);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.info-item i {
-    color: var(--secondary-color);
-    font-size: var(--font-size-sm);
-    width: 16px;
-    text-align: center;
-}
-
-.info-item span {
-    font-weight: 600;
-    color: var(--light-color);
-}
-
-.visitor-stats {
-    display: flex;
-    gap: var(--space-sm);
-    align-items: center;
-}
-
-.stat-badge {
-    background: var(--gradient-accent);
-    color: var(--white);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--border-radius-xl);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
-}
-
-/* ===== NAVIGATION ===== */
-#navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
-}
-
-#navbar.scrolled {
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: var(--shadow-lg);
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 70px;
-}
-
-.nav-logo h2 {
-    color: var(--primary-color);
-    font-weight: 550;
-    font-size: var(--font-size-xl);
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: var(--space-xl);
-}
-
-.nav-menu li a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    transition: color var(--transition-fast);
-    position: relative;
-}
-
-.nav-menu li a:hover {
-    color: var(--secondary-color);
-}
-
-.nav-menu li a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--secondary-color);
-    transition: width var(--transition-normal);
-}
-
-.nav-menu li a:hover::after {
-    width: 100%;
-}
-
-.nav-toggle {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.nav-toggle span {
-    width: 25px;
-    height: 3px;
-    background: var(--primary-color);
-    margin: 3px 0;
-    transition: var(--transition-normal);
-}
-
-/* ===== SECTION HERO ===== */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(44, 62, 80, 0.9);
-}
-
-.hero-container {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-2xl) var(--space-lg);
-}
-
-.hero-main-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    align-items: center;
-    margin-top: var(--space-lg);
-}
-
-.hero-content {
-    color: var(--white);
-}
-
-.hero-badge {
-    display: inline-block;
-    background: var(--gradient-accent);
-    color: var(--white);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--border-radius-xl);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    margin-bottom: var(--space-lg);
-    box-shadow: var(--shadow-md);
-}
-
-.hero-title {
-    font-size: var(--font-size-4xl);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: var(--space-md);
-}
-
-.hero-title span {
-    color: var(--secondary-color);
-}
-
-.hero-subtitle {
-    font-size: var(--font-size-xl);
-    color: var(--light-color);
-    margin-bottom: var(--space-xl);
-    font-weight: 400;
-}
-
-.hero-contact {
-    margin-bottom: var(--space-xl);
-}
-
-.hero-contact p {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-sm);
-    font-size: var(--font-size-lg);
-}
-
-.hero-contact i {
-    color: var(--secondary-color);
-    width: 20px;
-}
-
-.hero-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-lg);
-    margin: var(--space-xl) 0;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat h3 {
-    font-size: var(--font-size-3xl);
-    color: var(--secondary-color);
-    font-weight: 700;
-    margin-bottom: var(--space-xs);
-}
-
-.stat p {
-    font-size: var(--font-size-sm);
-    color: var(--light-color);
-}
-
-.hero-buttons {
-    display: flex;
-    gap: var(--space-md);
-    margin-top: var(--space-xl);
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: all var(--transition-normal);
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-base);
-}
-
-.btn-primary {
-    background: var(--gradient-accent);
-    color: var(--white);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid var(--white);
-}
-
-.btn-secondary:hover {
-    background: var(--white);
-    color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-.hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-    align-items: center;
-}
-
-.logo-image {
-    max-width: 450px;
-    height: auto;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-xl);
-    transition: transform var(--transition-normal);
-}
-
-.logo-image:hover {
-    transform: scale(1.05);
-}
-
-.scroll-indicator {
-    position: absolute;
-    bottom: var(--space-xl);
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--white);
-    font-size: var(--font-size-2xl);
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateX(-50%) translateY(0);
-    }
-    40% {
-        transform: translateX(-50%) translateY(-10px);
-    }
-    60% {
-        transform: translateX(-50%) translateY(-5px);
-    }
-}
-
-/* ===== SECTIONS GÉNÉRIQUES ===== */
-.section {
-    padding: var(--space-2xl) 0;
-    position: relative;
-}
-
-.bg-light {
-    background: var(--bg-light);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--space-lg);
-}
-
-.section-title {
-    text-align: center;
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: var(--space-2xl);
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: var(--gradient-accent);
-    border-radius: var(--border-radius);
-}
-
-/* ===== SECTION PROFIL ===== */
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-xl);
-    margin-bottom: var(--space-2xl);
-}
-
-.profile-card {
-    background: var(--white);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius-lg);
-    text-align: center;
-    box-shadow: var(--shadow-md);
-    transition: transform var(--transition-normal);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
-
-.profile-icon {
-    font-size: 3rem;
-    color: var(--secondary-color);
-    margin-bottom: var(--space-md);
-}
-
-.profile-card h3 {
-    font-size: var(--font-size-xl);
-    color: var(--primary-color);
-    margin-bottom: var(--space-md);
-    font-weight: 600;
-}
-
-.profile-card p {
-    color: var(--text-light);
-    line-height: 1.6;
-}
-
-.competences-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--space-xl);
-}
-
-.competence-category {
-    background: var(--white);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    border-left: 4px solid var(--secondary-color);
-}
-
-.competence-category h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-lg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: var(--font-size-lg);
-}
-
-.competence-category i {
-    color: var(--secondary-color);
-}
-
-.competence-category ul {
-    list-style: none;
-}
-
-.competence-category li {
-    padding: var(--space-xs) 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    color: var(--text-light);
-}
-
-.competence-category li:last-child {
-    border-bottom: none;
-}
-
-.competence-category strong {
-    color: var(--primary-color);
-}
-
-/* ===== SECTION FORMATION ===== */
-.timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background: var(--gradient-blue);
-    border-radius: var(--border-radius);
-}
-
-.timeline-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: var(--space-2xl);
-    position: relative;
-}
-
-.timeline-item:nth-child(odd) {
-    flex-direction: row;
-}
-
-.timeline-item:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.timeline-date {
-    flex: 1;
-    text-align: center;
-    font-weight: 600;
-    color: var(--primary-color);
-    font-size: var(--font-size-lg);
-    padding: var(--space-md);
-}
-
-.timeline-content {
-    flex: 2;
-    background: var(--white);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-    position: relative;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.timeline-content::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 20px;
-    height: 20px;
-    background: var(--white);
-    border: 4px solid var(--accent-color);
-    border-radius: 50%;
-}
-
-.timeline-item:nth-child(odd) .timeline-content::before {
-    right: -30px;
-    transform: translateY(-50%);
-}
-
-.timeline-item:nth-child(even) .timeline-content::before {
-    left: -30px;
-    transform: translateY(-50%);
-}
-
-.timeline-content h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-sm);
-    font-size: var(--font-size-lg);
-}
-
-.institution {
-    color: var(--secondary-color);
-    font-weight: 600;
-    margin-bottom: var(--space-sm);
-}
-
-.details {
-    color: var(--text-light);
-    margin-bottom: var(--space-md);
-    font-style: italic;
-}
-
-.timeline-badge {
-    display: inline-block;
-    background: var(--gradient-accent);
-    color: var(--white);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--border-radius-xl);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-}
-
-/* ===== SECTION EXPÉRIENCE ===== */
-.experience-tabs {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-}
-
-.tab-buttons {
-    display: flex;
-    background: var(--gradient-primary);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-}
-
-.tab-button {
-    flex: 1;
-    background: none;
-    border: none;
-    color: var(--white);
-    padding: var(--space-lg) var(--space-md);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    position: relative;
-}
-
-.tab-button::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 3px;
-    background: var(--secondary-color);
-    transition: width var(--transition-normal);
-}
-
-.tab-button:hover::after,
-.tab-button.active::after {
-    width: 80%;
-}
-
-.tab-button.active {
-    background: rgba(255,255,255,0.1);
-}
-
-.tab-content {
-    padding: var(--space-xl);
-}
-
-.tab-pane {
-    display: none;
-}
-
-.tab-pane.active {
-    display: block;
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.experience-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--space-lg);
-}
-
-.exp-card {
-    background: var(--bg-light);
-    padding: var(--space-lg);
-    border-radius: var(--border-radius);
-    border-left: 4px solid var(--secondary-color);
-    transition: transform var(--transition-normal);
-}
-
-.exp-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.exp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-sm);
-}
-
-.exp-header h3 {
-    color: var(--primary-color);
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-}
-
-.exp-date {
-    background: var(--gradient-accent);
-    color: var(--white);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-}
-
-.exp-institution {
-    color: var(--text-light);
-    font-style: italic;
-}
-
-/* ===== SECTION RECHERCHE ===== */
-.research-tabs {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-}
-
-.publications-grid,
-.conferences-grid {
-    display: grid;
-    gap: var(--space-lg);
-}
-
-.pub-card,
-.conf-card {
-    background: var(--white);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(0,0,0,0.1);
-    transition: all var(--transition-normal);
-    position: relative;
-}
-
-.pub-card:hover,
-.conf-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-color);
-}
-
-.pub-header,
-.conf-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-md);
-}
-
-.pub-header h3,
-.conf-header h3 {
-    color: var(--primary-color);
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    flex: 1;
-    margin-right: var(--space-md);
-}
-
-.pub-year,
-.conf-year {
-    background: var(--gradient-blue);
-    color: var(--white);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    min-width: 60px;
-    text-align: center;
-}
-
-.pub-authors,
-.conf-title {
-    color: var(--text-light);
-    margin-bottom: var(--space-sm);
-    font-style: italic;
-}
-
-.pub-journal,
-.conf-location {
-    color: var(--text-color);
-    margin-bottom: var(--space-md);
-    font-size: var(--font-size-sm);
-}
-
-.pub-links,
-.conf-links {
-    display: flex;
-    gap: var(--space-md);
-    flex-wrap: wrap;
-}
-
-.pub-link,
-.conf-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-xs) var(--space-md);
-    background: var(--gradient-primary);
-    color: var(--white);
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    transition: all var(--transition-normal);
-}
-
-.pub-link:hover,
-.conf-link:hover {
-    background: var(--gradient-accent);
-    transform: translateY(-1px);
-}
-
-.pdf-link {
-    background: var(--gradient-accent);
-}
-
-.pub-status {
-    position: absolute;
-    top: var(--space-xl);
-    right: var(--space-xl);
-    background: #f39c12;
-    color: var(--white);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-}
-
-/* ===== SECTION ENSEIGNEMENT ===== */
-.filiere-tabs {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-}
-
-.enseignement-grid {
-    display: grid;
-    gap: var(--space-2xl);
-}
-
-.ressource-category {
-    background: var(--bg-light);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius-lg);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.ressource-category h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-lg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: var(--font-size-xl);
-}
-
-.ressources-list {
-    display: grid;
-    gap: var(--space-md);
-}
-
-.ressource-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding: var(--space-lg);
-    background: var(--white);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(0,0,0,0.1);
-    transition: all var(--transition-normal);
-}
-
-.ressource-item:hover {
-    transform: translateX(5px);
-    border-color: var(--accent-color);
-}
-
-.ressource-item i {
-    font-size: var(--font-size-2xl);
-    color: var(--secondary-color);
-}
-
-.ressource-info {
-    flex: 1;
-}
-
-.ressource-info h4 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-xs);
-    font-size: var(--font-size-lg);
-}
-
-.ressource-info p {
-    color: var(--text-light);
-    margin-bottom: var(--space-xs);
-    font-size: var(--font-size-sm);
-}
-
-.file-size {
-    color: var(--text-light);
-    font-size: var(--font-size-xs);
-    font-style: italic;
-}
-
-.download-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-sm);
-    background: var(--gradient-primary);
-    color: var(--white);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    transition: all var(--transition-normal);
-    min-width: 44px;
-    min-height: 44px;
-}
-
-.download-btn:hover {
-    background: var(--gradient-accent);
-    transform: scale(1.05);
-}
-
-.corrige-btn {
-    background: var(--gradient-accent);
-}
-
-.td-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-}
-
-.td-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-sm);
-    text-align: center;
-}
-
-.td-title {
-    font-size: var(--font-size-sm);
-    color: var(--text-light);
-    line-height: 1.4;
-}
-
-.dm-container,
-.ds-container {
-    display: grid;
-    gap: var(--space-md);
-}
-
-.dm-item,
-.ds-item {
-    background: var(--white);
-    padding: var(--space-lg);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.dm-header,
-.ds-header {
-    margin-bottom: var(--space-md);
-}
-
-.dm-title,
-.ds-title {
-    color: var(--primary-color);
-    font-weight: 500;
-}
-
-.dm-buttons,
-.ds-buttons {
-    display: flex;
-    gap: var(--space-md);
-    flex-wrap: wrap;
-}
-
-/* ===== SECTION DOCUMENTS ===== */
-.documents-tabs {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-}
-
-.documents-grid {
-    display: grid;
-    gap: var(--space-lg);
-}
-
-.doc-card {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xl);
-    background: var(--white);
-    padding: var(--space-xl);
-    border-radius: var(--border-radius-lg);
-    border: 1px solid rgba(0,0,0,0.1);
-    transition: all var(--transition-normal);
-}
-
-.doc-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-color);
-}
-
-.doc-icon {
-    font-size: 3rem;
-    color: var(--secondary-color);
-}
-
-.doc-content {
-    flex: 1;
-}
-
-.doc-content h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-sm);
-    font-size: var(--font-size-xl);
-}
-
-.doc-content p {
-    color: var(--text-light);
-    margin-bottom: var(--space-md);
-    font-style: italic;
-}
-
-.doc-meta {
-    display: flex;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
-}
-
-.doc-meta span {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    color: var(--text-light);
-    font-size: var(--font-size-sm);
-}
-
-.doc-meta i {
-    color: var(--secondary-color);
-}
-
-.doc-actions {
-    display: flex;
-    gap: var(--space-md);
-}
-
-.btn-download,
-.btn-preview {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-md) var(--space-lg);
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: all var(--transition-normal);
-    font-size: var(--font-size-sm);
-}
-
-.btn-download {
-    background: var(--gradient-primary);
-    color: var(--white);
-}
-
-.btn-preview {
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.btn-download:hover {
-    background: var(--gradient-accent);
-    transform: translateY(-2px);
-}
-
-.btn-preview:hover {
-    background: var(--primary-color);
-    color: var(--white);
-    transform: translateY(-2px);
-}
-
-/* ===== SECTION CONTACT ===== */
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
-    align-items: start;
-}
-
-.contact-info {
-    display: grid;
-    gap: var(--space-xl);
-}
-
-.contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-lg);
-    padding: var(--space-lg);
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--transition-normal);
-}
-
-.contact-item:hover {
-    transform: translateX(5px);
-}
-
-.contact-item i {
-    font-size: var(--font-size-2xl);
-    color: var(--secondary-color);
-    margin-top: var(--space-xs);
-}
-
-.contact-item h3 {
-    color: var(--primary-color);
-    margin-bottom: var(--space-xs);
-    font-size: var(--font-size-lg);
-}
-
-.contact-item p {
-    color: var(--text-light);
-    line-height: 1.5;
-}
-
-.contact-form {
-    background: var(--white);
-    padding: var(--space-2xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-}
-
-.form-group {
-    margin-bottom: var(--space-lg);
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: var(--space-md);
-    border: 2px solid rgba(0,0,0,0.1);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-base);
-    font-family: var(--font-primary);
-    transition: border-color var(--transition-normal);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    background: var(--gradient-primary);
-    color: var(--white);
-    padding: var(--space-2xl) 0 var(--space-lg);
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-xl);
-}
-
-.footer-info h3 {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--space-xs);
-}
-
-.footer-info p {
-    color: var(--light-color);
-}
-
-.footer-links {
-    display: flex;
-    gap: var(--space-md);
-}
-
-.footer-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: rgba(255,255,255,0.1);
-    color: var(--white);
-    border-radius: 50%;
-    text-decoration: none;
-    transition: all var(--transition-normal);
-}
-
-.footer-links a:hover {
-    background: var(--secondary-color);
-    transform: translateY(-2px);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: var(--space-lg);
-    border-top: 1px solid rgba(255,255,255,0.2);
-}
-
-.footer-bottom p {
-    color: var(--light-color);
-    margin-bottom: var(--space-xs);
-}
-
-/* ===== BOUTON RETOUR EN HAUT ===== */
-.back-to-top {
-    position: fixed;
-    bottom: var(--space-xl);
-    right: var(--space-xl);
-    width: 50px;
-    height: 50px;
-    background: var(--gradient-accent);
-    color: var(--white);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-lg);
-    box-shadow: var(--shadow-lg);
-    transition: all var(--transition-normal);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 999;
-}
-
-.back-to-top.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.back-to-top:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-xl);
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 1024px) {
-    .hero-main-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: var(--space-xl);
-    }
-    
-    .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-xl);
-    }
-}
-
-@media (max-width: 768px) {
-    :root {
-        --font-size-4xl: 2rem;
-        --font-size-3xl: 1.75rem;
-        --font-size-2xl: 1.25rem;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 70px);
-        background: var(--white);
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: var(--space-2xl);
-        transition: left var(--transition-normal);
-        box-shadow: var(--shadow-lg);
-    }
-    
-    .nav-menu.active {
-        left: 0;
-    }
-    
-    .nav-toggle {
-        display: flex;
-    }
-    
-    .nav-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .nav-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .nav-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -6px);
-    }
-    
-    .hero-info-container {
-        justify-content: center;
-        gap: var(--space-sm);
-    }
-    
-    .info-item {
-        font-size: var(--font-size-xs);
-        padding: var(--space-xs) var(--space-sm);
-    }
-    
-    .visitor-stats {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-    
-    .timeline::before {
-        left: 30px;
-    }
-    
-    .timeline-item {
-        flex-direction: row !important;
-        align-items: flex-start;
-    }
-    
-    .timeline-date {
-        flex: 0 0 80px;
-        text-align: left;
-        padding: 0;
-        margin-right: var(--space-lg);
-    }
-    
-    .timeline-content {
-        flex: 1;
-    }
-    
-    .timeline-content::before {
-        left: -40px !important;
-        right: auto !important;
-    }
-    
-    .tab-buttons {
-        flex-direction: column;
-    }
-    
-    .experience-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .doc-card {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--space-lg);
-    }
-    
-    .doc-meta {
-        justify-content: center;
-    }
-    
-    .doc-actions {
-        justify-content: center;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        gap: var(--space-lg);
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 var(--space-md);
-    }
-    
-    .hero-container {
-        padding: var(--space-xl) var(--space-md);
-    }
-    
-    .hero-info-bar {
-        padding: var(--space-xs) 0;
-    }
-    
-    .hero-info-container {
-        flex-direction: column;
-        gap: var(--space-sm);
-    }
-    
-    .info-item {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .hero-title {
-        font-size: var(--font-size-3xl);
-    }
-    
-    .hero-subtitle {
-        font-size: var(--font-size-lg);
-    }
-    
-    .hero-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .profile-grid,
-    .competences-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .pub-header,
-    .conf-header {
-        flex-direction: column;
-        gap: var(--space-sm);
-    }
-    
-    .pub-year,
-    .conf-year {
-        align-self: flex-start;
-    }
-    
-    .back-to-top {
-        bottom: var(--space-md);
-        right: var(--space-md);
-        width: 44px;
-        height: 44px;
-    }
-}
-
-/* ===== ACCESSIBILITÉ ===== */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* Focus visible pour l'accessibilité */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-    outline: 3px solid var(--accent-color);
-    outline-offset: 2px;
-}
-
-/* Mode contraste élevé */
-@media (prefers-contrast: high) {
-    :root {
-        --text-color: #000000;
-        --text-light: #333333;
-        --primary-color: #000000;
-        --secondary-color: #ff0000;
-        --accent-color: #0000ff;
-    }
-    
-    .hero-info-bar,
-    #navbar,
-    .btn-primary,
-    .stat-badge,
-    .tab-button.active {
-        border: 2px solid var(--text-color);
-    }
-}
-
-/* Impression */
-@media print {
-    .hero-info-bar,
-    .nav-toggle,
-    .back-to-top,
-    .footer-links,
-    .btn-secondary {
-        display: none !important;
-    }
-    
-    .hero {
-        background: none !important;
-        color: black !important;
-    }
-    
-    .hero::before {
-        display: none;
-    }
-    
-    .hero-content {
-        color: black !important;
-    }
-    
-    .section {
-        break-inside: avoid;
-    }
-    
-    a {
-        color: black !important;
-        text-decoration: underline !important;
-    }
-}
-/* === COMPTEUR DE VISITEURS - Styles === */
-.visitor-stats {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 25px;
-    border-radius: 15px;
-    max-width: 400px;
-    margin: 20px auto;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-.stats-header {
-    text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    padding-bottom: 15px;
-}
-
-.datetime {
-    font-size: 16px;
-    margin-bottom: 5px;
-    opacity: 0.9;
-}
-
-.date {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-}
-
-.stat-item {
-    background: rgba(255,255,255,0.1);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.stat-label {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 8px;
-}
-
-.stat-value {
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.stat-icon {
-    font-size: 24px;
-    margin-bottom: 8px;
-}
-
-.online { background: rgba(46, 204, 113, 0.3); }
-.today { background: rgba(52, 152, 219, 0.3); }
-.total { background: rgba(155, 89, 182, 0.3); }
-
-.last-update {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 12px;
-    opacity: 0.7;
-}
-/* Ajoutez ceci à votre CSS */
-.counter {
-    transition: all 0.3s ease;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.visitor-stats {
-    display: flex;
-    gap: 20px;
-}
-
-.hero-info-bar {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    padding: 15px 20px;
-    margin: 20px 0;
-}
-
-.hero-info-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-@media (max-width: 768px) {
-    .hero-info-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .visitor-stats {
-        gap: 15px;
-    }
-}
-
-/* ===== STYLES SPÉCIFIQUES POUR LES LIVRES ===== */
-.book-featured {
-    border: 2px solid #e74c3c;
-    background: linear-gradient(135deg, #fff, #f8f9fa);
-    position: relative;
-    overflow: hidden;
-}
-
-.book-featured::before {
-    content: 'Nouveau';
-    position: absolute;
-    top: 15px;
-    right: -30px;
-    background: #e74c3c;
-    color: white;
-    padding: 5px 30px;
-    transform: rotate(45deg);
-    font-size: 0.8rem;
-    font-weight: 600;
-    z-index: 2;
-}
-
-.book-featured .doc-icon {
-    color: #e74c3c;
-}
-
-.book-offer {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: var(--border-radius);
-    color: white;
-}
-
-.offer-badge {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.countdown-small {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-.btn-buy {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
-    color: white;
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.btn-buy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-    color: white;
-}
-
-/* Adaptation responsive */
-@media (max-width: 768px) {
-    .book-featured::before {
-        top: 10px;
-        right: -35px;
-        font-size: 0.7rem;
-    }
-    
-    .doc-actions {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .btn-buy, .btn-preview {
-        text-align: center;
-        justify-content: center;
-    }
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Khalid EL BAKKIOUI - Chercheur Mathématicien & Enseignant CPGE</title>
+    <meta name="description" content="Dr. Khalid EL BAKKIOUI - Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE avec 29+ ans d'expérience">
+    <meta name="keywords" content="mathématiques, probabilités, CPGE, enseignement, recherche, systèmes dynamiques">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Fixe -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Lycée Moulay Al Hassan (LMH) -Tanger-</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#accueil" class="nav-link"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#profil" class="nav-link"><i class="fas fa-user"></i> Profil</a></li>
+                <li><a href="#formation" class="nav-link"><i class="fas fa-graduation-cap"></i> Formation</a></li>
+                <li><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i> Expérience</a></li>
+                <li><a href="#recherche" class="nav-link"><i class="fas fa-flask"></i> Recherche</a></li>
+                <li><a href="#enseignement" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Enseignement</a></li>
+                <li><a href="#documents" class="nav-link"><i class="fas fa-folder"></i> Documents</a></li>
+                <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section Accueil -->
+    <section id="accueil" class="hero">
+        <div class="hero-container">
+            <!-- Barre d'information supérieure AMÉLIORÉE & ACCESSIBLE -->
+<div class="hero-info-bar">
+    <div class="hero-info-container">
+        <div class="info-item">
+            <i class="far fa-calendar-alt"></i>
+            <span id="current-date" aria-live="polite">--/--/----</span>
+        </div>
+        <div class="info-item">
+            <i class="far fa-clock"></i>
+            <span id="current-time" aria-live="polite">--:--:--</span>
+        </div>
+
+        <div class="visitor-stats">
+            <div class="info-item">
+                <i class="fas fa-chart-line"></i>
+                <span id="total-visitors" class="counter" aria-live="polite">0</span>
+                <span class="label">visites totales</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-users"></i>
+                <span id="visitor-count" class="counter" aria-live="polite">0</span>
+                <span class="label">aujourd'hui</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-eye"></i>
+                <span id="current-visitors" class="counter" aria-live="polite">1</span>
+                <span class="label">en ligne</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Contenu principal -->
+            <div class="hero-main-content">
+                <!-- Contenu texte -->
+                <div class="hero-content">
+                    <div class="hero-badge">Chercheur & Enseignant CPGE</div>
+                    <h1 class="hero-title">Dr. Khalid <span>EL BAKKIOUI</span></h1>
+                    <p class="hero-subtitle">Mathématicien Spécialiste en Probabilités & Systèmes Dynamiques</p>
+                    
+                    <div class="hero-contact">
+                        <p><i class="fas fa-envelope"></i> khalid.elbakkioui@etu.uae.ac.ma</p>
+                        <p><i class="fas fa-phone"></i> +212 661 645 600</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Tanger, Maroc</p>
+                        <p><i class="fas fa-id-card"></i> ORCID: 0009-0009-4252-4607</p>
+                    </div>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <h3>29+</h3>
+                            <p>Années d'Enseignement</p>
+                        </div>
+                        <div class="stat">
+                            <h3>6</h3>
+                            <p>Publications</p>
+                        </div>
+                        <div class="stat">
+                            <h3>4</h3>
+                            <p>Conférences</p>
+                        </div>
+                        <div class="stat">
+                            <h3>4</h3>
+                            <p>Filières CPGE</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Me Contacter
+                        </a>
+                        <a href="documents/cv-khalid-elbakkioui.pdf" class="btn btn-secondary" download>
+                            <i class="fas fa-download"></i> Télécharger CV
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Image/Logo -->
+                <div class="hero-image">
+                   <div class="logo-container">
+                      <div class="logo-top">
+                         <img src="documents/logo_dessus.jpg" alt="Logo supérieur - Dr. Khalid EL BAKKIOUI" class="logo-image">
+                      </div>
+                      <div class="logo-bottom">
+                          <img src="documents/logo_dessous.png" alt="Logo inférieur - Dr. Khalid EL BAKKIOUI" class="logo-image">
+                      </div>
+                  </div>
+               </div>
+            </div>
+            
+            <!-- Indicateur de défilement -->
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Profil -->
+    <section id="profil" class="section">
+        <div class="container">
+            <h2 class="section-title">Profil Professionnel</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="profile-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Expertise Mathématique</h3>
+                    <p>Spécialiste en probabilités, statistiques, systèmes dynamiques et analyse stochastique avec applications aux modèles épidémiologiques.</p>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Enseignement CPGE</h3>
+                    <p>29+ ans d'expérience dans l'enseignement des mathématiques en CPGE (PSI, MPSI, ECT, ECS, Lycée, Collège).</p>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-icon">
+                        <i class="fas fa-researchgate"></i>
+                    </div>
+                    <h3>Recherche Innovante</h3>
+                    <p>6 publications scientifiques et 4 communications internationales dans le domaine des systèmes stochastiques.</p>
+                </div>
+            </div>
+            
+            <div class="competences-grid">
+                <div class="competence-category">
+                    <h3><i class="fas fa-laptop-code"></i> Compétences Informatiques</h3>
+                    <ul>
+                       <li><strong>Environnements :</strong> macOS, Windows</li>
+                       <li><strong>Outils mathématiques :</strong> Maple, Scilab, R, Python (NumPy, SciPy, Pandas)</li>
+                       <li><strong>Programmation & Développement :</strong> Algorithmique, Analyse numérique, HTML</li>
+                       <li><strong>Rédaction :</strong> LaTeX, Overleaf</li>
+                       <li><strong>Visualisation :</strong> Matplotlib, Seaborn, ggplot2</li>
+                    </ul>
+                </div>
+                <div class="competence-category">
+                    <h3><i class="fas fa-language"></i> Langues</h3>
+                    <ul>
+                        <li><strong>Arabe :</strong> Langue maternelle</li>
+                        <li><strong>Français :</strong> Courant</li>
+                        <li><strong>Anglais :</strong> Maîtrise des concepts fondamentaux et des termes techniques, avec une expérience en rédaction d'articles et de livres</li>
+                    </ul>
+                </div>
+                <div class="competence-category">
+                    <h3><i class="fas fa-star"></i> Compétences Transversales</h3>
+                    <ul>
+                        <li>Encadrement d'étudiants en recherche</li>
+                        <li>Animation de séminaires et travaux dirigés</li>
+                        <li>Rédaction de projets scientifiques</li>
+                        <li>Collaboration interdisciplinaire</li>
+                        <li>Gestion de projets pédagogiques</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Formation -->
+    <section id="formation" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Parcours Académique</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2021-2025</div>
+                    <div class="timeline-content">
+                        <h3>Doctorat en Probabilités et Statistiques</h3>
+                        <p class="institution">Université Abdelmalek Essaâdi, Tanger, Maroc</p>
+                        <p class="details">Titre : « Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
+                        <div class="timeline-badge">Très honorable</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2005-2008</div>
+                    <div class="timeline-content">
+                        <h3>Agrégation de Mathématiques — Système français</h3>
+                        <p class="institution">ENS Casablanca – Université Hassan II</p>
+                        <p class="details">Mémoire : « Le groupe linéaire d'un espace vectoriel E de dimension finie, sous-groupes de GL(IE) et applications »</p>
+                        <div class="timeline-badge">Première session</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2003-2005</div>
+                    <div class="timeline-content">
+                        <h3>DESA en Mathématiques — Option : Analyse fonctionnelle</h3>
+                        <p class="institution">Université Sidi Mohamed Ben Abdellah, Fès</p>
+                        <p class="details">Sujet : « Opérateurs compacts et propriété d'Orlicz-Pettis en analyse p-adique »</p>
+                        <div class="timeline-badge">Reçu avec mention Très Bien et classé majorant</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2001-2002</div>
+                    <div class="timeline-content">
+                        <h3>Formation en Informatique et Bureautique</h3>
+                        <p class="institution">École spécialisée en Informatique et Bureautique, Taounate</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">1999-2001</div>
+                    <div class="timeline-content">
+                        <h3>Maîtrise en Mathématiques fondamentales</h3>
+                        <p class="institution">Université Sidi Mohamed Ben Abdellah, Fès</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">1996-1997</div>
+                    <div class="timeline-content">
+                        <h3>Formation professionnelle en Mathématiques</h3>
+                        <p class="institution">CPR, Casablanca</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">1994-1996</div>
+                    <div class="timeline-content">
+                        <h3>DEUG Mathématiques-Physique</h3>
+                        <p class="institution">Université Sultan Moulay Slimane, Beni Mellal</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">1993-1994</div>
+                    <div class="timeline-content">
+                        <h3>Baccalauréat Sciences Mathématiques</h3>
+                        <p class="institution">Lycée El Wahda, Taounate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Expérience -->
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title">Expérience Professionnelle</h2>
+            <div class="experience-tabs">
+                <div class="tab-buttons" data-tab-group="experience">
+                    <button class="tab-button active" data-tab="cpge" aria-selected="true" aria-controls="cpge">CPGE</button>
+                    <button class="tab-button" data-tab="lycee" aria-selected="false" aria-controls="lycee">Lycée</button>
+                    <button class="tab-button" data-tab="college" aria-selected="false" aria-controls="college">Collège</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="cpge" aria-labelledby="cpge-tab" aria-hidden="false">
+                        <div class="experience-grid">
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE PSI</h3>
+                                    <span class="exp-date">2025–présent</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE (1ère et 2e années ECT)</h3>
+                                    <span class="exp-date">2021–2025</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE ECS 2e année</h3>
+                                    <span class="exp-date">2020–2021</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Vacataire CPGE (1ère année ECT et 1ère année ECS)</h3>
+                                    <span class="exp-date">2019–2020</span>
+                                </div>
+                                <p class="exp-institution">École Esprit Classes Prépas, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE (1ère et 2e années ECT)</h3>
+                                    <span class="exp-date">2016–2020</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE MPSI</h3>
+                                    <span class="exp-date">2015–2016</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE (1ère et 2e années ECT)</h3>
+                                    <span class="exp-date">2012–2015</span>
+                                </div>
+                                <p class="exp-institution">Lycée Moulay Al Hassan, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Vacataire CPGE MPSI</h3>
+                                    <span class="exp-date">2012–2014</span>
+                                </div>
+                                <p class="exp-institution">École Al Bayrouni, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant CPGE ECS 2e année</h3>
+                                    <span class="exp-date">2011–2012</span>
+                                </div>
+                                <p class="exp-institution">Lycée Bab Essahra, Guelmina</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Vacataire à l'ENSA</h3>
+                                    <span class="exp-date">2010–2011</span>
+                                </div>
+                                <p class="exp-institution">École Nationale des Sciences Appliquées, Tanger</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Stagiaire CPGE MPSI</h3>
+                                    <span class="exp-date">2010–2011</span>
+                                </div>
+                                <p class="exp-institution">CPR, Tanger</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="lycee" aria-labelledby="lycee-tab" aria-hidden="true">
+                        <div class="experience-grid">
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant au lycée</h3>
+                                    <span class="exp-date">2008–2010</span>
+                                </div>
+                                <p class="exp-institution">Lycée Badiss et Lycée Imzouren, Al Hoceima</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="college" aria-labelledby="college-tab" aria-hidden="true">
+                        <div class="experience-grid">
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant au collège</h3>
+                                    <span class="exp-date">1999–2005</span>
+                                </div>
+                                <p class="exp-institution">Lycée Collégial Ain Mediouna, Lycée Collégial Bouhouda et Lycée Collégial Zrizer, Taounate</p>
+                            </div>
+                            <div class="exp-card">
+                                <div class="exp-header">
+                                    <h3>Enseignant au collège</h3>
+                                    <span class="exp-date">1997–1999</span>
+                                </div>
+                                <p class="exp-institution">Lycée Collégial Issaguen, Al Hoceima</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Recherche -->
+    <section id="recherche" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Activités de Recherche</h2>
+            <div class="research-tabs">
+                <div class="tab-buttons" data-tab-group="research">
+                    <button class="tab-button active" data-tab="publications" aria-selected="true" aria-controls="publications">Publications (6)</button>
+                    <button class="tab-button" data-tab="conferences" aria-selected="false" aria-controls="conferences">Conférences (4)</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="publications" aria-labelledby="publications-tab" aria-hidden="false">
+                        <div class="publications-grid">
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Exploring the Impact of Jump Perturbations on Stochastic SIRS Dynamics</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">El Bakkioui, K., El Khalfi, Y., Boutouil, S., Harchaoui, B., El Idrissi, M., Settati, A., & Lahrouz, A.</p>
+                                <p class="pub-journal">Applied Mathematics, 19(3), 671–681</p>
+                                <div class="pub-links">
+                                    <a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    </a>
+                                    <a href="documents/publications/exploring-jump-perturbations.pdf" class="pub-link" download>
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Logistic Growth and Relapse in the Stochastic Dynamics of SIRI Epidemics</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">Esseroukh, M., Harchaoui, B., El Khatib, B., El Bakkioui, K., Aznague, S., Lahrouz, A., & Settati, A.</p>
+                                <p class="pub-journal">Applied Mathematics, 19(4), 739–750</p>
+                                <div class="pub-links">
+                                    <a href="https://doi.org/10.1234/am.2025.19739" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    </a>
+                                    <a href="documents/publications/logistic-growth-relapse.pdf" class="pub-link" download>
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Threshold Dynamics of Stochastic SIS Epidemic Models with Logistic Recruitment Rate</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">Aznague, S., Settati, A., Lahrouz, A., Harchaoui, B., El Bakkioui, K., & Nait Brahim, A.</p>
+                                <p class="pub-journal">New Mathematics and Natural Computation, 1–24. World Scientific</p>
+                                <div class="pub-links">
+                                    <a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    </a>
+                                    <a href="documents/publications/threshold-dynamics.pdf" class="pub-link" download>
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Stochastic Analysis of COVID-19 Epidemics Under Quarantine Measures</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">El Khatib, B., Harchaoui, B., Esseroukh, M., Aznague, S., El Bakkioui, K., El Khalfi, Y., Settati, A., & Lahrouz, A.</p>
+                                <p class="pub-journal">New Mathematics and Natural Computation. World Scientific</p>
+                                <div class="pub-links">
+                                    <a href="https://doi.org/10.1142/S1793005727500244" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    </a>
+                                    <a href="documents/publications/covid19-quarantine.pdf" class="pub-link" download>
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Impact of Scale-Free Network Structures on Stochastic SIRS Epidemics</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">Settati, A., Caraballo, T., Harchaoui, B., Lahrouz, A., El Bakkioui, K., & El Haitami, A.</p>
+                                <p class="pub-journal">Journal of Theoretical Biology, 123456, 128745</p>
+                                <div class="pub-links">
+                                    <a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i> Lire en ligne
+                                    </a>
+                                    <a href="documents/publications/scale-free-networks.pdf" class="pub-link" download>
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pub-card">
+                                <div class="pub-header">
+                                    <h3>Necessary and Sufficient Criteria for Stochastic SIRS Epidemic Models under Switched Transmission Rate Exponents</h3>
+                                    <span class="pub-year">2025</span>
+                                </div>
+                                <p class="pub-authors">El Bakkioui, K., Settati, A., Harchaoui, B., Lahrouz, A., & Tridane, A.</p>
+                                <p class="pub-journal">Results in Physics</p>
+                                <div class="pub-status">Sous révision</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="conferences" aria-labelledby="conferences-tab" aria-hidden="true">
+                        <div class="conferences-grid">
+                            <div class="conf-card">
+                                <div class="conf-header">
+                                    <h3>JIAMA'24 - 2nd Edition</h3>
+                                    <span class="conf-year">2024</span>
+                                </div>
+                                <p class="conf-title">International Conference on Artificial Intelligence and Applied Mathematics</p>
+                                <p class="conf-location">Faculty of Sciences and Technologies of Al Hoceima, Morocco, May 11, 2024</p>
+                                <a href="https://jiama24.sciencesconf.org/" target="_blank" class="conf-link">
+                                    <i class="fas fa-external-link-alt"></i> Site web
+                                </a>
+                            </div>
+                            <div class="conf-card">
+                                <div class="conf-header">
+                                    <h3>SISFCA'24</h3>
+                                    <span class="conf-year">2024</span>
+                                </div>
+                                <p class="conf-title">The First International School on Fractional Calculus and Systems Theory</p>
+                                <p class="conf-location">Meknes, Morocco, December 12-14, 2024</p>
+                                <a href="https://sisfca24.sciencesconf.org/" target="_blank" class="conf-link">
+                                    <i class="fas fa-external-link-alt"></i> Site web
+                                </a>
+                            </div>
+                            <div class="conf-card">
+                                <div class="conf-header">
+                                    <h3>IWNAM : 3DTS25</h3>
+                                    <span class="conf-year">2025</span>
+                                </div>
+                                <p class="conf-title">International Workshop on Numerical Analysis and Model : Doctoral Training School (3rd Edition)</p>
+                                <p class="conf-location">Communication orale : Influence of Stochastic Jumps on the Dynamics of SIRS Systems</p>
+                                <p class="conf-location">Fez, Morocco, April 07-11, 2025</p>
+                                <div class="conf-links">
+                                    <a href="https://idts25.sciencesconf.org/" target="_blank" class="conf-link">
+                                        <i class="fas fa-external-link-alt"></i> Site web
+                                    </a>
+                                    <a href="documents/communications/presentation-iwnam2025.pdf" target="_blank" class="conf-link pdf-link">
+                                        <i class="fas fa-file-pdf"></i> Télécharger PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="conf-card">
+                                <div class="conf-header">
+                                    <h3>ICRAMCS 2025</h3>
+                                    <span class="conf-year">2025</span>
+                                </div>
+                                <p class="conf-title">7th Edition of the International Conference on Research in Applied Mathematics and Computer Science</p>
+                                <p class="conf-location">Communication : Etude de l'effet des perturbations par sauts sur la dynamique stochastique des modèles SIRS</p>
+                                <p class="conf-location">Marrakech, Morocco, April 24-26, 2025</p>
+                                <div class="conf-links">
+                                    <a href="https://icramcs2025.sciencesconf.org/data/" target="_blank" class="conf-link">
+                                        <i class="fas fa-external-link-alt"></i> Site web
+                                    </a>
+                                    <a href="documents/communications/presentation-icramcs2025.pdf" target="_blank" class="conf-link pdf-link">
+                                        <i class="fas fa-file-pdf"></i> Télécharger PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Enseignement -->
+    <section id="enseignement" class="section">
+        <div class="container">
+            <h2 class="section-title">Ressources Pédagogiques CPGE</h2>
+            <div class="filiere-tabs">
+                <div class="tab-buttons" data-tab-group="enseignement">
+                    <button class="tab-button active" data-tab="psi" aria-selected="true" aria-controls="psi">PSI</button>
+                    <button class="tab-button" data-tab="mpsi" aria-selected="false" aria-controls="mpsi">MPSI</button>
+                    <button class="tab-button" data-tab="ect1" aria-selected="false" aria-controls="ect1">ECT 1ère</button>
+                    <button class="tab-button" data-tab="ect2" aria-selected="false" aria-controls="ect2">ECT 2ème</button>
+                    <button class="tab-button" data-tab="ecs1" aria-selected="false" aria-controls="ecs1">ECS 1ère</button>
+                    <button class="tab-button" data-tab="ecs2" aria-selected="false" aria-controls="ecs2">ECS 2ème</button>
+                </div>
+                <div class="tab-content">
+                    <!-- PSI -->
+<div class="tab-pane active" id="psi" aria-labelledby="psi-tab" aria-hidden="false">
+    <div class="enseignement-grid">
+        <div class="ressource-category">
+            <h3><i class="fas fa-book"></i> Cahier de texte</h3>
+            <a href="documents/enseignement/psi/cahier-texte.pdf" class="download-btn" download>
+                <i class="fas fa-download"></i>
+            </a>
+        </div>
+        <div class="ressource-category">
+            <h3><i class="fas fa-book"></i> Cours Complets</h3>
+            <div class="ressources-list">
+                <div class="ressource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="ressource-info">
+                        <h4>Algèbre Linéaire - PSI</h4>
+                        <p>Cours complet avec exercices d'application</p>
+                        <span class="file-size">PDF - 2.1 MB</span>
+                    </div>
+                    <a href="documents/enseignement/psi/cours-algebre-psi.pdf" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+                <div class="ressource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="ressource-info">
+                        <h4>Analyse Avancée - PSI</h4>
+                        <p>Suites, séries, intégrales et équations différentielles</p>
+                        <span class="file-size">PDF - 3.4 MB</span>
+                    </div>
+                    <a href="documents/enseignement/psi/cours-analyse-psi.pdf" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+                <div class="ressource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="ressource-info">
+                        <h4>Probabilités - PSI</h4>
+                        <p>Dénombrements, Espaces probabilisés, Variables et couple aléatoires</p>
+                        <span class="file-size">PDF - 3.4 MB</span>
+                    </div>
+                    <a href="documents/enseignement/psi/cours-probabilites-psi.pdf" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="ressource-category">
+            <h3><i class="fas fa-pencil-alt"></i> Travaux Dirigés</h3>
+            <div class="td-grid">
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td1.pdf" class="download-btn" download>TD 1</a>
+                    <span class="td-title">Espaces vectoriels rappels et compléments</span>
+                </div>
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td2.pdf" class="download-btn" download>TD 2,3</a>
+                    <span class="td-title">Applications et formes linéaires rappels et compléments</span>
+                </div>
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td4.pdf" class="download-btn" download>TD 4</a>
+                    <span class="td-title">Calculs matriciels rappels et compléments</span>
+                </div>
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td5.pdf" class="download-btn" download>TD 5</a>
+                    <span class="td-title">Determinants</span>
+                </div>
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td6.pdf" class="download-btn" download>TD 6</a>
+                    <span class="td-title">Réductions d'endomorphismes</span>
+                </div>
+                <div class="td-item">
+                    <a href="documents/enseignement/psi/td7.pdf" class="download-btn" download>TD 7,8</a>
+                    <span class="td-title">Espaces vectoriels normés</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ressource-category">
+            <h3><i class="fas fa-tasks"></i> Devoirs en temps limité</h3>
+            <div class="ds-container">
+                <div class="ds-item">
+                    <div class="ds-header">
+                        <span class="ds-title">DS 1 : Algèbre linéaire avancée - Espaces vectoriels, matrices et endomorphismes</span>
+                    </div>
+                    <div class="ds-buttons">
+                        <a href="documents/enseignement/psi/ds1-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> Sujet
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-ds1-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+                <div class="ds-item">
+                    <div class="ds-header">
+                        <span class="ds-title">DS 2 : Des événements à venir</span>
+                    </div>
+                    <div class="ds-buttons">
+                        <a href="documents/enseignement/psi/ds2-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> Sujet
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-ds2-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ressource-category">
+            <h3><i class="fas fa-tasks"></i> Devoirs en temps libre</h3>
+            <div class="dm-container">
+                <div class="dm-item">
+                    <div class="dm-header">
+                        <span class="dm-title">DL1: Deux problèmes: Polynôme de légende et splines cubiques</span>
+                    </div>
+                    <div class="dm-buttons">
+                        <a href="documents/enseignement/psi/dm1-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> DM 1
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-dm1-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+                <div class="dm-item">
+                    <div class="dm-header">
+                        <span class="dm-title">DL2: Problème : Suites récurrentes linéaires d'ordre 2</span>
+                    </div>
+                    <div class="dm-buttons">
+                        <a href="documents/enseignement/psi/dm2-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> DM 2
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-dm2-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+                <div class="dm-item">
+                    <div class="dm-header">
+                        <span class="dm-title">DL3: Problème : Racines carrées d’endomorphismes</span>
+                    </div>
+                    <div class="dm-buttons">
+                        <a href="documents/enseignement/psi/dm3-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> DM 3
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-dm3-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ressource-category">
+            <h3><i class="fas fa-tasks"></i> Interrogations de cours</h3>
+            <div class="dm-container">
+                <div class="dm-item">
+                    <div class="dm-header">
+                        <span class="dm-title">Interrogation 1: Algèbre linéaire</span>
+                    </div>
+                    <div class="dm-buttons">
+                        <a href="documents/enseignement/psi/interro1-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> INTERRO 1
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-interro1-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+                <div class="dm-item">
+                    <div class="dm-header">
+                        <span class="dm-title">Interrogation 2: </span>
+                    </div>
+                    <div class="dm-buttons">
+                        <a href="documents/enseignement/psi/interro2-psi.pdf" class="download-btn" download>
+                            <i class="fas fa-download"></i> INTERRO 2
+                        </a>
+                        <a href="documents/enseignement/psi/corrige-interro2-psi.pdf" class="download-btn corrige-btn" download>
+                            <i class="fas fa-check-circle"></i> Corrigé
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ressource-category">
+            <h3><i class="fas fa-flask"></i> Travaux Pratiques</h3>
+            <div class="ressources-list">
+                <div class="ressource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="ressource-info">
+                        <h4>TP Python - PSI</h4>
+                        <p>Implémentation d'algorithmes mathématiques</p>
+                        <span class="file-size">PDF - 1.5 MB</span>
+                    </div>
+                    <a href="documents/enseignement/psi/tp-python-psi.pdf" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="ressource-category">
+            <h3><i class="fas fa-flask"></i> Colles</h3>
+            <div class="ressources-list">
+                <div class="ressource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="ressource-info">
+                        <h4>Colles - PSI</h4>
+                        <p>Fichier de colle</p>
+                        <span class="file-size">PDF - 1.5 MB</span>
+                    </div>
+                    <a href="documents/enseignement/psi/colle-psi.pdf" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    
+                    <!-- Les autres filières suivent la même structure -->
+                    <div class="tab-pane" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="true">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets - MPSI</h3>
+                                <p>Ressources en cours de préparation pour la filière MPSI.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="ect1" aria-labelledby="ect1-tab" aria-hidden="true">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets - ECT 1ère année</h3>
+                                <p>Ressources en cours de préparation pour la filière ECT 1ère année.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="ect2" aria-labelledby="ect2-tab" aria-hidden="true">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets - ECT 2ème année</h3>
+                                <p>Ressources en cours de préparation pour la filière ECT 2ème année.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="ecs1" aria-labelledby="ecs1-tab" aria-hidden="true">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets - ECS 1ère année</h3>
+                                <p>Ressources en cours de préparation pour la filière ECS 1ère année.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="ecs2" aria-labelledby="ecs2-tab" aria-hidden="true">
+                        <div class="enseignement-grid">
+                            <div class="ressource-category">
+                                <h3><i class="fas fa-book"></i> Cours Complets - ECS 2ème année</h3>
+                                <p>Ressources en cours de préparation pour la filière ECS 2ème année.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Documents -->
+    <section id="documents" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Documents Académiques</h2>
+            <div class="documents-tabs">
+                <div class="tab-buttons" data-tab-group="documents">
+                    <button class="tab-button active" data-tab="these" aria-selected="true" aria-controls="these">Thèse</button>
+                    <button class="tab-button" data-tab="memoires" aria-selected="false" aria-controls="memoires">Mémoires</button>
+                    <button class="tab-button" data-tab="livres" aria-selected="false" aria-controls="livres">Livres & Manuels</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="these" aria-labelledby="these-tab" aria-hidden="false">
+                        <div class="documents-grid">
+                            <div class="doc-card">
+                                <div class="doc-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Thèse de Doctorat - Version Française</h3>
+                                    <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.2 MB</span>
+                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="documents/these/these-francais.pdf" class="btn-download" download>
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </a>
+                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank>
+                                        <i class="fas fa-eye"></i> Aperçu
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="doc-card">
+                                <div class="doc-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>PhD Thesis - English Version</h3>
+                                    <p>« Innovative Stochastic Methods for the Study of Dynamic Systems »</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.5 MB</span>
+                                        <span><i class="fas fa-university"></i> Abdelmalek Essaâdi University</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="documents/these/thesis-english.pdf" class="btn-download" download>
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank>
+                                        <i class="fas fa-eye"></i> Preview
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="doc-card">
+                                <div class="doc-icon">
+                                    <i class="fas fa-presentation"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Diapositives de Soutenance</h3>
+                                    <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
+                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.8 MB</span>
+                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="documents/these/diapositives.pdf" class="btn-download" download>
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </a>
+                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank>
+                                        <i class="fas fa-eye"></i> Aperçu
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="memoires" aria-labelledby="memoires-tab" aria-hidden="true">
+                        <div class="documents-grid">
+                            <div class="doc-card">
+                                <div class="doc-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Mémoire d'Agrégation</h3>
+                                    <p>« Le groupe linéaire d'un espace vectoriel E de dimension finie, sous-groupes de GL(IE) et applications »</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2005-2008</span>
+                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.1 MB</span>
+                                        <span><i class="fas fa-university"></i> ENS Casablanca</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="documents/memoires/memoire-agregation.pdf" class="btn-download" download>
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="doc-card">
+                                <div class="doc-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="doc-content">
+                                    <h3>Mémoire de DESA</h3>
+                                    <p>« Opérateurs compacts et propriété d'Orlicz-Pettis en analyse p-adique »</p>
+                                    <div class="doc-meta">
+                                        <span><i class="fas fa-calendar"></i> 2003-2005</span>
+                                        <span><i class="fas fa-file-pdf"></i> PDF - 2.8 MB</span>
+                                        <span><i class="fas fa-university"></i> Université Sidi Mohamed Ben Abdellah</span>
+                                    </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a href="documents/memoires/memoire-desa.pdf" class="btn-download" download>
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
+    <div class="documents-grid">
+        <!-- VOTRE LIVRE - Mettez-le en premier -->
+        <div class="doc-card book-featured">
+            <div class="doc-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="doc-content">
+                <h3>Spacial Subgroups of the General Linear Group</h3>
+                <p>Mon livre publié sur les sous-groupes spatiaux du groupe linéaire général</p>
+                <div class="doc-meta">
+                    <span><i class="fas fa-calendar"></i> 2025</span>
+                    <span><i class="fas fa-language"></i> English</span>
+                    <span><i class="fas fa-file-alt"></i> 124 pages</span>
+                    <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-19243-2</span>
+                </div>
+                <div class="book-offer">
+                    <span class="offer-badge">🚀 Offre de lancement</span>
+                    <div class="countdown-small">
+                        <span>Offre spéciale limitée dans le temps</span>
+                    </div>
+                </div>
+            </div>
+            <div class="doc-actions">
+                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                   class="btn-buy" 
+                   target="_blank">
+                    <i class="fas fa-shopping-cart"></i> Acheter
+                </a>
+                <a href="https://www.morebooks.shop/shop-ui/shop/book-launch-offer/9c95ae072042c735e9aafb0db6e2b887ea73b3c6" 
+                   class="btn-preview" 
+                   target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Voir
+                </a>
+            </div>
+        </div>
+
+        <!-- LIVRE EXISTANT - DÉSACTIVÉ POUR LE MOMENT -->
+        <!-- 
+        <div class="doc-card">
+            <div class="doc-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="doc-content">
+                <h3>Mathématiques</h3>
+                <p>Manuel complet de mathématiques</p>
+                <div class="doc-meta">
+                    <span><i class="fas fa-calendar"></i> 2024</span>
+                    <span><i class="fas fa-file-pdf"></i> PDF - 5.2 MB</span>
+                    <span><i class="fas fa-pages"></i> 245 pages</span>
+                </div>
+            </div>
+            <div class="doc-actions">
+                <a href="documents/livres/groupe-lineaire.pdf" class="btn-download" download>
+                    <i class="fas fa-download"></i> Télécharger
+                </a>
+            </div>
+        </div>
+        -->
+
+        <!-- Vous pouvez ajouter d'autres livres ici -->
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>khalid.elbakkioui@etu.uae.ac.ma</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Téléphone</h3>
+                            <p>+212 661 645 600 (Mobile)</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Adresse</h3>
+                            <p>Branes 1, rue Ibn Hicham N°108, étage 2</p>
+                            <p>Tanger, Maroc</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-id-card"></i>
+                        <div>
+                            <h3>Identifiant Recherche</h3>
+                            <p>ORCID: 0009-0009-4252-4607</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Sujet" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Votre message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Envoyer le message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Dr. Khalid EL BAKKIOUI</h3>
+                    <p>Mathématicien • Enseignant CPGE • Chercheur en Probabilités</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
+                    <a href="#" title="Google Scholar"><i class="fab fa-google-scholar"></i></a>
+                    <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dr. Khalid EL BAKKIOUI. Tous droits réservés.</p>
+                <p>Dernière mise à jour : 1er septembre 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+ <script src="script.js"></script>   
+</body>
+</html>
