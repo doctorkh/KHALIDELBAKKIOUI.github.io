@@ -744,11 +744,17 @@ body {
 }
 
 .logo-image {
-    max-width: 600px; /* Taille considérablement agrandie */
+    max-width: 600px; /* Taille de base agrandie */
     width: 100%;
     height: auto;
     object-fit: contain;
     transition: transform 0.3s ease;
+}
+
+/* Image du bas avec classe huge - TAILLE TRÈS GRANDE */
+.logo-image.huge {
+    max-width: 800px; /* Taille considérablement plus grande */
+    width: 100%;
 }
 
 .logo-image:hover {
@@ -764,6 +770,10 @@ body {
     .logo-image {
         max-width: 500px;
     }
+    
+    .logo-image.huge {
+        max-width: 650px; /* Taille réduite pour tablette */
+    }
 }
 
 @media (max-width: 768px) {
@@ -773,6 +783,10 @@ body {
     
     .logo-image {
         max-width: 450px;
+    }
+    
+    .logo-image.huge {
+        max-width: 550px; /* Taille réduite pour mobile paysage */
     }
 }
 
@@ -785,11 +799,19 @@ body {
     .logo-image {
         max-width: 320px;
     }
+    
+    .logo-image.huge {
+        max-width: 380px; /* Taille réduite pour mobile portrait */
+    }
 }
 
 @media (max-width: 384px) {
     .logo-image {
         max-width: 280px;
+    }
+    
+    .logo-image.huge {
+        max-width: 320px; /* Taille réduite pour petits écrans */
     }
 }
 
