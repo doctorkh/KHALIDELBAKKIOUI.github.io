@@ -1530,3 +1530,31 @@ window.addEventListener('beforeunload', () => {
 });
 
 console.log('🎉 Script portfolio chargé avec succès!');
+
+// Script pour le menu mobile
+const navToggle = document.getElementById('nav-toggle');
+const navMenu = document.getElementById('nav-menu');
+
+if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', !isExpanded);
+    });
+
+    // Fermer le menu mobile en cliquant sur un lien
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
+
+// Fermer le menu en cliquant en dehors
+document.addEventListener('click', (e) => {
+    if (navMenu && navToggle && !navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+});
