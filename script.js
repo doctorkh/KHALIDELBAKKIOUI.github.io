@@ -1531,13 +1531,14 @@ window.addEventListener('beforeunload', () => {
 
 console.log('🎉 Script portfolio chargé avec succès!');
 
-// Script pour le menu mobile
+// Script pour le menu mobile - Version améliorée
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 
 if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
         navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
         const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
         navToggle.setAttribute('aria-expanded', !isExpanded);
     });
@@ -1546,6 +1547,7 @@ if (navToggle && navMenu) {
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
             navToggle.setAttribute('aria-expanded', 'false');
         });
     });
@@ -1555,6 +1557,16 @@ if (navToggle && navMenu) {
 document.addEventListener('click', (e) => {
     if (navMenu && navToggle && !navToggle.contains(e.target) && !navMenu.contains(e.target)) {
         navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Fermer le menu avec la touche Échap
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
         navToggle.setAttribute('aria-expanded', 'false');
     }
 });
