@@ -1872,7 +1872,7 @@ body {
     }
 }
 /* ========================================================================= */
-/* NAVIGATION HORIZONTALE COLORÉE - RECTANGLES AGRANDIS                     */
+/* NAVIGATION HORIZONTALE COLORÉE - ADAPTÉE AVEC ESPACES                   */
 /* ========================================================================= */
 
 #navbar {
@@ -1885,56 +1885,57 @@ body {
 }
 
 .nav-container {
-    max-width: 1200px; /* Container plus large */
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--espace-large); /* Plus d'espace sur les côtés */
+    padding: 0 var(--espace-moyen);
 }
 
 .nav-logo h2 {
     color: white;
-    font-size: 1.3rem; /* Texte légèrement plus grand */
+    font-size: 1.1rem; /* Texte réduit */
     font-weight: 600;
     padding: var(--espace-base) 0;
-    white-space: nowrap; /* Empêche le retour à la ligne */
+    white-space: nowrap;
+    margin-right: var(--espace-base); /* Espace après le logo */
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 0;
+    gap: var(--espace-micro); /* ESPACE ENTRE LES RECTANGLES */
     margin: 0;
     padding: 0;
-    height: 80%; /* Prend toute la hauteur */
+    flex-wrap: wrap; /* Permet le retour à la ligne si nécessaire */
+    justify-content: flex-end;
 }
 
 .nav-menu li {
     position: relative;
-    height: 80%; /* Prend toute la hauteur du conteneur */
 }
 
 .nav-link {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centre le contenu */
+    justify-content: center;
     color: white;
     text-decoration: none;
-    padding: var(--espace-large) var(--espace-xlarge); /* PADDING AGRANDI */
+    padding: var(--espace-base) var(--espace-moyen); /* PADDING RÉDUIT */
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    gap: var(--espace-petit); /* Plus d'espace entre icône et texte */
-    height: 80%; /* Prend toute la hauteur */
-    min-width: 120px; /* LARGEUR MINIMALE AGRANDIE */
+    gap: var(--espace-micro);
+    min-width: 100px; /* LARGEUR RÉDUITE */
     text-align: center;
-    font-size: var(--taille-texte-base); /* Texte plus grand */
+    font-size: var(--taille-texte-petit); /* Texte plus petit */
+    border-radius: 4px; /* Coins légèrement arrondis */
 }
 
 .nav-link i {
-    font-size: 1.2rem; /* Icônes plus grandes */
+    font-size: 1rem; /* Icônes plus petites */
 }
 
 /* Couleurs spécifiques pour chaque élément de menu */
@@ -1945,9 +1946,9 @@ body {
 .nav-menu li:nth-child(5) .nav-link { background-color: #9b59b6; } /* Contact - Violet */
 
 .nav-link:hover {
-    transform: translateY(-3px); /* Effet de levée plus prononcé */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    filter: brightness(110%); /* Légèrement plus clair au survol */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    filter: brightness(110%);
 }
 
 .nav-link::after {
@@ -1956,8 +1957,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 4px; /* Ligne plus épaisse */
-    background-color: rgba(255, 255, 255, 0.9);
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.8);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.3s ease;
@@ -1968,22 +1969,6 @@ body {
     transform-origin: left;
 }
 
-/* Effet de surbrillance au survol */
-.nav-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 80%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.nav-link:hover::before {
-    left: 100%;
-}
-
 /* Menu mobile */
 .nav-toggle {
     display: none;
@@ -1992,9 +1977,10 @@ body {
     cursor: pointer;
     flex-direction: column;
     justify-content: space-between;
-    width: 35px; /* Bouton plus grand */
-    height: 25px;
+    width: 30px;
+    height: 21px;
     padding: 0;
+    margin-left: var(--espace-base);
 }
 
 .nav-toggle span {
@@ -2006,31 +1992,48 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
+/* Responsive pour écrans moyens */
+@media (max-width: 1024px) {
     .nav-link {
-        padding: var(--espace-moyen) var(--espace-large); /* Padding réduit sur tablette */
-        min-width: 120px;
-        font-size: var(--taille-texte-petit);
+        min-width: 90px;
+        padding: var(--espace-petit) var(--espace-base);
+        font-size: 0.85rem;
     }
     
-    .nav-link i {
-        font-size: 1.1rem;
+    .nav-logo h2 {
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 968px) {
+@media (max-width: 880px) {
+    .nav-menu {
+        gap: var(--espace-micro);
+    }
+    
+    .nav-link {
+        min-width: 80px;
+        padding: var(--espace-petit) var(--espace-petit);
+        font-size: 0.8rem;
+    }
+    
+    .nav-link i {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
     .nav-menu {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 300px; /* Menu mobile plus large */
+        width: 250px;
         height: 100vh;
         background: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
         flex-direction: column;
-        padding-top: 80px;
+        padding-top: 70px;
         transition: right 0.4s ease;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        gap: 0;
     }
 
     .nav-menu.active {
@@ -2042,49 +2045,39 @@ body {
     }
 
     .nav-link {
-        padding: var(--espace-large) var(--espace-xlarge); /* Grand padding sur mobile */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: var(--espace-base) var(--espace-large);
         min-width: auto;
         width: 100%;
         font-size: var(--taille-texte-base);
-        justify-content: flex-start; /* Alignement à gauche sur mobile */
+        justify-content: flex-start;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-link:hover {
-        transform: translateX(10px); /* Translation horizontale sur mobile */
+        transform: translateX(8px);
     }
     
     .nav-logo h2 {
-        font-size: 1.rem; /* Logo plus petit sur mobile */
+        font-size: 0.95rem;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
     .nav-logo h2 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin-right: var(--espace-petit);
     }
     
     .nav-container {
-        padding: 0 var(--espace-base);
+        padding: 0 var(--espace-petit);
     }
-    
-    .nav-link {
-        padding: var(--espace-moyen) var(--espace-large);
-    }
-}
-
-/* Ajustement du contenu pour la navbar fixe */
-body {
-    padding-top: 80px; /* Hauteur augmentée pour la navbar plus grande */
-}
-
-.section:first-of-type {
-    margin-top: 0;
 }
 
 /* Animation pour le bouton hamburger */
 .nav-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(6px, 6px);
+    transform: rotate(45deg) translate(5px, 5px);
 }
 
 .nav-toggle.active span:nth-child(2) {
@@ -2092,5 +2085,14 @@ body {
 }
 
 .nav-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Ajustement du contenu pour la navbar fixe */
+body {
+    padding-top: 60px; /* Hauteur réduite */
+}
+
+.section:first-of-type {
+    margin-top: 0;
 }
