@@ -1872,7 +1872,7 @@ body {
     }
 }
 /* ========================================================================= */
-/* NAVIGATION HORIZONTALE COLORÉE                                           */
+/* NAVIGATION HORIZONTALE COLORÉE - RECTANGLES AGRANDIS                     */
 /* ========================================================================= */
 
 #navbar {
@@ -1885,19 +1885,20 @@ body {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1400px; /* Container plus large */
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--espace-moyen);
+    padding: 0 var(--espace-large); /* Plus d'espace sur les côtés */
 }
 
 .nav-logo h2 {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Texte légèrement plus grand */
     font-weight: 600;
     padding: var(--espace-base) 0;
+    white-space: nowrap; /* Empêche le retour à la ligne */
 }
 
 .nav-menu {
@@ -1906,27 +1907,34 @@ body {
     gap: 0;
     margin: 0;
     padding: 0;
+    height: 100%; /* Prend toute la hauteur */
 }
 
 .nav-menu li {
     position: relative;
+    height: 100%; /* Prend toute la hauteur du conteneur */
 }
 
 .nav-link {
     display: flex;
     align-items: center;
+    justify-content: center; /* Centre le contenu */
     color: white;
     text-decoration: none;
-    padding: var(--espace-moyen) var(--espace-base);
+    padding: var(--espace-large) var(--espace-xlarge); /* PADDING AGRANDI */
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    gap: var(--espace-micro);
+    gap: var(--espace-petit); /* Plus d'espace entre icône et texte */
+    height: 100%; /* Prend toute la hauteur */
+    min-width: 140px; /* LARGEUR MINIMALE AGRANDIE */
+    text-align: center;
+    font-size: var(--taille-texte-base); /* Texte plus grand */
 }
 
 .nav-link i {
-    font-size: 1rem;
+    font-size: 1.2rem; /* Icônes plus grandes */
 }
 
 /* Couleurs spécifiques pour chaque élément de menu */
@@ -1937,8 +1945,9 @@ body {
 .nav-menu li:nth-child(5) .nav-link { background-color: #9b59b6; } /* Contact - Violet */
 
 .nav-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px); /* Effet de levée plus prononcé */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    filter: brightness(110%); /* Légèrement plus clair au survol */
 }
 
 .nav-link::after {
@@ -1947,8 +1956,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 3px;
-    background-color: rgba(255, 255, 255, 0.8);
+    height: 4px; /* Ligne plus épaisse */
+    background-color: rgba(255, 255, 255, 0.9);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.3s ease;
@@ -1959,6 +1968,22 @@ body {
     transform-origin: left;
 }
 
+/* Effet de surbrillance au survol */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-link:hover::before {
+    left: 100%;
+}
+
 /* Menu mobile */
 .nav-toggle {
     display: none;
@@ -1967,8 +1992,8 @@ body {
     cursor: pointer;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 21px;
+    width: 35px; /* Bouton plus grand */
+    height: 25px;
     padding: 0;
 }
 
@@ -1982,12 +2007,24 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+    .nav-link {
+        padding: var(--espace-moyen) var(--espace-large); /* Padding réduit sur tablette */
+        min-width: 120px;
+        font-size: var(--taille-texte-petit);
+    }
+    
+    .nav-link i {
+        font-size: 1.1rem;
+    }
+}
+
 @media (max-width: 968px) {
     .nav-menu {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 280px;
+        width: 300px; /* Menu mobile plus large */
         height: 100vh;
         background: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
         flex-direction: column;
@@ -2005,12 +2042,20 @@ body {
     }
 
     .nav-link {
-        padding: var(--espace-base) var(--espace-moyen);
+        padding: var(--espace-large) var(--espace-xlarge); /* Grand padding sur mobile */
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: auto;
+        width: 100%;
+        font-size: var(--taille-texte-base);
+        justify-content: flex-start; /* Alignement à gauche sur mobile */
     }
 
     .nav-link:hover {
-        transform: translateX(5px);
+        transform: translateX(10px); /* Translation horizontale sur mobile */
+    }
+    
+    .nav-logo h2 {
+        font-size: 1.1rem; /* Logo plus petit sur mobile */
     }
 }
 
@@ -2020,15 +2065,32 @@ body {
     }
     
     .nav-container {
-        padding: 0 var(--espace-petit);
+        padding: 0 var(--espace-base);
+    }
+    
+    .nav-link {
+        padding: var(--espace-moyen) var(--espace-large);
     }
 }
 
 /* Ajustement du contenu pour la navbar fixe */
 body {
-    padding-top: 70px; /* Ajustez selon la hauteur de votre navbar */
+    padding-top: 80px; /* Hauteur augmentée pour la navbar plus grande */
 }
 
 .section:first-of-type {
     margin-top: 0;
+}
+
+/* Animation pour le bouton hamburger */
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
 }
