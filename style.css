@@ -1871,3 +1871,164 @@ body {
         max-width: 200px;
     }
 }
+/* ========================================================================= */
+/* NAVIGATION HORIZONTALE COLORÉE                                           */
+/* ========================================================================= */
+
+#navbar {
+    background: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--espace-moyen);
+}
+
+.nav-logo h2 {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: var(--espace-base) 0;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    padding: var(--espace-moyen) var(--espace-base);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    gap: var(--espace-micro);
+}
+
+.nav-link i {
+    font-size: 1rem;
+}
+
+/* Couleurs spécifiques pour chaque élément de menu */
+.nav-menu li:nth-child(1) .nav-link { background-color: #3498db; } /* Accueil - Bleu */
+.nav-menu li:nth-child(2) .nav-link { background-color: #2ecc71; } /* Recherche - Vert */
+.nav-menu li:nth-child(3) .nav-link { background-color: #e74c3c; } /* Enseignement - Rouge */
+.nav-menu li:nth-child(4) .nav-link { background-color: #f39c12; } /* Documents - Orange */
+.nav-menu li:nth-child(5) .nav-link { background-color: #9b59b6; } /* Contact - Violet */
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Menu mobile */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    padding: 0;
+}
+
+.nav-toggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: linear-gradient(135deg, var(--couleur-primaire-1), var(--couleur-primaire-2));
+        flex-direction: column;
+        padding-top: 80px;
+        transition: right 0.4s ease;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: var(--espace-base) var(--espace-moyen);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link:hover {
+        transform: translateX(5px);
+    }
+}
+
+@media (max-width: 600px) {
+    .nav-logo h2 {
+        font-size: 1rem;
+    }
+    
+    .nav-container {
+        padding: 0 var(--espace-petit);
+    }
+}
+
+/* Ajustement du contenu pour la navbar fixe */
+body {
+    padding-top: 70px; /* Ajustez selon la hauteur de votre navbar */
+}
+
+.section:first-of-type {
+    margin-top: 0;
+}
