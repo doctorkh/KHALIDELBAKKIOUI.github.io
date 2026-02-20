@@ -1104,7 +1104,7 @@ body {
 
 /* ==================== COUVERTURES DE LIVRES ==================== */
 .book-cover {
-    width: 80px;          /* Ajustez la taille selon vos besoins */
+    width: 120px;          /* Ajustez la taille selon vos besoins */
     height: auto;
     border-radius: var(--espace-micro);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
