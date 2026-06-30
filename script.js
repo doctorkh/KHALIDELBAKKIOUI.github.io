@@ -32,7 +32,7 @@ class PortfolioApp {
         if (this.isInitialized) return;
         
         this.initNavigation();
-        this.initTabs();
+        this.initTabs(); // ← La méthode corrigée
         this.initSmoothScrolling();
         this.initBackToTop();
         this.initScrollEffects();
@@ -169,7 +169,6 @@ class PortfolioApp {
         if (isOpening) {
             navMenu.style.transform = 'translateX(0)';
             navToggle.setAttribute('aria-expanded', 'true');
-            // Focus sur le premier lien du menu
             const firstLink = navMenu.querySelector('a');
             if (firstLink) firstLink.focus();
         } else {
@@ -205,93 +204,94 @@ class PortfolioApp {
         this.lastScrollTop = scrollTop;
     }
 
-    // ===== SYSTÈME D'ONGLETS CORRIGÉ =====
+    // ===== SYSTÈME D'ONGLETS CORRIGÉ - Version Universelle =====
     initTabs() {
-        console.log('🔧 Initialisation des systèmes d\'onglets...');
+        console.log('🔧 Initialisation du système d\'onglets universel...');
         
-        const tabContainers = [
-            '.experience-tabs',
-            '.research-tabs', 
-            '.filiere-tabs',
-            '.documents-tabs'
-        ];
+        // Cette fonction trouve TOUS les conteneurs d'onglets
+        const allTabContainers = document.querySelectorAll('.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs');
+        
+        if (allTabContainers.length === 0) {
+            console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
+            return;
+        }
 
-        tabContainers.forEach(selector => {
-            const containers = document.querySelectorAll(selector);
-            containers.forEach(container => {
-                this.initTabSystem(container);
-            });
+        allTabContainers.forEach(container => {
+            this.initTabSystem(container);
         });
 
-        console.log('✅ Tous les onglets initialisés');
+        console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
     }
 
     initTabSystem(container) {
         const tabButtons = container.querySelectorAll('.tab-button');
         const tabPanes = container.querySelectorAll('.tab-pane');
         
-        console.log(`📁 ${tabButtons.length} boutons trouvés dans`, container.className);
+        if (tabButtons.length === 0) {
+            console.warn('⚠️ Aucun bouton d\'onglet trouvé dans', container.className);
+            return;
+        }
+
+        console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
 
         tabButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
+            // Supprimer les anciens événements pour éviter les doublons
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const tabId = button.getAttribute('data-tab');
-                console.log('🎯 Clic sur onglet:', tabId);
+                const tabId = newButton.getAttribute('data-tab');
+                console.log('🎯 Clic sur onglet:', tabId, 'dans', container.className);
 
-                this.switchTab(container, button, tabButtons, tabPanes, tabId);
+                this.switchTab(container, newButton, tabButtons, tabPanes, tabId);
             });
 
-            button.addEventListener('keydown', (e) => {
+            newButton.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    const tabId = button.getAttribute('data-tab');
-                    this.switchTab(container, button, tabButtons, tabPanes, tabId);
+                    const tabId = newButton.getAttribute('data-tab');
+                    this.switchTab(container, newButton, tabButtons, tabPanes, tabId);
                 }
             });
         });
 
-        // Activer le premier onglet par défaut
-        if (tabButtons.length > 0 && !container.querySelector('.tab-button.active')) {
-            const firstButton = tabButtons[0];
+        // Activer le premier onglet par défaut si aucun n'est actif
+        const activeButton = container.querySelector('.tab-button.active');
+        if (!activeButton && tabButtons.length > 0) {
+            const firstButton = container.querySelector('.tab-button');
             const firstTabId = firstButton.getAttribute('data-tab');
             this.switchTab(container, firstButton, tabButtons, tabPanes, firstTabId);
         }
     }
 
     switchTab(container, button, tabButtons, tabPanes, tabId) {
-        console.log('🔄 Changement vers onglet:', tabId);
-
-        // Désactiver tous les boutons et panneaux
+        // Désactiver tous les boutons
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
         });
 
+        // Cacher tous les panneaux
         tabPanes.forEach(pane => {
             pane.classList.remove('active');
             pane.setAttribute('aria-hidden', 'true');
         });
 
-        // Activer le bouton et panneau sélectionnés
+        // Activer le bouton cliqué
         button.classList.add('active');
         button.setAttribute('aria-selected', 'true');
 
-        const activePane = document.getElementById(tabId);
-        if (activePane) {
-            activePane.classList.add('active');
-            activePane.setAttribute('aria-hidden', 'false');
-            
-            // Animation d'entrée
-            activePane.style.animation = 'none';
-            setTimeout(() => {
-                activePane.style.animation = 'fadeInUp 0.4s ease-out';
-            }, 10);
-            
-            console.log('✅ Onglet activé:', tabId);
+        // Afficher le panneau correspondant
+        const targetPane = container.querySelector(`#${tabId}`);
+        if (targetPane) {
+            targetPane.classList.add('active');
+            targetPane.setAttribute('aria-hidden', 'false');
+            console.log('✅ Onglet activé:', tabId, 'dans', container.className);
         } else {
-            console.error('❌ Panneau non trouvé:', tabId);
+            console.error('❌ Panneau non trouvé:', tabId, 'dans', container.className);
         }
     }
 
@@ -811,14 +811,12 @@ class PortfolioApp {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS CORRIGÉ ET AMÉLIORÉ =====
+    // ===== COMPTEUR DE VISITEURS =====
     initVisitorCounter() {
         console.log('🔢 Initialisation du compteur de visiteurs...');
         
-        // Démarrer les mises à jour date/heure
         this.startDateTimeUpdates();
         
-        // Initialiser le compteur de visiteurs
         setTimeout(() => {
             this.setupVisitorCounter();
         }, 100);
@@ -850,7 +848,6 @@ class PortfolioApp {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                // Nettoyer les visites trop anciennes (plus de 24h)
                 const now = Date.now();
                 const oneDayAgo = now - (24 * 60 * 60 * 1000);
                 stats.visits = stats.visits.filter(visit => {
@@ -868,7 +865,6 @@ class PortfolioApp {
             console.error('❌ Erreur lecture stats visiteurs:', e);
         }
         
-        // Stats par défaut
         return {
             total: 15,
             visits: [],
@@ -888,15 +884,11 @@ class PortfolioApp {
         const now = new Date();
         const sessionId = sessionStorage.getItem(sessionKey);
         
-        // Vérifier si nouvelle visite dans cette session
         if (!sessionId) {
             const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             sessionStorage.setItem(sessionKey, newSessionId);
             
-            // Incrémenter le compteur total
             stats.total++;
-            
-            // Ajouter à l'historique des visites
             stats.visits.push({
                 sessionId: newSessionId,
                 timestamp: now.toISOString(),
@@ -904,7 +896,6 @@ class PortfolioApp {
                 time: now.toLocaleTimeString('fr-FR')
             });
             
-            // Garder seulement les 100 dernières visites pour l'historique
             if (stats.visits.length > 100) {
                 stats.visits = stats.visits.slice(-100);
             }
@@ -916,10 +907,7 @@ class PortfolioApp {
     }
 
     displayVisitorCounters(stats, totalEl, onlineEl) {
-        // Calculer les utilisateurs en ligne (visites dans les 15 dernières minutes)
         const onlineCount = this.calculateOnlineUsers(stats);
-        
-        // Mettre à jour les compteurs avec animation
         this.animateCounter(totalEl, stats.total);
         this.animateCounter(onlineEl, onlineCount);
     }
@@ -930,7 +918,6 @@ class PortfolioApp {
         const current = parseInt(element.textContent) || 0;
         
         if (current !== target) {
-            // Animation de compteur
             let start = current;
             const duration = 1000;
             const startTime = performance.now();
@@ -938,8 +925,6 @@ class PortfolioApp {
             const animate = (currentTime) => {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Easing function
                 const easeOut = 1 - Math.pow(1 - progress, 3);
                 const value = Math.floor(start + (target - start) * easeOut);
                 
@@ -954,7 +939,6 @@ class PortfolioApp {
             
             requestAnimationFrame(animate);
             
-            // Effet visuel
             element.style.transform = 'scale(1.2)';
             setTimeout(() => {
                 element.style.transform = 'scale(1)';
@@ -967,23 +951,19 @@ class PortfolioApp {
         const fifteenMinutesAgo = now - (15 * 60 * 1000);
         
         try {
-            // Compter les sessions actives (visites dans les 15 dernières minutes)
             const activeSessions = stats.visits.filter(visit => {
                 const visitTime = new Date(visit.timestamp).getTime();
                 return visitTime > fifteenMinutesAgo;
             });
             
-            // Retourner le nombre d'utilisateurs en ligne (au moins 1 pour l'utilisateur actuel)
-            const onlineCount = Math.max(1, activeSessions.length);
-            return onlineCount;
+            return Math.max(1, activeSessions.length);
         } catch (e) {
             console.error('❌ Erreur calcul utilisateurs en ligne:', e);
-            return 1; // Valeur par défaut en cas d'erreur
+            return 1;
         }
     }
 
     startVisitorCounterUpdates(storageKey, sessionKey) {
-        // Mettre à jour les compteurs toutes les 30 secondes
         this.visitorInterval = setInterval(() => {
             const stats = this.getVisitorStats(storageKey);
             const totalEl = document.getElementById('total-visitors');
@@ -1005,7 +985,6 @@ class PortfolioApp {
         const updateDateTime = () => {
             const now = new Date();
             
-            // Formater la date en français
             const dateOptions = {
                 weekday: 'long',
                 year: 'numeric',
@@ -1013,7 +992,6 @@ class PortfolioApp {
                 day: 'numeric'
             };
             
-            // Formater l'heure
             const timeOptions = {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -1024,7 +1002,6 @@ class PortfolioApp {
             const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
             const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
             
-            // Mettre à jour les éléments
             const dateEl = document.getElementById('current-date');
             const timeEl = document.getElementById('current-time');
             
@@ -1038,16 +1015,12 @@ class PortfolioApp {
             }
         };
         
-        // Mettre à jour immédiatement
         updateDateTime();
-        
-        // Mettre à jour chaque seconde
         this.dateTimeInterval = setInterval(updateDateTime, 1000);
         
         console.log('✅ Date/heure initialisée');
     }
 
-    // ===== MÉTHODE UTILITAIRE POUR CAPITALISER =====
     capitalizeFirst(str) {
         return str.replace(/\b\w/g, l => l.toUpperCase());
     }
@@ -1070,7 +1043,6 @@ class PortfolioApp {
             this.toggleTheme(themeToggle);
         });
         
-        // Appliquer le thème sauvegardé
         const savedTheme = localStorage.getItem('portfolio-theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -1155,7 +1127,6 @@ class PortfolioApp {
                 );
             }
             
-            // Navigation au clavier dans les onglets
             if (e.key === 'Tab' && e.shiftKey) {
                 const activeElement = document.activeElement;
                 if (activeElement.classList.contains('tab-button')) {
@@ -1173,7 +1144,7 @@ class PortfolioApp {
     }
 
     handleTabKeyboardNavigation(currentTab, direction) {
-        const tabContainer = currentTab.closest('.experience-tabs, .research-tabs, .filiere-tabs, .documents-tabs');
+        const tabContainer = currentTab.closest('.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs');
         if (!tabContainer) return;
         
         const tabs = Array.from(tabContainer.querySelectorAll('.tab-button'));
@@ -1201,7 +1172,6 @@ class PortfolioApp {
             navToggle.setAttribute('aria-controls', 'nav-menu');
         }
 
-        // Ajouter les attributs ARIA aux onglets
         document.querySelectorAll('.tab-button').forEach((button, index, buttons) => {
             const tabId = button.getAttribute('data-tab');
             const pane = document.getElementById(tabId);
@@ -1433,15 +1403,15 @@ dynamicStyles.textContent = `
         }
     }
     
-    /* Correction pour les onglets */
+    /* ===== STYLES DES ONGLETS - CORRIGÉS ===== */
     .tab-pane {
-        display: none;
+        display: none !important;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
     
     .tab-pane.active {
-        display: block;
+        display: block !important;
         opacity: 1;
         animation: fadeIn 0.5s ease;
     }
@@ -1453,6 +1423,9 @@ dynamicStyles.textContent = `
         background: transparent;
         padding: 10px 20px;
         border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #555;
     }
     
     .tab-button:hover {
@@ -1464,6 +1437,18 @@ dynamicStyles.textContent = `
         background: linear-gradient(135deg, #667eea, #764ba2) !important;
         color: white !important;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .tab-button .badge {
+        background: rgba(0,0,0,0.1);
+        padding: 1px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        margin-left: 5px;
+    }
+    
+    .tab-button.active .badge {
+        background: rgba(255,255,255,0.25);
     }
     
     /* Styles pour les boutons spécifiques */
@@ -1543,7 +1528,6 @@ if (navToggle && navMenu) {
         navToggle.setAttribute('aria-expanded', !isExpanded);
     });
 
-    // Fermer le menu mobile en cliquant sur un lien
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
@@ -1553,7 +1537,6 @@ if (navToggle && navMenu) {
     });
 }
 
-// Fermer le menu en cliquant en dehors
 document.addEventListener('click', (e) => {
     if (navMenu && navToggle && !navToggle.contains(e.target) && !navMenu.contains(e.target)) {
         navMenu.classList.remove('active');
@@ -1562,7 +1545,6 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Fermer le menu avec la touche Échap
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
         navMenu.classList.remove('active');
@@ -1571,45 +1553,4 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-
-// ===== GESTION DES ONGLETS POUR LA SECTION RECHERCHE =====
-// À COPIER DANS script.js
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Sélectionner tous les groupes d'onglets
-    const tabGroups = document.querySelectorAll('.research-tabs-compact');
-    
-    tabGroups.forEach(group => {
-        const buttons = group.querySelectorAll('.tab-button');
-        const panes = group.querySelectorAll('.tab-pane');
-        
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                
-                // Désactiver tous les boutons du même groupe
-                buttons.forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.setAttribute('aria-selected', 'false');
-                });
-                
-                // Activer le bouton cliqué
-                this.classList.add('active');
-                this.setAttribute('aria-selected', 'true');
-                
-                // Cacher tous les panneaux
-                panes.forEach(pane => {
-                    pane.classList.remove('active');
-                    pane.setAttribute('aria-hidden', 'true');
-                });
-                
-                // Afficher le panneau correspondant
-                const targetPane = group.querySelector(`#${tabId}`);
-                if (targetPane) {
-                    targetPane.classList.add('active');
-                    targetPane.setAttribute('aria-hidden', 'false');
-                }
-            });
-        });
-    });
-});
+console.log('✅ Script portfolio entièrement chargé et prêt !');
