@@ -124,14 +124,16 @@
 
         <div class="research-tabs-compact">
     <!-- Boutons des onglets -->
-    <div class="tab-buttons">
-        <button class="tab-button active" data-tab="publications" aria-selected="true">
-            <i class="fas fa-file-alt"></i> Publications <span class="badge">9</span>
-        </button>
-        <button class="tab-button" data-tab="conferences" aria-selected="false">
-            <i class="fas fa-chalkboard-teacher"></i> Conférences <span class="badge">4</span>
-        </button>
-    </div>
+    <!-- Section Recherche -->
+    <section id="recherche" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Activités de Recherche</h2>
+            <div class="research-tabs">
+                <div class="tab-buttons small" data-tab-group="research">
+                    <button class="tab-button active" data-tab="publications" aria-selected="true" aria-controls="publications">Publications (9)</button>
+                    <button class="tab-button" data-tab="conferences" aria-selected="false" aria-controls="conferences">Conférences (4)</button>
+                </div>
+                <div class="tab-content">
 
             <!-- ========================================================= -->
             <!-- ONGLET PUBLICATIONS -->
