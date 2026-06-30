@@ -1199,91 +1199,120 @@
     </div>
 </section>
 
-    <!-- Section Contact -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title">Contact</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p>khalid.elbakkioui@etu.uae.ac.ma</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h3>Téléphone</h3>
-                            <p>+212 661 645 600 (Mobile)</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h3>Adresse</h3>
-                            <p>Branes 1, rue Ibn Hicham N°108, étage 2</p>
-                            <p>Tanger, Maroc</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-id-card"></i>
-                        <div>
-                            <h3>Identifiant Recherche</h3>
-                            <p>ORCID: 0009-0009-4252-4607</p>
-                        </div>
+   <!-- ===== HTML À COPIER DANS VOTRE PAGE ===== -->
+
+<!-- ========================================================= -->
+<!-- SECTION CONTACT - Version Compacte -->
+<!-- ========================================================= -->
+<section id="contact" class="section contact-section-compact">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-address-card"></i> Contact</h2>
+
+        <div class="contact-grid-compact">
+            <!-- Informations de contact -->
+            <div class="contact-info-compact">
+
+                <div class="contact-item-compact email">
+                    <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="ci-content">
+                        <div class="ci-label">Email</div>
+                        <div class="ci-value">khalid.elbakkioui@etu.uae.ac.ma</div>
                     </div>
                 </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" placeholder="Votre nom" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Votre email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Sujet" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Votre message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Envoyer le message
-                        </button>
-                    </form>
+
+                <div class="contact-item-compact phone">
+                    <div class="ci-icon"><i class="fas fa-phone"></i></div>
+                    <div class="ci-content">
+                        <div class="ci-label">Téléphone</div>
+                        <div class="ci-value">+212 661 645 600 <small>(Mobile)</small></div>
+                    </div>
                 </div>
+
+                <div class="contact-item-compact location">
+                    <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="ci-content">
+                        <div class="ci-label">Adresse</div>
+                        <div class="ci-value">Branes 1, rue Ibn Hicham N°108, étage 2<br><small>Tanger, Maroc</small></div>
+                    </div>
+                </div>
+
+                <div class="contact-item-compact orcid">
+                    <div class="ci-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="ci-content">
+                        <div class="ci-label">Identifiant Recherche</div>
+                        <div class="ci-value">ORCID: 0009-0009-4252-4607</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Formulaire de contact -->
+            <div class="contact-form-compact">
+                <div class="form-title">
+                    <i class="fas fa-paper-plane" style="color: #667eea;"></i>
+                    Envoyez-moi un message
+                </div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Votre nom" required aria-label="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Votre email" required aria-label="Votre email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Sujet" required aria-label="Sujet">
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Votre message" rows="4" required aria-label="Votre message"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Envoyer le message
+                    </button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h3>Dr. Khalid EL BAKKIOUI</h3>
-                    <p>Mathématicien • Enseignant CPGE • Chercheur en Probabilités</p>
-                </div>
-                <div class="footer-links">
-                    <a href="https://linkedin.com/in/votre-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://researchgate.net/profile/votre-profil" target="_blank" title="ResearchGate"><i class="fab fa-researchgate"></i></a>
-                    <a href="https://scholar.google.com/citations?user=votre-id" target="_blank" title="Google Scholar"><i class="fab fa-google-scholar"></i></a>
-                    <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email"><i class="fas fa-envelope"></i></a>
-                </div>
+<!-- ========================================================= -->
+<!-- FOOTER - Version Compacte -->
+<!-- ========================================================= -->
+<footer class="footer-compact">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Dr. Khalid EL BAKKIOUI</h3>
+                <p>Mathématicien • Enseignant CPGE • Chercheur en Probabilités</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Dr. Khalid EL BAKKIOUI. Tous droits réservés.</p>
-                <p>Dernière mise à jour : 1er septembre 2025</p>
+            <div class="footer-social">
+                <a href="https://linkedin.com/in/votre-profil" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://researchgate.net/profile/votre-profil" target="_blank" title="ResearchGate" aria-label="ResearchGate">
+                    <i class="fab fa-researchgate"></i>
+                </a>
+                <a href="https://scholar.google.com/citations?user=votre-id" target="_blank" title="Google Scholar" aria-label="Google Scholar">
+                    <i class="fab fa-google-scholar"></i>
+                </a>
+                <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Dr. Khalid EL BAKKIOUI. Tous droits réservés.</p>
+            <p>Dernière mise à jour : 1er septembre 2025</p>
+        </div>
+    </div>
+</footer>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+<!-- ========================================================= -->
+<!-- BACK TO TOP - Version Compacte -->
+<!-- ========================================================= -->
+<button id="backToTop" class="back-to-top-compact" aria-label="Retour en haut de page">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
     
     <script src="script.js"></script>   
 </body>
