@@ -2109,3 +2109,148 @@ body {
 .section:first-of-type {
     margin-top: 0;
 }
+
+
+/* ===== À COPTER DANS style.css ===== */
+
+.ressource-category {
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ressource-category h3 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* En-têtes de section */
+.section-header {
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 8px 15px;
+    border-radius: 6px;
+    margin: 18px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header i {
+    font-size: 1.1rem;
+}
+
+.section-algebre {
+    background: #ebf5fb;
+    color: #1a5276;
+    border-left: 5px solid #3498db;
+}
+
+.section-analyse {
+    background: #fef9e7;
+    color: #7d6608;
+    border-left: 5px solid #f39c12;
+}
+
+.section-probabilites {
+    background: #eafaf1;
+    color: #1e8449;
+    border-left: 5px solid #27ae60;
+}
+
+/* Liste compacte */
+.ressources-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 10px;
+    margin-bottom: 12px;
+}
+
+.ressource-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    background: #f9f9f9;
+    transition: background 0.2s;
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+}
+
+.ressource-item-compact:hover {
+    background: #f0f0f0;
+}
+
+.ressource-item-compact .pdf-icon {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .chap-num {
+    font-weight: 600;
+    color: #555;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .chap-title {
+    color: #2c3e50;
+    flex: 1;
+    min-width: 150px;
+}
+
+.ressource-item-compact .chap-title a {
+    color: #2c3e50;
+    text-decoration: none;
+    border-bottom: 1px dotted #ccc;
+    transition: border-color 0.2s;
+}
+
+.ressource-item-compact .chap-title a:hover {
+    border-bottom-color: #3498db;
+    color: #1a5276;
+}
+
+.ressource-item-compact .download-link {
+    color: #3498db;
+    font-size: 0.9rem;
+    text-decoration: none;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid #3498db;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .download-link:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+/* Version mobile */
+@media (max-width: 600px) {
+    .ressource-item-compact {
+        font-size: 0.85rem;
+        padding: 5px 8px;
+        gap: 6px;
+    }
+    .ressource-item-compact .chap-num {
+        min-width: 60px;
+        font-size: 0.8rem;
+    }
+    .ressource-item-compact .download-link {
+        font-size: 0.75rem;
+        padding: 1px 8px;
+    }
+}
+
+
+
