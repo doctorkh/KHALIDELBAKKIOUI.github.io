@@ -2583,3 +2583,411 @@ body {
         }
     }
 
+/* ===== À COPIER DANS style.css ===== */
+
+    /* Section Documents - Version Compacte */
+    .documents-section {
+        max-width: 1100px;
+        margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px 0;
+    }
+
+    .documents-section .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        border-bottom: 3px solid #2c3e50;
+        padding-bottom: 12px;
+        margin-bottom: 25px;
+    }
+
+    /* Onglets Documents */
+    .documents-tabs-compact .tab-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .documents-tabs-compact .tab-button {
+        padding: 8px 22px;
+        border: none;
+        border-radius: 25px;
+        background: #ecf0f1;
+        color: #555;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .documents-tabs-compact .tab-button:hover {
+        background: #d5dbdb;
+    }
+
+    .documents-tabs-compact .tab-button.active {
+        background: #2c3e50;
+        color: #fff;
+    }
+
+    .documents-tabs-compact .tab-button .badge {
+        background: rgba(255,255,255,0.3);
+        padding: 1px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        margin-left: 5px;
+    }
+
+    .documents-tabs-compact .tab-button.active .badge {
+        background: rgba(255,255,255,0.25);
+    }
+
+    /* Panneaux */
+    .documents-tabs-compact .tab-pane {
+        display: none;
+    }
+
+    .documents-tabs-compact .tab-pane.active {
+        display: block;
+    }
+
+    /* ======================================== */
+    /* THÈSE - Version Compacte */
+    /* ======================================== */
+    .these-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .these-item-compact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        background: #f8f9fa;
+        border-left: 4px solid #2c3e50;
+        transition: background 0.2s;
+        flex-wrap: wrap;
+    }
+
+    .these-item-compact:hover {
+        background: #eef2f7;
+    }
+
+    .these-item-compact .these-icon {
+        color: #e74c3c;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        width: 30px;
+        text-align: center;
+    }
+
+    .these-item-compact .these-title {
+        font-weight: 600;
+        color: #2c3e50;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .these-item-compact .these-title small {
+        font-weight: 400;
+        color: #555;
+        font-size: 0.85rem;
+        display: block;
+    }
+
+    .these-item-compact .these-meta {
+        display: flex;
+        gap: 12px;
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+
+    .these-item-compact .these-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .these-item-compact .these-actions {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .these-item-compact .btn-link {
+        color: #3498db;
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 3px 10px;
+        border-radius: 4px;
+        border: 1px solid #3498db;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .these-item-compact .btn-link:hover {
+        background: #3498db;
+        color: #fff;
+    }
+
+    .these-item-compact .btn-link.preview {
+        color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .these-item-compact .btn-link.preview:hover {
+        background: #27ae60;
+        color: #fff;
+    }
+
+    /* ======================================== */
+    /* MÉMOIRES - Version Compacte */
+    /* ======================================== */
+    .memoires-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .memoire-item-compact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        background: #f8f9fa;
+        border-left: 4px solid #8e44ad;
+        transition: background 0.2s;
+        flex-wrap: wrap;
+    }
+
+    .memoire-item-compact:hover {
+        background: #f4ecf7;
+    }
+
+    .memoire-item-compact .memoire-icon {
+        color: #8e44ad;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        width: 30px;
+        text-align: center;
+    }
+
+    .memoire-item-compact .memoire-title {
+        font-weight: 600;
+        color: #2c3e50;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .memoire-item-compact .memoire-title small {
+        font-weight: 400;
+        color: #555;
+        font-size: 0.85rem;
+        display: block;
+    }
+
+    .memoire-item-compact .memoire-meta {
+        display: flex;
+        gap: 12px;
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+
+    .memoire-item-compact .memoire-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .memoire-item-compact .memoire-actions {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .memoire-item-compact .btn-link {
+        color: #8e44ad;
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 3px 10px;
+        border-radius: 4px;
+        border: 1px solid #8e44ad;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .memoire-item-compact .btn-link:hover {
+        background: #8e44ad;
+        color: #fff;
+    }
+
+    /* ======================================== */
+    /* LIVRES - Version Compacte */
+    /* ======================================== */
+    .livres-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .livre-item-compact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        background: #f8f9fa;
+        border-left: 4px solid #e67e22;
+        transition: background 0.2s;
+        flex-wrap: wrap;
+    }
+
+    .livre-item-compact:hover {
+        background: #fef5e7;
+    }
+
+    .livre-item-compact .livre-icon {
+        color: #e67e22;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        width: 30px;
+        text-align: center;
+    }
+
+    .livre-item-compact .livre-title {
+        font-weight: 600;
+        color: #2c3e50;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .livre-item-compact .livre-title small {
+        font-weight: 400;
+        color: #555;
+        font-size: 0.85rem;
+        display: block;
+    }
+
+    .livre-item-compact .livre-meta {
+        display: flex;
+        gap: 12px;
+        color: #7f8c8d;
+        font-size: 0.75rem;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+
+    .livre-item-compact .livre-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .livre-item-compact .livre-price {
+        font-weight: 700;
+        color: #27ae60;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .livre-item-compact .livre-actions {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .livre-item-compact .btn-link {
+        color: #e67e22;
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 3px 10px;
+        border-radius: 4px;
+        border: 1px solid #e67e22;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .livre-item-compact .btn-link:hover {
+        background: #e67e22;
+        color: #fff;
+    }
+
+    .livre-item-compact .btn-link.amazon {
+        color: #f39c12;
+        border-color: #f39c12;
+    }
+
+    .livre-item-compact .btn-link.amazon:hover {
+        background: #f39c12;
+        color: #fff;
+    }
+
+    .livre-item-compact .badge-new {
+        background: #e74c3c;
+        color: #fff;
+        font-size: 0.6rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    /* Version mobile */
+    @media (max-width: 768px) {
+        .these-item-compact,
+        .memoire-item-compact,
+        .livre-item-compact {
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            gap: 6px;
+        }
+        .these-item-compact .these-title,
+        .memoire-item-compact .memoire-title,
+        .livre-item-compact .livre-title {
+            min-width: 120px;
+        }
+        .these-item-compact .these-meta,
+        .memoire-item-compact .memoire-meta,
+        .livre-item-compact .livre-meta {
+            font-size: 0.7rem;
+            gap: 6px;
+        }
+        .these-item-compact .btn-link,
+        .memoire-item-compact .btn-link,
+        .livre-item-compact .btn-link {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+        }
+        .documents-tabs-compact .tab-button {
+            font-size: 0.8rem;
+            padding: 6px 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .these-item-compact .these-meta span:not(:first-child),
+        .memoire-item-compact .memoire-meta span:not(:first-child),
+        .livre-item-compact .livre-meta span:not(:first-child) {
+            display: none;
+        }
+        .these-item-compact .these-title small,
+        .memoire-item-compact .memoire-title small,
+        .livre-item-compact .livre-title small {
+            font-size: 0.75rem;
+        }
+    }
