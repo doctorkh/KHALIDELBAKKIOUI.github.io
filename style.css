@@ -2252,5 +2252,334 @@ body {
     }
 }
 
+/* ===== À COPIER DANS style.css ===== */
 
+    /* Section Recherche - Version Compacte */
+    .research-section {
+        max-width: 1100px;
+        margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px 0;
+    }
+
+    .research-section .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        border-bottom: 3px solid #2c3e50;
+        padding-bottom: 12px;
+        margin-bottom: 25px;
+    }
+
+    /* Onglets */
+    .research-tabs-compact .tab-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .research-tabs-compact .tab-button {
+        padding: 8px 22px;
+        border: none;
+        border-radius: 25px;
+        background: #ecf0f1;
+        color: #555;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .research-tabs-compact .tab-button:hover {
+        background: #d5dbdb;
+    }
+
+    .research-tabs-compact .tab-button.active {
+        background: #2c3e50;
+        color: #fff;
+    }
+
+    .research-tabs-compact .tab-button .badge {
+        background: rgba(255,255,255,0.3);
+        padding: 1px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        margin-left: 5px;
+    }
+
+    .research-tabs-compact .tab-button.active .badge {
+        background: rgba(255,255,255,0.25);
+    }
+
+    /* Contenu des onglets */
+    .research-tabs-compact .tab-pane {
+        display: none;
+    }
+
+    .research-tabs-compact .tab-pane.active {
+        display: block;
+    }
+
+    /* Publications - Version compacte */
+    .publications-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .pub-item-compact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        background: #fafafa;
+        transition: background 0.2s;
+        font-size: 0.92rem;
+        flex-wrap: wrap;
+        border-left: 3px solid transparent;
+    }
+
+    .pub-item-compact:hover {
+        background: #f0f2f5;
+    }
+
+    .pub-item-compact .pub-year-badge {
+        background: #2c3e50;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 12px;
+        flex-shrink: 0;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .pub-item-compact .pub-title {
+        flex: 1;
+        min-width: 200px;
+        color: #2c3e50;
+    }
+
+    .pub-item-compact .pub-title a {
+        color: #2c3e50;
+        text-decoration: none;
+        border-bottom: 1px dotted #ccc;
+        transition: border-color 0.2s;
+    }
+
+    .pub-item-compact .pub-title a:hover {
+        border-bottom-color: #3498db;
+        color: #1a5276;
+    }
+
+    .pub-item-compact .pub-authors {
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .pub-item-compact .pub-journal {
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        font-style: italic;
+        flex-shrink: 0;
+    }
+
+    .pub-item-compact .pub-status-badge {
+        font-size: 0.7rem;
+        padding: 2px 10px;
+        border-radius: 12px;
+        background: #f39c12;
+        color: #fff;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .pub-item-compact .pub-status-badge.under-review {
+        background: #e67e22;
+    }
+
+    .pub-item-compact .pub-status-badge.private {
+        background: #95a5a6;
+    }
+
+    .pub-item-compact .pub-links-compact {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .pub-item-compact .pub-link {
+        color: #3498db;
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid #3498db;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .pub-item-compact .pub-link:hover {
+        background: #3498db;
+        color: #fff;
+    }
+
+    .pub-item-compact .pub-link.pdf-link {
+        color: #e74c3c;
+        border-color: #e74c3c;
+    }
+
+    .pub-item-compact .pub-link.pdf-link:hover {
+        background: #e74c3c;
+        color: #fff;
+    }
+
+    /* Conférences - Version compacte */
+    .conferences-list-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .conf-item-compact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        background: #fafafa;
+        transition: background 0.2s;
+        font-size: 0.92rem;
+        flex-wrap: wrap;
+        border-left: 3px solid #8e44ad;
+    }
+
+    .conf-item-compact:hover {
+        background: #f0f2f5;
+    }
+
+    .conf-item-compact .conf-year-badge {
+        background: #8e44ad;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 12px;
+        flex-shrink: 0;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .conf-item-compact .conf-name {
+        font-weight: 600;
+        color: #2c3e50;
+        flex-shrink: 0;
+    }
+
+    .conf-item-compact .conf-title {
+        color: #555;
+        font-size: 0.85rem;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .conf-item-compact .conf-location {
+        color: #7f8c8d;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .conf-item-compact .conf-links-compact {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+
+    .conf-item-compact .conf-link {
+        color: #8e44ad;
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid #8e44ad;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .conf-item-compact .conf-link:hover {
+        background: #8e44ad;
+        color: #fff;
+    }
+
+    .conf-item-compact .conf-link.pdf-link {
+        color: #e74c3c;
+        border-color: #e74c3c;
+    }
+
+    .conf-item-compact .conf-link.pdf-link:hover {
+        background: #e74c3c;
+        color: #fff;
+    }
+
+    /* Version mobile */
+    @media (max-width: 768px) {
+        .pub-item-compact {
+            font-size: 0.82rem;
+            padding: 5px 8px;
+            gap: 6px;
+        }
+        .pub-item-compact .pub-title {
+            min-width: 120px;
+        }
+        .pub-item-compact .pub-authors,
+        .pub-item-compact .pub-journal {
+            font-size: 0.72rem;
+        }
+        .pub-item-compact .pub-link {
+            font-size: 0.7rem;
+            padding: 1px 6px;
+        }
+
+        .conf-item-compact {
+            font-size: 0.82rem;
+            padding: 5px 8px;
+            gap: 6px;
+        }
+        .conf-item-compact .conf-title {
+            min-width: 100px;
+        }
+        .conf-item-compact .conf-location {
+            font-size: 0.72rem;
+        }
+        .conf-item-compact .conf-link {
+            font-size: 0.7rem;
+            padding: 1px 6px;
+        }
+
+        .research-tabs-compact .tab-button {
+            font-size: 0.8rem;
+            padding: 6px 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .pub-item-compact .pub-authors,
+        .pub-item-compact .pub-journal {
+            display: none;
+        }
+        .conf-item-compact .conf-title {
+            display: none;
+        }
+        .conf-item-compact .conf-location {
+            font-size: 0.7rem;
+        }
+    }
 
