@@ -863,446 +863,321 @@
         </div>
     </section>
 
-    <!-- Section Documents -->
-    <section id="documents" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">Documents Académiques</h2>
-            <div class="documents-tabs">
-                <div class="tab-buttons small" data-tab-group="documents">
-                    <button class="tab-button active" data-tab="these" aria-selected="true" aria-controls="these">Thèse</button>
-                    <button class="tab-button" data-tab="memoires" aria-selected="false" aria-controls="memoires">Mémoires</button>
-                    <button class="tab-button" data-tab="livres" aria-selected="false" aria-controls="livres">Livres & Manuels</button>
+   <!-- ===== HTML À COPIER DANS VOTRE PAGE ===== -->
+
+<section id="documents" class="section bg-light documents-section">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-file-alt"></i> Documents Académiques</h2>
+
+        <div class="documents-tabs-compact">
+            <!-- Boutons des onglets -->
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="these" aria-selected="true">
+                    <i class="fas fa-graduation-cap"></i> Thèse <span class="badge">3</span>
+                </button>
+                <button class="tab-button" data-tab="memoires" aria-selected="false">
+                    <i class="fas fa-book-open"></i> Mémoires <span class="badge">2</span>
+                </button>
+                <button class="tab-button" data-tab="livres" aria-selected="false">
+                    <i class="fas fa-book"></i> Livres &amp; Manuels <span class="badge">9</span>
+                </button>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ONGLET THÈSE -->
+            <!-- ========================================================= -->
+            <div class="tab-pane active" id="these">
+                <div class="these-list-compact">
+
+                    <!-- Thèse 1 - Français -->
+                    <div class="these-item-compact">
+                        <span class="these-icon"><i class="fas fa-file-alt"></i></span>
+                        <span class="these-title">
+                            Thèse de Doctorat - Version Française
+                            <small>Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques</small>
+                        </span>
+                        <span class="these-meta">
+                            <span><i class="fas fa-calendar"></i> 2021-2025</span>
+                            <span><i class="fas fa-file-pdf"></i> 4.2 MB</span>
+                            <span><i class="fas fa-university"></i> UAE</span>
+                        </span>
+                        <span class="these-actions">
+                            <a href="documents/these/these-francais.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
+                            <a href="documents/these/these-francais.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Thèse 2 - English -->
+                    <div class="these-item-compact">
+                        <span class="these-icon"><i class="fas fa-file-alt"></i></span>
+                        <span class="these-title">
+                            PhD Thesis - English Version
+                            <small>Innovative Stochastic Methods for the Study of Dynamic Systems</small>
+                        </span>
+                        <span class="these-meta">
+                            <span><i class="fas fa-calendar"></i> 2021-2025</span>
+                            <span><i class="fas fa-file-pdf"></i> 4.5 MB</span>
+                            <span><i class="fas fa-university"></i> UAE</span>
+                        </span>
+                        <span class="these-actions">
+                            <a href="documents/these/thesis-english.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
+                            <a href="documents/these/thesis-english.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Thèse 3 - Diapositives -->
+                    <div class="these-item-compact">
+                        <span class="these-icon"><i class="fas fa-presentation"></i></span>
+                        <span class="these-title">
+                            Diapositives de Soutenance
+                            <small>Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques</small>
+                        </span>
+                        <span class="these-meta">
+                            <span><i class="fas fa-calendar"></i> 2025</span>
+                            <span><i class="fas fa-file-pdf"></i> 3.8 MB</span>
+                        </span>
+                        <span class="these-actions">
+                            <a href="documents/these/diapositives.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
+                            <a href="documents/these/diapositives.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        </span>
+                    </div>
+
                 </div>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="these" aria-labelledby="these-tab" aria-hidden="false">
-                        <div class="documents-grid">
-                            <div class="doc-card">
-                                <div class="doc-icon">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div class="doc-content">
-                                    <h3>Thèse de Doctorat - Version Française</h3>
-                                    <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
-                                    <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.2 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
-                                    </div>
-                                </div>
-                                <div class="doc-actions">
-                                    <a href="documents/these/these-francais.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
-                                    </a>
-                                    <a href="documents/these/these-francais.pdf" class="btn-preview" target="_blank">
-                                        <i class="fas fa-eye"></i> Aperçu
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="doc-card">
-                                <div class="doc-icon">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div class="doc-content">
-                                    <h3>PhD Thesis - English Version</h3>
-                                    <p>« Innovative Stochastic Methods for the Study of Dynamic Systems »</p>
-                                    <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 4.5 MB</span>
-                                        <span><i class="fas fa-university"></i> Abdelmalek Essaâdi University</span>
-                                    </div>
-                                </div>
-                                <div class="doc-actions">
-                                    <a href="documents/these/thesis-english.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                    <a href="documents/these/thesis-english.pdf" class="btn-preview" target="_blank">
-                                        <i class="fas fa-eye"></i> Preview
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="doc-card">
-                                <div class="doc-icon">
-                                    <i class="fas fa-presentation"></i>
-                                </div>
-                                <div class="doc-content">
-                                    <h3>Diapositives de Soutenance</h3>
-                                    <p>« Méthodes stochastiques innovantes pour l'étude des systèmes dynamiques »</p>
-                                    <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2021-2025</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.8 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Abdelmalek Essaâdi</span>
-                                    </div>
-                                </div>
-                                <div class="doc-actions">
-                                    <a href="documents/these/diapositives.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
-                                    </a>
-                                    <a href="documents/these/diapositives.pdf" class="btn-preview" target="_blank">
-                                        <i class="fas fa-eye"></i> Aperçu
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="memoires" aria-labelledby="memoires-tab" aria-hidden="true">
-                        <div class="documents-grid">
-                            <div class="doc-card">
-                                <div class="doc-icon">
-                                    <i class="fas fa-graduation-cap"></i>
-                                </div>
-                                <div class="doc-content">
-                                    <h3>Mémoire d'Agrégation</h3>
-                                    <p>« Le groupe linéaire d'un espace vectoriel E de dimension finie, sous-groupes de GL(IE) et applications »</p>
-                                    <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2005-2008</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 3.1 MB</span>
-                                        <span><i class="fas fa-university"></i> ENS Casablanca</span>
-                                    </div>
-                                </div>
-                                <div class="doc-actions">
-                                    <a href="documents/memoires/memoire-agregation.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="doc-card">
-                                <div class="doc-icon">
-                                    <i class="fas fa-graduation-cap"></i>
-                                </div>
-                                <div class="doc-content">
-                                    <h3>Mémoire de DESA</h3>
-                                    <p>« Opérateurs compacts et propriété d'Orlicz-Pettis en analyse p-adique »</p>
-                                    <div class="doc-meta">
-                                        <span><i class="fas fa-calendar"></i> 2003-2005</span>
-                                        <span><i class="fas fa-file-pdf"></i> PDF - 2.8 MB</span>
-                                        <span><i class="fas fa-university"></i> Université Sidi Mohamed Ben Abdellah</span>
-                                    </div>
-                                </div>
-                                <div class="doc-actions">
-                                    <a href="documents/memoires/memoire-desa.pdf" class="btn-download" download>
-                                        <i class="fas fa-download"></i> Télécharger
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
-    <div class="documents-grid">
-
-        
-   <!-- ============================================= -->
-<!-- LISTE COMPLÈTE DES 9 LIVRES - Khalid El Bakkioui -->
-<!-- ============================================= -->
-
-<!-- LIVRE 1 : Stochastic Processes -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_stochastic_processes.jpg" alt="An Introduction to Stochastic Processes and Their Uses" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>An Introduction to Stochastic Processes and Their Uses<br><small>Theory, Examples, and Applications</small></h3>
-        <p><strong>Khalid El Bakkioui</strong> — Ce livre offre une introduction autonome aux processus stochastiques, avec un accent sur les chaînes de Markov (espaces finis et dénombrables), les algorithmes MCMC, le processus de Poisson, les processus de saut de Markov et la théorie des files d'attente.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 15 avril 2026</span>
-            <span><i class="fas fa-language"></i> English</span>
-            <span><i class="fas fa-file-alt"></i> 177 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 979-8257585647</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> 44.00 (broché)</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0GXFJ6R8Q?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0GXFJ6R8Q?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 2 : Independent Random Variables, Wick Polynomials -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_wick.jpg" alt="Independent Random Variables, Wick Polynomials" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Independent Random Variables, Wick Polynomials, and a Non‑Gaussian Stochastic Integral<br><small>Probability Theory, Rademacher Systems, Density of Products</small></h3>
-        <p><strong>Khalid El Bakkioui</strong> — Construction de suites indépendantes de variables aléatoires, polynômes de Wick, intégrale stochastique non gaussienne, formule d'intégration par parties et variations quadratiques.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 8 avril 2026</span>
-            <span><i class="fas fa-language"></i> English</span>
-            <span><i class="fas fa-file-alt"></i> 134 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 979-8255645114</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> 40.00 (broché)</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0GWMQK3XC?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0GWMQK3XC?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 3 : Local Times, Brownian Excursions -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_local_times.jpg" alt="Exercises on Local Times, Brownian Excursions" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Exercises and Solutions with Key Results on Local Times, Brownian Excursions, and Semimartingales<br><small>Stochastic Processes, Brownian Motion, Itô Calculus, Excursion Theory</small></h3>
-        <p><strong>Khalid El Bakkioui</strong> — Une introduction approfondie aux temps locaux des semimartingales continues et à la théorie des excursions browniennes, à travers des exercices détaillés. Comprend les théorèmes de Lévy, Pitman, Ray–Knight et la formule de Feynman‑Kac.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 1 avril 2026</span>
-            <span><i class="fas fa-language"></i> English</span>
-            <span><i class="fas fa-file-alt"></i> 170 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 979-8254630586</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> 45.00 (broché)</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0GVT7S57W?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0GVT7S57W?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 4 : Stochastic Calculus Exercises -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_stoch_calculus.jpg" alt="Exercises and Solutions in Stochastic Calculus" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Exercises and Solutions in Stochastic Calculus<br><small>Stochastic Calculus</small></h3>
-        <p><strong>Khalid El Bakkioui</strong> — Cinquante exercices corrigés sur le mouvement brownien, les martingales, l'intégrale stochastique d'Itô, les équations différentielles stochastiques et leurs applications en finance, physique et biologie. Inclut des simulations Python.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 26 mars 2026</span>
-            <span><i class="fas fa-language"></i> English</span>
-            <span><i class="fas fa-file-alt"></i> 158 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 979-8253794500</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> 38.00 (broché)</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0GV3VC7KH?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0GV3VC7KH?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 5 : Mathématiques Appliquées Avancées (déjà présent, liens corrigés) -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book-maths-appliquees.jpg" alt="Mathématiques Appliquées Avancées - Khalid El Bakkioui" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Mathématiques Appliquées Avancées <br><small>Analyse numérique, algèbre linéaire, intégration, probabilités et systèmes dynamiques</small></h3>
-        <p><strong>Khalid El Bakkioui</strong> — Manuel de référence pour les étudiants de licence en mathématiques appliquées. Couvre l'analyse, l'algèbre linéaire, les probabilités, et propose une initiation à Python et SQL à travers des exemples et exercices progressifs.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 1 mars 2026</span>
-            <span><i class="fas fa-language"></i> Français</span>
-            <span><i class="fas fa-file-alt"></i> 582 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 979-8250245746</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> 54.00 (broché)</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0GR1F7PNG?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0GR1F7PNG?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 6 : Opérateurs compacts p-adiques (français) - lien corrigé -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_padic.jpg" alt="Opérateurs compacts et propriété d'Orlicz-Pettis" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Opérateurs Compacts et Propriété d'Orlicz-Pettis<br><small>Analyse Fonctionnelle sur les Corps p-Adiques</small></h3>
-        <p><strong>Khalid El Bakkioui & Mourad El Idrissi</strong> — Étude des opérateurs compacts et de la propriété d'Orlicz-Pettis dans le cadre de l'analyse p-adique. Exploration des conditions de validité, applications aux idéaux d'opérateurs et aux ensembles faiblement compacts.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 23 février 2026</span>
-            <span><i class="fas fa-language"></i> Français</span>
-            <span><i class="fas fa-file-alt"></i> 140 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-44723-5</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📘 Nouvelle parution</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> Prix Amazon</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/6209447236?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/6209447236?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-
-<!-- LIVRE 7 : Special Subgroups of the General Linear Group - lien corrigé -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/book_SL.jpg" alt="Special Subgroups of the General Linear Group" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Special Subgroups of the General Linear Group</h3>
-        <p><strong>Khalid El Bakkioui & Mourad El Idrissi</strong> — Exploration détaillée des sous-groupes remarquables du groupe linéaire général : groupe spécial linéaire, groupes orthogonaux, unitaires et symplectiques, avec leurs liens avec la géométrie, l'analyse et la physique mathématique.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 7 novembre 2025</span>
-            <span><i class="fas fa-language"></i> English</span>
-            <span><i class="fas fa-file-alt"></i> 124 pages</span>
-            <span><i class="fas fa-barcode"></i> ISBN: 978-620-9-19243-2</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">🚀 Offre de lancement</span>
-            <div class="countdown-small">
-                <span>Offre spéciale limitée</span>
             </div>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/6209192432?ref=sp_email" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/6209192432?ref=sp_email" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
- <!-- LIVRE 8 : Probabilités et théorie de la mesure Tome 1 -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/tome1.pdf" alt="Probabilités et théorie de la mesure Tome 1" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Probabilités et théorie de la mesure Tome 1 : Des phénomènes aléatoires aux fondements axiomatiques</h3>
-        <p><strong>Khalid El Bakkioui</strong> — Ce manuel (Tome 1) propose une introduction rigoureuse aux fondements mathématiques de la théorie des probabilités, en s'appuyant sur les concepts clés de la théorie de la mesure et de l'intégration de Lebesgue. Inspiré par les travaux fondateurs d'Andreï Kolmogorov (axiomatisation moderne des probabilités) et par l'intuition féconde d'Henri Poincaré (analyse des phénomènes aléatoires), l'ouvrage explore les notions d'espaces probabilisables, de familles sommables, d'indépendance et de lois conditionnelles. Les moments d'une variable aléatoire (espérance, variance, moments d'ordre supérieur) sont développés en détail, tant dans le cadre discret que continu. Une place centrale est accordée aux théorèmes limites : approximation de Poisson, théorème de Moivre-Laplace, théorème central limite, ainsi qu'aux lois des grands nombres (faible et forte). L'ouvrage comprend également un chapitre substantiel sur la théorie de la mesure (σ-algèbres, intégrale de Lebesgue, théorème de Fubini) afin d'en assurer la complète autonomie. Destiné aux étudiants avancés en mathématiques, il constitue une préparation solide à la recherche et aux applications statistiques.</p>
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> June 4, 2026</span>
-            <span><i class="fas fa-language"></i> French</span>
-            <span><i class="fas fa-file-alt"></i> 758 pages</span>
-            <span><i class="fas fa-file-pdf"></i> 9.2 MB</span>
-            <span><i class="fas fa-universal-access"></i> Accessibilité : Screen Reader, Enhanced typesetting, Page Flip</span>
-            <span><i class="fas fa-barcode"></i> ASIN: B0H1GT7RR2</span>
-        </div>
-        <div class="book-offer">
-            <span class="offer-badge">📚 Kindle Edition — $9.99</span>
-        </div>
-    </div>
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
 
-<!-- LIVRE 9 : Probabilités et processus stochastiques Tome 2 -->
-<div class="doc-card book-featured">
-    <div class="doc-image">
-        <img src="documents/memoires/tome2.pdf" alt="Probabilités et processus stochastiques Tome 2" class="book-cover">
-    </div>
-    <div class="doc-icon">
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="doc-content">
-        <h3>Probabilités et processus stochastiques: Lois conditionnelles, espérance conditionnelle, fonctions caractéristiques, variables gaussiennes, martingales et chaînes de Markov (French Edition)</h3>
-        <p><strong>Khalid El Bakkioui</strong> — Ce second tome est consacré aux concepts avancés de la théorie des probabilités, indispensables à l'étude des processus stochastiques. 
-        Le chapitre 1 généralise la notion de loi conditionnelle via les noyaux de probabilité (théorème de Jirina, théorème de transfert conditionnel). 
-        Le chapitre 2 développe la théorie des transformées de Fourier et des fonctions caractéristiques, culminant avec le théorème d'injectivité de Paul Lévy. 
-        Le chapitre 3 traite des variables aléatoires gaussiennes dans un cadre vectoriel, du modèle linéaire et du théorème de Gauss-Markov. 
-        Le chapitre 4 aborde les convergences de mesures (étroite, faible, vague), le théorème de Lévy, le théorème central limite et le test du $\chi^2$ de Pearson. 
-        Le chapitre 5 introduit les martingales discrètes : temps d'arrêt, décomposition de Doob, inégalité maximale et théorèmes de convergence. 
-        Enfin, le chapitre 6 est une introduction approfondie aux chaînes de Markov homogènes : classification des états, récurrence, mesures invariantes et loi forte des grands nombres (théorème de Chacon-Ornstein). 
-        Riche en exercices et solutions, ce volume s'adresse aux étudiants de master et aux candidats à l'agrégation.</p>
-        
-        <div class="doc-meta">
-            <span><i class="fas fa-calendar"></i> 7 juin 2026</span>
-            <span><i class="fas fa-language"></i> Français</span>
-            <span><i class="fas fa-file-alt"></i> 704 pages</span>
-            <span><i class="fas fa-barcode"></i> ASIN: B0H4DB5N52</span>
-            <span><i class="fas fa-mobile-alt"></i> Kindle Edition</span>
-        </div>
-        
-        <div class="book-offer">
-            <span class="offer-badge">📱 Kindle Edition</span>
-            <div class="countdown-small">
-                <span>Prix : $40.00 USD</span>
+            <!-- ========================================================= -->
+            <!-- ONGLET MÉMOIRES -->
+            <!-- ========================================================= -->
+            <div class="tab-pane" id="memoires">
+                <div class="memoires-list-compact">
+
+                    <!-- Mémoire 1 - Agrégation -->
+                    <div class="memoire-item-compact">
+                        <span class="memoire-icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span class="memoire-title">
+                            Mémoire d'Agrégation
+                            <small>Le groupe linéaire d'un espace vectoriel E de dimension finie, sous-groupes de GL(E) et applications</small>
+                        </span>
+                        <span class="memoire-meta">
+                            <span><i class="fas fa-calendar"></i> 2005-2008</span>
+                            <span><i class="fas fa-file-pdf"></i> 3.1 MB</span>
+                            <span><i class="fas fa-university"></i> ENS Casablanca</span>
+                        </span>
+                        <span class="memoire-actions">
+                            <a href="documents/memoires/memoire-agregation.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Mémoire 2 - DESA -->
+                    <div class="memoire-item-compact">
+                        <span class="memoire-icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span class="memoire-title">
+                            Mémoire de DESA
+                            <small>Opérateurs compacts et propriété d'Orlicz-Pettis en analyse p-adique</small>
+                        </span>
+                        <span class="memoire-meta">
+                            <span><i class="fas fa-calendar"></i> 2003-2005</span>
+                            <span><i class="fas fa-file-pdf"></i> 2.8 MB</span>
+                            <span><i class="fas fa-university"></i> USMBA</span>
+                        </span>
+                        <span class="memoire-actions">
+                            <a href="documents/memoires/memoire-desa.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
+                        </span>
+                    </div>
+
+                </div>
             </div>
-        </div>
+
+            <!-- ========================================================= -->
+            <!-- ONGLET LIVRES & MANUELS -->
+            <!-- ========================================================= -->
+            <div class="tab-pane" id="livres">
+                <div class="livres-list-compact">
+
+                    <!-- Livre 1 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            An Introduction to Stochastic Processes
+                            <small>Khalid El Bakkioui — Theory, Examples, and Applications</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Apr 2026</span>
+                            <span><i class="fas fa-language"></i> EN</span>
+                            <span><i class="fas fa-file-alt"></i> 177p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$44.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 2 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Independent Random Variables, Wick Polynomials
+                            <small>Khalid El Bakkioui — Non‑Gaussian Stochastic Integral</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Apr 2026</span>
+                            <span><i class="fas fa-language"></i> EN</span>
+                            <span><i class="fas fa-file-alt"></i> 134p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$40.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 3 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Exercises on Local Times, Brownian Excursions
+                            <small>Khalid El Bakkioui — Semimartingales</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Apr 2026</span>
+                            <span><i class="fas fa-language"></i> EN</span>
+                            <span><i class="fas fa-file-alt"></i> 170p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$45.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 4 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Exercises and Solutions in Stochastic Calculus
+                            <small>Khalid El Bakkioui — 50 exercises with Python simulations</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Mar 2026</span>
+                            <span><i class="fas fa-language"></i> EN</span>
+                            <span><i class="fas fa-file-alt"></i> 158p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$38.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 5 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Mathématiques Appliquées Avancées
+                            <small>Khalid El Bakkioui — Analyse, algèbre, probabilités, Python</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Mar 2026</span>
+                            <span><i class="fas fa-language"></i> FR</span>
+                            <span><i class="fas fa-file-alt"></i> 582p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$54.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 6 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Opérateurs Compacts et Propriété d'Orlicz-Pettis
+                            <small>El Bakkioui &amp; El Idrissi — Analyse p-adique</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Feb 2026</span>
+                            <span><i class="fas fa-language"></i> FR</span>
+                            <span><i class="fas fa-file-alt"></i> 140p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$44.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/6209447236" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/6209447236" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 7 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Special Subgroups of the General Linear Group
+                            <small>El Bakkioui &amp; El Idrissi — Linear Algebra</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Nov 2025</span>
+                            <span><i class="fas fa-language"></i> EN</span>
+                            <span><i class="fas fa-file-alt"></i> 124p</span>
+                        </span>
+                        <span class="livre-price">$39.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/6209192432" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/6209192432" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 8 - Tome 1 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Probabilités et théorie de la mesure Tome 1
+                            <small>Khalid El Bakkioui — Des phénomènes aléatoires aux fondements axiomatiques</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Jun 2026</span>
+                            <span><i class="fas fa-language"></i> FR</span>
+                            <span><i class="fas fa-file-alt"></i> 758p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$9.99</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                    <!-- Livre 9 - Tome 2 -->
+                    <div class="livre-item-compact">
+                        <span class="livre-icon"><i class="fas fa-book"></i></span>
+                        <span class="livre-title">
+                            Probabilités et processus stochastiques Tome 2
+                            <small>Khalid El Bakkioui — Martingales, Markov, Fonctions caractéristiques</small>
+                        </span>
+                        <span class="livre-meta">
+                            <span><i class="fas fa-calendar"></i> Jun 2026</span>
+                            <span><i class="fas fa-language"></i> FR</span>
+                            <span><i class="fas fa-file-alt"></i> 704p</span>
+                        </span>
+                        <span class="badge-new">New</span>
+                        <span class="livre-price">$40.00</span>
+                        <span class="livre-actions">
+                            <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div><!-- fin documents-tabs-compact -->
     </div>
-    
-    <div class="doc-actions">
-        <a href="https://www.amazon.com/dp/B0H4DB5N52" class="btn-buy" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-shopping-cart"></i> Acheter sur Amazon
-        </a>
-        <a href="https://www.amazon.com/dp/B0H4DB5N52" class="btn-preview" target="_blank" rel="noopener noreferrer">
-            <i class="fas fa-external-link-alt"></i> Voir la fiche
-        </a>
-    </div>
-</div>
-        
-<!-- Fermetures de la grille et du conteneur (inchangées) -->
-</div> <!-- fin doc-grid (si elle existe) -->
-</div> <!-- fin container -->
-</div> <!-- éventuel fermeture supplémentaire -->
-</div> <!-- ... -->
-</div> <!-- ... -->
 </section>
 
     <!-- Section Contact -->
