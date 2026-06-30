@@ -1570,3 +1570,46 @@ document.addEventListener('keydown', (e) => {
         navToggle.setAttribute('aria-expanded', 'false');
     }
 });
+
+
+// ===== GESTION DES ONGLETS POUR LA SECTION RECHERCHE =====
+// À COPIER DANS script.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Sélectionner tous les groupes d'onglets
+    const tabGroups = document.querySelectorAll('.research-tabs-compact');
+    
+    tabGroups.forEach(group => {
+        const buttons = group.querySelectorAll('.tab-button');
+        const panes = group.querySelectorAll('.tab-pane');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Désactiver tous les boutons du même groupe
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                
+                // Activer le bouton cliqué
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                
+                // Cacher tous les panneaux
+                panes.forEach(pane => {
+                    pane.classList.remove('active');
+                    pane.setAttribute('aria-hidden', 'true');
+                });
+                
+                // Afficher le panneau correspondant
+                const targetPane = group.querySelector(`#${tabId}`);
+                if (targetPane) {
+                    targetPane.classList.add('active');
+                    targetPane.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+    });
+});
