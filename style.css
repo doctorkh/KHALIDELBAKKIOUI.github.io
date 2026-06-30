@@ -3583,3 +3583,177 @@ body {
             font-size: 0.75rem;
         }
     }
+
+
+/* ===== STYLES POUR LES PROGRAMMES ET CAHIER ===== */
+
+/* Badges pour les programmes */
+.badge-programme {
+    background: #d5f5e3;
+    color: #1e8449;
+}
+
+.badge-cahier {
+    background: #ebf5fb;
+    color: #1a5276;
+}
+
+/* Style pour les ressources-list-compact si pas déjà présent */
+.ressources-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 10px;
+    margin-top: 6px;
+}
+
+.ressource-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    background: #fafafa;
+    transition: background 0.2s;
+    font-size: 0.92rem;
+    flex-wrap: wrap;
+    border-left: 3px solid transparent;
+}
+
+.ressource-item-compact:hover {
+    background: #f0f2f5;
+}
+
+.ressource-item-compact .ri-icon {
+    color: #e74c3c;
+    font-size: 1rem;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .badge-cat {
+    font-size: 0.55rem;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.ressource-item-compact .ri-title {
+    font-weight: 600;
+    color: #2c3e50;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .ri-desc {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    flex: 1;
+    min-width: 80px;
+}
+
+.ressource-item-compact .ri-size {
+    color: #95a5a6;
+    font-size: 0.72rem;
+    flex-shrink: 0;
+    background: #ecf0f1;
+    padding: 1px 10px;
+    border-radius: 10px;
+}
+
+.ressource-item-compact .ri-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.ressource-item-compact .btn-link {
+    color: #3498db;
+    font-size: 0.75rem;
+    text-decoration: none;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid #3498db;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.ressource-item-compact .btn-link:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+.ressource-item-compact .btn-link.preview {
+    color: #27ae60;
+    border-color: #27ae60;
+}
+
+.ressource-item-compact .btn-link.preview:hover {
+    background: #27ae60;
+    color: #fff;
+}
+
+/* En-têtes des catégories */
+.ressource-category {
+    margin-bottom: 20px;
+}
+
+.ressource-category h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #f0f2f5;
+}
+
+.ressource-category h3 i {
+    color: #667eea;
+}
+
+/* Version mobile */
+@media (max-width: 768px) {
+    .ressource-item-compact {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        gap: 6px;
+    }
+    .ressource-item-compact .ri-desc {
+        font-size: 0.7rem;
+        min-width: 60px;
+    }
+    .ressource-item-compact .ri-size {
+        font-size: 0.65rem;
+        padding: 1px 6px;
+    }
+    .ressource-item-compact .btn-link {
+        font-size: 0.65rem;
+        padding: 1px 5px;
+    }
+    .ressource-category h3 {
+        font-size: 0.9rem;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ressource-item-compact .ri-desc {
+        display: none;
+    }
+    .ressource-item-compact .ri-size {
+        display: none;
+    }
+    .ressource-item-compact .badge-cat {
+        font-size: 0.45rem;
+        padding: 1px 5px;
+    }
+}
