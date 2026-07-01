@@ -1881,3 +1881,63 @@ window.websiteAPI = {
 console.log('✅ Site de Khalid EL BAKKIOUI chargé avec succès');
 console.log(`👥 Visiteurs totaux: ${visitorCounter.totalVisitors}`);
 console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
+
+// ========================================================
+// FORCER LE SCROLL EN HAUT - Version ultime
+// ========================================================
+
+(function ensureTopScroll() {
+    'use strict';
+    
+    // 1. Désactiver la restauration de scroll du navigateur
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    
+    // 2. Fonction de scroll en haut
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'auto'
+        });
+    }
+    
+    // 3. Exécution immédiate
+    scrollToTop();
+    
+    // 4. Exécution au chargement DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', scrollToTop);
+    } else {
+        scrollToTop();
+    }
+    
+    // 5. Exécution au chargement complet
+    window.addEventListener('load', function() {
+        scrollToTop();
+        // Petit délai supplémentaire pour les navigateurs lents
+        setTimeout(scrollToTop, 100);
+        setTimeout(scrollToTop, 300);
+    });
+    
+    // 6. Si l'URL contient un hash, le supprimer
+    if (window.location.hash) {
+        // Option 1: Supprimer le hash
+        history.replaceState(null, null, ' ');
+        
+        // Option 2: Remplacer par #accueil
+        // history.replaceState(null, null, '#accueil');
+        
+        setTimeout(scrollToTop, 50);
+    }
+    
+    // 7. Écouter les changements d'URL
+    window.addEventListener('hashchange', function() {
+        if (window.location.hash === '' || window.location.hash === '#') {
+            scrollToTop();
+        }
+    });
+    
+    console.log('✅ Page forcée en haut au chargement');
+})();
