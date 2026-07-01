@@ -4160,3 +4160,76 @@ body {
         font-size: 0.85rem;
     }
 }
+
+/* ========================================
+   CONTACT - Chaque élément sur une ligne
+   ======================================== */
+
+.hero-contact {
+    display: flex;
+    flex-direction: column;      /* ← FORCE LES ÉLÉMENTS EN COLONNE */
+    gap: 12px;                  /* Espace entre chaque ligne */
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 10px 0;
+    width: 100%;                /* Prend toute la largeur */
+}
+
+.hero-contact p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 4px 0;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    width: 100%;                /* Chaque paragraphe prend toute la largeur */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Ligne séparatrice subtile */
+}
+
+/* Supprimer la bordure du dernier élément */
+.hero-contact p:last-child {
+    border-bottom: none;
+}
+
+.hero-contact i {
+    color: #3498db;
+    width: 24px;               /* Largeur fixe pour aligner les icônes */
+    font-size: 1.1rem;
+    text-align: center;
+    flex-shrink: 0;            /* Empêche l'icône de rétrécir */
+}
+
+/* Effet au survol (optionnel) */
+.hero-contact p:hover {
+    color: #2c3e50;
+    background: rgba(52, 152, 219, 0.05);
+    border-radius: 4px;
+    padding-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.hero-contact p:hover i {
+    color: #2980b9;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-contact {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .hero-contact p {
+        font-size: 0.85rem;
+        padding: 3px 0;
+    }
+    
+    .hero-contact i {
+        width: 20px;
+        font-size: 1rem;
+    }
+}
