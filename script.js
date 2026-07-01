@@ -1554,3 +1554,330 @@ document.addEventListener('keydown', (e) => {
 });
 
 console.log('✅ Script portfolio entièrement chargé et prêt !');
+
+/**
+ * Script.js - Fonctionnalités interactives pour le site de Khalid EL BAKKIOUI
+ * À AJOUTER À VOTRE FICHIER script.js EXISTANT
+ * Version: 1.0
+ */
+
+// ========================================================
+// 1. GESTION DE LA DATE ET DE L'HEURE
+// ========================================================
+
+/**
+ * Met à jour la date et l'heure en temps réel
+ */
+function updateDateTime() {
+    const now = new Date();
+    
+    // Formatage de la date
+    const dateOptions = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    const dateString = now.toLocaleDateString('fr-FR', dateOptions);
+    
+    // Formatage de l'heure
+    const timeOptions = { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false
+    };
+    const timeString = now.toLocaleTimeString('fr-FR', timeOptions);
+    
+    // Mise à jour du DOM
+    const dateElement = document.getElementById('current-date');
+    const timeElement = document.getElementById('current-time');
+    
+    if (dateElement) dateElement.textContent = dateString;
+    if (timeElement) timeElement.textContent = timeString;
+}
+
+// Mise à jour toutes les secondes
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+// ========================================================
+// 2. COMPTEUR DE VISITEURS (Simulation)
+// ========================================================
+
+class VisitorCounter {
+    constructor() {
+        this.storageKey = 'site_visitors';
+        this.totalVisitors = this.getTotalVisitors();
+        this.currentVisitors = this.getCurrentVisitors();
+        this.init();
+    }
+    
+    /**
+     * Récupère le nombre total de visiteurs depuis localStorage
+     */
+    getTotalVisitors() {
+        const stored = localStorage.getItem(this.storageKey);
+        if (stored) {
+            return parseInt(stored, 10);
+        }
+        // Première visite
+        localStorage.setItem(this.storageKey, '1');
+        return 1;
+    }
+    
+    /**
+     * Incrémente le compteur total
+     */
+    incrementTotal() {
+        this.totalVisitors++;
+        localStorage.setItem(this.storageKey, this.totalVisitors.toString());
+    }
+    
+    /**
+     * Récupère le nombre de visiteurs en ligne (simulation)
+     */
+    getCurrentVisitors() {
+        return Math.floor(Math.random() * 10) + 1;
+    }
+    
+    /**
+     * Initialise le compteur
+     */
+    init() {
+        // Incrémenter pour chaque nouvelle session
+        if (!sessionStorage.getItem('visitor_counted')) {
+            this.incrementTotal();
+            sessionStorage.setItem('visitor_counted', 'true');
+        }
+        
+        // Mettre à jour l'affichage
+        this.updateDisplay();
+        
+        // Mettre à jour les visiteurs en ligne toutes les 30 secondes
+        setInterval(() => {
+            this.currentVisitors = this.getCurrentVisitors();
+            this.updateDisplay();
+        }, 30000);
+    }
+    
+    /**
+     * Met à jour l'affichage dans le DOM
+     */
+    updateDisplay() {
+        const totalElement = document.getElementById('total-visitors');
+        const currentElement = document.getElementById('current-visitors');
+        
+        if (totalElement) {
+            totalElement.textContent = this.totalVisitors.toLocaleString('fr-FR');
+        }
+        
+        if (currentElement) {
+            currentElement.textContent = this.currentVisitors;
+        }
+    }
+}
+
+// Initialiser le compteur
+const visitorCounter = new VisitorCounter();
+
+// ========================================================
+// 3. MENU MOBILE
+// ========================================================
+
+/**
+ * Gère l'ouverture/fermeture du menu mobile
+ */
+function initMobileMenu() {
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (!toggleBtn || !navMenu) return;
+    
+    toggleBtn.addEventListener('click', function() {
+        const isOpen = navMenu.classList.toggle('active');
+        this.setAttribute('aria-expanded', isOpen);
+        this.classList.toggle('active');
+    });
+    
+    // Fermer le menu en cliquant sur un lien
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
+
+// Initialiser le menu mobile
+document.addEventListener('DOMContentLoaded', initMobileMenu);
+
+// ========================================================
+// 4. NAVIGATION FIXE AVEC EFFET DE SCROLL
+// ========================================================
+
+/**
+ * Gère l'effet de la barre de navigation au scroll
+ */
+function initNavbarScroll() {
+    const navbar = document.getElementById('navbar');
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        // Ajouter une classe quand on descend
+        if (currentScrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        // Cacher/afficher la navbar selon la direction du scroll
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+}
+
+// Initialiser l'effet de scroll
+document.addEventListener('DOMContentLoaded', initNavbarScroll);
+
+// ========================================================
+// 5. DÉFILEMENT DOUX POUR LES ANCRES
+// ========================================================
+
+/**
+ * Active le défilement doux pour tous les liens d'ancrage
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Ignorer les liens vides ou # uniquement
+            if (href === '#' || href === '') return;
+            
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: offsetTop - 80, // Compense la navbar fixe
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Initialiser le défilement doux
+document.addEventListener('DOMContentLoaded', initSmoothScroll);
+
+// ========================================================
+// 6. INTERSECTIONS OBSERVER POUR ANIMATIONS
+// ========================================================
+
+/**
+ * Ajoute des animations lors de l'apparition des éléments
+ */
+function initIntersectionObserver() {
+    const sections = document.querySelectorAll('section');
+    
+    if (sections.length === 0) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
+
+// Initialiser l'observateur
+document.addEventListener('DOMContentLoaded', initIntersectionObserver);
+
+// ========================================================
+// 7. GESTION DES PERFORMANCES
+// ========================================================
+
+/**
+ * Détecte si l'utilisateur est sur un appareil mobile
+ */
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+/**
+ * Désactive les animations lourdes sur mobile
+ */
+function optimizeForMobile() {
+    if (isMobile()) {
+        document.querySelectorAll('.animated, .animate, .hover-effect').forEach(el => {
+            el.style.animation = 'none';
+            el.style.transition = 'none';
+        });
+    }
+}
+
+// Optimiser au chargement et au redimensionnement
+window.addEventListener('resize', optimizeForMobile);
+document.addEventListener('DOMContentLoaded', optimizeForMobile);
+
+// ========================================================
+// 8. GESTION DES ERREURS
+// ========================================================
+
+/**
+ * Gestionnaire d'erreurs global
+ */
+window.addEventListener('error', function(e) {
+    console.error('Une erreur est survenue:', e.message);
+    // Optionnel: envoyer l'erreur à un service de monitoring
+});
+
+/**
+ * Vérifie que tous les éléments essentiels sont chargés
+ */
+function checkRequiredElements() {
+    const required = ['navbar', 'accueil'];
+    const missing = required.filter(id => !document.getElementById(id));
+    
+    if (missing.length > 0) {
+        console.warn('Éléments requis manquants:', missing.join(', '));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', checkRequiredElements);
+
+// ========================================================
+// 9. EXPOSITION DE L'API (optionnel)
+// ========================================================
+
+// Exposer certaines fonctions globalement pour le débogage
+window.websiteAPI = {
+    updateDateTime,
+    visitorCounter,
+    isMobile,
+    getTotalVisitors: () => visitorCounter.totalVisitors,
+    getCurrentVisitors: () => visitorCounter.currentVisitors
+};
+
+// Message de confirmation
+console.log('✅ Site de Khalid EL BAKKIOUI chargé avec succès');
+console.log(`👥 Visiteurs totaux: ${visitorCounter.totalVisitors}`);
+console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
