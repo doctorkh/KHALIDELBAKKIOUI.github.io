@@ -1941,3 +1941,218 @@ console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
     
     console.log('✅ Page forcée en haut au chargement');
 })();
+
+
+// ============================================
+// FONCTIONNALITÉS POUR LES RESSOURCES COMPACTES
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Gestion des téléchargements avec feedback
+    const downloadLinks = document.querySelectorAll('.download-link');
+    
+    downloadLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Ajouter une petite animation de feedback
+            const originalIcon = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.style.pointerEvents = 'none';
+            
+            // Restaurer après un court délai
+            setTimeout(() => {
+                this.innerHTML = originalIcon;
+                this.style.pointerEvents = 'auto';
+            }, 1500);
+        });
+    });
+    
+    // 2. Gestion du survol des éléments de ressources
+    const ressourceItems = document.querySelectorAll('.ressource-item-compact');
+    
+    ressourceItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            // Optionnel : ajouter un effet sonore ou visuel supplémentaire
+            this.style.borderLeftColor = '#ff6b6b';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.borderLeftColor = '#6c63ff';
+        });
+    });
+    
+    // 3. Compteur de ressources (affichage dans la console pour le débogage)
+    const categories = document.querySelectorAll('.ressource-category');
+    categories.forEach(category => {
+        const items = category.querySelectorAll('.ressource-item-compact').length;
+        const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
+        console.log(`📚 ${title} : ${items} ressource(s)`);
+    });
+    
+    // 4. Gestion des clics sur les liens de prévisualisation (si présents)
+    const previewLinks = document.querySelectorAll('.btn-link.preview');
+    previewLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href) {
+                window.open(href, '_blank');
+            }
+        });
+    });
+    
+    // 5. Effet de scroll fluide pour les ancres (si des liens internes sont présents)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // 6. Toggle pour afficher/masquer les sections (optionnel)
+    // Utile si vous voulez ajouter des boutons de collapse
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    sectionHeaders.forEach(header => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', function() {
+            const list = this.nextElementSibling;
+            if (list && list.classList.contains('ressources-list-compact')) {
+                if (list.style.display === 'none') {
+                    list.style.display = 'flex';
+                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-right', 'fa-chevron-down');
+                } else {
+                    list.style.display = 'none';
+                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-down', 'fa-chevron-right');
+                }
+            }
+        });
+        
+        // Ajouter une icône de toggle si elle n'existe pas
+        if (!header.querySelector('.toggle-icon')) {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-chevron-down toggle-icon';
+            icon.style.marginLeft = 'auto';
+            icon.style.fontSize = '0.8rem';
+            header.appendChild(icon);
+        }
+    });
+    
+    // 7. Filtrage par catégorie (si vous voulez ajouter une barre de recherche)
+    // Décommentez cette section pour activer un filtre de recherche
+    
+    /*
+    // Créer un champ de recherche
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'search-container';
+    searchContainer.innerHTML = `
+        <input type="text" id="ressourceSearch" placeholder="🔍 Rechercher une ressource..." 
+               style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; 
+                      font-size:1rem; margin-bottom:20px; transition: border-color 0.3s;">
+    `;
+    
+    // Insérer après le premier h3
+    const firstCategory = document.querySelector('.ressource-category');
+    if (firstCategory) {
+        firstCategory.parentNode.insertBefore(searchContainer, firstCategory);
+    }
+    
+    // Fonction de filtrage
+    const searchInput = document.getElementById('ressourceSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const allItems = document.querySelectorAll('.ressource-item-compact');
+            
+            allItems.forEach(item => {
+                const title = item.querySelector('.chap-title a')?.textContent?.toLowerCase() || '';
+                const num = item.querySelector('.chap-num')?.textContent?.toLowerCase() || '';
+                const match = title.includes(query) || num.includes(query);
+                item.style.display = match ? 'flex' : 'none';
+            });
+            
+            // Afficher/masquer les sections vides
+            document.querySelectorAll('.ressource-category').forEach(category => {
+                const visibleItems = category.querySelectorAll('.ressource-item-compact[style*="display: flex"]');
+                const header = category.querySelector('.section-header');
+                if (header) {
+                    header.style.display = visibleItems.length > 0 ? 'flex' : 'none';
+                }
+            });
+        });
+    }
+    */
+    
+    console.log('✅ Script des ressources compactes chargé avec succès !');
+});
+
+// ============================================
+// UTILITAIRES SUPPLÉMENTAIRES
+// ============================================
+
+// Fonction pour compter les téléchargements (exemple)
+function countDownloads() {
+    const links = document.querySelectorAll('.download-link');
+    let total = 0;
+    links.forEach(link => {
+        if (link.getAttribute('download') !== null) {
+            total++;
+        }
+    });
+    console.log(`📥 Total des ressources téléchargeables : ${total}`);
+}
+
+// Appeler la fonction après le chargement
+window.addEventListener('load', countDownloads);
+
+// ============================================
+// GESTION DU LOCAL STORAGE (optionnel)
+// ============================================
+
+// Sauvegarder l'état des sections ouvertes/fermées
+function saveSectionState() {
+    const sections = document.querySelectorAll('.section-header');
+    const state = {};
+    sections.forEach((header, index) => {
+        const list = header.nextElementSibling;
+        if (list && list.classList.contains('ressources-list-compact')) {
+            state[index] = list.style.display !== 'none';
+        }
+    });
+    localStorage.setItem('sectionState', JSON.stringify(state));
+}
+
+function loadSectionState() {
+    const saved = localStorage.getItem('sectionState');
+    if (saved) {
+        const state = JSON.parse(saved);
+        const sections = document.querySelectorAll('.section-header');
+        sections.forEach((header, index) => {
+            if (state[index] !== undefined) {
+                const list = header.nextElementSibling;
+                if (list && list.classList.contains('ressources-list-compact')) {
+                    list.style.display = state[index] ? 'flex' : 'none';
+                    const icon = header.querySelector('.toggle-icon');
+                    if (icon) {
+                        icon.className = state[index] ? 'fas fa-chevron-down toggle-icon' : 'fas fa-chevron-right toggle-icon';
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Appeler au chargement
+document.addEventListener('DOMContentLoaded', loadSectionState);
+
+// Sauvegarder lors des clics
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.addEventListener('click', saveSectionState);
+    });
+});
