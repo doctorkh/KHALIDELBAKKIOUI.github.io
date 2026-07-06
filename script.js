@@ -2156,3 +2156,114 @@ document.addEventListener('DOMContentLoaded', function() {
         header.addEventListener('click', saveSectionState);
     });
 });
+
+
+/**
+ * script.js - Gestion de la section livres
+ * À placer après le chargement du DOM
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ============================================================
+    // 1. Gestion des images manquantes (fallback)
+    // ============================================================
+    const covers = document.querySelectorAll('.livre-cover');
+
+    covers.forEach(img => {
+        // Si l'image ne charge pas, on la masque proprement
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            // Optionnel : ajouter une icône de remplacement
+            // const parent = this.parentElement;
+            // const icon = document.createElement('span');
+            // icon.className = 'livre-icon-fallback';
+            // icon.innerHTML = '<i class="fas fa-book" style="font-size:1.4rem;color:#8aa3c0;"></i>';
+            // parent.insertBefore(icon, this);
+        });
+
+        // Vérification supplémentaire : si l'image est déjà en erreur (ex: src vide)
+        if (!img.complete) {
+            img.addEventListener('load', function() {
+                // Image chargée avec succès
+                this.style.display = 'block';
+            });
+        } else if (img.naturalWidth === 0) {
+            // L'image est "vide" (ex: src inexistant)
+            img.style.display = 'none';
+        }
+    });
+
+    // ============================================================
+    // 2. Comptage des livres (affichage console)
+    // ============================================================
+    const totalBooks = document.querySelectorAll('.livre-item-compact').length;
+    console.log(`📚 ${totalBooks} livres affichés dans la section`);
+
+    // ============================================================
+    // 3. Animation au survol des boutons (déjà gérée en CSS)
+    //    Mais on peut ajouter un effet "tooltip" ou "tracking"
+    // ============================================================
+    const amazonBtns = document.querySelectorAll('.btn-link.amazon');
+    amazonBtns.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            // Petit effet sonore ou tracking (ex: console.log)
+            // console.log('🔗 Lien Amazon survolé');
+        });
+    });
+
+    // ============================================================
+    // 4. Option : ouvrir les liens dans un nouvel onglet (déjà fait via target="_blank")
+    //    Mais on peut ajouter un attribut rel="noopener" pour la sécurité
+    // ============================================================
+    const allLinks = document.querySelectorAll('.livre-actions a');
+    allLinks.forEach(link => {
+        if (!link.hasAttribute('rel')) {
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+
+    // ============================================================
+    // 5. Option : trier les livres par date (exemple)
+    //    Décommentez pour activer le tri (nécessite des data-attributes)
+    // ============================================================
+    /*
+    const container = document.querySelector('.livres-list-compact');
+    const items = Array.from(container.querySelectorAll('.livre-item-compact'));
+
+    items.sort((a, b) => {
+        // Extraire la date depuis .livre-meta (ex: "Apr 2026")
+        const getDate = (el) => {
+            const meta = el.querySelector('.livre-meta');
+            if (!meta) return new Date(0);
+            const text = meta.textContent || '';
+            const match = text.match(/(\w{3})\s+(\d{4})/);
+            if (!match) return new Date(0);
+            const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                            Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+            return new Date(parseInt(match[2]), months[match[1]] || 0);
+        };
+
+        return getDate(b) - getDate(a); // Tri décroissant (plus récent en premier)
+    });
+
+    items.forEach(item => container.appendChild(item));
+    console.log('📅 Livres triés par date (plus récent en premier)');
+    */
+
+    // ============================================================
+    // 6. Initialisation : animation d'apparition
+    // ============================================================
+    const tabPane = document.getElementById('livres');
+    if (tabPane) {
+        tabPane.style.opacity = '0';
+        tabPane.style.transition = 'opacity 0.4s ease';
+        
+        // Déclencher l'animation après un petit délai
+        setTimeout(() => {
+            tabPane.style.opacity = '1';
+        }, 100);
+    }
+
+    console.log('✅ Script livres chargé avec succès');
+});
