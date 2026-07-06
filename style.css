@@ -4233,3 +4233,347 @@ body {
         font-size: 1rem;
     }
 }
+
+
+/* ============================================
+   STYLE COMPACT POUR RESSOURCES (COURS, TD, ETC.)
+   ============================================ */
+
+/* Conteneur principal des ressources compactes */
+.ressources-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 10px 0 20px 0;
+}
+
+/* Élément individuel de ressource compacte */
+.ressource-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6c63ff;
+    transition: all 0.3s ease;
+    flex-wrap: wrap;
+}
+
+.ressource-item-compact:hover {
+    background: #f0f0ff;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(108, 99, 255, 0.15);
+}
+
+/* Icône PDF */
+.pdf-icon {
+    color: #dc3545;
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Numéro de chapitre/TD/DM */
+.chap-num {
+    font-weight: 700;
+    color: #6c63ff;
+    font-size: 0.85rem;
+    background: #e8e6ff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Titre de la ressource */
+.chap-title {
+    flex: 1;
+    min-width: 200px;
+}
+
+.chap-title a {
+    color: #2d3436;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.chap-title a:hover {
+    color: #6c63ff;
+    text-decoration: underline;
+}
+
+/* Actions (boutons de téléchargement) */
+.ressource-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.download-link {
+    color: #6c757d;
+    font-size: 1.1rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    background: #e9ecef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-link:hover {
+    background: #6c63ff;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.download-link.corrige-link {
+    color: #28a745;
+}
+
+.download-link.corrige-link:hover {
+    background: #28a745;
+    color: #fff;
+}
+
+/* ============================================
+   EN-TÊTES DE SECTION (Algèbre, Analyse, Proba)
+   ============================================ */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    margin: 18px 0 12px 0;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+}
+
+.section-header i {
+    font-size: 1.2rem;
+}
+
+.section-algebre {
+    background: linear-gradient(135deg, #6c63ff, #5a52d5);
+}
+
+.section-analyse {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.section-probabilites {
+    background: linear-gradient(135deg, #00b894, #00a381);
+}
+
+/* ============================================
+   EN-TÊTES DE CATÉGORIE (Ressource Category)
+   ============================================ */
+
+.ressource-category {
+    margin-bottom: 40px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ressource-category h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.3rem;
+    color: #2d3436;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.ressource-category h3 i {
+    color: #6c63ff;
+    font-size: 1.4rem;
+}
+
+/* ============================================
+   STYLE POUR LE CAHIER DE TEXTE (existant)
+   ============================================ */
+
+.badge-cat {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-cahier {
+    background: #e8e6ff;
+    color: #6c63ff;
+}
+
+.ri-icon {
+    color: #dc3545;
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ri-title {
+    font-weight: 600;
+    color: #2d3436;
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+.ri-desc {
+    color: #6c757d;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 100px;
+}
+
+.ri-size {
+    color: #6c757d;
+    font-size: 0.75rem;
+    background: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.ri-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.btn-link {
+    color: #6c757d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background: #6c63ff;
+    color: #fff;
+}
+
+.btn-link.preview:hover {
+    background: #17a2b8;
+    color: #fff;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .ressource-item-compact {
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+
+    .chap-title {
+        min-width: 100%;
+        order: 3;
+        margin-top: 4px;
+    }
+
+    .ressource-actions {
+        margin-left: 0;
+        order: 4;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .chap-num {
+        font-size: 0.75rem;
+        min-width: 40px;
+    }
+
+    .section-header {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+    }
+
+    .ressource-category {
+        padding: 15px;
+    }
+
+    .ressource-category h3 {
+        font-size: 1.1rem;
+    }
+
+    .ri-desc {
+        display: none;
+    }
+
+    .ri-size {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .ressource-item-compact {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .chap-title a {
+        font-size: 0.85rem;
+    }
+
+    .download-link {
+        font-size: 0.95rem;
+        padding: 4px 8px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ressource-item-compact {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.ressource-item-compact:nth-child(1) { animation-delay: 0.05s; }
+.ressource-item-compact:nth-child(2) { animation-delay: 0.10s; }
+.ressource-item-compact:nth-child(3) { animation-delay: 0.15s; }
+.ressource-item-compact:nth-child(4) { animation-delay: 0.20s; }
+.ressource-item-compact:nth-child(5) { animation-delay: 0.25s; }
+.ressource-item-compact:nth-child(6) { animation-delay: 0.30s; }
+.ressource-item-compact:nth-child(7) { animation-delay: 0.35s; }
+.ressource-item-compact:nth-child(8) { animation-delay: 0.40s; }
+.ressource-item-compact:nth-child(9) { animation-delay: 0.45s; }
+.ressource-item-compact:nth-child(10) { animation-delay: 0.50s; }
+.ressource-item-compact:nth-child(11) { animation-delay: 0.55s; }
+.ressource-item-compact:nth-child(12) { animation-delay: 0.60s; }
+.ressource-item-compact:nth-child(13) { animation-delay: 0.65s; }
+.ressource-item-compact:nth-child(14) { animation-delay: 0.70s; }
+.ressource-item-compact:nth-child(15) { animation-delay: 0.75s; }
