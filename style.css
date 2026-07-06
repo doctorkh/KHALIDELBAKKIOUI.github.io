@@ -4623,3 +4623,218 @@ body {
         padding: 4px 8px;
     }
 }
+
+
+/* ===== STYLES POUR LA SECTION LIVRES ===== */
+
+.livres-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Ligne livre */
+.livre-item-compact {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem 1rem;
+    background: #f9fbfe;
+    padding: 0.8rem 1.2rem;
+    border-radius: 18px;
+    border: 1px solid #e9edf4;
+    transition: 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.livre-item-compact:hover {
+    background: #ffffff;
+    border-color: #cdd9e9;
+    box-shadow: 0 6px 14px rgba(0, 40, 80, 0.06);
+}
+
+/* Image de couverture */
+.livre-cover {
+    width: 44px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #dde3ed;
+    background: #edf2f9;
+    flex-shrink: 0;
+    transition: 0.2s;
+}
+
+.livre-cover:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 20, 40, 0.12);
+}
+
+/* Titre */
+.livre-title {
+    flex: 2 1 240px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #0b1e33;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.livre-title small {
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: #3a5a7a;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+/* Métadonnées */
+.livre-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.9rem;
+    font-size: 0.75rem;
+    color: #3b5777;
+    background: #eef3fa;
+    padding: 0.25rem 0.9rem;
+    border-radius: 40px;
+    white-space: nowrap;
+}
+
+.livre-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.livre-meta i {
+    font-size: 0.65rem;
+    color: #2c5a8c;
+    opacity: 0.8;
+}
+
+/* Badge "New" */
+.badge-new {
+    background: #1177dd;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 0.15rem 0.8rem;
+    border-radius: 40px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #1a7fdd, #0f5ca8);
+    box-shadow: 0 2px 6px rgba(17, 119, 221, 0.2);
+}
+
+/* Prix */
+.livre-price {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0f2c4a;
+    background: #e3eaf3;
+    padding: 0.1rem 0.9rem;
+    border-radius: 40px;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+/* Actions (boutons) */
+.livre-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.livre-actions .btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background: #ebf1fa;
+    color: #1f4a7a;
+    font-size: 0.8rem;
+    transition: 0.15s;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.livre-actions .btn-link.amazon {
+    background: #f7b731;
+    color: #1a2c3f;
+    border-color: #e0a82a;
+}
+
+.livre-actions .btn-link:hover {
+    background: #dce6f2;
+    transform: scale(1.02);
+    color: #0a1d33;
+}
+
+.livre-actions .btn-link.amazon:hover {
+    background: #f0ac2a;
+    border-color: #c99420;
+}
+
+.livre-actions .btn-link i {
+    pointer-events: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 720px) {
+    .livre-item-compact {
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+        gap: 0.5rem 0.6rem;
+    }
+
+    .livre-cover {
+        width: 36px;
+        height: 50px;
+    }
+
+    .livre-title {
+        flex: 1 1 160px;
+        font-size: 0.9rem;
+    }
+
+    .livre-meta {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.7rem;
+    }
+
+    .livre-price {
+        font-size: 0.8rem;
+        padding: 0.05rem 0.7rem;
+    }
+
+    .livre-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .livre-cover {
+        width: 30px;
+        height: 42px;
+    }
+
+    .livre-title small {
+        font-size: 0.65rem;
+    }
+
+    .badge-new {
+        font-size: 0.5rem;
+        padding: 0.05rem 0.5rem;
+    }
+}
