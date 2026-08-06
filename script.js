@@ -1,4 +1,6 @@
-// ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
+// ===== APPLICATION PORTFOLIO — SCRIPT COMPLET CORRIGÉ, ORGANISÉ ET DÉDUPLIQUÉ =====
+// Toutes les fonctionnalités des versions précédentes ont été conservées.
+// En cas de doublons, seule la version la plus complète/la plus récente a été gardée.
 console.log('🚀 Chargement du script portfolio...');
 
 class PortfolioApp {
@@ -8,20 +10,25 @@ class PortfolioApp {
         this.currentTheme = 'light';
         this.dateTimeInterval = null;
         this.visitorInterval = null;
+        this.resizeTimeout = null;
         this.isInitialized = false;
         this.init();
     }
 
+    // =====================================================================
+    // 1. INITIALISATION GÉNÉRALE
+    // =====================================================================
+
     init() {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('✅ DOM chargé - Initialisation de l\'application');
+                console.log('✅ DOM chargé — Initialisation de l\'application');
                 this.setupConsoleWelcome();
                 this.setupErrorHandling();
                 this.initializeAll();
             });
         } else {
-            console.log('✅ DOM déjà chargé - Initialisation immédiate');
+            console.log('✅ DOM déjà chargé — Initialisation immédiate');
             this.setupConsoleWelcome();
             this.setupErrorHandling();
             this.initializeAll();
@@ -30,31 +37,43 @@ class PortfolioApp {
 
     initializeAll() {
         if (this.isInitialized) return;
-        
+
+        // Navigation & structure de page
         this.initNavigation();
-        this.initTabs();
         this.initSmoothScrolling();
         this.initBackToTop();
         this.initScrollEffects();
-        this.initAnimations();
-        this.initHeroAnimations();
-        this.initContactForm();
-        this.initCounters();
-        this.initDownloadTracking();
-        this.initThemeToggle();
-        this.initPerformanceOptimizations();
-        this.initDateTimeUpdater();
-        this.initVisitorCounter();
-        this.initImageLazyLoading();
         this.initKeyboardNavigation();
         this.initAccessibility();
+
+        // Contenu dynamique / onglets
+        this.initTabs();
         this.initAllButtons();
-        
+        this.initResourceCards();
+        this.initBooksSection();
+
+        // Animations
+        this.initHeroAnimations();
+        this.initAnimations();
+        this.initCounters();
+
+        // Formulaire de contact
+        this.initContactForm();
+
+        // Widgets d'information
+        this.initDateTimeUpdater();
+        this.initVisitorCounter();
+
+        // Fonctionnalités techniques
+        this.initDownloadLinks();
+        this.initThemeToggle();
+        this.initImageLazyLoading();
+        this.initPerformanceOptimizations();
+
         this.isInitialized = true;
         console.log('🎯 Application portfolio complètement initialisée');
     }
 
-    // ===== INITIALISATION ET CONFIGURATION =====
     setupConsoleWelcome() {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             const styles = [
@@ -66,10 +85,10 @@ class PortfolioApp {
                 'font-weight: bold',
                 'text-shadow: 1px 1px 2px rgba(0,0,0,0.3)'
             ].join(';');
-            
+
             console.log('%c🎓 Portfolio Dr. Khalid EL BAKKIOUI', styles);
             console.log('%cMathématicien • Enseignant CPGE • Chercheur en Probabilités', 'color: #2c3e50; font-weight: 500;');
-            console.log('%c✨ JavaScript optimisé - Toutes les fonctionnalités activées', 'color: #27ae60;');
+            console.log('%c✨ JavaScript optimisé — Toutes les fonctionnalités activées', 'color: #27ae60;');
         }
     }
 
@@ -84,45 +103,21 @@ class PortfolioApp {
         });
     }
 
-    // ===== ANIMATIONS HERO =====
-    initHeroAnimations() {
-        const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-buttons');
-        
-        if (heroElements.length === 0) {
-            console.warn('❌ Aucun élément Hero trouvé pour l\'animation');
-            return;
-        }
+    // =====================================================================
+    // 2. NAVIGATION
+    // =====================================================================
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = `fadeInUp 0.8s ease-out both`;
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-
-        heroElements.forEach((el, index) => {
-            el.style.animationDelay = `${index * 0.2}s`;
-            el.style.opacity = '0';
-            observer.observe(el);
-        });
-
-        console.log('✅ Animations Hero initialisées');
-    }
-
-    // ===== NAVIGATION AMÉLIORÉE =====
     initNavigation() {
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
         const navbar = document.getElementById('navbar');
-        
+
         if (!navToggle || !navMenu) {
             console.warn('❌ Éléments de navigation non trouvés');
             return;
         }
 
-        // Réinitialiser les événements
+        // Réinitialiser les événements (évite les doublons de listeners)
         const newNavToggle = navToggle.cloneNode(true);
         const newNavMenu = navMenu.cloneNode(true);
         navToggle.parentNode.replaceChild(newNavToggle, navToggle);
@@ -161,11 +156,11 @@ class PortfolioApp {
 
     toggleMobileMenu(navMenu, navToggle) {
         const isOpening = !navMenu.classList.contains('active');
-        
+
         navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
         document.body.style.overflow = isOpening ? 'hidden' : '';
-        
+
         if (isOpening) {
             navMenu.style.transform = 'translateX(0)';
             navToggle.setAttribute('aria-expanded', 'true');
@@ -179,6 +174,7 @@ class PortfolioApp {
     }
 
     closeMobileMenu(navMenu, navToggle) {
+        if (!navMenu || !navToggle) return;
         navMenu.classList.remove('active');
         navToggle.classList.remove('active');
         navToggle.setAttribute('aria-expanded', 'false');
@@ -187,10 +183,10 @@ class PortfolioApp {
 
     handleNavbarScroll(navbar) {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         if (scrollTop > 100) {
             navbar.classList.add('scrolled');
-            
+
             if (scrollTop > this.lastScrollTop && scrollTop > 200) {
                 navbar.style.transform = 'translateY(-100%)';
             } else {
@@ -200,309 +196,24 @@ class PortfolioApp {
             navbar.classList.remove('scrolled');
             navbar.style.transform = 'translateY(0)';
         }
-        
+
         this.lastScrollTop = scrollTop;
     }
 
-   // ===== SYSTÈME D'ONGLETS UNIVERSELLEMENT CORRIGÉ =====
-initTabs() {
-    console.log('🔧 Initialisation du système d\'onglets universel...');
-    
-    // Tous les conteneurs d'onglets
-    const allTabContainers = document.querySelectorAll(
-        '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
-    );
-    
-    if (allTabContainers.length === 0) {
-        console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
-        return;
-    }
+    // =====================================================================
+    // 3. SCROLL (ancrage fluide, retour en haut, scrollspy)
+    // =====================================================================
 
-    allTabContainers.forEach(container => {
-        this.initSingleTabSystem(container);
-    });
-
-    console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
-}
-
-initSingleTabSystem(container) {
-    const tabButtons = container.querySelectorAll('.tab-button');
-    const tabPanes = container.querySelectorAll('.tab-pane');
-    
-    if (tabButtons.length === 0) {
-        console.warn('⚠️ Aucun bouton d\'onglet trouvé dans', container.className);
-        return;
-    }
-
-    console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
-
-    // Réinitialiser les événements
-    tabButtons.forEach(button => {
-        // Supprimer les anciens événements en clonant
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-        
-        newButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const tabId = newButton.getAttribute('data-tab');
-            console.log('🎯 Clic sur onglet:', tabId, 'dans', container.className);
-            
-            // Désactiver tous les boutons
-            container.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-selected', 'false');
-            });
-            
-            // Cacher tous les panneaux
-            container.querySelectorAll('.tab-pane').forEach(pane => {
-                pane.classList.remove('active');
-                pane.setAttribute('aria-hidden', 'true');
-                pane.style.display = 'none';
-            });
-            
-            // Activer le bouton cliqué
-            newButton.classList.add('active');
-            newButton.setAttribute('aria-selected', 'true');
-            
-            // Afficher le panneau correspondant
-            const targetPane = container.querySelector(`#${tabId}`);
-            if (targetPane) {
-                targetPane.classList.add('active');
-                targetPane.setAttribute('aria-hidden', 'false');
-                targetPane.style.display = 'block';
-                console.log('✅ Onglet activé:', tabId);
-            } else {
-                console.error('❌ Panneau non trouvé pour l\'ID:', tabId);
-            }
-        });
-    });
-
-    // Si aucun onglet n'est actif, activer le premier
-    const hasActive = container.querySelector('.tab-button.active');
-    if (!hasActive && tabButtons.length > 0) {
-        const firstButton = container.querySelector('.tab-button');
-        const firstTabId = firstButton.getAttribute('data-tab');
-        // Simuler un clic
-        firstButton.click();
-    }
-}
-    // ===== INITIALISATION DE TOUS LES BOUTONS SPÉCIFIQUES =====
-    initAllButtons() {
-        console.log('🔘 Initialisation de tous les boutons spécifiques...');
-        
-        this.initFiliereButtons();
-        this.initConferenceButtons();
-        this.initLivreButtons();
-        this.initMemoireButtons();
-        this.initGeneralButtons();
-        
-        console.log('✅ Tous les boutons initialisés');
-    }
-
-    // ===== BOUTONS FILIÈRE AVEC MP AJOUTÉE =====
-    initFiliereButtons() {
-        // Liste complète des filières incluant MP
-        const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI', 'MP'];
-        
-        filiereButtons.forEach(filiere => {
-            // Sélecteurs pour les boutons de filière
-            const buttons = document.querySelectorAll(
-                `.btn-${filiere.toLowerCase()}, ` +
-                `[data-filiere="${filiere}"], ` +
-                `.btn-${filiere.toLowerCase()}-button, ` +
-                `button[data-target="section-${filiere.toLowerCase()}"]`
-            );
-            
-            buttons.forEach(button => {
-                // Nettoyer les anciens événements
-                const newButton = button.cloneNode(true);
-                button.parentNode.replaceChild(newButton, button);
-                
-                newButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log(`🎓 Bouton ${filiere} cliqué`);
-                    this.handleFiliereClick(filiere);
-                });
-            });
-        });
-        
-        console.log(`✅ ${filiereButtons.length} filières initialisées (incluant MP)`);
-    }
-
-    handleFiliereClick(filiere) {
-        // Afficher une notification
-        const filiereNames = {
-            'ECT1': 'ECT 1ère année',
-            'ECT2': 'ECT 2ème année',
-            'ECS1': 'ECS 1ère année',
-            'ECS2': 'ECS 2ème année',
-            'MPSI': 'MPSI',
-            'MP': 'MP'
-        };
-        const displayName = filiereNames[filiere] || filiere;
-        this.showNotification(`Filière ${displayName} sélectionnée`, 'info', 3000);
-        
-        // Scroll vers la section correspondante
-        const targetId = `section-${filiere.toLowerCase()}`;
-        const targetSection = document.getElementById(targetId);
-        
-        if (targetSection) {
-            this.scrollToElement(`#${targetId}`);
-            
-            // Activer l'onglet correspondant dans la section enseignement
-            const filiereTabsContainer = document.querySelector('.filiere-tabs');
-            if (filiereTabsContainer) {
-                const targetButton = filiereTabsContainer.querySelector(`[data-tab="${targetId}"]`);
-                if (targetButton) {
-                    const tabButtons = filiereTabsContainer.querySelectorAll('.tab-button');
-                    const tabPanes = filiereTabsContainer.querySelectorAll('.tab-pane');
-                    this.switchTab(filiereTabsContainer, targetButton, tabButtons, tabPanes, targetId);
-                }
-            }
-        } else {
-            console.warn(`⚠️ Section non trouvée: ${targetId}`);
-        }
-        
-        // Déclencher un événement personnalisé
-        const event = new CustomEvent('filiereSelected', { 
-            detail: { filiere: filiere } 
-        });
-        document.dispatchEvent(event);
-    }
-
-    initConferenceButtons() {
-        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
-        conferenceButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('🎤 Bouton conférence cliqué');
-                this.handleConferenceClick(newButton);
-            });
-        });
-    }
-
-    handleConferenceClick(button) {
-        const conferenceTitle = button.getAttribute('data-title') || button.textContent || 'Conférence';
-        this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
-        
-        const targetId = button.getAttribute('data-target');
-        if (targetId) {
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-        
-        const url = button.getAttribute('href');
-        if (url && !url.startsWith('#')) {
-            window.open(url, '_blank');
-        }
-    }
-
-    initLivreButtons() {
-        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
-        livreButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('📚 Bouton livre cliqué');
-                this.handleLivreClick(newButton);
-            });
-        });
-    }
-
-    handleLivreClick(button) {
-        const livreTitle = button.getAttribute('data-title') || button.textContent || 'Livre';
-        this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
-        
-        const url = button.getAttribute('href');
-        if (url && !url.startsWith('#')) {
-            window.open(url, '_blank');
-        }
-    }
-
-    initMemoireButtons() {
-        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
-        memoireButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('📖 Bouton mémoire cliqué');
-                this.handleMemoireClick(newButton);
-            });
-        });
-    }
-
-    handleMemoireClick(button) {
-        const memoireTitle = button.getAttribute('data-title') || button.textContent || 'Mémoire';
-        this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
-        
-        const url = button.getAttribute('href');
-        if (url) {
-            if (url.startsWith('#')) {
-                this.scrollToElement(url);
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-    }
-
-    initGeneralButtons() {
-        const downloadButtons = document.querySelectorAll('.btn-download, [download]');
-        downloadButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', (e) => {
-                const fileName = newButton.getAttribute('href')?.split('/').pop() || 'document';
-                console.log(`📥 Téléchargement: ${fileName}`);
-                this.trackDownload(fileName);
-                this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
-            });
-        });
-
-        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
-        viewButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = newButton.getAttribute('data-target') || newButton.getAttribute('href');
-                console.log(`👀 Vue demandée: ${target}`);
-                this.handleViewClick(target, newButton);
-            });
-        });
-    }
-
-    handleViewClick(target, button) {
-        if (target && target.startsWith('#')) {
-            this.scrollToElement(target);
-        } else if (target) {
-            window.open(target, '_blank');
-        }
-    }
-
-    // ===== SCROLL ET ANIMATIONS =====
     initSmoothScrolling() {
+        // Version unique et unifiée du défilement fluide vers les ancres
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const newAnchor = anchor.cloneNode(true);
             anchor.parentNode.replaceChild(newAnchor, anchor);
-            
+
             newAnchor.addEventListener('click', (e) => {
                 const targetId = newAnchor.getAttribute('href');
-                if (targetId === '#') return;
-                
+                if (!targetId || targetId === '#') return;
+
                 e.preventDefault();
                 this.scrollToElement(targetId);
             });
@@ -515,14 +226,14 @@ initSingleTabSystem(container) {
             console.warn(`❌ Élément non trouvé: ${targetId}`);
             return;
         }
-        
+
         const offsetTop = targetElement.offsetTop - 80;
-        
+
         window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
         });
-        
+
         this.closeMobileMenu(
             document.querySelector('.nav-menu'),
             document.querySelector('.nav-toggle')
@@ -535,7 +246,7 @@ initSingleTabSystem(container) {
 
         const toggleVisibility = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
+
             if (scrollTop > 300) {
                 backToTop.classList.add('visible');
                 backToTop.style.opacity = '1';
@@ -544,14 +255,11 @@ initSingleTabSystem(container) {
                 backToTop.style.opacity = '0';
             }
         };
-        
+
         backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-        
+
         window.addEventListener('scroll', toggleVisibility, { passive: true });
         toggleVisibility();
     }
@@ -559,7 +267,7 @@ initSingleTabSystem(container) {
     initScrollEffects() {
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
-        
+
         if (!sections.length || !navLinks.length) return;
 
         const observer = new IntersectionObserver((entries) => {
@@ -587,7 +295,36 @@ initSingleTabSystem(container) {
         });
     }
 
-    // ===== ANIMATIONS AVANCÉES =====
+    // =====================================================================
+    // 4. ANIMATIONS
+    // =====================================================================
+
+    initHeroAnimations() {
+        const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-buttons');
+
+        if (heroElements.length === 0) {
+            console.warn('❌ Aucun élément Hero trouvé pour l\'animation');
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = `fadeInUp 0.8s ease-out both`;
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        heroElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.2}s`;
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        console.log('✅ Animations Hero initialisées');
+    }
+
     initAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -608,7 +345,7 @@ initSingleTabSystem(container) {
             '.competence-category, .timeline-item, .stat, .ressource-item, ' +
             '.contact-item, .conf-card, .livre-item-compact, .ressource-item-compact'
         );
-        
+
         animatables.forEach(el => {
             el.classList.add('pre-animate');
             observer.observe(el);
@@ -617,7 +354,6 @@ initSingleTabSystem(container) {
         console.log('✅ Animations initialisées');
     }
 
-    // ===== COMPTEURS ANIMÉS =====
     initCounters() {
         const statsContainer = document.querySelector('.hero-stats');
         if (!statsContainer) return;
@@ -636,24 +372,22 @@ initSingleTabSystem(container) {
 
     animateCounters() {
         const counters = document.querySelectorAll('.stat h3');
-        
+
         counters.forEach(counter => {
             const target = parseInt(counter.textContent) || 0;
             if (target === 0) return;
 
-            let current = 0;
             const duration = 2000;
             const startTime = performance.now();
 
             const animate = (currentTime) => {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
                 const easeOut = 1 - Math.pow(1 - progress, 3);
-                
-                current = Math.floor(target * easeOut);
+                const current = Math.floor(target * easeOut);
+
                 counter.textContent = current + '+';
-                
+
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
@@ -665,7 +399,435 @@ initSingleTabSystem(container) {
         });
     }
 
-    // ===== FORMULAIRE DE CONTACT =====
+    // =====================================================================
+    // 5. SYSTÈME D'ONGLETS (unifié — un seul point de bascule : switchTab)
+    // =====================================================================
+
+    initTabs() {
+        console.log('🔧 Initialisation du système d\'onglets universel...');
+
+        const allTabContainers = document.querySelectorAll(
+            '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
+        );
+
+        if (allTabContainers.length === 0) {
+            console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
+            return;
+        }
+
+        allTabContainers.forEach(container => this.initSingleTabSystem(container));
+
+        console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
+    }
+
+    initSingleTabSystem(container) {
+        const tabButtons = container.querySelectorAll('.tab-button');
+
+        if (tabButtons.length === 0) {
+            console.warn('⚠️ Aucun bouton d\'onglet trouvé dans', container.className);
+            return;
+        }
+
+        console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
+
+        // Réinitialiser les événements en clonant les boutons
+        tabButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const tabId = newButton.getAttribute('data-tab');
+                const freshButtons = container.querySelectorAll('.tab-button');
+                const freshPanes = container.querySelectorAll('.tab-pane');
+
+                this.switchTab(container, newButton, freshButtons, freshPanes, tabId);
+            });
+        });
+
+        // Si aucun onglet n'est actif, activer le premier
+        const hasActive = container.querySelector('.tab-button.active');
+        if (!hasActive) {
+            const firstButton = container.querySelector('.tab-button');
+            if (firstButton) firstButton.click();
+        }
+    }
+
+    // Logique centrale de bascule d'onglet, réutilisée par le clic,
+    // la navigation clavier et les sélections programmatiques (ex: filières).
+    switchTab(container, activeButton, tabButtons, tabPanes, tabId) {
+        console.log('🎯 Activation de l\'onglet:', tabId, 'dans', container.className);
+
+        tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        });
+
+        tabPanes.forEach(pane => {
+            pane.classList.remove('active');
+            pane.setAttribute('aria-hidden', 'true');
+            pane.style.display = 'none';
+        });
+
+        activeButton.classList.add('active');
+        activeButton.setAttribute('aria-selected', 'true');
+
+        const targetPane = container.querySelector(`#${tabId}`);
+        if (targetPane) {
+            targetPane.classList.add('active');
+            targetPane.setAttribute('aria-hidden', 'false');
+            targetPane.style.display = 'block';
+            console.log('✅ Onglet activé:', tabId);
+        } else {
+            console.error('❌ Panneau non trouvé pour l\'ID:', tabId);
+        }
+    }
+
+    handleTabKeyboardNavigation(currentTab, direction) {
+        const tabContainer = currentTab.closest(
+            '.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs'
+        );
+        if (!tabContainer) return;
+
+        const tabs = Array.from(tabContainer.querySelectorAll('.tab-button'));
+        const currentIndex = tabs.indexOf(currentTab);
+        let nextIndex;
+
+        if (direction === 'next') {
+            nextIndex = (currentIndex + 1) % tabs.length;
+        } else {
+            nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        }
+
+        const nextTab = tabs[nextIndex];
+        const tabId = nextTab.getAttribute('data-tab');
+        const tabPanes = tabContainer.querySelectorAll('.tab-pane');
+
+        this.switchTab(tabContainer, nextTab, tabs, tabPanes, tabId);
+        nextTab.focus();
+    }
+
+    // =====================================================================
+    // 6. BOUTONS SPÉCIFIQUES (filières, conférences, livres, mémoires...)
+    // =====================================================================
+
+    initAllButtons() {
+        console.log('🔘 Initialisation de tous les boutons spécifiques...');
+
+        this.initFiliereButtons();
+        this.initConferenceButtons();
+        this.initLivreButtons();
+        this.initMemoireButtons();
+        this.initGeneralButtons();
+
+        console.log('✅ Tous les boutons initialisés');
+    }
+
+    initFiliereButtons() {
+        const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI', 'MP'];
+
+        filiereButtons.forEach(filiere => {
+            const buttons = document.querySelectorAll(
+                `.btn-${filiere.toLowerCase()}, ` +
+                `[data-filiere="${filiere}"], ` +
+                `.btn-${filiere.toLowerCase()}-button, ` +
+                `button[data-target="section-${filiere.toLowerCase()}"]`
+            );
+
+            buttons.forEach(button => {
+                const newButton = button.cloneNode(true);
+                button.parentNode.replaceChild(newButton, button);
+
+                newButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log(`🎓 Bouton ${filiere} cliqué`);
+                    this.handleFiliereClick(filiere);
+                });
+            });
+        });
+
+        console.log(`✅ ${filiereButtons.length} filières initialisées (incluant MP)`);
+    }
+
+    handleFiliereClick(filiere) {
+        const filiereNames = {
+            'ECT1': 'ECT 1ère année',
+            'ECT2': 'ECT 2ème année',
+            'ECS1': 'ECS 1ère année',
+            'ECS2': 'ECS 2ème année',
+            'MPSI': 'MPSI',
+            'MP': 'MP'
+        };
+        const displayName = filiereNames[filiere] || filiere;
+        this.showNotification(`Filière ${displayName} sélectionnée`, 'info', 3000);
+
+        const targetId = `section-${filiere.toLowerCase()}`;
+        const targetSection = document.getElementById(targetId);
+
+        if (targetSection) {
+            this.scrollToElement(`#${targetId}`);
+
+            const filiereTabsContainer = document.querySelector('.filiere-tabs');
+            if (filiereTabsContainer) {
+                const targetButton = filiereTabsContainer.querySelector(`[data-tab="${targetId}"]`);
+                if (targetButton) {
+                    const tabButtons = filiereTabsContainer.querySelectorAll('.tab-button');
+                    const tabPanes = filiereTabsContainer.querySelectorAll('.tab-pane');
+                    this.switchTab(filiereTabsContainer, targetButton, tabButtons, tabPanes, targetId);
+                }
+            }
+        } else {
+            console.warn(`⚠️ Section non trouvée: ${targetId}`);
+        }
+
+        document.dispatchEvent(new CustomEvent('filiereSelected', { detail: { filiere } }));
+    }
+
+    initConferenceButtons() {
+        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
+        conferenceButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🎤 Bouton conférence cliqué');
+                this.handleConferenceClick(newButton);
+            });
+        });
+    }
+
+    handleConferenceClick(button) {
+        const conferenceTitle = button.getAttribute('data-title') || button.textContent || 'Conférence';
+        this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
+
+        const targetId = button.getAttribute('data-target');
+        if (targetId) {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        const url = button.getAttribute('href');
+        if (url && !url.startsWith('#')) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    }
+
+    initLivreButtons() {
+        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
+        livreButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📚 Bouton livre cliqué');
+                this.handleLivreClick(newButton);
+            });
+        });
+    }
+
+    handleLivreClick(button) {
+        const livreTitle = button.getAttribute('data-title') || button.textContent || 'Livre';
+        this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
+
+        const url = button.getAttribute('href');
+        if (url && !url.startsWith('#')) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    }
+
+    initMemoireButtons() {
+        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
+        memoireButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📖 Bouton mémoire cliqué');
+                this.handleMemoireClick(newButton);
+            });
+        });
+    }
+
+    handleMemoireClick(button) {
+        const memoireTitle = button.getAttribute('data-title') || button.textContent || 'Mémoire';
+        this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
+
+        const url = button.getAttribute('href');
+        if (url) {
+            if (url.startsWith('#')) {
+                this.scrollToElement(url);
+            } else {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        }
+    }
+
+    initGeneralButtons() {
+        // Boutons "voir" génériques (le téléchargement est géré par initDownloadLinks)
+        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
+        viewButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = newButton.getAttribute('data-target') || newButton.getAttribute('href');
+                console.log(`👀 Vue demandée: ${target}`);
+                this.handleViewClick(target);
+            });
+        });
+
+        // Liens de prévisualisation (ex : ressources) ouverts dans un nouvel onglet
+        const previewLinks = document.querySelectorAll('.btn-link.preview');
+        previewLinks.forEach(link => {
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+
+            newLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = newLink.getAttribute('href');
+                if (href) window.open(href, '_blank', 'noopener,noreferrer');
+            });
+        });
+    }
+
+    handleViewClick(target) {
+        if (target && target.startsWith('#')) {
+            this.scrollToElement(target);
+        } else if (target) {
+            window.open(target, '_blank', 'noopener,noreferrer');
+        }
+    }
+
+    // =====================================================================
+    // 7. RESSOURCES & LIVRES (sections dédiées)
+    // =====================================================================
+
+    initResourceCards() {
+        const ressourceItems = document.querySelectorAll('.ressource-item-compact');
+        if (!ressourceItems.length) return;
+
+        ressourceItems.forEach(item => {
+            item.addEventListener('mouseenter', function () {
+                this.style.borderLeftColor = '#ff6b6b';
+            });
+            item.addEventListener('mouseleave', function () {
+                this.style.borderLeftColor = '#6c63ff';
+            });
+        });
+
+        const categories = document.querySelectorAll('.ressource-category');
+        categories.forEach(category => {
+            const items = category.querySelectorAll('.ressource-item-compact').length;
+            const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
+            console.log(`📚 ${title} : ${items} ressource(s)`);
+        });
+
+        console.log('✅ Cartes de ressources initialisées');
+    }
+
+    initBooksSection() {
+        const covers = document.querySelectorAll('.livre-cover');
+        if (!covers.length && !document.getElementById('livres')) return;
+
+        covers.forEach(img => {
+            img.addEventListener('error', function () {
+                this.style.display = 'none';
+            });
+
+            if (!img.complete) {
+                img.addEventListener('load', function () {
+                    this.style.display = 'block';
+                });
+            } else if (img.naturalWidth === 0) {
+                img.style.display = 'none';
+            }
+        });
+
+        const totalBooks = document.querySelectorAll('.livre-item-compact').length;
+        console.log(`📚 ${totalBooks} livres affichés dans la section`);
+
+        // Sécurité pour les liens externes des livres
+        document.querySelectorAll('.livre-actions a').forEach(link => {
+            if (!link.hasAttribute('rel')) {
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
+
+        // Animation d'apparition douce
+        const tabPane = document.getElementById('livres');
+        if (tabPane) {
+            tabPane.style.opacity = '0';
+            tabPane.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => { tabPane.style.opacity = '1'; }, 100);
+        }
+
+        console.log('✅ Section livres initialisée');
+    }
+
+    // =====================================================================
+    // 8. TÉLÉCHARGEMENTS (version unique — suivi + retour visuel)
+    // =====================================================================
+
+    initDownloadLinks() {
+        const downloadLinks = document.querySelectorAll('.btn-download, [download], .download-link');
+
+        downloadLinks.forEach(link => {
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+
+            newLink.addEventListener('click', () => {
+                const fileName = newLink.getAttribute('href')?.split('/').pop() || 'document';
+
+                // Retour visuel (icône de chargement temporaire)
+                const originalIcon = newLink.innerHTML;
+                newLink.style.pointerEvents = 'none';
+                const iconEl = newLink.querySelector('i');
+                if (iconEl) iconEl.className = 'fas fa-spinner fa-spin';
+
+                this.trackDownload(fileName);
+                this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
+
+                setTimeout(() => {
+                    newLink.innerHTML = originalIcon;
+                    newLink.style.pointerEvents = 'auto';
+                }, 1500);
+            });
+        });
+
+        console.log(`✅ ${downloadLinks.length} lien(s) de téléchargement initialisé(s)`);
+    }
+
+    trackDownload(fileName) {
+        const downloadEvent = {
+            event: 'download',
+            file: fileName,
+            timestamp: new Date().toISOString()
+        };
+
+        console.log('📥 Téléchargement:', downloadEvent);
+
+        try {
+            const downloads = JSON.parse(localStorage.getItem('portfolioDownloads') || '[]');
+            downloads.push(downloadEvent);
+            localStorage.setItem('portfolioDownloads', JSON.stringify(downloads.slice(-50)));
+        } catch (e) {
+            console.error('❌ Erreur suivi téléchargement:', e);
+        }
+    }
+
+    // =====================================================================
+    // 9. FORMULAIRE DE CONTACT
+    // =====================================================================
+
     initContactForm() {
         const contactForm = document.getElementById('contactForm');
         if (!contactForm) return;
@@ -674,24 +836,18 @@ initSingleTabSystem(container) {
         inputs.forEach(input => {
             const newInput = input.cloneNode(true);
             input.parentNode.replaceChild(newInput, input);
-            
-            newInput.addEventListener('blur', () => {
-                this.validateField(newInput);
-            });
-            
-            newInput.addEventListener('input', () => {
-                this.clearFieldStatus(newInput);
-            });
+
+            newInput.addEventListener('blur', () => this.validateField(newInput));
+            newInput.addEventListener('input', () => this.clearFieldStatus(newInput));
         });
 
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         if (submitBtn) {
             const newSubmit = submitBtn.cloneNode(true);
             submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
-            
+
             contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
                 if (await this.validateForm(contactForm)) {
                     await this.submitForm(contactForm);
                 }
@@ -714,7 +870,7 @@ initSingleTabSystem(container) {
                     message = 'Minimum 2 caractères';
                 }
                 break;
-                
+
             case 'email':
                 if (!value) {
                     isValid = false;
@@ -724,7 +880,7 @@ initSingleTabSystem(container) {
                     message = 'Email invalide';
                 }
                 break;
-                
+
             case 'textarea':
                 if (!value) {
                     isValid = false;
@@ -761,7 +917,7 @@ initSingleTabSystem(container) {
     showFieldError(field, message) {
         this.clearFieldStatus(field);
         field.classList.add('error');
-        
+
         let errorDiv = field.parentNode.querySelector('.field-error');
         if (!errorDiv) {
             errorDiv = document.createElement('div');
@@ -793,7 +949,7 @@ initSingleTabSystem(container) {
 
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
-        
+
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
         submitBtn.disabled = true;
 
@@ -801,11 +957,7 @@ initSingleTabSystem(container) {
             await this.sendFormData(data);
             this.showNotification('Message envoyé avec succès !', 'success');
             form.reset();
-            
-            form.querySelectorAll('input, textarea').forEach(field => {
-                this.clearFieldStatus(field);
-            });
-            
+            form.querySelectorAll('input, textarea').forEach(field => this.clearFieldStatus(field));
         } catch (error) {
             this.showNotification('Erreur lors de l\'envoi.', 'error');
         } finally {
@@ -823,10 +975,12 @@ initSingleTabSystem(container) {
         });
     }
 
-    // ===== SYSTÈME DE NOTIFICATIONS =====
+    // =====================================================================
+    // 10. NOTIFICATIONS
+    // =====================================================================
+
     showNotification(message, type = 'info', duration = 5000) {
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => {
+        document.querySelectorAll('.notification').forEach(notification => {
             if (notification.textContent.includes(message)) {
                 this.removeNotification(notification);
             }
@@ -834,14 +988,14 @@ initSingleTabSystem(container) {
 
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
-        
+
         const icons = {
             success: 'fa-check-circle',
             error: 'fa-exclamation-circle',
             info: 'fa-info-circle',
             warning: 'fa-exclamation-triangle'
         };
-        
+
         notification.innerHTML = `
             <div class="notification-content">
                 <i class="fas ${icons[type] || icons.info}"></i>
@@ -851,24 +1005,19 @@ initSingleTabSystem(container) {
                 <i class="fas fa-times"></i>
             </button>
         `;
-        
+
         document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-        
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
+
+        setTimeout(() => notification.classList.add('show'), 10);
+
+        notification.querySelector('.notification-close').addEventListener('click', () => {
             this.removeNotification(notification);
         });
-        
+
         if (duration > 0) {
-            setTimeout(() => {
-                this.removeNotification(notification);
-            }, duration);
+            setTimeout(() => this.removeNotification(notification), duration);
         }
-        
+
         return notification;
     }
 
@@ -883,36 +1032,34 @@ initSingleTabSystem(container) {
         }
     }
 
-    // ===== COMPTEUR DE VISITEURS =====
+    // =====================================================================
+    // 11. COMPTEUR DE VISITEURS
+    // =====================================================================
+
     initVisitorCounter() {
         console.log('🔢 Initialisation du compteur de visiteurs...');
-        
-        this.startDateTimeUpdates();
-        
-        setTimeout(() => {
-            this.setupVisitorCounter();
-        }, 100);
+        setTimeout(() => this.setupVisitorCounter(), 100);
     }
 
     setupVisitorCounter() {
         const storageKey = 'portfolioVisitorStats';
         const sessionKey = 'portfolioVisitSession';
-        
+
         const totalEl = document.getElementById('total-visitors');
         const onlineEl = document.getElementById('current-visitors');
-        
+
         if (!totalEl || !onlineEl) {
             console.warn('❌ Éléments du compteur non trouvés');
             return;
         }
-        
-        let stats = this.getVisitorStats(storageKey);
+
+        const stats = this.getVisitorStats(storageKey);
         this.handleNewVisit(stats, sessionKey);
         this.saveVisitorStats(storageKey, stats);
         this.displayVisitorCounters(stats, totalEl, onlineEl);
-        this.startVisitorCounterUpdates(storageKey, sessionKey);
-        
-        console.log('✅ Compteur de visiteurs initialisé - Total:', stats.total, 'En ligne:', this.calculateOnlineUsers(stats));
+        this.startVisitorCounterUpdates(storageKey);
+
+        console.log('✅ Compteur de visiteurs initialisé — Total:', stats.total, 'En ligne:', this.calculateOnlineUsers(stats));
     }
 
     getVisitorStats(storageKey) {
@@ -924,9 +1071,9 @@ initSingleTabSystem(container) {
                 const oneDayAgo = now - (24 * 60 * 60 * 1000);
                 stats.visits = stats.visits.filter(visit => {
                     const visitTime = new Date(visit.timestamp).getTime();
-                    return (now - visitTime) < oneDayAgo;
+                    return (now - visitTime) < oneDayAgo || (now - visitTime) < 0;
                 });
-                
+
                 return {
                     total: parseInt(stats.total) || 15,
                     visits: Array.isArray(stats.visits) ? stats.visits : [],
@@ -936,7 +1083,7 @@ initSingleTabSystem(container) {
         } catch (e) {
             console.error('❌ Erreur lecture stats visiteurs:', e);
         }
-        
+
         return {
             total: 15,
             visits: [],
@@ -955,11 +1102,11 @@ initSingleTabSystem(container) {
     handleNewVisit(stats, sessionKey) {
         const now = new Date();
         const sessionId = sessionStorage.getItem(sessionKey);
-        
+
         if (!sessionId) {
             const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             sessionStorage.setItem(sessionKey, newSessionId);
-            
+
             stats.total++;
             stats.visits.push({
                 sessionId: newSessionId,
@@ -967,14 +1114,14 @@ initSingleTabSystem(container) {
                 date: now.toLocaleDateString('fr-FR'),
                 time: now.toLocaleTimeString('fr-FR')
             });
-            
+
             if (stats.visits.length > 100) {
                 stats.visits = stats.visits.slice(-100);
             }
-            
-            console.log('🆕 Nouvelle visite enregistrée - Total:', stats.total);
+
+            console.log('🆕 Nouvelle visite enregistrée — Total:', stats.total);
         } else {
-            console.log('🔄 Session existante - Total:', stats.total);
+            console.log('🔄 Session existante — Total:', stats.total);
         }
     }
 
@@ -986,48 +1133,44 @@ initSingleTabSystem(container) {
 
     animateCounter(element, target) {
         if (!element) return;
-        
+
         const current = parseInt(element.textContent) || 0;
-        
-        if (current !== target) {
-            let start = current;
-            const duration = 1000;
-            const startTime = performance.now();
-            
-            const animate = (currentTime) => {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeOut = 1 - Math.pow(1 - progress, 3);
-                const value = Math.floor(start + (target - start) * easeOut);
-                
-                element.textContent = value;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    element.textContent = target;
-                }
-            };
-            
-            requestAnimationFrame(animate);
-            
-            element.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-            }, 300);
-        }
+        if (current === target) return;
+
+        const duration = 1000;
+        const startTime = performance.now();
+
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const value = Math.floor(current + (target - current) * easeOut);
+
+            element.textContent = value;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                element.textContent = target;
+            }
+        };
+
+        requestAnimationFrame(animate);
+
+        element.style.transform = 'scale(1.2)';
+        setTimeout(() => { element.style.transform = 'scale(1)'; }, 300);
     }
 
     calculateOnlineUsers(stats) {
         const now = Date.now();
         const fifteenMinutesAgo = now - (15 * 60 * 1000);
-        
+
         try {
             const activeSessions = stats.visits.filter(visit => {
                 const visitTime = new Date(visit.timestamp).getTime();
                 return visitTime > fifteenMinutesAgo;
             });
-            
+
             return Math.max(1, activeSessions.length);
         } catch (e) {
             console.error('❌ Erreur calcul utilisateurs en ligne:', e);
@@ -1035,19 +1178,22 @@ initSingleTabSystem(container) {
         }
     }
 
-    startVisitorCounterUpdates(storageKey, sessionKey) {
+    startVisitorCounterUpdates(storageKey) {
         this.visitorInterval = setInterval(() => {
             const stats = this.getVisitorStats(storageKey);
             const totalEl = document.getElementById('total-visitors');
             const onlineEl = document.getElementById('current-visitors');
-            
+
             if (totalEl && onlineEl) {
                 this.displayVisitorCounters(stats, totalEl, onlineEl);
             }
         }, 30000);
     }
 
-    // ===== MISE À JOUR DATE/HEURE =====
+    // =====================================================================
+    // 12. DATE / HEURE
+    // =====================================================================
+
     initDateTimeUpdater() {
         console.log('🕐 Initialisation date/heure...');
         this.startDateTimeUpdates();
@@ -1056,27 +1202,16 @@ initSingleTabSystem(container) {
     startDateTimeUpdates() {
         const updateDateTime = () => {
             const now = new Date();
-            
-            const dateOptions = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            
-            const timeOptions = {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            
+
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+
             const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
             const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
-            
+
             const dateEl = document.getElementById('current-date');
             const timeEl = document.getElementById('current-time');
-            
+
             if (dateEl) {
                 dateEl.textContent = dateStr;
                 dateEl.setAttribute('aria-label', `Date actuelle: ${dateStr}`);
@@ -1086,10 +1221,10 @@ initSingleTabSystem(container) {
                 timeEl.setAttribute('aria-label', `Heure actuelle: ${timeStr}`);
             }
         };
-        
+
         updateDateTime();
         this.dateTimeInterval = setInterval(updateDateTime, 1000);
-        
+
         console.log('✅ Date/heure initialisée');
     }
 
@@ -1097,24 +1232,24 @@ initSingleTabSystem(container) {
         return str.replace(/\b\w/g, l => l.toUpperCase());
     }
 
-    // ===== THÈME SOMBRE/CLAIR =====
+    // =====================================================================
+    // 13. THÈME SOMBRE / CLAIR
+    // =====================================================================
+
     initThemeToggle() {
         let themeToggle = document.querySelector('.theme-toggle');
-        
+
         if (!themeToggle) {
             themeToggle = document.createElement('button');
             themeToggle.className = 'theme-toggle';
             themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
             themeToggle.title = 'Changer le thème';
             themeToggle.setAttribute('aria-label', 'Changer le thème');
-            
             document.body.appendChild(themeToggle);
         }
-        
-        themeToggle.addEventListener('click', () => {
-            this.toggleTheme(themeToggle);
-        });
-        
+
+        themeToggle.addEventListener('click', () => this.toggleTheme(themeToggle));
+
         const savedTheme = localStorage.getItem('portfolio-theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
@@ -1124,72 +1259,40 @@ initSingleTabSystem(container) {
 
     toggleTheme(themeToggle) {
         const isDark = document.body.classList.toggle('dark-mode');
-        
+
         themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        
         localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
-        
-        this.showNotification(
-            `Mode ${isDark ? 'sombre' : 'clair'} activé`, 
-            'info', 
-            2000
-        );
+
+        this.showNotification(`Mode ${isDark ? 'sombre' : 'clair'} activé`, 'info', 2000);
     }
 
-    // ===== FONCTIONNALITÉS AVANCÉES =====
-    initDownloadTracking() {
-        document.querySelectorAll('a[download]').forEach(link => {
-            const newLink = link.cloneNode(true);
-            link.parentNode.replaceChild(newLink, link);
-            
-            newLink.addEventListener('click', () => {
-                const fileName = newLink.getAttribute('href')?.split('/').pop();
-                if (fileName) {
-                    this.trackDownload(fileName);
-                    this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
+    // =====================================================================
+    // 14. IMAGES, PERFORMANCE, CLAVIER, ACCESSIBILITÉ
+    // =====================================================================
+
+    initImageLazyLoading() {
+        if (!('IntersectionObserver' in window)) return;
+
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src || img.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
                 }
             });
         });
-    }
 
-    trackDownload(fileName) {
-        const downloadEvent = {
-            event: 'download',
-            file: fileName,
-            timestamp: new Date().toISOString()
-        };
-        
-        console.log('📥 Téléchargement:', downloadEvent);
-        
-        const downloads = JSON.parse(localStorage.getItem('portfolioDownloads') || '[]');
-        downloads.push(downloadEvent);
-        localStorage.setItem('portfolioDownloads', JSON.stringify(downloads.slice(-50)));
-    }
-
-    initImageLazyLoading() {
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src || img.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
+        document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
     }
 
     initPerformanceOptimizations() {
-        let resizeTimeout;
         window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {}, 250);
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('resizeEnd'));
+            }, 250);
         }, { passive: true });
     }
 
@@ -1201,43 +1304,15 @@ initSingleTabSystem(container) {
                     document.querySelector('.nav-toggle')
                 );
             }
-            
-            if (e.key === 'Tab' && e.shiftKey) {
+
+            if (e.key === 'Tab') {
                 const activeElement = document.activeElement;
-                if (activeElement.classList.contains('tab-button')) {
+                if (activeElement && activeElement.classList.contains('tab-button')) {
                     e.preventDefault();
-                    this.handleTabKeyboardNavigation(activeElement, 'previous');
-                }
-            } else if (e.key === 'Tab') {
-                const activeElement = document.activeElement;
-                if (activeElement.classList.contains('tab-button')) {
-                    e.preventDefault();
-                    this.handleTabKeyboardNavigation(activeElement, 'next');
+                    this.handleTabKeyboardNavigation(activeElement, e.shiftKey ? 'previous' : 'next');
                 }
             }
         });
-    }
-
-    handleTabKeyboardNavigation(currentTab, direction) {
-        const tabContainer = currentTab.closest('.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs');
-        if (!tabContainer) return;
-        
-        const tabs = Array.from(tabContainer.querySelectorAll('.tab-button'));
-        const currentIndex = tabs.indexOf(currentTab);
-        let nextIndex;
-        
-        if (direction === 'next') {
-            nextIndex = (currentIndex + 1) % tabs.length;
-        } else {
-            nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-        }
-        
-        const nextTab = tabs[nextIndex];
-        const tabId = nextTab.getAttribute('data-tab');
-        const tabPanes = tabContainer.querySelectorAll('.tab-pane');
-        
-        this.switchTab(tabContainer, nextTab, tabs, tabPanes, tabId);
-        nextTab.focus();
     }
 
     initAccessibility() {
@@ -1247,10 +1322,10 @@ initSingleTabSystem(container) {
             navToggle.setAttribute('aria-controls', 'nav-menu');
         }
 
-        document.querySelectorAll('.tab-button').forEach((button, index, buttons) => {
+        document.querySelectorAll('.tab-button').forEach((button, index) => {
             const tabId = button.getAttribute('data-tab');
             const pane = document.getElementById(tabId);
-            
+
             if (pane) {
                 button.setAttribute('aria-controls', tabId);
                 pane.setAttribute('aria-labelledby', button.id || `tab-${index}`);
@@ -1258,9 +1333,7 @@ initSingleTabSystem(container) {
         });
 
         document.addEventListener('keyup', (e) => {
-            if (e.key === 'Tab') {
-                document.body.classList.add('keyboard-navigation');
-            }
+            if (e.key === 'Tab') document.body.classList.add('keyboard-navigation');
         });
 
         document.addEventListener('mousedown', () => {
@@ -1268,7 +1341,10 @@ initSingleTabSystem(container) {
         });
     }
 
-    // ===== UTILITAIRES =====
+    // =====================================================================
+    // 15. UTILITAIRES
+    // =====================================================================
+
     sanitizeInput(input) {
         if (typeof input !== 'string') return '';
         const div = document.createElement('div');
@@ -1282,7 +1358,7 @@ initSingleTabSystem(container) {
     }
 
     formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     }
 
     debounce(func, wait) {
@@ -1297,14 +1373,14 @@ initSingleTabSystem(container) {
         };
     }
 
-    // ===== NETTOYAGE =====
+    // =====================================================================
+    // 16. NETTOYAGE
+    // =====================================================================
+
     destroy() {
-        if (this.dateTimeInterval) {
-            clearInterval(this.dateTimeInterval);
-        }
-        if (this.visitorInterval) {
-            clearInterval(this.visitorInterval);
-        }
+        if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
+        if (this.visitorInterval) clearInterval(this.visitorInterval);
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
         this.isInitialized = false;
     }
 }
@@ -1318,37 +1394,27 @@ const dynamicStyles = document.createElement('style');
 dynamicStyles.textContent = `
     /* Animations de base */
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
-    
+
     /* Classes d'animation */
     .pre-animate {
         opacity: 0;
         transform: translateY(30px);
         transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    
+
     .animate-in {
         opacity: 1;
         transform: translateY(0);
     }
-    
+
     /* Notifications */
     .notification {
         position: fixed;
@@ -1370,35 +1436,24 @@ dynamicStyles.textContent = `
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255,255,255,0.2);
     }
-    
+
     .notification.show {
         transform: translateX(0);
         opacity: 1;
     }
-    
-    .notification-success {
-        background: linear-gradient(135deg, #27ae60, #2ecc71);
-    }
-    
-    .notification-error {
-        background: linear-gradient(135deg, #e74c3c, #c0392b);
-    }
-    
-    .notification-warning {
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-    }
-    
-    .notification-info {
-        background: linear-gradient(135deg, #3498db, #2980b9);
-    }
-    
+
+    .notification-success { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+    .notification-error   { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+    .notification-warning { background: linear-gradient(135deg, #f39c12, #e67e22); }
+    .notification-info    { background: linear-gradient(135deg, #3498db, #2980b9); }
+
     .notification-content {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         flex: 1;
     }
-    
+
     .notification-close {
         background: rgba(255,255,255,0.2);
         border: none;
@@ -1413,38 +1468,38 @@ dynamicStyles.textContent = `
         align-items: center;
         justify-content: center;
     }
-    
+
     .notification-close:hover {
         background: rgba(255,255,255,0.3);
         transform: scale(1.1);
     }
-    
+
     /* Validation de formulaire */
     .form-group input.error,
     .form-group textarea.error {
         border-color: #e74c3c !important;
         box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
     }
-    
+
     .form-group input.success,
     .form-group textarea.success {
         border-color: #27ae60 !important;
         box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
     }
-    
+
     .field-error {
         color: #e74c3c;
         font-size: 0.8rem;
         margin-top: 0.25rem;
         animation: fadeInUp 0.3s ease;
     }
-    
+
     /* Accessibilité */
     .keyboard-navigation *:focus {
         outline: 2px solid #3498db !important;
         outline-offset: 2px !important;
     }
-    
+
     /* Mode sombre */
     .dark-mode {
         --primary-color: #3b82f6;
@@ -1454,11 +1509,9 @@ dynamicStyles.textContent = `
         background: #0f172a;
         color: #e2e8f0;
     }
-    
-    .dark-mode .section.bg-light {
-        background: #1e293b !important;
-    }
-    
+
+    .dark-mode .section.bg-light { background: #1e293b !important; }
+
     .dark-mode .profile-card,
     .dark-mode .competence-category,
     .dark-mode .doc-card,
@@ -1468,7 +1521,7 @@ dynamicStyles.textContent = `
         border-color: #334155;
         color: #e2e8f0;
     }
-    
+
     /* Optimisation des performances */
     @media (prefers-reduced-motion: reduce) {
         * {
@@ -1477,20 +1530,20 @@ dynamicStyles.textContent = `
             transition-duration: 0.01ms !important;
         }
     }
-    
-    /* ===== STYLES DES ONGLETS - CORRIGÉS ===== */
+
+    /* ===== STYLES DES ONGLETS ===== */
     .tab-pane {
         display: none !important;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
-    
+
     .tab-pane.active {
         display: block !important;
         opacity: 1;
         animation: fadeIn 0.5s ease;
     }
-    
+
     .tab-button {
         cursor: pointer;
         transition: all 0.3s ease;
@@ -1502,18 +1555,18 @@ dynamicStyles.textContent = `
         font-size: 0.95rem;
         color: #555;
     }
-    
+
     .tab-button:hover {
         transform: translateY(-2px);
         background: rgba(0,0,0,0.05);
     }
-    
+
     .tab-button.active {
         background: linear-gradient(135deg, #667eea, #764ba2) !important;
         color: white !important;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
-    
+
     .tab-button .badge {
         background: rgba(0,0,0,0.1);
         padding: 1px 8px;
@@ -1521,11 +1574,9 @@ dynamicStyles.textContent = `
         font-size: 0.7rem;
         margin-left: 5px;
     }
-    
-    .tab-button.active .badge {
-        background: rgba(255,255,255,0.25);
-    }
-    
+
+    .tab-button.active .badge { background: rgba(255,255,255,0.25); }
+
     /* Styles pour les boutons spécifiques */
     .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi, .btn-mp {
         background: linear-gradient(135deg, #667eea, #764ba2);
@@ -1540,12 +1591,13 @@ dynamicStyles.textContent = `
         display: inline-block;
         text-align: center;
     }
-    
-    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover, .btn-ecs2:hover, .btn-mpsi:hover, .btn-mp:hover {
+
+    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover,
+    .btn-ecs2:hover, .btn-mpsi:hover, .btn-mp:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
     }
-    
+
     .btn-conference, .btn-livre, .btn-memoire {
         background: linear-gradient(135deg, #f093fb, #f5576c);
         color: white;
@@ -1558,207 +1610,69 @@ dynamicStyles.textContent = `
         text-decoration: none;
         display: inline-block;
     }
-    
+
     .btn-conference:hover, .btn-livre:hover, .btn-memoire:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(240, 147, 251, 0.3);
     }
-    
+
     /* Compteurs de visiteurs */
     .visitor-counter {
         font-weight: bold;
         transition: all 0.3s ease;
     }
-    
+
     /* Bouton retour en haut */
-    #backToTop {
-        transition: all 0.3s ease;
-    }
-    
-    #backToTop.visible {
-        visibility: visible;
-        opacity: 1;
-    }
+    #backToTop { transition: all 0.3s ease; }
+    #backToTop.visible { visibility: visible; opacity: 1; }
 `;
 document.head.appendChild(dynamicStyles);
 
 // ===== GESTIONNAIRES D'ÉVÉNEMENTS GLOBAUX =====
 window.addEventListener('beforeunload', () => {
-    if (portfolioApp) {
-        portfolioApp.destroy();
-    }
+    if (portfolioApp) portfolioApp.destroy();
 });
 
 console.log('🎉 Script portfolio chargé avec succès!');
 
-// ===== FORCER LE SCROLL EN HAUT - Version ultime =====
+// ===== FORCER LE SCROLL EN HAUT AU CHARGEMENT =====
 (function ensureTopScroll() {
     'use strict';
-    
-    // 1. Désactiver la restauration de scroll du navigateur
+
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
-    
-    // 2. Fonction de scroll en haut
+
     function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'auto'
-        });
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
-    
-    // 3. Exécution immédiate
+
     scrollToTop();
-    
-    // 4. Exécution au chargement DOM
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', scrollToTop);
     } else {
         scrollToTop();
     }
-    
-    // 5. Exécution au chargement complet
-    window.addEventListener('load', function() {
+
+    window.addEventListener('load', function () {
         scrollToTop();
         setTimeout(scrollToTop, 100);
         setTimeout(scrollToTop, 300);
     });
-    
-    // 6. Si l'URL contient un hash, le supprimer
+
     if (window.location.hash) {
         history.replaceState(null, null, ' ');
         setTimeout(scrollToTop, 50);
     }
-    
-    // 7. Écouter les changements d'URL
-    window.addEventListener('hashchange', function() {
+
+    window.addEventListener('hashchange', function () {
         if (window.location.hash === '' || window.location.hash === '#') {
             scrollToTop();
         }
     });
-    
+
     console.log('✅ Page forcée en haut au chargement');
 })();
 
 console.log('✅ Script portfolio entièrement chargé et prêt !');
-
-// ============================================
-// GESTION DES RESSOURCES COMPACTES
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Gestion des téléchargements avec feedback
-    const downloadLinks = document.querySelectorAll('.download-link');
-    
-    downloadLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const originalIcon = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            this.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                this.innerHTML = originalIcon;
-                this.style.pointerEvents = 'auto';
-            }, 1500);
-        });
-    });
-    
-    // Gestion du survol des éléments de ressources
-    const ressourceItems = document.querySelectorAll('.ressource-item-compact');
-    
-    ressourceItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.borderLeftColor = '#ff6b6b';
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            this.style.borderLeftColor = '#6c63ff';
-        });
-    });
-    
-    // Compteur de ressources
-    const categories = document.querySelectorAll('.ressource-category');
-    categories.forEach(category => {
-        const items = category.querySelectorAll('.ressource-item-compact').length;
-        const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
-        console.log(`📚 ${title} : ${items} ressource(s)`);
-    });
-    
-    // Gestion des clics sur les liens de prévisualisation
-    const previewLinks = document.querySelectorAll('.btn-link.preview');
-    previewLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const href = this.getAttribute('href');
-            if (href) {
-                window.open(href, '_blank');
-            }
-        });
-    });
-    
-    // Effet de scroll fluide pour les ancres
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                e.preventDefault();
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    console.log('✅ Script des ressources compactes chargé avec succès !');
-});
-
-// ============================================
-// GESTION DES LIVRES
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Gestion des images manquantes
-    const covers = document.querySelectorAll('.livre-cover');
-    
-    covers.forEach(img => {
-        img.addEventListener('error', function() {
-            this.style.display = 'none';
-        });
-        
-        if (!img.complete) {
-            img.addEventListener('load', function() {
-                this.style.display = 'block';
-            });
-        } else if (img.naturalWidth === 0) {
-            img.style.display = 'none';
-        }
-    });
-    
-    // Comptage des livres
-    const totalBooks = document.querySelectorAll('.livre-item-compact').length;
-    console.log(`📚 ${totalBooks} livres affichés dans la section`);
-    
-    // Sécurité pour les liens
-    const allLinks = document.querySelectorAll('.livre-actions a');
-    allLinks.forEach(link => {
-        if (!link.hasAttribute('rel')) {
-            link.setAttribute('rel', 'noopener noreferrer');
-        }
-    });
-    
-    // Animation d'apparition
-    const tabPane = document.getElementById('livres');
-    if (tabPane) {
-        tabPane.style.opacity = '0';
-        tabPane.style.transition = 'opacity 0.4s ease';
-        
-        setTimeout(() => {
-            tabPane.style.opacity = '1';
-        }, 100);
-    }
-    
-    console.log('✅ Script livres chargé avec succès');
-});
