@@ -204,97 +204,90 @@ class PortfolioApp {
         this.lastScrollTop = scrollTop;
     }
 
-    // ===== SYSTÈME D'ONGLETS CORRIGÉ - Version Universelle =====
-    initTabs() {
-        console.log('🔧 Initialisation du système d\'onglets universel...');
-        
-        // Cette fonction trouve TOUS les conteneurs d'onglets
-        const allTabContainers = document.querySelectorAll('.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs');
-        
-        if (allTabContainers.length === 0) {
-            console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
-            return;
-        }
-
-        allTabContainers.forEach(container => {
-            this.initTabSystem(container);
-        });
-
-        console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
+   // ===== SYSTÈME D'ONGLETS UNIVERSELLEMENT CORRIGÉ =====
+initTabs() {
+    console.log('🔧 Initialisation du système d\'onglets universel...');
+    
+    // Tous les conteneurs d'onglets
+    const allTabContainers = document.querySelectorAll(
+        '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
+    );
+    
+    if (allTabContainers.length === 0) {
+        console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
+        return;
     }
 
-    initTabSystem(container) {
-        const tabButtons = container.querySelectorAll('.tab-button');
-        const tabPanes = container.querySelectorAll('.tab-pane');
+    allTabContainers.forEach(container => {
+        this.initSingleTabSystem(container);
+    });
+
+    console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
+}
+
+initSingleTabSystem(container) {
+    const tabButtons = container.querySelectorAll('.tab-button');
+    const tabPanes = container.querySelectorAll('.tab-pane');
+    
+    if (tabButtons.length === 0) {
+        console.warn('⚠️ Aucun bouton d\'onglet trouvé dans', container.className);
+        return;
+    }
+
+    console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
+
+    // Réinitialiser les événements
+    tabButtons.forEach(button => {
+        // Supprimer les anciens événements en clonant
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
         
-        if (tabButtons.length === 0) {
-            console.warn('⚠️ Aucun bouton d\'onglet trouvé dans', container.className);
-            return;
-        }
-
-        console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
-
-        tabButtons.forEach(button => {
-            // Supprimer les anciens événements pour éviter les doublons
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
+        newButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             
-            newButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const tabId = newButton.getAttribute('data-tab');
-                console.log('🎯 Clic sur onglet:', tabId, 'dans', container.className);
-
-                this.switchTab(container, newButton, tabButtons, tabPanes, tabId);
+            const tabId = newButton.getAttribute('data-tab');
+            console.log('🎯 Clic sur onglet:', tabId, 'dans', container.className);
+            
+            // Désactiver tous les boutons
+            container.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
             });
-
-            newButton.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const tabId = newButton.getAttribute('data-tab');
-                    this.switchTab(container, newButton, tabButtons, tabPanes, tabId);
-                }
+            
+            // Cacher tous les panneaux
+            container.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+                pane.setAttribute('aria-hidden', 'true');
+                pane.style.display = 'none';
             });
+            
+            // Activer le bouton cliqué
+            newButton.classList.add('active');
+            newButton.setAttribute('aria-selected', 'true');
+            
+            // Afficher le panneau correspondant
+            const targetPane = container.querySelector(`#${tabId}`);
+            if (targetPane) {
+                targetPane.classList.add('active');
+                targetPane.setAttribute('aria-hidden', 'false');
+                targetPane.style.display = 'block';
+                console.log('✅ Onglet activé:', tabId);
+            } else {
+                console.error('❌ Panneau non trouvé pour l\'ID:', tabId);
+            }
         });
+    });
 
-        // Activer le premier onglet par défaut si aucun n'est actif
-        const activeButton = container.querySelector('.tab-button.active');
-        if (!activeButton && tabButtons.length > 0) {
-            const firstButton = container.querySelector('.tab-button');
-            const firstTabId = firstButton.getAttribute('data-tab');
-            this.switchTab(container, firstButton, tabButtons, tabPanes, firstTabId);
-        }
+    // Si aucun onglet n'est actif, activer le premier
+    const hasActive = container.querySelector('.tab-button.active');
+    if (!hasActive && tabButtons.length > 0) {
+        const firstButton = container.querySelector('.tab-button');
+        const firstTabId = firstButton.getAttribute('data-tab');
+        // Simuler un clic
+        firstButton.click();
     }
-
-    switchTab(container, button, tabButtons, tabPanes, tabId) {
-        // Désactiver tous les boutons
-        tabButtons.forEach(btn => {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-selected', 'false');
-        });
-
-        // Cacher tous les panneaux
-        tabPanes.forEach(pane => {
-            pane.classList.remove('active');
-            pane.setAttribute('aria-hidden', 'true');
-        });
-
-        // Activer le bouton cliqué
-        button.classList.add('active');
-        button.setAttribute('aria-selected', 'true');
-
-        // Afficher le panneau correspondant
-        const targetPane = container.querySelector(`#${tabId}`);
-        if (targetPane) {
-            targetPane.classList.add('active');
-            targetPane.setAttribute('aria-hidden', 'false');
-            console.log('✅ Onglet activé:', tabId, 'dans', container.className);
-        } else {
-            console.error('❌ Panneau non trouvé:', tabId, 'dans', container.className);
-        }
-    }
-
+}
     // ===== INITIALISATION DE TOUS LES BOUTONS SPÉCIFIQUES =====
     initAllButtons() {
         console.log('🔘 Initialisation de tous les boutons spécifiques...');
