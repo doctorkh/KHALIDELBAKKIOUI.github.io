@@ -4735,3 +4735,83 @@ body {
         padding: 0.05rem 0.5rem;
     }
 }
+
+/* ===== SYSTÈME D'ONGLETS UNIVERSELLEMENT CORRIGÉ ===== */
+.tab-pane {
+    display: none !important;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block !important;
+    opacity: 1;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.tab-button:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.tab-button .badge {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 1px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    margin-left: 5px;
+}
+
+.tab-button.active .badge {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Styles pour la section Enseignement */
+.filiere-tabs .tab-button {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin: 2px;
+}
+
+.filiere-tabs .tab-button.active {
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+    color: white !important;
+}
+
+.filiere-tabs .tab-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
