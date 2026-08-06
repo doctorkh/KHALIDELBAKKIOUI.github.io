@@ -1,6 +1,4 @@
-
-
- // ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
+// ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
 console.log('🚀 Chargement du script portfolio...');
 
 class PortfolioApp {
