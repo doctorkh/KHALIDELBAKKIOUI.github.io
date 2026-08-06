@@ -1,4 +1,6 @@
-// ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
+
+
+ // ===== APPLICATION PORTFOLIO - SCRIPT COMPLET CORRIGÉ ET AMÉLIORÉ =====
 console.log('🚀 Chargement du script portfolio...');
 
 class PortfolioApp {
@@ -32,7 +34,7 @@ class PortfolioApp {
         if (this.isInitialized) return;
         
         this.initNavigation();
-        this.initTabs();
+        this.initTabs(); // ← La méthode corrigée
         this.initSmoothScrolling();
         this.initBackToTop();
         this.initScrollEffects();
@@ -49,8 +51,6 @@ class PortfolioApp {
         this.initKeyboardNavigation();
         this.initAccessibility();
         this.initAllButtons();
-        this.initRessourcesCompactes();
-        this.initLivresSection();
         
         this.isInitialized = true;
         console.log('🎯 Application portfolio complètement initialisée');
@@ -77,7 +77,7 @@ class PortfolioApp {
 
     setupErrorHandling() {
         window.addEventListener('error', (e) => {
-            console.error('❌ Erreur JavaScript:', e.error || e.message);
+            console.error('❌ Erreur JavaScript:', e.error);
         });
 
         window.addEventListener('unhandledrejection', (e) => {
@@ -206,10 +206,11 @@ class PortfolioApp {
         this.lastScrollTop = scrollTop;
     }
 
-    // ===== SYSTÈME D'ONGLETS UNIVERSEL =====
+    // ===== SYSTÈME D'ONGLETS CORRIGÉ - Version Universelle =====
     initTabs() {
         console.log('🔧 Initialisation du système d\'onglets universel...');
         
+        // Cette fonction trouve TOUS les conteneurs d'onglets
         const allTabContainers = document.querySelectorAll('.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs');
         
         if (allTabContainers.length === 0) {
@@ -236,6 +237,7 @@ class PortfolioApp {
         console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
 
         tabButtons.forEach(button => {
+            // Supprimer les anciens événements pour éviter les doublons
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
             
@@ -258,6 +260,7 @@ class PortfolioApp {
             });
         });
 
+        // Activer le premier onglet par défaut si aucun n'est actif
         const activeButton = container.querySelector('.tab-button.active');
         if (!activeButton && tabButtons.length > 0) {
             const firstButton = container.querySelector('.tab-button');
@@ -267,19 +270,23 @@ class PortfolioApp {
     }
 
     switchTab(container, button, tabButtons, tabPanes, tabId) {
+        // Désactiver tous les boutons
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
         });
 
+        // Cacher tous les panneaux
         tabPanes.forEach(pane => {
             pane.classList.remove('active');
             pane.setAttribute('aria-hidden', 'true');
         });
 
+        // Activer le bouton cliqué
         button.classList.add('active');
         button.setAttribute('aria-selected', 'true');
 
+        // Afficher le panneau correspondant
         const targetPane = container.querySelector(`#${tabId}`);
         if (targetPane) {
             targetPane.classList.add('active');
@@ -1188,132 +1195,6 @@ class PortfolioApp {
         });
     }
 
-    // ===== SECTION RESSOURCES COMPACTES =====
-    initRessourcesCompactes() {
-        console.log('📚 Initialisation des ressources compactes...');
-        
-        // Gestion des téléchargements avec feedback
-        const downloadLinks = document.querySelectorAll('.download-link');
-        downloadLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const originalIcon = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                this.style.pointerEvents = 'none';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalIcon;
-                    this.style.pointerEvents = 'auto';
-                }, 1500);
-            });
-        });
-        
-        // Effet de survol des éléments de ressources
-        const ressourceItems = document.querySelectorAll('.ressource-item-compact');
-        ressourceItems.forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.borderLeftColor = '#ff6b6b';
-            });
-            
-            item.addEventListener('mouseleave', function() {
-                this.style.borderLeftColor = '#6c63ff';
-            });
-        });
-        
-        // Toggle pour afficher/masquer les sections
-        const sectionHeaders = document.querySelectorAll('.section-header');
-        sectionHeaders.forEach(header => {
-            header.style.cursor = 'pointer';
-            header.addEventListener('click', function() {
-                const list = this.nextElementSibling;
-                if (list && list.classList.contains('ressources-list-compact')) {
-                    const isHidden = list.style.display === 'none';
-                    list.style.display = isHidden ? 'flex' : 'none';
-                    const icon = this.querySelector('.toggle-icon, i:last-child');
-                    if (icon) {
-                        icon.className = isHidden ? 'fas fa-chevron-down toggle-icon' : 'fas fa-chevron-right toggle-icon';
-                    }
-                    // Sauvegarder l'état
-                    saveSectionState();
-                }
-            });
-            
-            // Ajouter une icône de toggle si elle n'existe pas
-            if (!header.querySelector('.toggle-icon') && !header.querySelector('i:last-child')) {
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-chevron-down toggle-icon';
-                icon.style.marginLeft = 'auto';
-                icon.style.fontSize = '0.8rem';
-                header.appendChild(icon);
-            }
-        });
-        
-        // Charger l'état des sections
-        loadSectionState();
-        
-        // Compter les ressources
-        const categories = document.querySelectorAll('.ressource-category');
-        categories.forEach(category => {
-            const items = category.querySelectorAll('.ressource-item-compact').length;
-            const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
-            console.log(`📚 ${title} : ${items} ressource(s)`);
-        });
-        
-        console.log('✅ Ressources compactes initialisées');
-    }
-
-    // ===== SECTION LIVRES =====
-    initLivresSection() {
-        console.log('📚 Initialisation de la section livres...');
-        
-        // Gestion des images manquantes
-        const covers = document.querySelectorAll('.livre-cover');
-        covers.forEach(img => {
-            img.addEventListener('error', function() {
-                this.style.display = 'none';
-                // Ajouter une icône de remplacement
-                const parent = this.parentElement;
-                if (!parent.querySelector('.livre-icon-fallback')) {
-                    const icon = document.createElement('span');
-                    icon.className = 'livre-icon-fallback';
-                    icon.innerHTML = '<i class="fas fa-book" style="font-size:1.4rem;color:#8aa3c0;"></i>';
-                    parent.insertBefore(icon, this);
-                }
-            });
-            
-            if (!img.complete) {
-                img.addEventListener('load', function() {
-                    this.style.display = 'block';
-                });
-            } else if (img.naturalWidth === 0) {
-                img.style.display = 'none';
-            }
-        });
-        
-        // Ajouter rel="noopener" aux liens externes
-        const allLinks = document.querySelectorAll('.livre-actions a');
-        allLinks.forEach(link => {
-            if (!link.hasAttribute('rel')) {
-                link.setAttribute('rel', 'noopener noreferrer');
-            }
-        });
-        
-        // Animation d'apparition
-        const tabPane = document.getElementById('livres');
-        if (tabPane) {
-            tabPane.style.opacity = '0';
-            tabPane.style.transition = 'opacity 0.4s ease';
-            setTimeout(() => {
-                tabPane.style.opacity = '1';
-            }, 100);
-        }
-        
-        // Compter les livres
-        const totalBooks = document.querySelectorAll('.livre-item-compact').length;
-        console.log(`📚 ${totalBooks} livres affichés dans la section`);
-        
-        console.log('✅ Section livres initialisée');
-    }
-
     // ===== UTILITAIRES =====
     sanitizeInput(input) {
         if (typeof input !== 'string') return '';
@@ -1352,43 +1233,6 @@ class PortfolioApp {
             clearInterval(this.visitorInterval);
         }
         this.isInitialized = false;
-    }
-}
-
-// ===== FONCTIONS DE SAUVEGARDE D'ÉTAT DES SECTIONS =====
-function saveSectionState() {
-    const sections = document.querySelectorAll('.section-header');
-    const state = {};
-    sections.forEach((header, index) => {
-        const list = header.nextElementSibling;
-        if (list && list.classList.contains('ressources-list-compact')) {
-            state[index] = list.style.display !== 'none';
-        }
-    });
-    localStorage.setItem('sectionState', JSON.stringify(state));
-}
-
-function loadSectionState() {
-    const saved = localStorage.getItem('sectionState');
-    if (saved) {
-        try {
-            const state = JSON.parse(saved);
-            const sections = document.querySelectorAll('.section-header');
-            sections.forEach((header, index) => {
-                if (state[index] !== undefined) {
-                    const list = header.nextElementSibling;
-                    if (list && list.classList.contains('ressources-list-compact')) {
-                        list.style.display = state[index] ? 'flex' : 'none';
-                        const icon = header.querySelector('.toggle-icon, i:last-child');
-                        if (icon) {
-                            icon.className = state[index] ? 'fas fa-chevron-down toggle-icon' : 'fas fa-chevron-right toggle-icon';
-                        }
-                    }
-                }
-            });
-        } catch (e) {
-            console.warn('Erreur lors du chargement de l\'état des sections:', e);
-        }
     }
 }
 
@@ -1552,7 +1396,16 @@ dynamicStyles.textContent = `
         color: #e2e8f0;
     }
     
-    /* Styles des onglets */
+    /* Optimisation des performances */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+    
+    /* ===== STYLES DES ONGLETS - CORRIGÉS ===== */
     .tab-pane {
         display: none !important;
         opacity: 0;
@@ -1600,7 +1453,7 @@ dynamicStyles.textContent = `
         background: rgba(255,255,255,0.25);
     }
     
-    /* Boutons spécifiques */
+    /* Styles pour les boutons spécifiques */
     .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi {
         background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
@@ -1653,15 +1506,6 @@ dynamicStyles.textContent = `
         visibility: visible;
         opacity: 1;
     }
-    
-    /* Optimisation des performances */
-    @media (prefers-reduced-motion: reduce) {
-        * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-    }
 `;
 document.head.appendChild(dynamicStyles);
 
@@ -1674,16 +1518,385 @@ window.addEventListener('beforeunload', () => {
 
 console.log('🎉 Script portfolio chargé avec succès!');
 
-// ============================================
-// SCROLL EN HAUT - FORCÉ
-// ============================================
+// Script pour le menu mobile - Version améliorée
+const navToggle = document.getElementById('nav-toggle');
+const navMenu = document.getElementById('nav-menu');
+
+if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', !isExpanded);
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (navMenu && navToggle && !navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+console.log('✅ Script portfolio entièrement chargé et prêt !');
+
+/**
+ * Script.js - Fonctionnalités interactives pour le site de Khalid EL BAKKIOUI
+ * À AJOUTER À VOTRE FICHIER script.js EXISTANT
+ * Version: 1.0
+ */
+
+// ========================================================
+// 1. GESTION DE LA DATE ET DE L'HEURE
+// ========================================================
+
+/**
+ * Met à jour la date et l'heure en temps réel
+ */
+function updateDateTime() {
+    const now = new Date();
+    
+    // Formatage de la date
+    const dateOptions = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    const dateString = now.toLocaleDateString('fr-FR', dateOptions);
+    
+    // Formatage de l'heure
+    const timeOptions = { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false
+    };
+    const timeString = now.toLocaleTimeString('fr-FR', timeOptions);
+    
+    // Mise à jour du DOM
+    const dateElement = document.getElementById('current-date');
+    const timeElement = document.getElementById('current-time');
+    
+    if (dateElement) dateElement.textContent = dateString;
+    if (timeElement) timeElement.textContent = timeString;
+}
+
+// Mise à jour toutes les secondes
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+// ========================================================
+// 2. COMPTEUR DE VISITEURS (Simulation)
+// ========================================================
+
+class VisitorCounter {
+    constructor() {
+        this.storageKey = 'site_visitors';
+        this.totalVisitors = this.getTotalVisitors();
+        this.currentVisitors = this.getCurrentVisitors();
+        this.init();
+    }
+    
+    /**
+     * Récupère le nombre total de visiteurs depuis localStorage
+     */
+    getTotalVisitors() {
+        const stored = localStorage.getItem(this.storageKey);
+        if (stored) {
+            return parseInt(stored, 10);
+        }
+        // Première visite
+        localStorage.setItem(this.storageKey, '1');
+        return 1;
+    }
+    
+    /**
+     * Incrémente le compteur total
+     */
+    incrementTotal() {
+        this.totalVisitors++;
+        localStorage.setItem(this.storageKey, this.totalVisitors.toString());
+    }
+    
+    /**
+     * Récupère le nombre de visiteurs en ligne (simulation)
+     */
+    getCurrentVisitors() {
+        return Math.floor(Math.random() * 10) + 1;
+    }
+    
+    /**
+     * Initialise le compteur
+     */
+    init() {
+        // Incrémenter pour chaque nouvelle session
+        if (!sessionStorage.getItem('visitor_counted')) {
+            this.incrementTotal();
+            sessionStorage.setItem('visitor_counted', 'true');
+        }
+        
+        // Mettre à jour l'affichage
+        this.updateDisplay();
+        
+        // Mettre à jour les visiteurs en ligne toutes les 30 secondes
+        setInterval(() => {
+            this.currentVisitors = this.getCurrentVisitors();
+            this.updateDisplay();
+        }, 30000);
+    }
+    
+    /**
+     * Met à jour l'affichage dans le DOM
+     */
+    updateDisplay() {
+        const totalElement = document.getElementById('total-visitors');
+        const currentElement = document.getElementById('current-visitors');
+        
+        if (totalElement) {
+            totalElement.textContent = this.totalVisitors.toLocaleString('fr-FR');
+        }
+        
+        if (currentElement) {
+            currentElement.textContent = this.currentVisitors;
+        }
+    }
+}
+
+// Initialiser le compteur
+const visitorCounter = new VisitorCounter();
+
+// ========================================================
+// 3. MENU MOBILE
+// ========================================================
+
+/**
+ * Gère l'ouverture/fermeture du menu mobile
+ */
+function initMobileMenu() {
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (!toggleBtn || !navMenu) return;
+    
+    toggleBtn.addEventListener('click', function() {
+        const isOpen = navMenu.classList.toggle('active');
+        this.setAttribute('aria-expanded', isOpen);
+        this.classList.toggle('active');
+    });
+    
+    // Fermer le menu en cliquant sur un lien
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
+
+// Initialiser le menu mobile
+document.addEventListener('DOMContentLoaded', initMobileMenu);
+
+// ========================================================
+// 4. NAVIGATION FIXE AVEC EFFET DE SCROLL
+// ========================================================
+
+/**
+ * Gère l'effet de la barre de navigation au scroll
+ */
+function initNavbarScroll() {
+    const navbar = document.getElementById('navbar');
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        // Ajouter une classe quand on descend
+        if (currentScrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        // Cacher/afficher la navbar selon la direction du scroll
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+}
+
+// Initialiser l'effet de scroll
+document.addEventListener('DOMContentLoaded', initNavbarScroll);
+
+// ========================================================
+// 5. DÉFILEMENT DOUX POUR LES ANCRES
+// ========================================================
+
+/**
+ * Active le défilement doux pour tous les liens d'ancrage
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Ignorer les liens vides ou # uniquement
+            if (href === '#' || href === '') return;
+            
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: offsetTop - 80, // Compense la navbar fixe
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Initialiser le défilement doux
+document.addEventListener('DOMContentLoaded', initSmoothScroll);
+
+// ========================================================
+// 6. INTERSECTIONS OBSERVER POUR ANIMATIONS
+// ========================================================
+
+/**
+ * Ajoute des animations lors de l'apparition des éléments
+ */
+function initIntersectionObserver() {
+    const sections = document.querySelectorAll('section');
+    
+    if (sections.length === 0) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
+
+// Initialiser l'observateur
+document.addEventListener('DOMContentLoaded', initIntersectionObserver);
+
+// ========================================================
+// 7. GESTION DES PERFORMANCES
+// ========================================================
+
+/**
+ * Détecte si l'utilisateur est sur un appareil mobile
+ */
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+/**
+ * Désactive les animations lourdes sur mobile
+ */
+function optimizeForMobile() {
+    if (isMobile()) {
+        document.querySelectorAll('.animated, .animate, .hover-effect').forEach(el => {
+            el.style.animation = 'none';
+            el.style.transition = 'none';
+        });
+    }
+}
+
+// Optimiser au chargement et au redimensionnement
+window.addEventListener('resize', optimizeForMobile);
+document.addEventListener('DOMContentLoaded', optimizeForMobile);
+
+// ========================================================
+// 8. GESTION DES ERREURS
+// ========================================================
+
+/**
+ * Gestionnaire d'erreurs global
+ */
+window.addEventListener('error', function(e) {
+    console.error('Une erreur est survenue:', e.message);
+    // Optionnel: envoyer l'erreur à un service de monitoring
+});
+
+/**
+ * Vérifie que tous les éléments essentiels sont chargés
+ */
+function checkRequiredElements() {
+    const required = ['navbar', 'accueil'];
+    const missing = required.filter(id => !document.getElementById(id));
+    
+    if (missing.length > 0) {
+        console.warn('Éléments requis manquants:', missing.join(', '));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', checkRequiredElements);
+
+// ========================================================
+// 9. EXPOSITION DE L'API (optionnel)
+// ========================================================
+
+// Exposer certaines fonctions globalement pour le débogage
+window.websiteAPI = {
+    updateDateTime,
+    visitorCounter,
+    isMobile,
+    getTotalVisitors: () => visitorCounter.totalVisitors,
+    getCurrentVisitors: () => visitorCounter.currentVisitors
+};
+
+// Message de confirmation
+console.log('✅ Site de Khalid EL BAKKIOUI chargé avec succès');
+console.log(`👥 Visiteurs totaux: ${visitorCounter.totalVisitors}`);
+console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
+
+// ========================================================
+// FORCER LE SCROLL EN HAUT - Version ultime
+// ========================================================
+
 (function ensureTopScroll() {
     'use strict';
     
+    // 1. Désactiver la restauration de scroll du navigateur
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
     
+    // 2. Fonction de scroll en haut
     function scrollToTop() {
         window.scrollTo({
             top: 0,
@@ -1692,25 +1905,36 @@ console.log('🎉 Script portfolio chargé avec succès!');
         });
     }
     
+    // 3. Exécution immédiate
     scrollToTop();
     
+    // 4. Exécution au chargement DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', scrollToTop);
     } else {
         scrollToTop();
     }
     
+    // 5. Exécution au chargement complet
     window.addEventListener('load', function() {
         scrollToTop();
+        // Petit délai supplémentaire pour les navigateurs lents
         setTimeout(scrollToTop, 100);
         setTimeout(scrollToTop, 300);
     });
     
+    // 6. Si l'URL contient un hash, le supprimer
     if (window.location.hash) {
+        // Option 1: Supprimer le hash
         history.replaceState(null, null, ' ');
+        
+        // Option 2: Remplacer par #accueil
+        // history.replaceState(null, null, '#accueil');
+        
         setTimeout(scrollToTop, 50);
     }
     
+    // 7. Écouter les changements d'URL
     window.addEventListener('hashchange', function() {
         if (window.location.hash === '' || window.location.hash === '#') {
             scrollToTop();
@@ -1719,3 +1943,329 @@ console.log('🎉 Script portfolio chargé avec succès!');
     
     console.log('✅ Page forcée en haut au chargement');
 })();
+
+
+// ============================================
+// FONCTIONNALITÉS POUR LES RESSOURCES COMPACTES
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Gestion des téléchargements avec feedback
+    const downloadLinks = document.querySelectorAll('.download-link');
+    
+    downloadLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Ajouter une petite animation de feedback
+            const originalIcon = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.style.pointerEvents = 'none';
+            
+            // Restaurer après un court délai
+            setTimeout(() => {
+                this.innerHTML = originalIcon;
+                this.style.pointerEvents = 'auto';
+            }, 1500);
+        });
+    });
+    
+    // 2. Gestion du survol des éléments de ressources
+    const ressourceItems = document.querySelectorAll('.ressource-item-compact');
+    
+    ressourceItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            // Optionnel : ajouter un effet sonore ou visuel supplémentaire
+            this.style.borderLeftColor = '#ff6b6b';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.borderLeftColor = '#6c63ff';
+        });
+    });
+    
+    // 3. Compteur de ressources (affichage dans la console pour le débogage)
+    const categories = document.querySelectorAll('.ressource-category');
+    categories.forEach(category => {
+        const items = category.querySelectorAll('.ressource-item-compact').length;
+        const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
+        console.log(`📚 ${title} : ${items} ressource(s)`);
+    });
+    
+    // 4. Gestion des clics sur les liens de prévisualisation (si présents)
+    const previewLinks = document.querySelectorAll('.btn-link.preview');
+    previewLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href) {
+                window.open(href, '_blank');
+            }
+        });
+    });
+    
+    // 5. Effet de scroll fluide pour les ancres (si des liens internes sont présents)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // 6. Toggle pour afficher/masquer les sections (optionnel)
+    // Utile si vous voulez ajouter des boutons de collapse
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    sectionHeaders.forEach(header => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', function() {
+            const list = this.nextElementSibling;
+            if (list && list.classList.contains('ressources-list-compact')) {
+                if (list.style.display === 'none') {
+                    list.style.display = 'flex';
+                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-right', 'fa-chevron-down');
+                } else {
+                    list.style.display = 'none';
+                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-down', 'fa-chevron-right');
+                }
+            }
+        });
+        
+        // Ajouter une icône de toggle si elle n'existe pas
+        if (!header.querySelector('.toggle-icon')) {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-chevron-down toggle-icon';
+            icon.style.marginLeft = 'auto';
+            icon.style.fontSize = '0.8rem';
+            header.appendChild(icon);
+        }
+    });
+    
+    // 7. Filtrage par catégorie (si vous voulez ajouter une barre de recherche)
+    // Décommentez cette section pour activer un filtre de recherche
+    
+    /*
+    // Créer un champ de recherche
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'search-container';
+    searchContainer.innerHTML = `
+        <input type="text" id="ressourceSearch" placeholder="🔍 Rechercher une ressource..." 
+               style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; 
+                      font-size:1rem; margin-bottom:20px; transition: border-color 0.3s;">
+    `;
+    
+    // Insérer après le premier h3
+    const firstCategory = document.querySelector('.ressource-category');
+    if (firstCategory) {
+        firstCategory.parentNode.insertBefore(searchContainer, firstCategory);
+    }
+    
+    // Fonction de filtrage
+    const searchInput = document.getElementById('ressourceSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const allItems = document.querySelectorAll('.ressource-item-compact');
+            
+            allItems.forEach(item => {
+                const title = item.querySelector('.chap-title a')?.textContent?.toLowerCase() || '';
+                const num = item.querySelector('.chap-num')?.textContent?.toLowerCase() || '';
+                const match = title.includes(query) || num.includes(query);
+                item.style.display = match ? 'flex' : 'none';
+            });
+            
+            // Afficher/masquer les sections vides
+            document.querySelectorAll('.ressource-category').forEach(category => {
+                const visibleItems = category.querySelectorAll('.ressource-item-compact[style*="display: flex"]');
+                const header = category.querySelector('.section-header');
+                if (header) {
+                    header.style.display = visibleItems.length > 0 ? 'flex' : 'none';
+                }
+            });
+        });
+    }
+    */
+    
+    console.log('✅ Script des ressources compactes chargé avec succès !');
+});
+
+// ============================================
+// UTILITAIRES SUPPLÉMENTAIRES
+// ============================================
+
+// Fonction pour compter les téléchargements (exemple)
+function countDownloads() {
+    const links = document.querySelectorAll('.download-link');
+    let total = 0;
+    links.forEach(link => {
+        if (link.getAttribute('download') !== null) {
+            total++;
+        }
+    });
+    console.log(`📥 Total des ressources téléchargeables : ${total}`);
+}
+
+// Appeler la fonction après le chargement
+window.addEventListener('load', countDownloads);
+
+// ============================================
+// GESTION DU LOCAL STORAGE (optionnel)
+// ============================================
+
+// Sauvegarder l'état des sections ouvertes/fermées
+function saveSectionState() {
+    const sections = document.querySelectorAll('.section-header');
+    const state = {};
+    sections.forEach((header, index) => {
+        const list = header.nextElementSibling;
+        if (list && list.classList.contains('ressources-list-compact')) {
+            state[index] = list.style.display !== 'none';
+        }
+    });
+    localStorage.setItem('sectionState', JSON.stringify(state));
+}
+
+function loadSectionState() {
+    const saved = localStorage.getItem('sectionState');
+    if (saved) {
+        const state = JSON.parse(saved);
+        const sections = document.querySelectorAll('.section-header');
+        sections.forEach((header, index) => {
+            if (state[index] !== undefined) {
+                const list = header.nextElementSibling;
+                if (list && list.classList.contains('ressources-list-compact')) {
+                    list.style.display = state[index] ? 'flex' : 'none';
+                    const icon = header.querySelector('.toggle-icon');
+                    if (icon) {
+                        icon.className = state[index] ? 'fas fa-chevron-down toggle-icon' : 'fas fa-chevron-right toggle-icon';
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Appeler au chargement
+document.addEventListener('DOMContentLoaded', loadSectionState);
+
+// Sauvegarder lors des clics
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.addEventListener('click', saveSectionState);
+    });
+});
+
+
+/**
+ * script.js - Gestion de la section livres
+ * À placer après le chargement du DOM
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ============================================================
+    // 1. Gestion des images manquantes (fallback)
+    // ============================================================
+    const covers = document.querySelectorAll('.livre-cover');
+
+    covers.forEach(img => {
+        // Si l'image ne charge pas, on la masque proprement
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            // Optionnel : ajouter une icône de remplacement
+            // const parent = this.parentElement;
+            // const icon = document.createElement('span');
+            // icon.className = 'livre-icon-fallback';
+            // icon.innerHTML = '<i class="fas fa-book" style="font-size:1.4rem;color:#8aa3c0;"></i>';
+            // parent.insertBefore(icon, this);
+        });
+
+        // Vérification supplémentaire : si l'image est déjà en erreur (ex: src vide)
+        if (!img.complete) {
+            img.addEventListener('load', function() {
+                // Image chargée avec succès
+                this.style.display = 'block';
+            });
+        } else if (img.naturalWidth === 0) {
+            // L'image est "vide" (ex: src inexistant)
+            img.style.display = 'none';
+        }
+    });
+
+    // ============================================================
+    // 2. Comptage des livres (affichage console)
+    // ============================================================
+    const totalBooks = document.querySelectorAll('.livre-item-compact').length;
+    console.log(`📚 ${totalBooks} livres affichés dans la section`);
+
+    // ============================================================
+    // 3. Animation au survol des boutons (déjà gérée en CSS)
+    //    Mais on peut ajouter un effet "tooltip" ou "tracking"
+    // ============================================================
+    const amazonBtns = document.querySelectorAll('.btn-link.amazon');
+    amazonBtns.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            // Petit effet sonore ou tracking (ex: console.log)
+            // console.log('🔗 Lien Amazon survolé');
+        });
+    });
+
+    // ============================================================
+    // 4. Option : ouvrir les liens dans un nouvel onglet (déjà fait via target="_blank")
+    //    Mais on peut ajouter un attribut rel="noopener" pour la sécurité
+    // ============================================================
+    const allLinks = document.querySelectorAll('.livre-actions a');
+    allLinks.forEach(link => {
+        if (!link.hasAttribute('rel')) {
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+
+    // ============================================================
+    // 5. Option : trier les livres par date (exemple)
+    //    Décommentez pour activer le tri (nécessite des data-attributes)
+    // ============================================================
+    /*
+    const container = document.querySelector('.livres-list-compact');
+    const items = Array.from(container.querySelectorAll('.livre-item-compact'));
+
+    items.sort((a, b) => {
+        // Extraire la date depuis .livre-meta (ex: "Apr 2026")
+        const getDate = (el) => {
+            const meta = el.querySelector('.livre-meta');
+            if (!meta) return new Date(0);
+            const text = meta.textContent || '';
+            const match = text.match(/(\w{3})\s+(\d{4})/);
+            if (!match) return new Date(0);
+            const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                            Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+            return new Date(parseInt(match[2]), months[match[1]] || 0);
+        };
+
+        return getDate(b) - getDate(a); // Tri décroissant (plus récent en premier)
+    });
+
+    items.forEach(item => container.appendChild(item));
+    console.log('📅 Livres triés par date (plus récent en premier)');
+    */
+
+    // ============================================================
+    // 6. Initialisation : animation d'apparition
+    // ============================================================
+    const tabPane = document.getElementById('livres');
+    if (tabPane) {
+        tabPane.style.opacity = '0';
+        tabPane.style.transition = 'opacity 0.4s ease';
+        
+        // Déclencher l'animation après un petit délai
+        setTimeout(() => {
+            tabPane.style.opacity = '1';
+        }, 100);
+    }
+
+    console.log('✅ Script livres chargé avec succès');
+});
