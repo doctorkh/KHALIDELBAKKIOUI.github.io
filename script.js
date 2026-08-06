@@ -32,7 +32,7 @@ class PortfolioApp {
         if (this.isInitialized) return;
         
         this.initNavigation();
-        this.initTabs(); // ← La méthode corrigée
+        this.initTabs();
         this.initSmoothScrolling();
         this.initBackToTop();
         this.initScrollEffects();
@@ -308,104 +308,126 @@ class PortfolioApp {
         console.log('✅ Tous les boutons initialisés');
     }
 
+    // ===== BOUTONS FILIÈRE AVEC MP AJOUTÉE =====
     initFiliereButtons() {
-        const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI'];
+        // Liste complète des filières incluant MP
+        const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI', 'MP'];
         
         filiereButtons.forEach(filiere => {
-            const buttons = document.querySelectorAll(`.btn-${filiere.toLowerCase()}, [data-filiere="${filiere}"]`);
+            // Sélecteurs pour les boutons de filière
+            const buttons = document.querySelectorAll(
+                `.btn-${filiere.toLowerCase()}, ` +
+                `[data-filiere="${filiere}"], ` +
+                `.btn-${filiere.toLowerCase()}-button, ` +
+                `button[data-target="section-${filiere.toLowerCase()}"]`
+            );
+            
             buttons.forEach(button => {
-                button.addEventListener('click', (e) => {
+                // Nettoyer les anciens événements
+                const newButton = button.cloneNode(true);
+                button.parentNode.replaceChild(newButton, button);
+                
+                newButton.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     console.log(`🎓 Bouton ${filiere} cliqué`);
                     this.handleFiliereClick(filiere);
                 });
             });
         });
-    }
-
-    initConferenceButtons() {
-        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
-        conferenceButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('🎤 Bouton conférence cliqué');
-                this.handleConferenceClick(button);
-            });
-        });
-    }
-
-    initLivreButtons() {
-        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
-        livreButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('📚 Bouton livre cliqué');
-                this.handleLivreClick(button);
-            });
-        });
-    }
-
-    initMemoireButtons() {
-        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
-        memoireButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('📖 Bouton mémoire cliqué');
-                this.handleMemoireClick(button);
-            });
-        });
-    }
-
-    initGeneralButtons() {
-        const downloadButtons = document.querySelectorAll('.btn-download, [download]');
-        downloadButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const fileName = button.getAttribute('href')?.split('/').pop() || 'document';
-                console.log(`📥 Téléchargement: ${fileName}`);
-                this.trackDownload(fileName);
-            });
-        });
-
-        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
-        viewButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = button.getAttribute('data-target') || button.getAttribute('href');
-                console.log(`👀 Vue demandée: ${target}`);
-                this.handleViewClick(target, button);
-            });
-        });
+        
+        console.log(`✅ ${filiereButtons.length} filières initialisées (incluant MP)`);
     }
 
     handleFiliereClick(filiere) {
-        this.showNotification(`Filière ${filiere} sélectionnée`, 'info', 3000);
+        // Afficher une notification
+        const filiereNames = {
+            'ECT1': 'ECT 1ère année',
+            'ECT2': 'ECT 2ème année',
+            'ECS1': 'ECS 1ère année',
+            'ECS2': 'ECS 2ème année',
+            'MPSI': 'MPSI',
+            'MP': 'MP'
+        };
+        const displayName = filiereNames[filiere] || filiere;
+        this.showNotification(`Filière ${displayName} sélectionnée`, 'info', 3000);
         
-        const targetSection = document.getElementById(`section-${filiere.toLowerCase()}`);
+        // Scroll vers la section correspondante
+        const targetId = `section-${filiere.toLowerCase()}`;
+        const targetSection = document.getElementById(targetId);
+        
         if (targetSection) {
-            this.scrollToElement(`#section-${filiere.toLowerCase()}`);
+            this.scrollToElement(`#${targetId}`);
+            
+            // Activer l'onglet correspondant dans la section enseignement
+            const filiereTabsContainer = document.querySelector('.filiere-tabs');
+            if (filiereTabsContainer) {
+                const targetButton = filiereTabsContainer.querySelector(`[data-tab="${targetId}"]`);
+                if (targetButton) {
+                    const tabButtons = filiereTabsContainer.querySelectorAll('.tab-button');
+                    const tabPanes = filiereTabsContainer.querySelectorAll('.tab-pane');
+                    this.switchTab(filiereTabsContainer, targetButton, tabButtons, tabPanes, targetId);
+                }
+            }
+        } else {
+            console.warn(`⚠️ Section non trouvée: ${targetId}`);
         }
         
+        // Déclencher un événement personnalisé
         const event = new CustomEvent('filiereSelected', { 
             detail: { filiere: filiere } 
         });
         document.dispatchEvent(event);
     }
 
+    initConferenceButtons() {
+        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
+        conferenceButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🎤 Bouton conférence cliqué');
+                this.handleConferenceClick(newButton);
+            });
+        });
+    }
+
     handleConferenceClick(button) {
-        const conferenceTitle = button.getAttribute('data-title') || button.textContent;
+        const conferenceTitle = button.getAttribute('data-title') || button.textContent || 'Conférence';
         this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
         
         const targetId = button.getAttribute('data-target');
         if (targetId) {
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+        }
+        
+        const url = button.getAttribute('href');
+        if (url && !url.startsWith('#')) {
+            window.open(url, '_blank');
         }
     }
 
+    initLivreButtons() {
+        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
+        livreButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📚 Bouton livre cliqué');
+                this.handleLivreClick(newButton);
+            });
+        });
+    }
+
     handleLivreClick(button) {
-        const livreTitle = button.getAttribute('data-title') || button.textContent;
+        const livreTitle = button.getAttribute('data-title') || button.textContent || 'Livre';
         this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
         
         const url = button.getAttribute('href');
@@ -414,8 +436,22 @@ class PortfolioApp {
         }
     }
 
+    initMemoireButtons() {
+        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
+        memoireButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('📖 Bouton mémoire cliqué');
+                this.handleMemoireClick(newButton);
+            });
+        });
+    }
+
     handleMemoireClick(button) {
-        const memoireTitle = button.getAttribute('data-title') || button.textContent;
+        const memoireTitle = button.getAttribute('data-title') || button.textContent || 'Mémoire';
         this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
         
         const url = button.getAttribute('href');
@@ -426,6 +462,34 @@ class PortfolioApp {
                 window.open(url, '_blank');
             }
         }
+    }
+
+    initGeneralButtons() {
+        const downloadButtons = document.querySelectorAll('.btn-download, [download]');
+        downloadButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
+                const fileName = newButton.getAttribute('href')?.split('/').pop() || 'document';
+                console.log(`📥 Téléchargement: ${fileName}`);
+                this.trackDownload(fileName);
+                this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
+            });
+        });
+
+        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
+        viewButtons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = newButton.getAttribute('data-target') || newButton.getAttribute('href');
+                console.log(`👀 Vue demandée: ${target}`);
+                this.handleViewClick(target, newButton);
+            });
+        });
     }
 
     handleViewClick(target, button) {
@@ -439,8 +503,11 @@ class PortfolioApp {
     // ===== SCROLL ET ANIMATIONS =====
     initSmoothScrolling() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                const targetId = anchor.getAttribute('href');
+            const newAnchor = anchor.cloneNode(true);
+            anchor.parentNode.replaceChild(newAnchor, anchor);
+            
+            newAnchor.addEventListener('click', (e) => {
+                const targetId = newAnchor.getAttribute('href');
                 if (targetId === '#') return;
                 
                 e.preventDefault();
@@ -546,7 +613,7 @@ class PortfolioApp {
         const animatables = document.querySelectorAll(
             '.profile-card, .pub-card, .doc-card, .exp-card, ' +
             '.competence-category, .timeline-item, .stat, .ressource-item, ' +
-            '.contact-item, .conf-card'
+            '.contact-item, .conf-card, .livre-item-compact, .ressource-item-compact'
         );
         
         animatables.forEach(el => {
@@ -612,22 +679,31 @@ class PortfolioApp {
 
         const inputs = contactForm.querySelectorAll('input, textarea');
         inputs.forEach(input => {
-            input.addEventListener('blur', () => {
-                this.validateField(input);
+            const newInput = input.cloneNode(true);
+            input.parentNode.replaceChild(newInput, input);
+            
+            newInput.addEventListener('blur', () => {
+                this.validateField(newInput);
             });
             
-            input.addEventListener('input', () => {
-                this.clearFieldStatus(input);
+            newInput.addEventListener('input', () => {
+                this.clearFieldStatus(newInput);
             });
         });
 
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            const newSubmit = submitBtn.cloneNode(true);
+            submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
             
-            if (await this.validateForm(contactForm)) {
-                await this.submitForm(contactForm);
-            }
-        });
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (await this.validateForm(contactForm)) {
+                    await this.submitForm(contactForm);
+                }
+            });
+        }
     }
 
     validateField(field) {
@@ -693,10 +769,13 @@ class PortfolioApp {
         this.clearFieldStatus(field);
         field.classList.add('error');
         
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'field-error';
+        let errorDiv = field.parentNode.querySelector('.field-error');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error';
+            field.parentNode.appendChild(errorDiv);
+        }
         errorDiv.textContent = message;
-        field.parentNode.appendChild(errorDiv);
     }
 
     showFieldSuccess(field) {
@@ -745,7 +824,7 @@ class PortfolioApp {
     async sendFormData(data) {
         return new Promise((resolve) => {
             setTimeout(() => {
-                console.log('Données du formulaire:', data);
+                console.log('📧 Données du formulaire:', data);
                 resolve({ success: true });
             }, 1500);
         });
@@ -772,7 +851,7 @@ class PortfolioApp {
         
         notification.innerHTML = `
             <div class="notification-content">
-                <i class="fas ${icons[type]}"></i>
+                <i class="fas ${icons[type] || icons.info}"></i>
                 <span>${message}</span>
             </div>
             <button class="notification-close" aria-label="Fermer">
@@ -1067,8 +1146,11 @@ class PortfolioApp {
     // ===== FONCTIONNALITÉS AVANCÉES =====
     initDownloadTracking() {
         document.querySelectorAll('a[download]').forEach(link => {
-            link.addEventListener('click', () => {
-                const fileName = link.getAttribute('href')?.split('/').pop();
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+            
+            newLink.addEventListener('click', () => {
+                const fileName = newLink.getAttribute('href')?.split('/').pop();
                 if (fileName) {
                     this.trackDownload(fileName);
                     this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
@@ -1452,7 +1534,7 @@ dynamicStyles.textContent = `
     }
     
     /* Styles pour les boutons spécifiques */
-    .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi {
+    .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi, .btn-mp {
         background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
         border: none;
@@ -1466,7 +1548,7 @@ dynamicStyles.textContent = `
         text-align: center;
     }
     
-    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover, .btn-ecs2:hover, .btn-mpsi:hover {
+    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover, .btn-ecs2:hover, .btn-mpsi:hover, .btn-mp:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
     }
@@ -1516,376 +1598,7 @@ window.addEventListener('beforeunload', () => {
 
 console.log('🎉 Script portfolio chargé avec succès!');
 
-// Script pour le menu mobile - Version améliorée
-const navToggle = document.getElementById('nav-toggle');
-const navMenu = document.getElementById('nav-menu');
-
-if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active');
-        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-        navToggle.setAttribute('aria-expanded', !isExpanded);
-    });
-
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            navToggle.setAttribute('aria-expanded', 'false');
-        });
-    });
-}
-
-document.addEventListener('click', (e) => {
-    if (navMenu && navToggle && !navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-    }
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-    }
-});
-
-console.log('✅ Script portfolio entièrement chargé et prêt !');
-
-/**
- * Script.js - Fonctionnalités interactives pour le site de Khalid EL BAKKIOUI
- * À AJOUTER À VOTRE FICHIER script.js EXISTANT
- * Version: 1.0
- */
-
-// ========================================================
-// 1. GESTION DE LA DATE ET DE L'HEURE
-// ========================================================
-
-/**
- * Met à jour la date et l'heure en temps réel
- */
-function updateDateTime() {
-    const now = new Date();
-    
-    // Formatage de la date
-    const dateOptions = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    };
-    const dateString = now.toLocaleDateString('fr-FR', dateOptions);
-    
-    // Formatage de l'heure
-    const timeOptions = { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit',
-        hour12: false
-    };
-    const timeString = now.toLocaleTimeString('fr-FR', timeOptions);
-    
-    // Mise à jour du DOM
-    const dateElement = document.getElementById('current-date');
-    const timeElement = document.getElementById('current-time');
-    
-    if (dateElement) dateElement.textContent = dateString;
-    if (timeElement) timeElement.textContent = timeString;
-}
-
-// Mise à jour toutes les secondes
-setInterval(updateDateTime, 1000);
-updateDateTime();
-
-// ========================================================
-// 2. COMPTEUR DE VISITEURS (Simulation)
-// ========================================================
-
-class VisitorCounter {
-    constructor() {
-        this.storageKey = 'site_visitors';
-        this.totalVisitors = this.getTotalVisitors();
-        this.currentVisitors = this.getCurrentVisitors();
-        this.init();
-    }
-    
-    /**
-     * Récupère le nombre total de visiteurs depuis localStorage
-     */
-    getTotalVisitors() {
-        const stored = localStorage.getItem(this.storageKey);
-        if (stored) {
-            return parseInt(stored, 10);
-        }
-        // Première visite
-        localStorage.setItem(this.storageKey, '1');
-        return 1;
-    }
-    
-    /**
-     * Incrémente le compteur total
-     */
-    incrementTotal() {
-        this.totalVisitors++;
-        localStorage.setItem(this.storageKey, this.totalVisitors.toString());
-    }
-    
-    /**
-     * Récupère le nombre de visiteurs en ligne (simulation)
-     */
-    getCurrentVisitors() {
-        return Math.floor(Math.random() * 10) + 1;
-    }
-    
-    /**
-     * Initialise le compteur
-     */
-    init() {
-        // Incrémenter pour chaque nouvelle session
-        if (!sessionStorage.getItem('visitor_counted')) {
-            this.incrementTotal();
-            sessionStorage.setItem('visitor_counted', 'true');
-        }
-        
-        // Mettre à jour l'affichage
-        this.updateDisplay();
-        
-        // Mettre à jour les visiteurs en ligne toutes les 30 secondes
-        setInterval(() => {
-            this.currentVisitors = this.getCurrentVisitors();
-            this.updateDisplay();
-        }, 30000);
-    }
-    
-    /**
-     * Met à jour l'affichage dans le DOM
-     */
-    updateDisplay() {
-        const totalElement = document.getElementById('total-visitors');
-        const currentElement = document.getElementById('current-visitors');
-        
-        if (totalElement) {
-            totalElement.textContent = this.totalVisitors.toLocaleString('fr-FR');
-        }
-        
-        if (currentElement) {
-            currentElement.textContent = this.currentVisitors;
-        }
-    }
-}
-
-// Initialiser le compteur
-const visitorCounter = new VisitorCounter();
-
-// ========================================================
-// 3. MENU MOBILE
-// ========================================================
-
-/**
- * Gère l'ouverture/fermeture du menu mobile
- */
-function initMobileMenu() {
-    const toggleBtn = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    
-    if (!toggleBtn || !navMenu) return;
-    
-    toggleBtn.addEventListener('click', function() {
-        const isOpen = navMenu.classList.toggle('active');
-        this.setAttribute('aria-expanded', isOpen);
-        this.classList.toggle('active');
-    });
-    
-    // Fermer le menu en cliquant sur un lien
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            toggleBtn.classList.remove('active');
-            toggleBtn.setAttribute('aria-expanded', 'false');
-        });
-    });
-}
-
-// Initialiser le menu mobile
-document.addEventListener('DOMContentLoaded', initMobileMenu);
-
-// ========================================================
-// 4. NAVIGATION FIXE AVEC EFFET DE SCROLL
-// ========================================================
-
-/**
- * Gère l'effet de la barre de navigation au scroll
- */
-function initNavbarScroll() {
-    const navbar = document.getElementById('navbar');
-    let lastScrollY = window.scrollY;
-    
-    window.addEventListener('scroll', function() {
-        const currentScrollY = window.scrollY;
-        
-        // Ajouter une classe quand on descend
-        if (currentScrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        // Cacher/afficher la navbar selon la direction du scroll
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            navbar.classList.add('hidden');
-        } else {
-            navbar.classList.remove('hidden');
-        }
-        
-        lastScrollY = currentScrollY;
-    });
-}
-
-// Initialiser l'effet de scroll
-document.addEventListener('DOMContentLoaded', initNavbarScroll);
-
-// ========================================================
-// 5. DÉFILEMENT DOUX POUR LES ANCRES
-// ========================================================
-
-/**
- * Active le défilement doux pour tous les liens d'ancrage
- */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Ignorer les liens vides ou # uniquement
-            if (href === '#' || href === '') return;
-            
-            const target = document.querySelector(href);
-            if (target) {
-                e.preventDefault();
-                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset;
-                window.scrollTo({
-                    top: offsetTop - 80, // Compense la navbar fixe
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-// Initialiser le défilement doux
-document.addEventListener('DOMContentLoaded', initSmoothScroll);
-
-// ========================================================
-// 6. INTERSECTIONS OBSERVER POUR ANIMATIONS
-// ========================================================
-
-/**
- * Ajoute des animations lors de l'apparition des éléments
- */
-function initIntersectionObserver() {
-    const sections = document.querySelectorAll('section');
-    
-    if (sections.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-    
-    sections.forEach(section => {
-        observer.observe(section);
-    });
-}
-
-// Initialiser l'observateur
-document.addEventListener('DOMContentLoaded', initIntersectionObserver);
-
-// ========================================================
-// 7. GESTION DES PERFORMANCES
-// ========================================================
-
-/**
- * Détecte si l'utilisateur est sur un appareil mobile
- */
-function isMobile() {
-    return window.innerWidth <= 768;
-}
-
-/**
- * Désactive les animations lourdes sur mobile
- */
-function optimizeForMobile() {
-    if (isMobile()) {
-        document.querySelectorAll('.animated, .animate, .hover-effect').forEach(el => {
-            el.style.animation = 'none';
-            el.style.transition = 'none';
-        });
-    }
-}
-
-// Optimiser au chargement et au redimensionnement
-window.addEventListener('resize', optimizeForMobile);
-document.addEventListener('DOMContentLoaded', optimizeForMobile);
-
-// ========================================================
-// 8. GESTION DES ERREURS
-// ========================================================
-
-/**
- * Gestionnaire d'erreurs global
- */
-window.addEventListener('error', function(e) {
-    console.error('Une erreur est survenue:', e.message);
-    // Optionnel: envoyer l'erreur à un service de monitoring
-});
-
-/**
- * Vérifie que tous les éléments essentiels sont chargés
- */
-function checkRequiredElements() {
-    const required = ['navbar', 'accueil'];
-    const missing = required.filter(id => !document.getElementById(id));
-    
-    if (missing.length > 0) {
-        console.warn('Éléments requis manquants:', missing.join(', '));
-    }
-}
-
-document.addEventListener('DOMContentLoaded', checkRequiredElements);
-
-// ========================================================
-// 9. EXPOSITION DE L'API (optionnel)
-// ========================================================
-
-// Exposer certaines fonctions globalement pour le débogage
-window.websiteAPI = {
-    updateDateTime,
-    visitorCounter,
-    isMobile,
-    getTotalVisitors: () => visitorCounter.totalVisitors,
-    getCurrentVisitors: () => visitorCounter.currentVisitors
-};
-
-// Message de confirmation
-console.log('✅ Site de Khalid EL BAKKIOUI chargé avec succès');
-console.log(`👥 Visiteurs totaux: ${visitorCounter.totalVisitors}`);
-console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
-
-// ========================================================
-// FORCER LE SCROLL EN HAUT - Version ultime
-// ========================================================
-
+// ===== FORCER LE SCROLL EN HAUT - Version ultime =====
 (function ensureTopScroll() {
     'use strict';
     
@@ -1916,19 +1629,13 @@ console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
     // 5. Exécution au chargement complet
     window.addEventListener('load', function() {
         scrollToTop();
-        // Petit délai supplémentaire pour les navigateurs lents
         setTimeout(scrollToTop, 100);
         setTimeout(scrollToTop, 300);
     });
     
     // 6. Si l'URL contient un hash, le supprimer
     if (window.location.hash) {
-        // Option 1: Supprimer le hash
         history.replaceState(null, null, ' ');
-        
-        // Option 2: Remplacer par #accueil
-        // history.replaceState(null, null, '#accueil');
-        
         setTimeout(scrollToTop, 50);
     }
     
@@ -1942,24 +1649,22 @@ console.log(`🟢 Visiteurs en ligne: ${visitorCounter.currentVisitors}`);
     console.log('✅ Page forcée en haut au chargement');
 })();
 
+console.log('✅ Script portfolio entièrement chargé et prêt !');
 
 // ============================================
-// FONCTIONNALITÉS POUR LES RESSOURCES COMPACTES
+// GESTION DES RESSOURCES COMPACTES
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. Gestion des téléchargements avec feedback
+    // Gestion des téléchargements avec feedback
     const downloadLinks = document.querySelectorAll('.download-link');
     
     downloadLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Ajouter une petite animation de feedback
             const originalIcon = this.innerHTML;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             this.style.pointerEvents = 'none';
             
-            // Restaurer après un court délai
             setTimeout(() => {
                 this.innerHTML = originalIcon;
                 this.style.pointerEvents = 'auto';
@@ -1967,12 +1672,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 2. Gestion du survol des éléments de ressources
+    // Gestion du survol des éléments de ressources
     const ressourceItems = document.querySelectorAll('.ressource-item-compact');
     
     ressourceItems.forEach(item => {
         item.addEventListener('mouseenter', function() {
-            // Optionnel : ajouter un effet sonore ou visuel supplémentaire
             this.style.borderLeftColor = '#ff6b6b';
         });
         
@@ -1981,7 +1685,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 3. Compteur de ressources (affichage dans la console pour le débogage)
+    // Compteur de ressources
     const categories = document.querySelectorAll('.ressource-category');
     categories.forEach(category => {
         const items = category.querySelectorAll('.ressource-item-compact').length;
@@ -1989,7 +1693,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`📚 ${title} : ${items} ressource(s)`);
     });
     
-    // 4. Gestion des clics sur les liens de prévisualisation (si présents)
+    // Gestion des clics sur les liens de prévisualisation
     const previewLinks = document.querySelectorAll('.btn-link.preview');
     previewLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -2001,7 +1705,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 5. Effet de scroll fluide pour les ancres (si des liens internes sont présents)
+    // Effet de scroll fluide pour les ancres
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const target = document.querySelector(this.getAttribute('href'));
@@ -2015,255 +1719,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 6. Toggle pour afficher/masquer les sections (optionnel)
-    // Utile si vous voulez ajouter des boutons de collapse
-    const sectionHeaders = document.querySelectorAll('.section-header');
-    sectionHeaders.forEach(header => {
-        header.style.cursor = 'pointer';
-        header.addEventListener('click', function() {
-            const list = this.nextElementSibling;
-            if (list && list.classList.contains('ressources-list-compact')) {
-                if (list.style.display === 'none') {
-                    list.style.display = 'flex';
-                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-right', 'fa-chevron-down');
-                } else {
-                    list.style.display = 'none';
-                    this.querySelector('i').className = this.querySelector('i').className.replace('fa-chevron-down', 'fa-chevron-right');
-                }
-            }
-        });
-        
-        // Ajouter une icône de toggle si elle n'existe pas
-        if (!header.querySelector('.toggle-icon')) {
-            const icon = document.createElement('i');
-            icon.className = 'fas fa-chevron-down toggle-icon';
-            icon.style.marginLeft = 'auto';
-            icon.style.fontSize = '0.8rem';
-            header.appendChild(icon);
-        }
-    });
-    
-    // 7. Filtrage par catégorie (si vous voulez ajouter une barre de recherche)
-    // Décommentez cette section pour activer un filtre de recherche
-    
-    /*
-    // Créer un champ de recherche
-    const searchContainer = document.createElement('div');
-    searchContainer.className = 'search-container';
-    searchContainer.innerHTML = `
-        <input type="text" id="ressourceSearch" placeholder="🔍 Rechercher une ressource..." 
-               style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; 
-                      font-size:1rem; margin-bottom:20px; transition: border-color 0.3s;">
-    `;
-    
-    // Insérer après le premier h3
-    const firstCategory = document.querySelector('.ressource-category');
-    if (firstCategory) {
-        firstCategory.parentNode.insertBefore(searchContainer, firstCategory);
-    }
-    
-    // Fonction de filtrage
-    const searchInput = document.getElementById('ressourceSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            const allItems = document.querySelectorAll('.ressource-item-compact');
-            
-            allItems.forEach(item => {
-                const title = item.querySelector('.chap-title a')?.textContent?.toLowerCase() || '';
-                const num = item.querySelector('.chap-num')?.textContent?.toLowerCase() || '';
-                const match = title.includes(query) || num.includes(query);
-                item.style.display = match ? 'flex' : 'none';
-            });
-            
-            // Afficher/masquer les sections vides
-            document.querySelectorAll('.ressource-category').forEach(category => {
-                const visibleItems = category.querySelectorAll('.ressource-item-compact[style*="display: flex"]');
-                const header = category.querySelector('.section-header');
-                if (header) {
-                    header.style.display = visibleItems.length > 0 ? 'flex' : 'none';
-                }
-            });
-        });
-    }
-    */
-    
     console.log('✅ Script des ressources compactes chargé avec succès !');
 });
 
 // ============================================
-// UTILITAIRES SUPPLÉMENTAIRES
+// GESTION DES LIVRES
 // ============================================
-
-// Fonction pour compter les téléchargements (exemple)
-function countDownloads() {
-    const links = document.querySelectorAll('.download-link');
-    let total = 0;
-    links.forEach(link => {
-        if (link.getAttribute('download') !== null) {
-            total++;
-        }
-    });
-    console.log(`📥 Total des ressources téléchargeables : ${total}`);
-}
-
-// Appeler la fonction après le chargement
-window.addEventListener('load', countDownloads);
-
-// ============================================
-// GESTION DU LOCAL STORAGE (optionnel)
-// ============================================
-
-// Sauvegarder l'état des sections ouvertes/fermées
-function saveSectionState() {
-    const sections = document.querySelectorAll('.section-header');
-    const state = {};
-    sections.forEach((header, index) => {
-        const list = header.nextElementSibling;
-        if (list && list.classList.contains('ressources-list-compact')) {
-            state[index] = list.style.display !== 'none';
-        }
-    });
-    localStorage.setItem('sectionState', JSON.stringify(state));
-}
-
-function loadSectionState() {
-    const saved = localStorage.getItem('sectionState');
-    if (saved) {
-        const state = JSON.parse(saved);
-        const sections = document.querySelectorAll('.section-header');
-        sections.forEach((header, index) => {
-            if (state[index] !== undefined) {
-                const list = header.nextElementSibling;
-                if (list && list.classList.contains('ressources-list-compact')) {
-                    list.style.display = state[index] ? 'flex' : 'none';
-                    const icon = header.querySelector('.toggle-icon');
-                    if (icon) {
-                        icon.className = state[index] ? 'fas fa-chevron-down toggle-icon' : 'fas fa-chevron-right toggle-icon';
-                    }
-                }
-            }
-        });
-    }
-}
-
-// Appeler au chargement
-document.addEventListener('DOMContentLoaded', loadSectionState);
-
-// Sauvegarder lors des clics
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.section-header').forEach(header => {
-        header.addEventListener('click', saveSectionState);
-    });
-});
-
-
-/**
- * script.js - Gestion de la section livres
- * À placer après le chargement du DOM
- */
 
 document.addEventListener('DOMContentLoaded', function() {
-
-    // ============================================================
-    // 1. Gestion des images manquantes (fallback)
-    // ============================================================
+    // Gestion des images manquantes
     const covers = document.querySelectorAll('.livre-cover');
-
+    
     covers.forEach(img => {
-        // Si l'image ne charge pas, on la masque proprement
         img.addEventListener('error', function() {
             this.style.display = 'none';
-            // Optionnel : ajouter une icône de remplacement
-            // const parent = this.parentElement;
-            // const icon = document.createElement('span');
-            // icon.className = 'livre-icon-fallback';
-            // icon.innerHTML = '<i class="fas fa-book" style="font-size:1.4rem;color:#8aa3c0;"></i>';
-            // parent.insertBefore(icon, this);
         });
-
-        // Vérification supplémentaire : si l'image est déjà en erreur (ex: src vide)
+        
         if (!img.complete) {
             img.addEventListener('load', function() {
-                // Image chargée avec succès
                 this.style.display = 'block';
             });
         } else if (img.naturalWidth === 0) {
-            // L'image est "vide" (ex: src inexistant)
             img.style.display = 'none';
         }
     });
-
-    // ============================================================
-    // 2. Comptage des livres (affichage console)
-    // ============================================================
+    
+    // Comptage des livres
     const totalBooks = document.querySelectorAll('.livre-item-compact').length;
     console.log(`📚 ${totalBooks} livres affichés dans la section`);
-
-    // ============================================================
-    // 3. Animation au survol des boutons (déjà gérée en CSS)
-    //    Mais on peut ajouter un effet "tooltip" ou "tracking"
-    // ============================================================
-    const amazonBtns = document.querySelectorAll('.btn-link.amazon');
-    amazonBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            // Petit effet sonore ou tracking (ex: console.log)
-            // console.log('🔗 Lien Amazon survolé');
-        });
-    });
-
-    // ============================================================
-    // 4. Option : ouvrir les liens dans un nouvel onglet (déjà fait via target="_blank")
-    //    Mais on peut ajouter un attribut rel="noopener" pour la sécurité
-    // ============================================================
+    
+    // Sécurité pour les liens
     const allLinks = document.querySelectorAll('.livre-actions a');
     allLinks.forEach(link => {
         if (!link.hasAttribute('rel')) {
             link.setAttribute('rel', 'noopener noreferrer');
         }
     });
-
-    // ============================================================
-    // 5. Option : trier les livres par date (exemple)
-    //    Décommentez pour activer le tri (nécessite des data-attributes)
-    // ============================================================
-    /*
-    const container = document.querySelector('.livres-list-compact');
-    const items = Array.from(container.querySelectorAll('.livre-item-compact'));
-
-    items.sort((a, b) => {
-        // Extraire la date depuis .livre-meta (ex: "Apr 2026")
-        const getDate = (el) => {
-            const meta = el.querySelector('.livre-meta');
-            if (!meta) return new Date(0);
-            const text = meta.textContent || '';
-            const match = text.match(/(\w{3})\s+(\d{4})/);
-            if (!match) return new Date(0);
-            const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-                            Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
-            return new Date(parseInt(match[2]), months[match[1]] || 0);
-        };
-
-        return getDate(b) - getDate(a); // Tri décroissant (plus récent en premier)
-    });
-
-    items.forEach(item => container.appendChild(item));
-    console.log('📅 Livres triés par date (plus récent en premier)');
-    */
-
-    // ============================================================
-    // 6. Initialisation : animation d'apparition
-    // ============================================================
+    
+    // Animation d'apparition
     const tabPane = document.getElementById('livres');
     if (tabPane) {
         tabPane.style.opacity = '0';
         tabPane.style.transition = 'opacity 0.4s ease';
         
-        // Déclencher l'animation après un petit délai
         setTimeout(() => {
             tabPane.style.opacity = '1';
         }, 100);
     }
-
+    
     console.log('✅ Script livres chargé avec succès');
 });
