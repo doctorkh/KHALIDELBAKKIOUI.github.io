@@ -94,7 +94,7 @@ class PortfolioApp {
 
     setupErrorHandling() {
         window.addEventListener('error', (e) => {
-            console.error('❌ Erreur JavaScript:', e.error);
+            console.error('❌ Erreur JavaScript:', e.error || e.message);
         });
 
         window.addEventListener('unhandledrejection', (e) => {
@@ -155,19 +155,17 @@ class PortfolioApp {
     }
 
     toggleMobileMenu(navMenu, navToggle) {
-        const isOpening = !navMenu.classList.contains('active');
+        const isOpening = !navMenu.classList.contains('open');
 
-        navMenu.classList.toggle('active');
+        navMenu.classList.toggle('open');
         navToggle.classList.toggle('active');
         document.body.style.overflow = isOpening ? 'hidden' : '';
 
         if (isOpening) {
-            navMenu.style.transform = 'translateX(0)';
             navToggle.setAttribute('aria-expanded', 'true');
             const firstLink = navMenu.querySelector('a');
             if (firstLink) firstLink.focus();
         } else {
-            navMenu.style.transform = 'translateX(-100%)';
             navToggle.setAttribute('aria-expanded', 'false');
             navToggle.focus();
         }
@@ -175,7 +173,7 @@ class PortfolioApp {
 
     closeMobileMenu(navMenu, navToggle) {
         if (!navMenu || !navToggle) return;
-        navMenu.classList.remove('active');
+        navMenu.classList.remove('open');
         navToggle.classList.remove('active');
         navToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
@@ -205,7 +203,6 @@ class PortfolioApp {
     // =====================================================================
 
     initSmoothScrolling() {
-        // Version unique et unifiée du défilement fluide vers les ancres
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const newAnchor = anchor.cloneNode(true);
             anchor.parentNode.replaceChild(newAnchor, anchor);
@@ -227,7 +224,8 @@ class PortfolioApp {
             return;
         }
 
-        const offsetTop = targetElement.offsetTop - 80;
+        const navbarHeight = document.getElementById('navbar')?.offsetHeight || 80;
+        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
 
         window.scrollTo({
             top: offsetTop,
@@ -249,10 +247,8 @@ class PortfolioApp {
 
             if (scrollTop > 300) {
                 backToTop.classList.add('visible');
-                backToTop.style.opacity = '1';
             } else {
                 backToTop.classList.remove('visible');
-                backToTop.style.opacity = '0';
             }
         };
 
@@ -266,7 +262,7 @@ class PortfolioApp {
 
     initScrollEffects() {
         const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+        const navLinks = document.querySelectorAll('.nav-link');
 
         if (!sections.length || !navLinks.length) return;
 
@@ -278,7 +274,7 @@ class PortfolioApp {
                 }
             });
         }, {
-            threshold: 0.5,
+            threshold: 0.3,
             rootMargin: '-20% 0px -20% 0px'
         });
 
@@ -303,7 +299,6 @@ class PortfolioApp {
         const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-buttons');
 
         if (heroElements.length === 0) {
-            console.warn('❌ Aucun élément Hero trouvé pour l\'animation');
             return;
         }
 
@@ -321,8 +316,6 @@ class PortfolioApp {
             el.style.opacity = '0';
             observer.observe(el);
         });
-
-        console.log('✅ Animations Hero initialisées');
     }
 
     initAnimations() {
@@ -341,22 +334,20 @@ class PortfolioApp {
         }, observerOptions);
 
         const animatables = document.querySelectorAll(
-            '.profile-card, .pub-card, .doc-card, .exp-card, ' +
-            '.competence-category, .timeline-item, .stat, .ressource-item, ' +
-            '.contact-item, .conf-card, .livre-item-compact, .ressource-item-compact'
+            '.profile-card, .pub-item-compact, .conf-item-compact, .these-item-compact, ' +
+            '.memoire-item-compact, .livre-item-compact, .ressource-item-compact, ' +
+            '.contact-item-compact, .carte-niveau, .carte-document'
         );
 
         animatables.forEach(el => {
             el.classList.add('pre-animate');
             observer.observe(el);
         });
-
-        console.log('✅ Animations initialisées');
     }
 
     initCounters() {
-        const statsContainer = document.querySelector('.hero-stats');
-        if (!statsContainer) return;
+        const counterElement = document.querySelector('.hero-stats');
+        if (!counterElement) return;
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -367,7 +358,7 @@ class PortfolioApp {
             });
         });
 
-        observer.observe(statsContainer);
+        observer.observe(counterElement);
     }
 
     animateCounters() {
@@ -400,7 +391,7 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 5. SYSTÈME D'ONGLETS (unifié — un seul point de bascule : switchTab)
+    // 5. SYSTÈME D'ONGLETS (unifié)
     // =====================================================================
 
     initTabs() {
@@ -428,8 +419,6 @@ class PortfolioApp {
             return;
         }
 
-        console.log(`📁 ${tabButtons.length} onglets trouvés dans`, container.className);
-
         // Réinitialiser les événements en clonant les boutons
         tabButtons.forEach(button => {
             const newButton = button.cloneNode(true);
@@ -451,14 +440,17 @@ class PortfolioApp {
         const hasActive = container.querySelector('.tab-button.active');
         if (!hasActive) {
             const firstButton = container.querySelector('.tab-button');
-            if (firstButton) firstButton.click();
+            if (firstButton) {
+                const tabId = firstButton.getAttribute('data-tab');
+                const freshButtons = container.querySelectorAll('.tab-button');
+                const freshPanes = container.querySelectorAll('.tab-pane');
+                this.switchTab(container, firstButton, freshButtons, freshPanes, tabId);
+            }
         }
     }
 
-    // Logique centrale de bascule d'onglet, réutilisée par le clic,
-    // la navigation clavier et les sélections programmatiques (ex: filières).
     switchTab(container, activeButton, tabButtons, tabPanes, tabId) {
-        console.log('🎯 Activation de l\'onglet:', tabId, 'dans', container.className);
+        console.log('🎯 Activation de l\'onglet:', tabId);
 
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
@@ -487,7 +479,7 @@ class PortfolioApp {
 
     handleTabKeyboardNavigation(currentTab, direction) {
         const tabContainer = currentTab.closest(
-            '.research-tabs-compact, .documents-tabs-compact, .experience-tabs, .filiere-tabs'
+            '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
         );
         if (!tabContainer) return;
 
@@ -510,7 +502,7 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 6. BOUTONS SPÉCIFIQUES (filières, conférences, livres, mémoires...)
+    // 6. BOUTONS SPÉCIFIQUES
     // =====================================================================
 
     initAllButtons() {
@@ -532,8 +524,7 @@ class PortfolioApp {
             const buttons = document.querySelectorAll(
                 `.btn-${filiere.toLowerCase()}, ` +
                 `[data-filiere="${filiere}"], ` +
-                `.btn-${filiere.toLowerCase()}-button, ` +
-                `button[data-target="section-${filiere.toLowerCase()}"]`
+                `.btn-${filiere.toLowerCase()}-button`
             );
 
             buttons.forEach(button => {
@@ -549,7 +540,7 @@ class PortfolioApp {
             });
         });
 
-        console.log(`✅ ${filiereButtons.length} filières initialisées (incluant MP)`);
+        console.log(`✅ ${filiereButtons.length} filières initialisées`);
     }
 
     handleFiliereClick(filiere) {
@@ -587,7 +578,7 @@ class PortfolioApp {
     }
 
     initConferenceButtons() {
-        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"], .conference-btn');
+        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"]');
         conferenceButtons.forEach(button => {
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
@@ -604,14 +595,6 @@ class PortfolioApp {
         const conferenceTitle = button.getAttribute('data-title') || button.textContent || 'Conférence';
         this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
 
-        const targetId = button.getAttribute('data-target');
-        if (targetId) {
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
         const url = button.getAttribute('href');
         if (url && !url.startsWith('#')) {
             window.open(url, '_blank', 'noopener,noreferrer');
@@ -619,7 +602,7 @@ class PortfolioApp {
     }
 
     initLivreButtons() {
-        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"], .livre-btn');
+        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"]');
         livreButtons.forEach(button => {
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
@@ -643,7 +626,7 @@ class PortfolioApp {
     }
 
     initMemoireButtons() {
-        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"], .memoire-btn');
+        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"]');
         memoireButtons.forEach(button => {
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
@@ -671,7 +654,6 @@ class PortfolioApp {
     }
 
     initGeneralButtons() {
-        // Boutons "voir" génériques (le téléchargement est géré par initDownloadLinks)
         const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
         viewButtons.forEach(button => {
             const newButton = button.cloneNode(true);
@@ -682,19 +664,6 @@ class PortfolioApp {
                 const target = newButton.getAttribute('data-target') || newButton.getAttribute('href');
                 console.log(`👀 Vue demandée: ${target}`);
                 this.handleViewClick(target);
-            });
-        });
-
-        // Liens de prévisualisation (ex : ressources) ouverts dans un nouvel onglet
-        const previewLinks = document.querySelectorAll('.btn-link.preview');
-        previewLinks.forEach(link => {
-            const newLink = link.cloneNode(true);
-            link.parentNode.replaceChild(newLink, link);
-
-            newLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = newLink.getAttribute('href');
-                if (href) window.open(href, '_blank', 'noopener,noreferrer');
             });
         });
     }
@@ -708,7 +677,7 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 7. RESSOURCES & LIVRES (sections dédiées)
+    // 7. RESSOURCES & LIVRES
     // =====================================================================
 
     initResourceCards() {
@@ -723,20 +692,10 @@ class PortfolioApp {
                 this.style.borderLeftColor = '#6c63ff';
             });
         });
-
-        const categories = document.querySelectorAll('.ressource-category');
-        categories.forEach(category => {
-            const items = category.querySelectorAll('.ressource-item-compact').length;
-            const title = category.querySelector('h3')?.textContent?.trim() || 'Catégorie';
-            console.log(`📚 ${title} : ${items} ressource(s)`);
-        });
-
-        console.log('✅ Cartes de ressources initialisées');
     }
 
     initBooksSection() {
         const covers = document.querySelectorAll('.livre-cover');
-        if (!covers.length && !document.getElementById('livres')) return;
 
         covers.forEach(img => {
             img.addEventListener('error', function () {
@@ -752,33 +711,20 @@ class PortfolioApp {
             }
         });
 
-        const totalBooks = document.querySelectorAll('.livre-item-compact').length;
-        console.log(`📚 ${totalBooks} livres affichés dans la section`);
-
         // Sécurité pour les liens externes des livres
         document.querySelectorAll('.livre-actions a').forEach(link => {
             if (!link.hasAttribute('rel')) {
                 link.setAttribute('rel', 'noopener noreferrer');
             }
         });
-
-        // Animation d'apparition douce
-        const tabPane = document.getElementById('livres');
-        if (tabPane) {
-            tabPane.style.opacity = '0';
-            tabPane.style.transition = 'opacity 0.4s ease';
-            setTimeout(() => { tabPane.style.opacity = '1'; }, 100);
-        }
-
-        console.log('✅ Section livres initialisée');
     }
 
     // =====================================================================
-    // 8. TÉLÉCHARGEMENTS (version unique — suivi + retour visuel)
+    // 8. TÉLÉCHARGEMENTS
     // =====================================================================
 
     initDownloadLinks() {
-        const downloadLinks = document.querySelectorAll('.btn-download, [download], .download-link');
+        const downloadLinks = document.querySelectorAll('[download], .download-link');
 
         downloadLinks.forEach(link => {
             const newLink = link.cloneNode(true);
@@ -787,14 +733,14 @@ class PortfolioApp {
             newLink.addEventListener('click', () => {
                 const fileName = newLink.getAttribute('href')?.split('/').pop() || 'document';
 
-                // Retour visuel (icône de chargement temporaire)
+                // Retour visuel
                 const originalIcon = newLink.innerHTML;
                 newLink.style.pointerEvents = 'none';
                 const iconEl = newLink.querySelector('i');
                 if (iconEl) iconEl.className = 'fas fa-spinner fa-spin';
 
                 this.trackDownload(fileName);
-                this.showNotification(`Téléchargement: ${fileName}`, 'info', 3000);
+                this.showNotification(`Téléchargement: ${fileName}`, 'info', 2000);
 
                 setTimeout(() => {
                     newLink.innerHTML = originalIcon;
@@ -802,8 +748,6 @@ class PortfolioApp {
                 }, 1500);
             });
         });
-
-        console.log(`✅ ${downloadLinks.length} lien(s) de téléchargement initialisé(s)`);
     }
 
     trackDownload(fileName) {
@@ -841,18 +785,12 @@ class PortfolioApp {
             newInput.addEventListener('input', () => this.clearFieldStatus(newInput));
         });
 
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        if (submitBtn) {
-            const newSubmit = submitBtn.cloneNode(true);
-            submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
-
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (await this.validateForm(contactForm)) {
-                    await this.submitForm(contactForm);
-                }
-            });
-        }
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (await this.validateForm(contactForm)) {
+                await this.submitForm(contactForm);
+            }
+        });
     }
 
     validateField(field) {
@@ -865,7 +803,7 @@ class PortfolioApp {
                 if (!value) {
                     isValid = false;
                     message = 'Ce champ est requis';
-                } else if (field.name.includes('name') && value.length < 2) {
+                } else if (field.name?.includes('name') && value.length < 2) {
                     isValid = false;
                     message = 'Minimum 2 caractères';
                 }
@@ -980,6 +918,7 @@ class PortfolioApp {
     // =====================================================================
 
     showNotification(message, type = 'info', duration = 5000) {
+        // Supprimer les notifications en double
         document.querySelectorAll('.notification').forEach(notification => {
             if (notification.textContent.includes(message)) {
                 this.removeNotification(notification);
@@ -1059,7 +998,7 @@ class PortfolioApp {
         this.displayVisitorCounters(stats, totalEl, onlineEl);
         this.startVisitorCounterUpdates(storageKey);
 
-        console.log('✅ Compteur de visiteurs initialisé — Total:', stats.total, 'En ligne:', this.calculateOnlineUsers(stats));
+        console.log('✅ Compteur de visiteurs initialisé');
     }
 
     getVisitorStats(storageKey) {
@@ -1100,7 +1039,6 @@ class PortfolioApp {
     }
 
     handleNewVisit(stats, sessionKey) {
-        const now = new Date();
         const sessionId = sessionStorage.getItem(sessionKey);
 
         if (!sessionId) {
@@ -1110,9 +1048,9 @@ class PortfolioApp {
             stats.total++;
             stats.visits.push({
                 sessionId: newSessionId,
-                timestamp: now.toISOString(),
-                date: now.toLocaleDateString('fr-FR'),
-                time: now.toLocaleTimeString('fr-FR')
+                timestamp: new Date().toISOString(),
+                date: new Date().toLocaleDateString('fr-FR'),
+                time: new Date().toLocaleTimeString('fr-FR')
             });
 
             if (stats.visits.length > 100) {
@@ -1120,8 +1058,6 @@ class PortfolioApp {
             }
 
             console.log('🆕 Nouvelle visite enregistrée — Total:', stats.total);
-        } else {
-            console.log('🔄 Session existante — Total:', stats.total);
         }
     }
 
@@ -1156,9 +1092,6 @@ class PortfolioApp {
         };
 
         requestAnimationFrame(animate);
-
-        element.style.transform = 'scale(1.2)';
-        setTimeout(() => { element.style.transform = 'scale(1)'; }, 300);
     }
 
     calculateOnlineUsers(stats) {
@@ -1277,7 +1210,9 @@ class PortfolioApp {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.src = img.dataset.src || img.src;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                    }
                     img.classList.remove('lazy');
                     imageObserver.unobserve(img);
                 }
@@ -1389,7 +1324,7 @@ class PortfolioApp {
 console.log('🎯 Démarrage de l\'application portfolio...');
 const portfolioApp = new PortfolioApp();
 
-// ===== STYLES DYNAMIQUES POUR LES ANIMATIONS =====
+// ===== STYLES DYNAMIQUES =====
 const dynamicStyles = document.createElement('style');
 dynamicStyles.textContent = `
     /* Animations de base */
@@ -1512,26 +1447,17 @@ dynamicStyles.textContent = `
 
     .dark-mode .section.bg-light { background: #1e293b !important; }
 
-    .dark-mode .profile-card,
-    .dark-mode .competence-category,
-    .dark-mode .doc-card,
-    .dark-mode .pub-card,
-    .dark-mode .exp-card {
+    .dark-mode .carte-niveau,
+    .dark-mode .carte-document,
+    .dark-mode .pub-item-compact,
+    .dark-mode .conf-item-compact,
+    .dark-mode .ressource-item-compact {
         background: #1e293b;
         border-color: #334155;
         color: #e2e8f0;
     }
 
-    /* Optimisation des performances */
-    @media (prefers-reduced-motion: reduce) {
-        * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-    }
-
-    /* ===== STYLES DES ONGLETS ===== */
+    /* Onglets */
     .tab-pane {
         display: none !important;
         opacity: 0;
@@ -1544,87 +1470,14 @@ dynamicStyles.textContent = `
         animation: fadeIn 0.5s ease;
     }
 
-    .tab-button {
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        background: transparent;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 0.95rem;
-        color: #555;
+    /* Optimisation des performances */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
-
-    .tab-button:hover {
-        transform: translateY(-2px);
-        background: rgba(0,0,0,0.05);
-    }
-
-    .tab-button.active {
-        background: linear-gradient(135deg, #667eea, #764ba2) !important;
-        color: white !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .tab-button .badge {
-        background: rgba(0,0,0,0.1);
-        padding: 1px 8px;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        margin-left: 5px;
-    }
-
-    .tab-button.active .badge { background: rgba(255,255,255,0.25); }
-
-    /* Styles pour les boutons spécifiques */
-    .btn-ect1, .btn-ect2, .btn-ecs1, .btn-ecs2, .btn-mpsi, .btn-mp {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .btn-ect1:hover, .btn-ect2:hover, .btn-ecs1:hover,
-    .btn-ecs2:hover, .btn-mpsi:hover, .btn-mp:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-conference, .btn-livre, .btn-memoire {
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin: 5px;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-conference:hover, .btn-livre:hover, .btn-memoire:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(240, 147, 251, 0.3);
-    }
-
-    /* Compteurs de visiteurs */
-    .visitor-counter {
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    /* Bouton retour en haut */
-    #backToTop { transition: all 0.3s ease; }
-    #backToTop.visible { visibility: visible; opacity: 1; }
 `;
 document.head.appendChild(dynamicStyles);
 
