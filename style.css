@@ -26,8 +26,6 @@
   22. Footer
   23. Bouton retour en haut
   24. Media queries complémentaires
-  Note : quand un même composant avait plusieurs définitions dans le fichier
-  d'origine, seule la DERNIÈRE définition rencontrée a été conservée.
 */
 
 /* ========================================================================= */
@@ -36,21 +34,21 @@
 
 :root {
     /* ---- Palette académique ---- */
-    --couleur-primaire-1: #1a365d;        /* Bleu navy profond */
-    --couleur-primaire-2: #2d4a80;        /* Bleu royal */
-    --couleur-primaire-3: #3c5a9c;        /* Bleu académique */
+    --couleur-primaire-1: #1a365d;
+    --couleur-primaire-2: #2d4a80;
+    --couleur-primaire-3: #3c5a9c;
 
-    --couleur-secondaire-1: #b91c1c;      /* Rouge bordeaux */
-    --couleur-secondaire-2: #dc2626;      /* Rouge vif */
-    --couleur-secondaire-3: #ef4444;      /* Rouge clair */
+    --couleur-secondaire-1: #b91c1c;
+    --couleur-secondaire-2: #dc2626;
+    --couleur-secondaire-3: #ef4444;
 
-    --couleur-tertiaire-1: #d97706;       /* Or foncé */
-    --couleur-tertiaire-2: #f59e0b;       /* Or moyen */
-    --couleur-tertiaire-3: #fbbf24;       /* Or clair */
+    --couleur-tertiaire-1: #d97706;
+    --couleur-tertiaire-2: #f59e0b;
+    --couleur-tertiaire-3: #fbbf24;
 
-    --couleur-quaternaire-1: #059669;     /* Vert foncé */
-    --couleur-quaternaire-2: #10b981;     /* Vert moyen */
-    --couleur-quaternaire-3: #34d399;     /* Vert clair */
+    --couleur-quaternaire-1: #059669;
+    --couleur-quaternaire-2: #10b981;
+    --couleur-quaternaire-3: #34d399;
 
     /* Couleurs de statut académique */
     --couleur-college: #7c3aed;
@@ -153,8 +151,6 @@ body {
     color: var(--couleur-texte);
     background-color: var(--couleur-fond);
     -webkit-font-smoothing: antialiased;
-    margin-left: var(--marge-gauche-section);
-    padding-top: 60px;
 }
 
 /* ========================================================================= */
@@ -171,7 +167,6 @@ body {
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* fadeInUp : version finale conservée (utilisée par les listes de ressources) */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -416,14 +411,13 @@ body {
 
 .section {
     padding: var(--espace-xlarge) 0;
-    margin-left: var(--marge-gauche-contenu);
     position: relative;
 }
 
 .section::before {
     content: '';
     position: absolute;
-    left: calc(-1 * var(--marge-gauche-contenu));
+    left: 0;
     top: 0;
     height: 100%;
     width: 2px;
@@ -431,11 +425,6 @@ body {
         var(--couleur-college), var(--couleur-lycee), var(--couleur-cpge),
         var(--couleur-licence), var(--couleur-master), var(--couleur-doctorat));
     border-radius: var(--espace-micro);
-}
-
-/* Mise en avant de la section active au scroll */
-.section.active::before {
-    opacity: 1;
 }
 
 .section--fond-alterne { background: var(--couleur-fond-secondaire); }
@@ -584,14 +573,13 @@ body {
     position: relative;
     max-width: 1000px;
     margin: 0 auto;
-    margin-left: calc(var(--marge-gauche-sous-section) + 1.5rem);
     padding: var(--espace-large) 0;
 }
 
 .timeline-academique::before {
     content: '';
     position: absolute;
-    left: -1.5rem;
+    left: 0;
     top: 0;
     height: 100%;
     width: 3px;
@@ -609,7 +597,7 @@ body {
 
 .marqueur-timeline {
     position: absolute;
-    left: -1.75rem;
+    left: -6px;
     top: 0;
     width: 16px;
     height: 16px;
@@ -663,7 +651,6 @@ body {
 
 /* ========================================================================= */
 /* 12. HERO ACADÉMIQUE MINIMAL                                              */
-/* (utilise .hero-content / .hero-title / .hero-subtitle définis en §15)    */
 /* ========================================================================= */
 
 .hero-section {
@@ -672,7 +659,6 @@ body {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--couleur-fond-secondaire) 0%, #f0f4f8 100%);
-    margin-left: 0;
     padding: var(--espace-xxlarge) 0;
 }
 
@@ -837,11 +823,16 @@ body {
     color: var(--couleur-cpge);
 }
 
-.filiere-item.mp, .filiere-item.mp:hover { border-color: var(--couleur-mp); color: var(--couleur-mp); }
-.filiere-item.psi, .filiere-item.psi:hover { border-color: var(--couleur-psi); color: var(--couleur-psi); }
-.filiere-item.mpsi, .filiere-item.mpsi:hover { border-color: var(--couleur-mpsi); color: var(--couleur-mpsi); }
-.filiere-item.ect, .filiere-item.ect:hover { border-color: var(--couleur-ect); color: var(--couleur-ect); }
-.filiere-item.ecs, .filiere-item.ecs:hover { border-color: var(--couleur-ecs); color: var(--couleur-ecs); }
+.filiere-item.mp { border-color: var(--couleur-mp); color: var(--couleur-mp); }
+.filiere-item.mp:hover { border-color: var(--couleur-mp); color: var(--couleur-mp); }
+.filiere-item.psi { border-color: var(--couleur-psi); color: var(--couleur-psi); }
+.filiere-item.psi:hover { border-color: var(--couleur-psi); color: var(--couleur-psi); }
+.filiere-item.mpsi { border-color: var(--couleur-mpsi); color: var(--couleur-mpsi); }
+.filiere-item.mpsi:hover { border-color: var(--couleur-mpsi); color: var(--couleur-mpsi); }
+.filiere-item.ect { border-color: var(--couleur-ect); color: var(--couleur-ect); }
+.filiere-item.ect:hover { border-color: var(--couleur-ect); color: var(--couleur-ect); }
+.filiere-item.ecs { border-color: var(--couleur-ecs); color: var(--couleur-ecs); }
+.filiere-item.ecs:hover { border-color: var(--couleur-ecs); color: var(--couleur-ecs); }
 
 .types-documents {
     display: flex;
@@ -916,16 +907,16 @@ body {
 
 .section-agrandie {
     padding: var(--espace-xxlarge) 0;
-    margin-left: var(--marge-gauche-contenu);
     min-height: 100vh;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .section-agrandie::before {
     content: '';
     position: absolute;
-    left: calc(-1 * var(--marge-gauche-contenu));
+    left: 0;
     top: 0;
     height: 100%;
     width: 6px;
@@ -947,7 +938,7 @@ body {
 .titre-section-grand::after {
     content: '';
     position: absolute;
-    bottom: calc(-1 * var(--espace-base)); /* correction : -var() n'est pas valide en CSS */
+    bottom: calc(-1 * var(--espace-base));
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
@@ -972,7 +963,6 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-/* Apparence de base (dernière version, plus sobre) */
 .tab-button {
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1031,25 +1021,6 @@ body {
 }
 .tab-button.active .badge { background: rgba(255, 255, 255, 0.25); }
 
-/* Compteur affiché en coin */
-.tab-button::after {
-    content: attr(data-count);
-    position: absolute;
-    top: -8px; right: -8px;
-    background: var(--couleur-secondaire-2);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 800;
-    padding: 4px 8px;
-    border-radius: 20px;
-    min-width: 20px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
-    transform: scale(0);
-    transition: transform 0.3s ease;
-}
-.tab-button[data-count]:not([data-count=""])::after { transform: scale(1); }
-
 /* Couleurs spécifiques par groupe de contexte */
 [data-tab-group="experience"] .tab-button.active { background: linear-gradient(135deg, var(--couleur-cpge), var(--couleur-licence)); }
 [data-tab-group="experience"] .tab-button:hover { color: var(--couleur-cpge); border-color: var(--couleur-cpge); }
@@ -1091,19 +1062,6 @@ body {
 .tab-button:focus { outline: none; box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.3); }
 .tab-button:focus-visible { box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.5); }
 
-.tab-button.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 20px; height: 20px;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-/* Panneaux d'onglets pilotés en JS (affichage/masquage) */
 .tab-pane {
     display: none !important;
     opacity: 0;
@@ -1133,7 +1091,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Variante compacte (recherche / documents, boutons en pilule) */
+/* Variante compacte (recherche / documents) */
 .research-tabs-compact .tab-buttons,
 .documents-tabs-compact .tab-buttons {
     display: flex;
@@ -1380,33 +1338,6 @@ body {
     text-decoration: none;
 }
 .scroll-indicator a:hover { background: #3498db; color: white; transform: translateY(-5px); }
-.scroll-indicator i { font-size: var(--taille-titre-4); color: var(--couleur-primaire-1); opacity: 0.7; }
-
-@media (max-width: 1024px) {
-    .hero-main-content { grid-template-columns: 1fr; gap: 40px; padding: 40px; }
-    .hero-title { font-size: 3rem; }
-}
-
-@media (max-width: 768px) {
-    .hero { padding: 60px 0 30px; }
-    .hero-main-content { padding: 30px 20px; gap: 30px; }
-    .hero-title { font-size: 2.5rem; }
-    .hero-info-container { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .visitor-stats { width: 100%; justify-content: space-between; }
-    .hero-buttons { flex-direction: column; width: 100%; }
-    .btn { justify-content: center; width: 100%; }
-    .logo-image.large { max-height: 100px; }
-    .logo-image.huge { max-height: 150px; }
-}
-
-@media (max-width: 480px) {
-    .hero-title { font-size: 2rem; }
-    .hero-subtitle { font-size: 1rem; }
-    .hero-contact p { font-size: 0.85rem; }
-    .hero-main-content { padding: 20px 15px; }
-    .hero-info-bar { padding: 12px 15px; }
-    .info-item { font-size: 0.85rem; }
-}
 
 /* ========================================================================= */
 /* 16. NAVIGATION HORIZONTALE (NAVBAR)                                      */
@@ -1464,7 +1395,7 @@ body {
 .nav-link:hover { background: rgba(255,255,255,0.1); border-radius: 4px; }
 .nav-link i { margin-right: 6px; }
 
-/* Couleurs distinctes par élément de menu (héritées de la version étendue) */
+/* Couleurs distinctes par élément de menu */
 .nav-menu li:nth-child(1) .nav-link { background-color: #3498db; }
 .nav-menu li:nth-child(2) .nav-link { background-color: #2ecc71; }
 .nav-menu li:nth-child(3) .nav-link { background-color: #e74c3c; }
@@ -1515,7 +1446,7 @@ body {
         gap: 0;
         flex: none;
     }
-    .nav-menu.active { display: flex; }
+    .nav-menu.open { display: flex; }
     .nav-menu li { width: 100%; }
     .nav-link { padding: 12px 20px; width: 100%; }
     .nav-container { position: relative; flex-wrap: wrap; }
@@ -1670,8 +1601,6 @@ body {
 }
 .badge-cahier { background: #e8e6ff; color: #6c63ff; }
 .badge-programme { background: #d5f5e3; color: #1e8449; }
-
-/* Badges de catégorie (enseignement : TP, colles, examens, divers) */
 .badge-tp { background: #d6eaf8; color: #1a5276; }
 .badge-colle { background: #fdebd0; color: #7d6608; }
 .badge-examen { background: #d5f5e3; color: #1e8449; }
@@ -1684,7 +1613,7 @@ body {
 .badge-ect { background: #ede9fe; color: #5b21b6; }
 .badge-ecs { background: #fecaca; color: #991b1b; }
 
-/* Regroupement « Enseignement » (TP / colles / examens / divers) */
+/* Regroupement Enseignement */
 .enseignement-wrapper {
     max-width: 1100px;
     margin: 0 auto;
@@ -2226,7 +2155,6 @@ body {
 /* 24. MEDIA QUERIES COMPLÉMENTAIRES                                        */
 /* ========================================================================= */
 
-/* --- Espaces latéraux / mise en page générale --- */
 @media (max-width: 1200px) {
     :root {
         --marge-gauche-section: 2.5rem;
@@ -2250,7 +2178,6 @@ body {
         --marge-gauche-section: 0;
         --marge-gauche-contenu: 0.75rem;
     }
-    body { margin-left: 0; }
     .barre-laterale-academique { transform: translateX(-100%); transition: transform 0.3s ease; }
     .barre-laterale-academique.ouverte { transform: translateX(0); }
     .navigation-principale { left: 0; width: 100%; }
@@ -2294,7 +2221,6 @@ body {
     .tab-button:hover { transform: translateY(-3px) scale(1.02); }
     .tab-button.active { transform: translateY(-2px) scale(1.03); }
 
-    /* Ressources compactes */
     .ressource-item-compact { flex-wrap: wrap; padding: 12px; }
     .chap-title { min-width: 100%; order: 3; margin-top: 4px; }
     .ressource-actions { margin-left: 0; order: 4; width: 100%; justify-content: flex-end; }
@@ -2306,7 +2232,6 @@ body {
     .enseignement-category-compact .category-header { font-size: 0.9rem; padding: 5px 10px; }
     .research-tabs-compact .tab-button, .documents-tabs-compact .tab-button { font-size: 0.8rem; padding: 6px 14px; }
 
-    /* Publications / conférences / thèses / mémoires */
     .pub-item-compact, .conf-item-compact { font-size: 0.82rem; padding: 5px 8px; gap: 6px; }
     .pub-item-compact .pub-title, .conf-item-compact .conf-title { min-width: 100px; }
     .pub-item-compact .pub-authors, .pub-item-compact .pub-journal, .conf-item-compact .conf-location { font-size: 0.72rem; }
@@ -2316,7 +2241,6 @@ body {
     .these-item-compact .these-meta, .memoire-item-compact .memoire-meta, .livre-item-compact .livre-meta { font-size: 0.7rem; gap: 6px; }
     .these-item-compact .btn-link, .memoire-item-compact .btn-link, .livre-item-compact .btn-link { font-size: 0.7rem; padding: 2px 6px; }
 
-    /* Livres (variante détaillée) */
     .livre-item-compact { flex-wrap: wrap; padding: 0.8rem 1rem; gap: 0.5rem 0.6rem; }
     .livre-cover { width: 36px; height: 50px; }
     .livre-title { flex: 1 1 160px; font-size: 0.9rem; }
@@ -2324,7 +2248,6 @@ body {
     .livre-price { font-size: 0.8rem; padding: 0.05rem 0.7rem; }
     .livre-actions { margin-left: 0; width: 100%; justify-content: flex-end; }
 
-    /* Contact / footer / retour en haut */
     .contact-grid-compact { grid-template-columns: 1fr; gap: 20px; }
     .contact-info-compact { padding: 14px 16px; }
     .contact-item-compact { padding: 6px 10px; }
@@ -2354,14 +2277,12 @@ body {
     .tab-button { padding: var(--espace-base) var(--espace-petit); font-size: var(--taille-texte-petit); }
     .tab-buttons.large .tab-button { padding: var(--espace-base) var(--espace-petit); }
 
-    /* Ressources compactes */
     .chap-title a { font-size: 0.85rem; }
     .download-link { font-size: 0.95rem; padding: 4px 8px; }
     .ressource-item-compact { padding: 10px; gap: 8px; }
     .badge-cat { font-size: 0.45rem; padding: 1px 5px; }
     .ri-desc, .ri-size { display: none; }
 
-    /* Publications / conférences */
     .pub-item-compact .pub-authors, .pub-item-compact .pub-journal { display: none; }
     .conf-item-compact .conf-title { display: none; }
     .conf-item-compact .conf-location { font-size: 0.7rem; }
@@ -2370,12 +2291,10 @@ body {
     .livre-item-compact .livre-meta span:not(:first-child) { display: none; }
     .these-item-compact .these-title small, .memoire-item-compact .memoire-title small, .livre-item-compact .livre-title small { font-size: 0.75rem; }
 
-    /* Livres */
     .livre-cover { width: 30px; height: 42px; }
     .livre-title small { font-size: 0.65rem; }
     .badge-new { font-size: 0.5rem; padding: 0.05rem 0.5rem; }
 
-    /* Contact / footer */
     .contact-item-compact { flex-wrap: wrap; gap: 6px; }
     .contact-item-compact .ci-icon { width: 30px; height: 30px; min-width: 30px; font-size: 0.75rem; }
     .contact-item-compact .ci-content .ci-value { font-size: 0.78rem; }
