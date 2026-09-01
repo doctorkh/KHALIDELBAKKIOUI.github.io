@@ -2177,13 +2177,14 @@ body {
 /* BADGE SPÉCIFIQUE POUR LES DIAPOSITIVES                                   */
 /* ========================================================================= */
 
+/* Badge pour Diapositive - Version final */
 .badge-diapositive {
     display: inline-block;
     padding: 2px 12px;
     border-radius: 12px;
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
+    text-transform: lowercase;  /* Pour être en minuscules comme les autres */
     letter-spacing: 0.5px;
     background: #fde8e0;
     color: #c0392b;
