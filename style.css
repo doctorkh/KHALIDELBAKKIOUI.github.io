@@ -1896,7 +1896,7 @@ body {
 .conf-item-compact .conf-link.pdf-link:hover { background: #e74c3c; color: #fff; }
 
 /* ========================================================================= */
-/* 19. SECTION DOCUMENTS ACADÉMIQUES (THÈSES, MÉMOIRES)                     */
+/* 19. SECTION DOCUMENTS ACADÉMIQUES (THÈSES, MÉMOIRES, DIAPOSITIVES)       */
 /* ========================================================================= */
 
 .documents-section {
@@ -1915,7 +1915,15 @@ body {
     margin-bottom: 25px;
 }
 
-.these-list-compact { display: flex; flex-direction: column; gap: 4px; }
+/* ========================================================================= */
+/* THÈSES                                                                    */
+/* ========================================================================= */
+
+.these-list-compact { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+}
 
 .these-item-compact {
     display: flex;
@@ -1928,13 +1936,46 @@ body {
     transition: background 0.2s;
     flex-wrap: wrap;
 }
-.these-item-compact:hover { background: #eef2f7; }
-.these-item-compact .these-icon { color: #e74c3c; font-size: 1.2rem; flex-shrink: 0; width: 30px; text-align: center; }
-.these-item-compact .these-title { font-weight: 600; color: #2c3e50; flex: 1; min-width: 180px; }
-.these-item-compact .these-title small { font-weight: 400; color: #555; font-size: 0.85rem; display: block; }
-.these-item-compact .these-meta { display: flex; gap: 12px; color: #7f8c8d; font-size: 0.8rem; flex-wrap: wrap; flex-shrink: 0; }
-.these-item-compact .these-meta span { display: inline-flex; align-items: center; gap: 4px; }
-.these-item-compact .these-actions { display: flex; gap: 5px; flex-shrink: 0; }
+.these-item-compact:hover { 
+    background: #eef2f7; 
+}
+.these-item-compact .these-icon { 
+    color: #e74c3c; 
+    font-size: 1.2rem; 
+    flex-shrink: 0; 
+    width: 30px; 
+    text-align: center; 
+}
+.these-item-compact .these-title { 
+    font-weight: 600; 
+    color: #2c3e50; 
+    flex: 1; 
+    min-width: 180px; 
+}
+.these-item-compact .these-title small { 
+    font-weight: 400; 
+    color: #555; 
+    font-size: 0.85rem; 
+    display: block; 
+}
+.these-item-compact .these-meta { 
+    display: flex; 
+    gap: 12px; 
+    color: #7f8c8d; 
+    font-size: 0.8rem; 
+    flex-wrap: wrap; 
+    flex-shrink: 0; 
+}
+.these-item-compact .these-meta span { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 4px; 
+}
+.these-item-compact .these-actions { 
+    display: flex; 
+    gap: 5px; 
+    flex-shrink: 0; 
+}
 .these-item-compact .btn-link {
     color: #3498db;
     font-size: 0.8rem;
@@ -1947,11 +1988,28 @@ body {
     align-items: center;
     gap: 4px;
 }
-.these-item-compact .btn-link:hover { background: #3498db; color: #fff; }
-.these-item-compact .btn-link.preview { color: #27ae60; border-color: #27ae60; }
-.these-item-compact .btn-link.preview:hover { background: #27ae60; color: #fff; }
+.these-item-compact .btn-link:hover { 
+    background: #3498db; 
+    color: #fff; 
+}
+.these-item-compact .btn-link.preview { 
+    color: #27ae60; 
+    border-color: #27ae60; 
+}
+.these-item-compact .btn-link.preview:hover { 
+    background: #27ae60; 
+    color: #fff; 
+}
 
-.memoires-list-compact { display: flex; flex-direction: column; gap: 4px; }
+/* ========================================================================= */
+/* MÉMOIRES                                                                  */
+/* ========================================================================= */
+
+.memoires-list-compact { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+}
 
 .memoire-item-compact {
     display: flex;
@@ -1964,13 +2022,46 @@ body {
     transition: background 0.2s;
     flex-wrap: wrap;
 }
-.memoire-item-compact:hover { background: #f4ecf7; }
-.memoire-item-compact .memoire-icon { color: #8e44ad; font-size: 1.2rem; flex-shrink: 0; width: 30px; text-align: center; }
-.memoire-item-compact .memoire-title { font-weight: 600; color: #2c3e50; flex: 1; min-width: 180px; }
-.memoire-item-compact .memoire-title small { font-weight: 400; color: #555; font-size: 0.85rem; display: block; }
-.memoire-item-compact .memoire-meta { display: flex; gap: 12px; color: #7f8c8d; font-size: 0.8rem; flex-wrap: wrap; flex-shrink: 0; }
-.memoire-item-compact .memoire-meta span { display: inline-flex; align-items: center; gap: 4px; }
-.memoire-item-compact .memoire-actions { display: flex; gap: 5px; flex-shrink: 0; }
+.memoire-item-compact:hover { 
+    background: #f4ecf7; 
+}
+.memoire-item-compact .memoire-icon { 
+    color: #8e44ad; 
+    font-size: 1.2rem; 
+    flex-shrink: 0; 
+    width: 30px; 
+    text-align: center; 
+}
+.memoire-item-compact .memoire-title { 
+    font-weight: 600; 
+    color: #2c3e50; 
+    flex: 1; 
+    min-width: 180px; 
+}
+.memoire-item-compact .memoire-title small { 
+    font-weight: 400; 
+    color: #555; 
+    font-size: 0.85rem; 
+    display: block; 
+}
+.memoire-item-compact .memoire-meta { 
+    display: flex; 
+    gap: 12px; 
+    color: #7f8c8d; 
+    font-size: 0.8rem; 
+    flex-wrap: wrap; 
+    flex-shrink: 0; 
+}
+.memoire-item-compact .memoire-meta span { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 4px; 
+}
+.memoire-item-compact .memoire-actions { 
+    display: flex; 
+    gap: 5px; 
+    flex-shrink: 0; 
+}
 .memoire-item-compact .btn-link {
     color: #8e44ad;
     font-size: 0.8rem;
@@ -1983,7 +2074,122 @@ body {
     align-items: center;
     gap: 4px;
 }
-.memoire-item-compact .btn-link:hover { background: #8e44ad; color: #fff; }
+.memoire-item-compact .btn-link:hover { 
+    background: #8e44ad; 
+    color: #fff; 
+}
+.memoire-item-compact .btn-link.preview { 
+    color: #27ae60; 
+    border-color: #27ae60; 
+}
+.memoire-item-compact .btn-link.preview:hover { 
+    background: #27ae60; 
+    color: #fff; 
+}
+
+/* ========================================================================= */
+/* DIAPOSITIVES (SLIDES) - AJOUTÉ POUR CORRIGER LE PROBLÈME                */
+/* ========================================================================= */
+
+.slides-list-compact { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+}
+
+.slide-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border-left: 4px solid #e74c3c;  /* Bordure rouge */
+    transition: background 0.2s;
+    flex-wrap: wrap;
+}
+.slide-item-compact:hover { 
+    background: #fdedec;  /* Fond rouge très clair au survol */
+}
+.slide-item-compact .slide-icon { 
+    color: #e74c3c;  /* Icône rouge */
+    font-size: 1.2rem; 
+    flex-shrink: 0; 
+    width: 30px; 
+    text-align: center; 
+}
+.slide-item-compact .slide-title { 
+    font-weight: 600; 
+    color: #2c3e50; 
+    flex: 1; 
+    min-width: 180px; 
+}
+.slide-item-compact .slide-title small { 
+    font-weight: 400; 
+    color: #555; 
+    font-size: 0.85rem; 
+    display: block; 
+}
+.slide-item-compact .slide-meta { 
+    display: flex; 
+    gap: 12px; 
+    color: #7f8c8d; 
+    font-size: 0.8rem; 
+    flex-wrap: wrap; 
+    flex-shrink: 0; 
+}
+.slide-item-compact .slide-meta span { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 4px; 
+}
+.slide-item-compact .slide-actions { 
+    display: flex; 
+    gap: 5px; 
+    flex-shrink: 0; 
+}
+.slide-item-compact .btn-link {
+    color: #e74c3c;  /* Bouton rouge */
+    font-size: 0.8rem;
+    text-decoration: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid #e74c3c;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.slide-item-compact .btn-link:hover { 
+    background: #e74c3c; 
+    color: #fff; 
+}
+.slide-item-compact .btn-link.preview { 
+    color: #27ae60; 
+    border-color: #27ae60; 
+}
+.slide-item-compact .btn-link.preview:hover { 
+    background: #27ae60; 
+    color: #fff; 
+}
+
+/* ========================================================================= */
+/* BADGE SPÉCIFIQUE POUR LES DIAPOSITIVES                                   */
+/* ========================================================================= */
+
+.badge-diapositive {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #fde8e0;
+    color: #c0392b;
+    border-left: 3px solid #e74c3c;
+    flex-shrink: 0;
+}
 
 /* ========================================================================= */
 /* 20. SECTION LIVRES                                                       */
