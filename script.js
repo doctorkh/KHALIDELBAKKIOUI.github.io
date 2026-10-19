@@ -15,7 +15,53 @@
 
 'use strict';
 
+// ╔═════════════════════════════════════════════════════════════════════╗
+// ║  CONFIGURATION DU SITE (édition GitHub Pages) — SEULE PARTIE À MODIFIER ║
+// ╚═════════════════════════════════════════════════════════════════════╝
+//
+// 1) MODE D'ACCÈS : une seule ligne active (sans // devant).
+//    Changer de mode = modifier cette ligne ET le partage des dossiers
+//    Google Drive (voir la procédure). Ici, le mode règle l'affichage
+//    (cadenas, indicateur) ; la protection réelle est assurée par Google Drive.
+const MODES_ACTIFS = [];
+MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
+// MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
+
+const CONFIG_SITE = {
+    // 2) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
+    //    Indiquez votre code GoatCounter, ex. 'elbakkioui' pour elbakkioui.goatcounter.com.
+    //    Vide ('') = compteur local, limité au navigateur de chaque visiteur.
+    goatcounterCode: '',
+    // Visites antérieures à GoatCounter à ajouter au total (0 si inconnu).
+    visitesAnterieures: 0,
+    // Fuseau utilisé pour « aujourd'hui » (réglez le même dans GoatCounter → Settings).
+    fuseauHoraire: 'Africa/Casablanca',
+
+    // 3) DOCUMENTS RÉSERVÉS, HÉBERGÉS SUR GOOGLE DRIVE.
+    //    Retirez ces fichiers de GitHub (tout ce qui est sur GitHub est public),
+    //    déposez-les dans un dossier Google Drive et collez le lien du dossier.
+    //    Jokers : * = n'importe quelle suite de caractères.
+    //    Tant que « drive » est vide, la règle est ignorée (le lien GitHub reste).
+    documentsReserves: [
+        { motif: 'documents/enseignement/mpsi/corrige*', drive: '', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/Corrige*', drive: '', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: '', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/psi/corrige*', drive: '', libelle: 'Corrigés PSI' },
+        { motif: 'documents/enseignement/mp/corrige*', drive: '', libelle: 'Corrigés MP' },
+        // Exemples à décommenter et compléter :
+        // { motif: 'documents/enseignement/mpsi/*', drive: 'https://drive.google.com/drive/folders/XXXX', libelle: 'Ressources MPSI' },
+        // { motif: 'documents/these/*',             drive: 'https://drive.google.com/drive/folders/XXXX', libelle: 'Thèse' },
+    ],
+
+    // Facultatif : lien Drive propre à un fichier (ouvre directement le fichier
+    // au lieu du dossier). Prioritaire sur les règles ci-dessus.
+    liensDriveFichiers: {
+        // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/file/d/XXXX/view',
+    }
+};
+
 const PORTFOLIO_CONFIG = {
+    backendPhp: false,                      // false sur GitHub Pages (pas de PHP)
     apiUrl: 'api.php',                      // backend PHP (même dossier que index.html)
     heartbeatMs: 60000,                     // rafraîchissement « en ligne » (1 min)
     debug: ['localhost', '127.0.0.1'].includes(window.location.hostname),
@@ -729,7 +775,7 @@ class PortfolioApp {
         // Délégation d'événement : aucun clonage, aucun conflit avec d'autres écouteurs.
         document.addEventListener('click', (e) => {
             const link = e.target.closest('[download], .download-link');
-            if (!link || e.defaultPrevented || link.dataset.protege === '1') return;
+            if (!link || e.defaultPrevented || link.dataset.protege === '1' || link.dataset.drive) return;
 
             const href = link.getAttribute('href') || '';
             if (!href || href.startsWith('#')) return;
@@ -1052,6 +1098,10 @@ class PortfolioApp {
     }
 
     async initServerConnection() {
+        if (!PORTFOLIO_CONFIG.backendPhp) {
+            this.initStaticMode();       // GitHub Pages : Google Drive + GoatCounter
+            return;
+        }
         if (window.location.protocol === 'file:') {
             this.initVisitorCounter();   // ouverture locale du fichier : compteur local
             return;
@@ -1223,6 +1273,147 @@ class PortfolioApp {
                 window.location.href = `${compte}?raison=connexion&next=${encodeURIComponent(path)}`;
             }
         }, true);
+    }
+
+    // =====================================================================
+    // 12 bis. ÉDITION GITHUB PAGES : MODE D'ACCÈS, GOOGLE DRIVE, GOATCOUNTER
+    // =====================================================================
+
+    /** Vérifie la configuration et renvoie le mode effectif. */
+    validateSiteConfig() {
+        const erreurs = [];
+        const modes = [...new Set(MODES_ACTIFS)];
+        let mode = 'prive';                         // fermeture par défaut si invalide
+        if (MODES_ACTIFS.length !== 1 || modes.length !== 1) {
+            erreurs.push(`Il faut exactement un mode actif (actuellement : ${MODES_ACTIFS.join(', ') || 'aucun'}).`);
+        } else if (!['libre', 'prive'].includes(modes[0])) {
+            erreurs.push(`Mode inconnu « ${modes[0]} » (valeurs possibles : libre, prive).`);
+        } else {
+            mode = modes[0];
+        }
+
+        const lienValide = (url) => /^https:\/\/(drive|docs)\.google\.com\//.test(url);
+        (CONFIG_SITE.documentsReserves || []).forEach((r, i) => {
+            if (!r || !r.motif) erreurs.push(`Règle n°${i + 1} sans motif.`);
+            else if (r.drive && !lienValide(r.drive)) erreurs.push(`Règle « ${r.motif} » : lien Google Drive invalide.`);
+            else if (!r.drive && mode === 'prive') {
+                erreurs.push(`Règle « ${r.motif} » : aucun lien Drive, ces documents restent publics sur GitHub.`);
+            }
+        });
+        Object.entries(CONFIG_SITE.liensDriveFichiers || {}).forEach(([fichier, url]) => {
+            if (!lienValide(url)) erreurs.push(`Lien Drive invalide pour « ${fichier} ».`);
+        });
+        if (CONFIG_SITE.goatcounterCode && !/^[a-z0-9-]{2,50}$/.test(CONFIG_SITE.goatcounterCode)) {
+            erreurs.push('Code GoatCounter invalide (lettres minuscules, chiffres, tirets).');
+        }
+
+        // Signalées dans la console (F12) pour ne pas gêner les visiteurs.
+        erreurs.forEach(e => console.warn('⚠️ Configuration du site :', e));
+        if (erreurs.length && PORTFOLIO_CONFIG.debug) {
+            this.showNotification(`Configuration : ${erreurs.length} problème(s), voir la console (F12).`, 'warning', 8000);
+        }
+        return mode;
+    }
+
+    initStaticMode() {
+        const mode = this.validateSiteConfig();
+        this.siteMode = mode;
+        this.updateModeIndicator(mode);
+        this.applyDriveLinks(mode);
+        this.initGoatCounter();
+    }
+
+    /** Lien Google Drive applicable à un chemin, ou null. */
+    driveLinkFor(path) {
+        if (!path) return null;
+        const fichiers = CONFIG_SITE.liensDriveFichiers || {};
+        if (fichiers[path]) return { url: fichiers[path], libelle: '' };
+        const regle = (CONFIG_SITE.documentsReserves || [])
+            .find(r => r && r.drive && /^https:\/\/(drive|docs)\.google\.com\//.test(r.drive) && this.globToRegex(r.motif).test(path));
+        return regle ? { url: regle.drive, libelle: regle.libelle || '' } : null;
+    }
+
+    applyDriveLinks(mode) {
+        let count = 0;
+        document.querySelectorAll('a[href]').forEach(link => {
+            const path = this.relativePath(link.getAttribute('href'));
+            const drive = this.driveLinkFor(path);
+            if (!drive) return;
+
+            count++;
+            link.dataset.drive = '1';
+            link.dataset.cheminOriginal = path;
+            link.href = drive.url;
+            link.removeAttribute('download');
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+
+            if (mode === 'prive') {
+                link.classList.add('lien-protege');
+                link.title = `Réservé${drive.libelle ? ` (${drive.libelle})` : ''} — accès avec le compte Google autorisé`;
+                if (!link.querySelector('.acces-verrou')) {
+                    const lock = document.createElement('span');
+                    lock.className = 'acces-verrou';
+                    lock.setAttribute('aria-hidden', 'true');
+                    lock.innerHTML = '<i class="fas fa-lock"></i>';
+                    link.appendChild(lock);
+                }
+            } else {
+                link.title = `Ouvrir dans Google Drive${drive.libelle ? ` (${drive.libelle})` : ''}`;
+            }
+        });
+
+        if (count && mode === 'prive') {
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[data-drive="1"]');
+                if (!link) return;
+                this.showNotification(
+                    'Document réservé : connectez-vous avec le compte Google autorisé. Pas encore d\'accès ? Demandez-le via le formulaire de contact.',
+                    'info', 9000);
+            });
+        }
+        log(`🔐 ${count} lien(s) redirigé(s) vers Google Drive (mode ${mode})`);
+    }
+
+    /** Compteur réel via GoatCounter ; repli sur le compteur local. */
+    async initGoatCounter() {
+        const code = CONFIG_SITE.goatcounterCode;
+        if (!code || !/^[a-z0-9-]{2,50}$/.test(code) || window.location.protocol === 'file:') {
+            this.initVisitorCounter();
+            return;
+        }
+
+        // Enregistrement de la visite (script officiel GoatCounter)
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://gc.zgo.at/count.js';
+        s.dataset.goatcounter = `https://${code}.goatcounter.com/count`;
+        document.head.appendChild(s);
+
+        const base = `https://${code}.goatcounter.com/counter/TOTAL.json`;
+        const parse = (data) => Number.parseInt(String(data?.count || '0').replace(/\D/g, ''), 10) || 0;
+        const today = new Intl.DateTimeFormat('en-CA', {
+            timeZone: CONFIG_SITE.fuseauHoraire || 'Africa/Casablanca', year: 'numeric', month: '2-digit', day: '2-digit'
+        }).format(new Date());   // AAAA-MM-JJ
+
+        try {
+            const [total, jour] = await Promise.all([
+                fetch(base, { cache: 'no-store' }).then(r => (r.ok ? r.json() : Promise.reject(new Error(r.status)))),
+                fetch(`${base}?start=${today}`, { cache: 'no-store' }).then(r => (r.ok ? r.json() : { count: '0' })).catch(() => ({ count: '0' }))
+            ]);
+            const totalEl = document.getElementById('total-visitors');
+            const todayEl = document.getElementById('today-visitors');
+            this.animateCounter(totalEl, parse(total) + (Number(CONFIG_SITE.visitesAnterieures) || 0));
+            this.animateCounter(todayEl, parse(jour));
+            if (totalEl) totalEl.title = 'Visites depuis l\'ouverture du site (GoatCounter, mise à jour toutes les quelques heures)';
+
+            // « En ligne » : GoatCounter ne le fournit pas → estimation locale conservée.
+            const onlineEl = document.getElementById('current-visitors');
+            if (onlineEl) this.animateCounter(onlineEl, this.calculateOnlineUsers(this.getVisitorStats('portfolioVisitorStats')));
+        } catch (error) {
+            log('ℹ️ GoatCounter indisponible :', error.message);
+            this.initVisitorCounter();
+        }
     }
 
     // =====================================================================
