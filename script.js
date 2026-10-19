@@ -1,7 +1,30 @@
 // ===== APPLICATION PORTFOLIO — SCRIPT COMPLET CORRIGÉ, ORGANISÉ ET DÉDUPLIQUÉ =====
 // Toutes les fonctionnalités des versions précédentes ont été conservées.
 // En cas de doublons, seule la version la plus complète/la plus récente a été gardée.
-console.log('🚀 Chargement du script portfolio...');
+//
+// Version 2 :
+//  • connexion au serveur (api.php) : compteur de visites réel et partagé,
+//    statut de connexion, mode d'accès (libre / privé), cadenas sur les liens réservés ;
+//  • formulaire de contact réellement transmis (repli : messagerie de l'utilisateur) ;
+//  • suppression des clonages d'éléments qui annulaient des écouteurs entre eux ;
+//  • onglets accessibles au clavier (flèches, Début, Fin) sans piéger la touche Tab ;
+//  • styles dynamiques déplacés dans style.css (sections 25 à 28).
+//
+// IMPORTANT : les cadenas affichés ici sont purement informatifs. La protection
+// réelle des documents est assurée côté serveur par serve.php (voir config.php).
+
+'use strict';
+
+const PORTFOLIO_CONFIG = {
+    apiUrl: 'api.php',                      // backend PHP (même dossier que index.html)
+    heartbeatMs: 60000,                     // rafraîchissement « en ligne » (1 min)
+    debug: ['localhost', '127.0.0.1'].includes(window.location.hostname),
+    tabContainers: '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
+};
+
+const log = (...args) => { if (PORTFOLIO_CONFIG.debug) console.log(...args); };
+
+log('🚀 Chargement du script portfolio...');
 
 class PortfolioApp {
     constructor() {
@@ -12,6 +35,8 @@ class PortfolioApp {
         this.visitorInterval = null;
         this.resizeTimeout = null;
         this.isInitialized = false;
+        this.server = null;          // état renvoyé par api.php (null = serveur indisponible)
+        this.accessRules = null;     // verrous à afficher
         this.init();
     }
 
@@ -22,13 +47,13 @@ class PortfolioApp {
     init() {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('✅ DOM chargé — Initialisation de l\'application');
+                log('✅ DOM chargé — Initialisation de l\'application');
                 this.setupConsoleWelcome();
                 this.setupErrorHandling();
                 this.initializeAll();
             });
         } else {
-            console.log('✅ DOM déjà chargé — Initialisation immédiate');
+            log('✅ DOM déjà chargé — Initialisation immédiate');
             this.setupConsoleWelcome();
             this.setupErrorHandling();
             this.initializeAll();
@@ -38,40 +63,36 @@ class PortfolioApp {
     initializeAll() {
         if (this.isInitialized) return;
 
-        // Navigation & structure de page
-        this.initNavigation();
-        this.initSmoothScrolling();
-        this.initBackToTop();
-        this.initScrollEffects();
-        this.initKeyboardNavigation();
-        this.initAccessibility();
+        // Chaque module est isolé : une erreur dans l'un n'empêche pas les autres.
+        const modules = [
+            // Navigation & structure de page
+            'initNavigation', 'initSmoothScrolling', 'initBackToTop', 'initScrollEffects',
+            'initKeyboardNavigation', 'initAccessibility',
+            // Contenu dynamique / onglets
+            'initTabs', 'initAllButtons', 'initResourceCards', 'initBooksSection',
+            // Animations
+            'initHeroAnimations', 'initAnimations', 'initCounters',
+            // Formulaire de contact
+            'initContactForm',
+            // Widgets d'information
+            'initDateTimeUpdater',
+            // Fonctionnalités techniques
+            'initDownloadLinks', 'initProtectedLinks', 'initThemeToggle', 'initImageLazyLoading',
+            'initPerformanceOptimizations',
+            // Serveur : visites, compte, mode d'accès
+            'initServerConnection'
+        ];
 
-        // Contenu dynamique / onglets
-        this.initTabs();
-        this.initAllButtons();
-        this.initResourceCards();
-        this.initBooksSection();
-
-        // Animations
-        this.initHeroAnimations();
-        this.initAnimations();
-        this.initCounters();
-
-        // Formulaire de contact
-        this.initContactForm();
-
-        // Widgets d'information
-        this.initDateTimeUpdater();
-        this.initVisitorCounter();
-
-        // Fonctionnalités techniques
-        this.initDownloadLinks();
-        this.initThemeToggle();
-        this.initImageLazyLoading();
-        this.initPerformanceOptimizations();
+        modules.forEach(name => {
+            try {
+                this[name]();
+            } catch (error) {
+                console.error(`❌ Erreur dans ${name}:`, error);
+            }
+        });
 
         this.isInitialized = true;
-        console.log('🎯 Application portfolio complètement initialisée');
+        log('🎯 Application portfolio complètement initialisée');
     }
 
     setupConsoleWelcome() {
@@ -117,62 +138,66 @@ class PortfolioApp {
             return;
         }
 
-        // Réinitialiser les événements (évite les doublons de listeners)
-        const newNavToggle = navToggle.cloneNode(true);
-        const newNavMenu = navMenu.cloneNode(true);
-        navToggle.parentNode.replaceChild(newNavToggle, navToggle);
-        navMenu.parentNode.replaceChild(newNavMenu, navMenu);
-
-        newNavToggle.addEventListener('click', (e) => {
+        navToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.toggleMobileMenu(newNavMenu, newNavToggle);
+            this.toggleMobileMenu(navMenu, navToggle);
         });
 
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-container')) {
-                this.closeMobileMenu(newNavMenu, newNavToggle);
+                this.closeMobileMenu(navMenu, navToggle);
             }
         });
 
+        // Même seuil que la media query CSS du menu mobile (992 px)
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                this.closeMobileMenu(newNavMenu, newNavToggle);
+            if (window.innerWidth > 992) {
+                this.closeMobileMenu(navMenu, navToggle);
             }
-        });
+        }, { passive: true });
 
-        newNavMenu.addEventListener('keydown', (e) => {
+        navMenu.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.closeMobileMenu(newNavMenu, newNavToggle);
+                this.closeMobileMenu(navMenu, navToggle);
+                navToggle.focus();
             }
         });
 
         if (navbar) {
+            let ticking = false;
             this.handleNavbarScroll(navbar);
-            window.addEventListener('scroll', () => this.handleNavbarScroll(navbar), { passive: true });
+            window.addEventListener('scroll', () => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(() => {
+                    this.handleNavbarScroll(navbar);
+                    ticking = false;
+                });
+            }, { passive: true });
         }
 
-        console.log('✅ Navigation initialisée');
+        log('✅ Navigation initialisée');
     }
 
     toggleMobileMenu(navMenu, navToggle) {
         const isOpening = !navMenu.classList.contains('open');
 
-        navMenu.classList.toggle('open');
-        navToggle.classList.toggle('active');
+        navMenu.classList.toggle('open', isOpening);
+        navToggle.classList.toggle('active', isOpening);
+        navToggle.setAttribute('aria-expanded', String(isOpening));
         document.body.style.overflow = isOpening ? 'hidden' : '';
 
         if (isOpening) {
-            navToggle.setAttribute('aria-expanded', 'true');
             const firstLink = navMenu.querySelector('a');
             if (firstLink) firstLink.focus();
         } else {
-            navToggle.setAttribute('aria-expanded', 'false');
             navToggle.focus();
         }
     }
 
     closeMobileMenu(navMenu, navToggle) {
         if (!navMenu || !navToggle) return;
+        if (!navMenu.classList.contains('open')) return;
         navMenu.classList.remove('open');
         navToggle.classList.remove('active');
         navToggle.setAttribute('aria-expanded', 'false');
@@ -181,11 +206,12 @@ class PortfolioApp {
 
     handleNavbarScroll(navbar) {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const menuOpen = navbar.querySelector('.nav-menu.open');
 
         if (scrollTop > 100) {
             navbar.classList.add('scrolled');
 
-            if (scrollTop > this.lastScrollTop && scrollTop > 200) {
+            if (!menuOpen && scrollTop > this.lastScrollTop && scrollTop > 200) {
                 navbar.style.transform = 'translateY(-100%)';
             } else {
                 navbar.style.transform = 'translateY(0)';
@@ -195,7 +221,7 @@ class PortfolioApp {
             navbar.style.transform = 'translateY(0)';
         }
 
-        this.lastScrollTop = scrollTop;
+        this.lastScrollTop = Math.max(0, scrollTop);
     }
 
     // =====================================================================
@@ -203,22 +229,33 @@ class PortfolioApp {
     // =====================================================================
 
     initSmoothScrolling() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            const newAnchor = anchor.cloneNode(true);
-            anchor.parentNode.replaceChild(newAnchor, anchor);
+        // Délégation : un seul écouteur pour tous les liens internes (y compris futurs).
+        document.addEventListener('click', (e) => {
+            const anchor = e.target.closest('a[href^="#"]');
+            if (!anchor) return;
 
-            newAnchor.addEventListener('click', (e) => {
-                const targetId = newAnchor.getAttribute('href');
-                if (!targetId || targetId === '#') return;
+            const targetId = anchor.getAttribute('href');
+            if (!targetId || targetId === '#') {
+                e.preventDefault();          // liens « # » provisoires : pas de saut en haut de page
+                return;
+            }
+            if (!document.querySelector(this.safeSelector(targetId))) return;
 
-                e.preventDefault();
-                this.scrollToElement(targetId);
-            });
+            e.preventDefault();
+            this.scrollToElement(targetId);
         });
     }
 
+    safeSelector(hash) {
+        try {
+            return '#' + CSS.escape(decodeURIComponent(hash.replace(/^#/, '')));
+        } catch (e) {
+            return hash;
+        }
+    }
+
     scrollToElement(targetId) {
-        const targetElement = document.querySelector(targetId);
+        const targetElement = document.querySelector(this.safeSelector(targetId));
         if (!targetElement) {
             console.warn(`❌ Élément non trouvé: ${targetId}`);
             return;
@@ -244,12 +281,7 @@ class PortfolioApp {
 
         const toggleVisibility = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            if (scrollTop > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
+            backToTop.classList.toggle('visible', scrollTop > 300);
         };
 
         backToTop.addEventListener('click', () => {
@@ -264,7 +296,7 @@ class PortfolioApp {
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        if (!sections.length || !navLinks.length) return;
+        if (!sections.length || !navLinks.length || !('IntersectionObserver' in window)) return;
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -283,10 +315,12 @@ class PortfolioApp {
 
     setActiveNavLink(activeId, navLinks) {
         navLinks.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
-            if (href === `#${activeId}`) {
-                link.classList.add('active');
+            const isActive = link.getAttribute('href') === `#${activeId}`;
+            link.classList.toggle('active', isActive);
+            if (isActive) {
+                link.setAttribute('aria-current', 'true');
+            } else {
+                link.removeAttribute('aria-current');
             }
         });
     }
@@ -298,7 +332,7 @@ class PortfolioApp {
     initHeroAnimations() {
         const heroElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-contact, .hero-buttons');
 
-        if (heroElements.length === 0) {
+        if (heroElements.length === 0 || !('IntersectionObserver' in window)) {
             return;
         }
 
@@ -316,9 +350,16 @@ class PortfolioApp {
             el.style.opacity = '0';
             observer.observe(el);
         });
+
+        // Sécurité : si l'observateur ne se déclenche pas, le contenu reste lisible.
+        setTimeout(() => heroElements.forEach(el => {
+            if (!el.style.animation) el.style.opacity = '';
+        }), 3000);
     }
 
     initAnimations() {
+        if (!('IntersectionObserver' in window)) return;
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -347,7 +388,7 @@ class PortfolioApp {
 
     initCounters() {
         const counterElement = document.querySelector('.hero-stats');
-        if (!counterElement) return;
+        if (!counterElement || !('IntersectionObserver' in window)) return;
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -365,7 +406,7 @@ class PortfolioApp {
         const counters = document.querySelectorAll('.stat h3');
 
         counters.forEach(counter => {
-            const target = parseInt(counter.textContent) || 0;
+            const target = parseInt(counter.textContent, 10) || 0;
             if (target === 0) return;
 
             const duration = 2000;
@@ -395,11 +436,9 @@ class PortfolioApp {
     // =====================================================================
 
     initTabs() {
-        console.log('🔧 Initialisation du système d\'onglets universel...');
+        log('🔧 Initialisation du système d\'onglets universel...');
 
-        const allTabContainers = document.querySelectorAll(
-            '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
-        );
+        const allTabContainers = document.querySelectorAll(PORTFOLIO_CONFIG.tabContainers);
 
         if (allTabContainers.length === 0) {
             console.warn('⚠️ Aucun conteneur d\'onglets trouvé');
@@ -408,7 +447,7 @@ class PortfolioApp {
 
         allTabContainers.forEach(container => this.initSingleTabSystem(container));
 
-        console.log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
+        log(`✅ ${allTabContainers.length} système(s) d'onglets initialisé(s)`);
     }
 
     initSingleTabSystem(container) {
@@ -419,75 +458,62 @@ class PortfolioApp {
             return;
         }
 
-        // Réinitialiser les événements en clonant les boutons
         tabButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener('click', (e) => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
-
-                const tabId = newButton.getAttribute('data-tab');
-                const freshButtons = container.querySelectorAll('.tab-button');
-                const freshPanes = container.querySelectorAll('.tab-pane');
-
-                this.switchTab(container, newButton, freshButtons, freshPanes, tabId);
+                const tabId = button.getAttribute('data-tab');
+                this.switchTab(container, button, container.querySelectorAll('.tab-button'), container.querySelectorAll('.tab-pane'), tabId);
             });
         });
 
         // Si aucun onglet n'est actif, activer le premier
-        const hasActive = container.querySelector('.tab-button.active');
-        if (!hasActive) {
-            const firstButton = container.querySelector('.tab-button');
-            if (firstButton) {
-                const tabId = firstButton.getAttribute('data-tab');
-                const freshButtons = container.querySelectorAll('.tab-button');
-                const freshPanes = container.querySelectorAll('.tab-pane');
-                this.switchTab(container, firstButton, freshButtons, freshPanes, tabId);
-            }
-        }
+        const activeButton = container.querySelector('.tab-button.active') || tabButtons[0];
+        this.switchTab(container, activeButton, tabButtons, container.querySelectorAll('.tab-pane'), activeButton.getAttribute('data-tab'));
     }
 
     switchTab(container, activeButton, tabButtons, tabPanes, tabId) {
-        console.log('🎯 Activation de l\'onglet:', tabId);
+        log('🎯 Activation de l\'onglet:', tabId);
 
         tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
+            btn.setAttribute('tabindex', '-1');
         });
 
+        // Seuls les panneaux directement rattachés à ce système d'onglets sont concernés.
         tabPanes.forEach(pane => {
+            if (pane.closest(PORTFOLIO_CONFIG.tabContainers) !== container) return;
             pane.classList.remove('active');
             pane.setAttribute('aria-hidden', 'true');
-            pane.style.display = 'none';
         });
 
         activeButton.classList.add('active');
         activeButton.setAttribute('aria-selected', 'true');
+        activeButton.setAttribute('tabindex', '0');
 
-        const targetPane = container.querySelector(`#${tabId}`);
+        const targetPane = container.querySelector(this.safeSelector(tabId));
         if (targetPane) {
             targetPane.classList.add('active');
             targetPane.setAttribute('aria-hidden', 'false');
-            targetPane.style.display = 'block';
-            console.log('✅ Onglet activé:', tabId);
+            log('✅ Onglet activé:', tabId);
         } else {
             console.error('❌ Panneau non trouvé pour l\'ID:', tabId);
         }
     }
 
     handleTabKeyboardNavigation(currentTab, direction) {
-        const tabContainer = currentTab.closest(
-            '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
-        );
+        const tabContainer = currentTab.closest(PORTFOLIO_CONFIG.tabContainers);
         if (!tabContainer) return;
 
         const tabs = Array.from(tabContainer.querySelectorAll('.tab-button'));
         const currentIndex = tabs.indexOf(currentTab);
         let nextIndex;
 
-        if (direction === 'next') {
+        if (direction === 'first') {
+            nextIndex = 0;
+        } else if (direction === 'last') {
+            nextIndex = tabs.length - 1;
+        } else if (direction === 'next') {
             nextIndex = (currentIndex + 1) % tabs.length;
         } else {
             nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
@@ -506,7 +532,7 @@ class PortfolioApp {
     // =====================================================================
 
     initAllButtons() {
-        console.log('🔘 Initialisation de tous les boutons spécifiques...');
+        log('🔘 Initialisation de tous les boutons spécifiques...');
 
         this.initFiliereButtons();
         this.initConferenceButtons();
@@ -514,7 +540,7 @@ class PortfolioApp {
         this.initMemoireButtons();
         this.initGeneralButtons();
 
-        console.log('✅ Tous les boutons initialisés');
+        log('✅ Tous les boutons initialisés');
     }
 
     initFiliereButtons() {
@@ -528,19 +554,16 @@ class PortfolioApp {
             );
 
             buttons.forEach(button => {
-                const newButton = button.cloneNode(true);
-                button.parentNode.replaceChild(newButton, button);
-
-                newButton.addEventListener('click', (e) => {
+                button.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log(`🎓 Bouton ${filiere} cliqué`);
+                    log(`🎓 Bouton ${filiere} cliqué`);
                     this.handleFiliereClick(filiere);
                 });
             });
         });
 
-        console.log(`✅ ${filiereButtons.length} filières initialisées`);
+        log(`✅ ${filiereButtons.length} filières initialisées`);
     }
 
     handleFiliereClick(filiere) {
@@ -555,12 +578,13 @@ class PortfolioApp {
         const displayName = filiereNames[filiere] || filiere;
         this.showNotification(`Filière ${displayName} sélectionnée`, 'info', 3000);
 
-        const targetId = `section-${filiere.toLowerCase()}`;
+        // Les onglets des filières portent les identifiants mpsi, mp, ect1... ;
+        // l'ancien identifiant « section-xxx » reste accepté s'il existe.
+        const key = filiere.toLowerCase();
+        const targetId = document.getElementById(`section-${key}`) ? `section-${key}` : key;
         const targetSection = document.getElementById(targetId);
 
         if (targetSection) {
-            this.scrollToElement(`#${targetId}`);
-
             const filiereTabsContainer = document.querySelector('.filiere-tabs');
             if (filiereTabsContainer) {
                 const targetButton = filiereTabsContainer.querySelector(`[data-tab="${targetId}"]`);
@@ -570,6 +594,7 @@ class PortfolioApp {
                     this.switchTab(filiereTabsContainer, targetButton, tabButtons, tabPanes, targetId);
                 }
             }
+            this.scrollToElement(`#${targetId}`);
         } else {
             console.warn(`⚠️ Section non trouvée: ${targetId}`);
         }
@@ -578,21 +603,17 @@ class PortfolioApp {
     }
 
     initConferenceButtons() {
-        const conferenceButtons = document.querySelectorAll('.btn-conference, [data-type="conference"]');
-        conferenceButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn-conference, [data-type="conference"]').forEach(button => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('🎤 Bouton conférence cliqué');
-                this.handleConferenceClick(newButton);
+                log('🎤 Bouton conférence cliqué');
+                this.handleConferenceClick(button);
             });
         });
     }
 
     handleConferenceClick(button) {
-        const conferenceTitle = button.getAttribute('data-title') || button.textContent || 'Conférence';
+        const conferenceTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Conférence';
         this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
 
         const url = button.getAttribute('href');
@@ -602,21 +623,17 @@ class PortfolioApp {
     }
 
     initLivreButtons() {
-        const livreButtons = document.querySelectorAll('.btn-livre, [data-type="livre"]');
-        livreButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn-livre, [data-type="livre"]').forEach(button => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('📚 Bouton livre cliqué');
-                this.handleLivreClick(newButton);
+                log('📚 Bouton livre cliqué');
+                this.handleLivreClick(button);
             });
         });
     }
 
     handleLivreClick(button) {
-        const livreTitle = button.getAttribute('data-title') || button.textContent || 'Livre';
+        const livreTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Livre';
         this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
 
         const url = button.getAttribute('href');
@@ -626,21 +643,17 @@ class PortfolioApp {
     }
 
     initMemoireButtons() {
-        const memoireButtons = document.querySelectorAll('.btn-memoire, [data-type="memoire"]');
-        memoireButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn-memoire, [data-type="memoire"]').forEach(button => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('📖 Bouton mémoire cliqué');
-                this.handleMemoireClick(newButton);
+                log('📖 Bouton mémoire cliqué');
+                this.handleMemoireClick(button);
             });
         });
     }
 
     handleMemoireClick(button) {
-        const memoireTitle = button.getAttribute('data-title') || button.textContent || 'Mémoire';
+        const memoireTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Mémoire';
         this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
 
         const url = button.getAttribute('href');
@@ -654,15 +667,11 @@ class PortfolioApp {
     }
 
     initGeneralButtons() {
-        const viewButtons = document.querySelectorAll('.btn-view, .view-btn');
-        viewButtons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn-view, .view-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = newButton.getAttribute('data-target') || newButton.getAttribute('href');
-                console.log(`👀 Vue demandée: ${target}`);
+                const target = button.getAttribute('data-target') || button.getAttribute('href');
+                log(`👀 Vue demandée: ${target}`);
                 this.handleViewClick(target);
             });
         });
@@ -681,38 +690,31 @@ class PortfolioApp {
     // =====================================================================
 
     initResourceCards() {
+        // Le changement de couleur de bordure au survol est désormais géré en CSS
+        // (.ressource-item-compact:hover) : il respecte ainsi les couleurs propres
+        // à chaque section au lieu de les écraser par un style en ligne.
         const ressourceItems = document.querySelectorAll('.ressource-item-compact');
-        if (!ressourceItems.length) return;
-
-        ressourceItems.forEach(item => {
-            item.addEventListener('mouseenter', function () {
-                this.style.borderLeftColor = '#ff6b6b';
-            });
-            item.addEventListener('mouseleave', function () {
-                this.style.borderLeftColor = '#6c63ff';
-            });
-        });
+        log(`📄 ${ressourceItems.length} ressources pédagogiques`);
     }
 
     initBooksSection() {
         const covers = document.querySelectorAll('.livre-cover');
 
         covers.forEach(img => {
-            img.addEventListener('error', function () {
-                this.style.display = 'none';
-            });
+            const hide = () => { img.style.display = 'none'; };
+            img.addEventListener('error', hide);
 
             if (!img.complete) {
                 img.addEventListener('load', function () {
                     this.style.display = 'block';
                 });
             } else if (img.naturalWidth === 0) {
-                img.style.display = 'none';
+                hide();
             }
         });
 
         // Sécurité pour les liens externes des livres
-        document.querySelectorAll('.livre-actions a').forEach(link => {
+        document.querySelectorAll('.livre-actions a, a[target="_blank"]').forEach(link => {
             if (!link.hasAttribute('rel')) {
                 link.setAttribute('rel', 'noopener noreferrer');
             }
@@ -724,29 +726,31 @@ class PortfolioApp {
     // =====================================================================
 
     initDownloadLinks() {
-        const downloadLinks = document.querySelectorAll('[download], .download-link');
+        // Délégation d'événement : aucun clonage, aucun conflit avec d'autres écouteurs.
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('[download], .download-link');
+            if (!link || e.defaultPrevented || link.dataset.protege === '1') return;
 
-        downloadLinks.forEach(link => {
-            const newLink = link.cloneNode(true);
-            link.parentNode.replaceChild(newLink, link);
+            const href = link.getAttribute('href') || '';
+            if (!href || href.startsWith('#')) return;
+            const fileName = decodeURIComponent(href.split('/').pop() || 'document');
 
-            newLink.addEventListener('click', () => {
-                const fileName = newLink.getAttribute('href')?.split('/').pop() || 'document';
-
-                // Retour visuel
-                const originalIcon = newLink.innerHTML;
-                newLink.style.pointerEvents = 'none';
-                const iconEl = newLink.querySelector('i');
-                if (iconEl) iconEl.className = 'fas fa-spinner fa-spin';
-
-                this.trackDownload(fileName);
-                this.showNotification(`Téléchargement: ${fileName}`, 'info', 2000);
-
+            // Retour visuel
+            const iconEl = link.querySelector('i');
+            if (iconEl && !link.dataset.busy) {
+                const originalClass = iconEl.className;
+                link.dataset.busy = '1';
+                link.setAttribute('aria-busy', 'true');
+                iconEl.className = 'fas fa-spinner fa-spin';
                 setTimeout(() => {
-                    newLink.innerHTML = originalIcon;
-                    newLink.style.pointerEvents = 'auto';
+                    iconEl.className = originalClass;
+                    delete link.dataset.busy;
+                    link.removeAttribute('aria-busy');
                 }, 1500);
-            });
+            }
+
+            this.trackDownload(fileName);
+            this.showNotification(`Téléchargement: ${fileName}`, 'info', 2000);
         });
     }
 
@@ -757,7 +761,7 @@ class PortfolioApp {
             timestamp: new Date().toISOString()
         };
 
-        console.log('📥 Téléchargement:', downloadEvent);
+        log('📥 Téléchargement:', downloadEvent);
 
         try {
             const downloads = JSON.parse(localStorage.getItem('portfolioDownloads') || '[]');
@@ -776,29 +780,29 @@ class PortfolioApp {
         const contactForm = document.getElementById('contactForm');
         if (!contactForm) return;
 
-        const inputs = contactForm.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            const newInput = input.cloneNode(true);
-            input.parentNode.replaceChild(newInput, input);
-
-            newInput.addEventListener('blur', () => this.validateField(newInput));
-            newInput.addEventListener('input', () => this.clearFieldStatus(newInput));
+        contactForm.querySelectorAll('input:not([name="website"]), textarea').forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+            input.addEventListener('input', () => this.clearFieldStatus(input));
         });
 
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (await this.validateForm(contactForm)) {
                 await this.submitForm(contactForm);
+            } else {
+                contactForm.querySelector('.error')?.focus();
             }
         });
     }
 
     validateField(field) {
+        if (field.name === 'website') return true;
         const value = field.value.trim();
         let isValid = true;
         let message = '';
+        const type = field.tagName === 'TEXTAREA' ? 'textarea' : field.type;
 
-        switch (field.type) {
+        switch (type) {
             case 'text':
                 if (!value) {
                     isValid = false;
@@ -840,7 +844,7 @@ class PortfolioApp {
     }
 
     async validateForm(form) {
-        const fields = form.querySelectorAll('input, textarea');
+        const fields = form.querySelectorAll('input:not([name="website"]), textarea');
         let isValid = true;
 
         for (const field of fields) {
@@ -855,14 +859,18 @@ class PortfolioApp {
     showFieldError(field, message) {
         this.clearFieldStatus(field);
         field.classList.add('error');
+        field.setAttribute('aria-invalid', 'true');
 
         let errorDiv = field.parentNode.querySelector('.field-error');
         if (!errorDiv) {
             errorDiv = document.createElement('div');
             errorDiv.className = 'field-error';
+            errorDiv.id = `err-${field.name || Math.random().toString(36).slice(2)}`;
+            errorDiv.setAttribute('role', 'alert');
             field.parentNode.appendChild(errorDiv);
         }
         errorDiv.textContent = message;
+        field.setAttribute('aria-describedby', errorDiv.id);
     }
 
     showFieldSuccess(field) {
@@ -872,17 +880,22 @@ class PortfolioApp {
 
     clearFieldStatus(field) {
         field.classList.remove('error', 'success');
+        field.removeAttribute('aria-invalid');
+        field.removeAttribute('aria-describedby');
         const errorDiv = field.parentNode.querySelector('.field-error');
         if (errorDiv) errorDiv.remove();
     }
 
     async submitForm(form) {
         const formData = new FormData(form);
+        // Les données sont envoyées brutes : le serveur les échappe à l'affichage
+        // (un échappement HTML ici produirait des « &amp; » dans les messages reçus).
         const data = {
-            name: this.sanitizeInput(formData.get('name') || ''),
-            email: this.sanitizeInput(formData.get('email') || ''),
-            subject: this.sanitizeInput(formData.get('subject') || ''),
-            message: this.sanitizeInput(formData.get('message') || '')
+            name: String(formData.get('name') || '').trim(),
+            email: String(formData.get('email') || '').trim(),
+            subject: String(formData.get('subject') || '').trim(),
+            message: String(formData.get('message') || '').trim(),
+            website: String(formData.get('website') || '')
         };
 
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -897,7 +910,11 @@ class PortfolioApp {
             form.reset();
             form.querySelectorAll('input, textarea').forEach(field => this.clearFieldStatus(field));
         } catch (error) {
-            this.showNotification('Erreur lors de l\'envoi.', 'error');
+            if (error && error.fallback) {
+                this.openMailFallback(data);
+            } else {
+                this.showNotification(error?.message || 'Erreur lors de l\'envoi.', 'error');
+            }
         } finally {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -905,28 +922,42 @@ class PortfolioApp {
     }
 
     async sendFormData(data) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                console.log('📧 Données du formulaire:', data);
-                resolve({ success: true });
-            }, 1500);
-        });
+        if (!this.server) {
+            const err = new Error('Serveur indisponible');
+            err.fallback = true;
+            throw err;
+        }
+        const response = await this.apiRequest('contact', { ...data, token: this.server.token });
+        if (!response.ok) {
+            throw new Error(response.error || 'Erreur lors de l\'envoi.');
+        }
+        log('📧 Message transmis au serveur');
+        return response;
+    }
+
+    /** Repli sans serveur : ouverture de la messagerie de l'utilisateur. */
+    openMailFallback(data) {
+        const address = (document.querySelector('.contact-item-compact.email .ci-value')?.textContent || '').trim();
+        if (!address) {
+            this.showNotification('Erreur lors de l\'envoi.', 'error');
+            return;
+        }
+        const body = `${data.message}\n\n— ${data.name} <${data.email}>`;
+        window.location.href = `mailto:${address}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`;
+        this.showNotification('Votre logiciel de messagerie s\'ouvre pour envoyer le message.', 'info', 6000);
     }
 
     // =====================================================================
     // 10. NOTIFICATIONS
     // =====================================================================
 
-    showNotification(message, type = 'info', duration = 5000) {
+    showNotification(message, type = 'info', duration = 5000, action = null) {
         // Supprimer les notifications en double
         document.querySelectorAll('.notification').forEach(notification => {
-            if (notification.textContent.includes(message)) {
+            if (notification.dataset.message === message) {
                 this.removeNotification(notification);
             }
         });
-
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
 
         const icons = {
             success: 'fa-check-circle',
@@ -935,23 +966,39 @@ class PortfolioApp {
             warning: 'fa-exclamation-triangle'
         };
 
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${icons[type] || icons.info}"></i>
-                <span>${message}</span>
-            </div>
-            <button class="notification-close" aria-label="Fermer">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
+        // Construction sans innerHTML : aucun risque d'injection via le message.
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.dataset.message = message;
+        notification.setAttribute('role', type === 'error' ? 'alert' : 'status');
 
+        const content = document.createElement('div');
+        content.className = 'notification-content';
+        const icon = document.createElement('i');
+        icon.className = `fas ${icons[type] || icons.info}`;
+        icon.setAttribute('aria-hidden', 'true');
+        const text = document.createElement('span');
+        text.textContent = message;
+        content.append(icon, text);
+
+        if (action && action.href) {
+            const link = document.createElement('a');
+            link.href = action.href;
+            link.textContent = action.label || 'Ouvrir';
+            content.append(' ', link);
+        }
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'notification-close';
+        closeBtn.setAttribute('aria-label', 'Fermer');
+        closeBtn.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+        closeBtn.addEventListener('click', () => this.removeNotification(notification));
+
+        notification.append(content, closeBtn);
         document.body.appendChild(notification);
 
-        setTimeout(() => notification.classList.add('show'), 10);
-
-        notification.querySelector('.notification-close').addEventListener('click', () => {
-            this.removeNotification(notification);
-        });
+        requestAnimationFrame(() => setTimeout(() => notification.classList.add('show'), 10));
 
         if (duration > 0) {
             setTimeout(() => this.removeNotification(notification), duration);
@@ -972,11 +1019,220 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 11. COMPTEUR DE VISITEURS
+    // 11. CONNEXION AU SERVEUR : VISITES, COMPTE, MODE D'ACCÈS
+    // =====================================================================
+
+    async apiRequest(action, body = null) {
+        const options = {
+            method: body === null && action === 'status' ? 'GET' : 'POST',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' },
+            cache: 'no-store'
+        };
+        if (options.method === 'POST') {
+            options.headers['Content-Type'] = 'application/json';
+            options.body = JSON.stringify(body || {});
+        }
+        const controller = 'AbortController' in window ? new AbortController() : null;
+        const timer = controller ? setTimeout(() => controller.abort(), 8000) : null;
+        if (controller) options.signal = controller.signal;
+
+        try {
+            const response = await fetch(`${PORTFOLIO_CONFIG.apiUrl}?action=${encodeURIComponent(action)}`, options);
+            const type = response.headers.get('content-type') || '';
+            if (!type.includes('application/json')) {
+                throw new Error('Réponse non JSON (backend PHP absent ?)');
+            }
+            const json = await response.json();
+            if (!response.ok && json.ok !== false) json.ok = false;
+            return json;
+        } finally {
+            if (timer) clearTimeout(timer);
+        }
+    }
+
+    async initServerConnection() {
+        if (window.location.protocol === 'file:') {
+            this.initVisitorCounter();   // ouverture locale du fichier : compteur local
+            return;
+        }
+        try {
+            const data = await this.apiRequest('hello', {});
+            if (!data || data.ok !== true) throw new Error(data?.error || 'Réponse invalide');
+            this.server = data;
+            log('🛰️ Serveur connecté — mode :', data.mode);
+
+            this.applyServerState(data);
+            this.displayServerCounters(data.visites);
+            this.startHeartbeat();
+        } catch (error) {
+            log('ℹ️ Backend indisponible, fonctionnement autonome :', error.message);
+            this.server = null;
+            this.initVisitorCounter();   // compteur local de secours
+        }
+    }
+
+    applyServerState(data) {
+        this.updateAccountNav(data);
+        this.updateModeIndicator(data.mode);
+        this.accessRules = data.acces || null;
+        this.markProtectedLinks();
+
+        if (data.user && data.user.mustChange) {
+            this.showNotification('Votre mot de passe temporaire doit être remplacé.', 'warning', 0,
+                { href: data.urls.compte, label: 'Changer maintenant' });
+        }
+        if (Array.isArray(data.configErreurs) && data.configErreurs.length) {
+            this.showNotification(`Configuration à corriger (${data.configErreurs.length} problème(s)) — voir l'administration.`, 'warning', 0,
+                { href: data.urls.admin, label: 'Administration' });
+        }
+    }
+
+    updateAccountNav(data) {
+        const item = document.querySelector('.nav-account-item');
+        const link = document.getElementById('nav-account');
+        if (!item || !link) return;
+
+        const label = link.querySelector('.nav-account-label');
+        const icon = link.querySelector('i');
+        const user = data.user;
+
+        link.href = user && user.role === 'admin' && data.urls.admin ? data.urls.admin : data.urls.compte;
+        if (label) label.textContent = user ? (user.role === 'admin' ? 'Administration' : user.name) : 'Connexion';
+        if (icon) icon.className = user ? (user.role === 'admin' ? 'fas fa-user-shield' : 'fas fa-user-check') : 'fas fa-user';
+        link.title = user ? `Connecté : ${user.name}` : 'Se connecter ou demander un accès';
+        item.hidden = false;
+    }
+
+    updateModeIndicator(mode) {
+        const indicator = document.getElementById('access-mode');
+        if (!indicator) return;
+        const libre = mode === 'libre';
+        indicator.className = `info-item access-mode-indicator ${libre ? 'mode-libre' : 'mode-prive'}`;
+        indicator.innerHTML = '';
+        const icon = document.createElement('i');
+        icon.className = `fas ${libre ? 'fa-lock-open' : 'fa-lock'}`;
+        icon.setAttribute('aria-hidden', 'true');
+        const text = document.createElement('span');
+        text.textContent = libre ? 'Accès libre' : 'Accès privé';
+        indicator.append(icon, text);
+        indicator.title = libre
+            ? 'Les ressources publiques sont accessibles sans compte.'
+            : 'Certaines ressources sont réservées aux utilisateurs inscrits et autorisés.';
+        indicator.hidden = false;
+    }
+
+    displayServerCounters(visites) {
+        if (!visites) return;
+        const totalEl = document.getElementById('total-visitors');
+        const onlineEl = document.getElementById('current-visitors');
+        const todayEl = document.getElementById('today-visitors');
+        this.animateCounter(totalEl, visites.total);
+        this.animateCounter(onlineEl, visites.online);
+        this.animateCounter(todayEl, visites.today);
+        if (totalEl) totalEl.title = `Depuis l'ouverture du site — journée comptée selon le fuseau ${visites.tz}`;
+    }
+
+    startHeartbeat() {
+        clearInterval(this.visitorInterval);
+        this.visitorInterval = setInterval(async () => {
+            if (document.hidden) return;
+            try {
+                const data = await this.apiRequest('ping', {});
+                if (data.ok) this.displayServerCounters(data.visites);
+            } catch (e) {
+                log('ℹ️ Ping impossible :', e.message);
+            }
+        }, PORTFOLIO_CONFIG.heartbeatMs);
+    }
+
+    // =====================================================================
+    // 12. LIENS PROTÉGÉS (indication visuelle — contrôle réel côté serveur)
+    // =====================================================================
+
+    globToRegex(pattern) {
+        const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
+        return new RegExp(`^${escaped}$`, 'i');
+    }
+
+    /** Chemin relatif au site d'une URL interne, ou null si externe. */
+    relativePath(href) {
+        try {
+            const url = new URL(href, window.location.href);
+            if (url.origin !== window.location.origin) return null;
+            const base = new URL('.', new URL(PORTFOLIO_CONFIG.apiUrl, window.location.href)).pathname;
+            const path = decodeURIComponent(url.pathname);
+            return path.startsWith(base) ? path.slice(base.length) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    isLocked(path) {
+        const rules = this.accessRules;
+        if (!rules || !path) return false;
+        const matches = (p) => this.globToRegex(p).test(path);
+        const locks = rules.verrous || [];
+        if (locks.some(l => l.portee === 'toujours' && matches(l.motif))) return true;
+        if ((rules.publics || []).some(matches)) return false;
+        return locks.some(l => l.portee === 'prive' && matches(l.motif));
+    }
+
+    markProtectedLinks() {
+        document.querySelectorAll('a[href]').forEach(link => {
+            const path = this.relativePath(link.getAttribute('href'));
+            const locked = this.isLocked(path);
+            const marker = link.querySelector('.acces-verrou');
+
+            if (locked) {
+                link.dataset.protege = '1';
+                link.classList.add('lien-protege');
+                if (!link.dataset.originalTitle) link.dataset.originalTitle = link.title || '';
+                link.title = 'Réservé aux utilisateurs autorisés — connexion requise';
+                if (!marker) {
+                    const lock = document.createElement('span');
+                    lock.className = 'acces-verrou';
+                    lock.setAttribute('aria-hidden', 'true');
+                    lock.innerHTML = '<i class="fas fa-lock"></i>';
+                    link.appendChild(lock);
+                }
+            } else if (link.dataset.protege) {
+                delete link.dataset.protege;
+                link.classList.remove('lien-protege');
+                link.title = link.dataset.originalTitle || '';
+                marker?.remove();
+            }
+        });
+    }
+
+    initProtectedLinks() {
+        // Interception AVANT le téléchargement (phase de capture) : sans cela, un
+        // lien « download » enregistrerait la page de connexion à la place du PDF.
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[data-protege="1"]');
+            if (!link || !this.server) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const path = this.relativePath(link.getAttribute('href')) || '';
+            const compte = this.server.urls.compte;
+            if (this.server.user) {
+                this.showNotification('Votre compte n\'a pas l\'autorisation d\'accéder à ce document.', 'warning', 6000,
+                    { href: compte, label: 'Mon compte' });
+            } else {
+                window.location.href = `${compte}?raison=connexion&next=${encodeURIComponent(path)}`;
+            }
+        }, true);
+    }
+
+    // =====================================================================
+    // 13. COMPTEUR DE VISITEURS LOCAL (secours sans serveur)
+    // Limite : il ne compte que les visites de CE navigateur ; seul le
+    // backend (api.php) donne un total réel tous visiteurs et appareils.
     // =====================================================================
 
     initVisitorCounter() {
-        console.log('🔢 Initialisation du compteur de visiteurs...');
+        log('🔢 Initialisation du compteur de visiteurs (mode local)...');
         setTimeout(() => this.setupVisitorCounter(), 100);
     }
 
@@ -998,7 +1254,8 @@ class PortfolioApp {
         this.displayVisitorCounters(stats, totalEl, onlineEl);
         this.startVisitorCounterUpdates(storageKey);
 
-        console.log('✅ Compteur de visiteurs initialisé');
+        [totalEl, onlineEl].forEach(el => { el.title = 'Compteur local (serveur de statistiques indisponible)'; });
+        log('✅ Compteur de visiteurs initialisé');
     }
 
     getVisitorStats(storageKey) {
@@ -1006,16 +1263,14 @@ class PortfolioApp {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                const now = Date.now();
-                const oneDayAgo = now - (24 * 60 * 60 * 1000);
-                stats.visits = stats.visits.filter(visit => {
-                    const visitTime = new Date(visit.timestamp).getTime();
-                    return (now - visitTime) < oneDayAgo || (now - visitTime) < 0;
-                });
+                // Correction : on conserve uniquement les visites des dernières 24 h
+                // (l'ancien filtre comparait une durée à une date et ne filtrait rien).
+                const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+                const visits = Array.isArray(stats.visits) ? stats.visits : [];
 
                 return {
-                    total: parseInt(stats.total) || 15,
-                    visits: Array.isArray(stats.visits) ? stats.visits : [],
+                    total: Number.parseInt(stats.total, 10) || 0,
+                    visits: visits.filter(visit => new Date(visit.timestamp).getTime() >= oneDayAgo),
                     firstVisit: stats.firstVisit || new Date().toISOString()
                 };
             }
@@ -1024,7 +1279,7 @@ class PortfolioApp {
         }
 
         return {
-            total: 15,
+            total: 0,
             visits: [],
             firstVisit: new Date().toISOString()
         };
@@ -1039,11 +1294,14 @@ class PortfolioApp {
     }
 
     handleNewVisit(stats, sessionKey) {
-        const sessionId = sessionStorage.getItem(sessionKey);
+        let sessionId = null;
+        try {
+            sessionId = sessionStorage.getItem(sessionKey);
+        } catch (e) { /* stockage indisponible (navigation privée stricte) */ }
 
         if (!sessionId) {
-            const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            sessionStorage.setItem(sessionKey, newSessionId);
+            const newSessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+            try { sessionStorage.setItem(sessionKey, newSessionId); } catch (e) { /* ignoré */ }
 
             stats.total++;
             stats.visits.push({
@@ -1057,7 +1315,7 @@ class PortfolioApp {
                 stats.visits = stats.visits.slice(-100);
             }
 
-            console.log('🆕 Nouvelle visite enregistrée — Total:', stats.total);
+            log('🆕 Nouvelle visite enregistrée — Total:', stats.total);
         }
     }
 
@@ -1065,13 +1323,21 @@ class PortfolioApp {
         const onlineCount = this.calculateOnlineUsers(stats);
         this.animateCounter(totalEl, stats.total);
         this.animateCounter(onlineEl, onlineCount);
+        const todayEl = document.getElementById('today-visitors');
+        if (todayEl) {
+            const today = new Date().toLocaleDateString('fr-FR');
+            this.animateCounter(todayEl, stats.visits.filter(v => v.date === today).length);
+        }
     }
 
     animateCounter(element, target) {
-        if (!element) return;
+        if (!element || !Number.isFinite(target)) return;
 
-        const current = parseInt(element.textContent) || 0;
-        if (current === target) return;
+        const current = Number.parseInt(element.textContent.replace(/\s/g, ''), 10) || 0;
+        if (current === target) {
+            element.textContent = this.formatNumber(target);
+            return;
+        }
 
         const duration = 1000;
         const startTime = performance.now();
@@ -1082,12 +1348,12 @@ class PortfolioApp {
             const easeOut = 1 - Math.pow(1 - progress, 3);
             const value = Math.floor(current + (target - current) * easeOut);
 
-            element.textContent = value;
+            element.textContent = this.formatNumber(value);
 
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
-                element.textContent = target;
+                element.textContent = this.formatNumber(target);
             }
         };
 
@@ -1095,15 +1361,10 @@ class PortfolioApp {
     }
 
     calculateOnlineUsers(stats) {
-        const now = Date.now();
-        const fifteenMinutesAgo = now - (15 * 60 * 1000);
+        const fifteenMinutesAgo = Date.now() - (15 * 60 * 1000);
 
         try {
-            const activeSessions = stats.visits.filter(visit => {
-                const visitTime = new Date(visit.timestamp).getTime();
-                return visitTime > fifteenMinutesAgo;
-            });
-
+            const activeSessions = stats.visits.filter(visit => new Date(visit.timestamp).getTime() > fifteenMinutesAgo);
             return Math.max(1, activeSessions.length);
         } catch (e) {
             console.error('❌ Erreur calcul utilisateurs en ligne:', e);
@@ -1112,6 +1373,7 @@ class PortfolioApp {
     }
 
     startVisitorCounterUpdates(storageKey) {
+        clearInterval(this.visitorInterval);
         this.visitorInterval = setInterval(() => {
             const stats = this.getVisitorStats(storageKey);
             const totalEl = document.getElementById('total-visitors');
@@ -1124,49 +1386,52 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 12. DATE / HEURE
+    // 14. DATE / HEURE
     // =====================================================================
 
     initDateTimeUpdater() {
-        console.log('🕐 Initialisation date/heure...');
+        log('🕐 Initialisation date/heure...');
         this.startDateTimeUpdates();
     }
 
     startDateTimeUpdates() {
+        const dateEl = document.getElementById('current-date');
+        const timeEl = document.getElementById('current-time');
+        // Les régions aria-live annonceraient l'heure chaque seconde : désactivé pour l'heure.
+        timeEl?.setAttribute('aria-live', 'off');
+
+        const dateFormatter = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const timeFormatter = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        let lastDate = '';
+
         const updateDateTime = () => {
             const now = new Date();
+            const dateStr = this.capitalizeFirst(dateFormatter.format(now));
+            const timeStr = timeFormatter.format(now);
 
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-
-            const dateStr = this.capitalizeFirst(now.toLocaleDateString('fr-FR', dateOptions));
-            const timeStr = now.toLocaleTimeString('fr-FR', timeOptions);
-
-            const dateEl = document.getElementById('current-date');
-            const timeEl = document.getElementById('current-time');
-
-            if (dateEl) {
+            if (dateEl && dateStr !== lastDate) {
                 dateEl.textContent = dateStr;
                 dateEl.setAttribute('aria-label', `Date actuelle: ${dateStr}`);
+                lastDate = dateStr;
             }
             if (timeEl) {
                 timeEl.textContent = timeStr;
-                timeEl.setAttribute('aria-label', `Heure actuelle: ${timeStr}`);
             }
         };
 
         updateDateTime();
         this.dateTimeInterval = setInterval(updateDateTime, 1000);
 
-        console.log('✅ Date/heure initialisée');
+        log('✅ Date/heure initialisée');
     }
 
     capitalizeFirst(str) {
-        return str.replace(/\b\w/g, l => l.toUpperCase());
+        // Majuscule à la première lettre uniquement (« Lundi 19 octobre 2026 »).
+        return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
     }
 
     // =====================================================================
-    // 13. THÈME SOMBRE / CLAIR
+    // 15. THÈME SOMBRE / CLAIR
     // =====================================================================
 
     initThemeToggle() {
@@ -1174,8 +1439,9 @@ class PortfolioApp {
 
         if (!themeToggle) {
             themeToggle = document.createElement('button');
+            themeToggle.type = 'button';
             themeToggle.className = 'theme-toggle';
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            themeToggle.innerHTML = '<i class="fas fa-moon" aria-hidden="true"></i>';
             themeToggle.title = 'Changer le thème';
             themeToggle.setAttribute('aria-label', 'Changer le thème');
             document.body.appendChild(themeToggle);
@@ -1183,24 +1449,29 @@ class PortfolioApp {
 
         themeToggle.addEventListener('click', () => this.toggleTheme(themeToggle));
 
-        const savedTheme = localStorage.getItem('portfolio-theme');
+        let savedTheme = null;
+        try { savedTheme = localStorage.getItem('portfolio-theme'); } catch (e) { /* ignoré */ }
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            themeToggle.innerHTML = '<i class="fas fa-sun" aria-hidden="true"></i>';
+            this.currentTheme = 'dark';
         }
+        themeToggle.setAttribute('aria-pressed', String(this.currentTheme === 'dark'));
     }
 
     toggleTheme(themeToggle) {
         const isDark = document.body.classList.toggle('dark-mode');
+        this.currentTheme = isDark ? 'dark' : 'light';
 
-        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun" aria-hidden="true"></i>' : '<i class="fas fa-moon" aria-hidden="true"></i>';
+        themeToggle.setAttribute('aria-pressed', String(isDark));
+        try { localStorage.setItem('portfolio-theme', this.currentTheme); } catch (e) { /* ignoré */ }
 
         this.showNotification(`Mode ${isDark ? 'sombre' : 'clair'} activé`, 'info', 2000);
     }
 
     // =====================================================================
-    // 14. IMAGES, PERFORMANCE, CLAVIER, ACCESSIBILITÉ
+    // 16. IMAGES, PERFORMANCE, CLAVIER, ACCESSIBILITÉ
     // =====================================================================
 
     initImageLazyLoading() {
@@ -1229,6 +1500,16 @@ class PortfolioApp {
                 document.dispatchEvent(new CustomEvent('resizeEnd'));
             }, 250);
         }, { passive: true });
+
+        // Pause des mises à jour quand l'onglet du navigateur est masqué
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(this.dateTimeInterval);
+                this.dateTimeInterval = null;
+            } else if (!this.dateTimeInterval) {
+                this.startDateTimeUpdates();
+            }
+        });
     }
 
     initKeyboardNavigation() {
@@ -1240,11 +1521,15 @@ class PortfolioApp {
                 );
             }
 
-            if (e.key === 'Tab') {
-                const activeElement = document.activeElement;
-                if (activeElement && activeElement.classList.contains('tab-button')) {
+            // Onglets : flèches, Début et Fin (motif ARIA « tabs »). La touche Tab
+            // n'est plus interceptée : elle sort normalement de la liste d'onglets.
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('tab-button')) {
+                const keyMap = { ArrowRight: 'next', ArrowDown: 'next', ArrowLeft: 'previous', ArrowUp: 'previous', Home: 'first', End: 'last' };
+                const direction = keyMap[e.key];
+                if (direction) {
                     e.preventDefault();
-                    this.handleTabKeyboardNavigation(activeElement, e.shiftKey ? 'previous' : 'next');
+                    this.handleTabKeyboardNavigation(activeElement, direction);
                 }
             }
         });
@@ -1261,10 +1546,27 @@ class PortfolioApp {
             const tabId = button.getAttribute('data-tab');
             const pane = document.getElementById(tabId);
 
+            if (!button.id) button.id = `${tabId || 'tab'}-tab-${index}`;
             if (pane) {
                 button.setAttribute('aria-controls', tabId);
-                pane.setAttribute('aria-labelledby', button.id || `tab-${index}`);
+                pane.setAttribute('aria-labelledby', button.id);
             }
+        });
+
+        // Icônes décoratives masquées aux lecteurs d'écran ; libellés pour les liens « icône seule ».
+        document.querySelectorAll('i.fas, i.far, i.fab').forEach(icon => icon.setAttribute('aria-hidden', 'true'));
+        const labels = [
+            ['fa-download', 'Télécharger'], ['fa-eye', 'Aperçu'], ['fa-external-link-alt', 'Ouvrir le lien externe'],
+            ['fa-file-pdf', 'Ouvrir le PDF'], ['fa-shopping-cart', 'Acheter'], ['fa-check-circle', 'Corrigé']
+        ];
+        document.querySelectorAll('a').forEach(link => {
+            if (link.textContent.trim() || link.hasAttribute('aria-label')) return;
+            const match = labels.find(([cls]) => link.querySelector(`i.${cls}`));
+            if (!match) return;
+            const context = link.closest('[class*="-item-compact"]')
+                ?.querySelector('.pub-title, .chap-title, .ri-title, .these-title, .memoire-title, .livre-title, .conf-name');
+            const contextText = context ? context.firstChild?.textContent?.trim() || context.textContent.trim() : '';
+            link.setAttribute('aria-label', contextText ? `${match[1]} : ${contextText}` : match[1]);
         });
 
         document.addEventListener('keyup', (e) => {
@@ -1277,7 +1579,7 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 15. UTILITAIRES
+    // 17. UTILITAIRES
     // =====================================================================
 
     sanitizeInput(input) {
@@ -1309,7 +1611,7 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 16. NETTOYAGE
+    // 18. NETTOYAGE
     // =====================================================================
 
     destroy() {
@@ -1321,172 +1623,21 @@ class PortfolioApp {
 }
 
 // ===== INITIALISATION DE L'APPLICATION =====
-console.log('🎯 Démarrage de l\'application portfolio...');
+log('🎯 Démarrage de l\'application portfolio...');
 const portfolioApp = new PortfolioApp();
 
 // ===== STYLES DYNAMIQUES =====
-const dynamicStyles = document.createElement('style');
-dynamicStyles.textContent = `
-    /* Animations de base */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    /* Classes d'animation */
-    .pre-animate {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .animate-in {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Notifications */
-    .notification {
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: linear-gradient(135deg, #2c3e50, #34495e);
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        max-width: 400px;
-        transform: translateX(100%);
-        opacity: 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .notification.show {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    .notification-success { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-    .notification-error   { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-    .notification-warning { background: linear-gradient(135deg, #f39c12, #e67e22); }
-    .notification-info    { background: linear-gradient(135deg, #3498db, #2980b9); }
-
-    .notification-content {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-    }
-
-    .notification-close {
-        background: rgba(255,255,255,0.2);
-        border: none;
-        color: white;
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .notification-close:hover {
-        background: rgba(255,255,255,0.3);
-        transform: scale(1.1);
-    }
-
-    /* Validation de formulaire */
-    .form-group input.error,
-    .form-group textarea.error {
-        border-color: #e74c3c !important;
-        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
-    }
-
-    .form-group input.success,
-    .form-group textarea.success {
-        border-color: #27ae60 !important;
-        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
-    }
-
-    .field-error {
-        color: #e74c3c;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-        animation: fadeInUp 0.3s ease;
-    }
-
-    /* Accessibilité */
-    .keyboard-navigation *:focus {
-        outline: 2px solid #3498db !important;
-        outline-offset: 2px !important;
-    }
-
-    /* Mode sombre */
-    .dark-mode {
-        --primary-color: #3b82f6;
-        --secondary-color: #8b5cf6;
-        --text-color: #e2e8f0;
-        --bg-light: #1e293b;
-        background: #0f172a;
-        color: #e2e8f0;
-    }
-
-    .dark-mode .section.bg-light { background: #1e293b !important; }
-
-    .dark-mode .carte-niveau,
-    .dark-mode .carte-document,
-    .dark-mode .pub-item-compact,
-    .dark-mode .conf-item-compact,
-    .dark-mode .ressource-item-compact {
-        background: #1e293b;
-        border-color: #334155;
-        color: #e2e8f0;
-    }
-
-    /* Onglets */
-    .tab-pane {
-        display: none !important;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .tab-pane.active {
-        display: block !important;
-        opacity: 1;
-        animation: fadeIn 0.5s ease;
-    }
-
-    /* Optimisation des performances */
-    @media (prefers-reduced-motion: reduce) {
-        * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-    }
-`;
-document.head.appendChild(dynamicStyles);
+// Les styles autrefois injectés ici (animations, notifications, validation,
+// accessibilité, mode sombre, onglets, mouvement réduit) sont désormais dans
+// style.css, sections 25 à 27 : une seule source de vérité, mise en cache.
 
 // ===== GESTIONNAIRES D'ÉVÉNEMENTS GLOBAUX =====
-window.addEventListener('beforeunload', () => {
+// « pagehide » remplace « beforeunload », qui empêche le cache de retour arrière.
+window.addEventListener('pagehide', () => {
     if (portfolioApp) portfolioApp.destroy();
 });
 
-console.log('🎉 Script portfolio chargé avec succès!');
+log('🎉 Script portfolio chargé avec succès!');
 
 // ===== FORCER LE SCROLL EN HAUT AU CHARGEMENT =====
 (function ensureTopScroll() {
@@ -1515,7 +1666,7 @@ console.log('🎉 Script portfolio chargé avec succès!');
     });
 
     if (window.location.hash) {
-        history.replaceState(null, null, ' ');
+        history.replaceState(null, '', window.location.pathname + window.location.search);
         setTimeout(scrollToTop, 50);
     }
 
@@ -1525,7 +1676,7 @@ console.log('🎉 Script portfolio chargé avec succès!');
         }
     });
 
-    console.log('✅ Page forcée en haut au chargement');
+    log('✅ Page forcée en haut au chargement');
 })();
 
-console.log('✅ Script portfolio entièrement chargé et prêt !');
+log('✅ Script portfolio entièrement chargé et prêt !');

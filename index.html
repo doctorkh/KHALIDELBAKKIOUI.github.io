@@ -8,10 +8,12 @@
     <meta name="keywords" content="mathématiques, probabilités, CPGE, enseignement, recherche, systèmes dynamiques" />
     <meta name="author" content="Khalid EL BAKKIOUI" />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1a2a4a" />
     <!-- Open Graph -->
     <meta property="og:title" content="Khalid EL BAKKIOUI - Chercheur Mathématicien & Enseignant CPGE" />
     <meta property="og:description" content="Mathématicien spécialiste en probabilités, systèmes dynamiques et enseignant CPGE avec 29+ ans d'expérience" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css" />
@@ -20,13 +22,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     
     <!-- MathJax -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- polyfill.io retiré : ce domaine a été compromis en 2024 et diffusait du code malveillant.
+         Inutile de toute façon : MathJax 3 et script.js fonctionnent nativement sur les navigateurs actuels. -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+
+    <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
 
     <!-- ===== NAVIGATION ===== -->
     <nav id="navbar">
@@ -34,18 +42,21 @@
             <div class="nav-logo">
                 <h2>CPGE - Lycée d'Excellence Mohammed VI (LEM6) – Casablanca</h2>
             </div>
-            <ul class="nav-menu" id="nav-menu">
+            <ul class="nav-menu" id="nav-menu" aria-label="Navigation principale">
                 <li><a href="#accueil" class="nav-link"><i class="fas fa-home"></i> Accueil</a></li>
                 <li><a href="#recherche" class="nav-link"><i class="fas fa-flask"></i> Recherche</a></li>
                 <li><a href="#enseignement" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Enseignement</a></li>
                 <li><a href="#documents" class="nav-link"><i class="fas fa-folder"></i> Documents</a></li>
                 <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li class="nav-account-item" hidden><a href="compte.php" class="nav-link nav-account" id="nav-account"><i class="fas fa-user"></i> <span class="nav-account-label">Connexion</span></a></li>
             </ul>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
+            <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu mobile" aria-expanded="false" aria-controls="nav-menu">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
+
+    <main id="contenu-principal">
 
     <!-- ===== SECTION ACCUEIL ===== -->
     <section id="accueil" class="hero">
@@ -61,11 +72,17 @@
                         <i class="far fa-clock"></i>
                         <span id="current-time" aria-live="polite">--:--:--</span>
                     </div>
+                    <div class="info-item access-mode-indicator" id="access-mode" hidden></div>
                     <div class="visitor-stats">
                         <div class="info-item">
                             <i class="fas fa-chart-line"></i>
                             <span id="total-visitors" class="counter" aria-live="polite">0</span>
                             <span class="label">visites totales</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar-day"></i>
+                            <span id="today-visitors" class="counter" aria-live="polite">0</span>
+                            <span class="label">aujourd'hui</span>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-eye"></i>
@@ -120,10 +137,10 @@
                 <div class="hero-image">
                     <div class="logo-container">
                         <div class="logo-top">
-                            <img src="documents/logo_dessus.jpg" alt="Logo supérieur - Dr. Khalid EL BAKKIOUI" class="logo-image large" loading="lazy" />
+                            <img src="documents/logo_dessus.jpg" alt="Logo supérieur - Dr. Khalid EL BAKKIOUI" class="logo-image large" loading="eager" fetchpriority="high" decoding="async" />
                         </div>
                         <div class="logo-bottom">
-                            <img src="documents/logo_dessous.png" alt="Logo inférieur - Dr. Khalid EL BAKKIOUI" class="logo-image huge" loading="lazy" />
+                            <img src="documents/logo_dessous.png" alt="Logo inférieur - Dr. Khalid EL BAKKIOUI" class="logo-image huge" loading="eager" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -141,74 +158,74 @@
         <div class="container">
             <h2 class="section-title"><i class="fas fa-flask"></i> Activités de Recherche</h2>
             <div class="research-tabs-compact">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="publications" aria-selected="true">
-                        <i class="fas fa-file-alt"></i> Publications <span class="badge">9</span>
+                <div class="tab-buttons" role="tablist">
+                    <button id="publications-tab" type="button" role="tab" aria-controls="publications" tabindex="0" class="tab-button active" data-tab="publications" aria-selected="true">
+                        <i class="fas fa-file-alt"></i> Publications <span class="badge">10</span>
                     </button>
-                    <button class="tab-button" data-tab="conferences" aria-selected="false">
+                    <button id="conferences-tab" type="button" role="tab" aria-controls="conferences" tabindex="-1" class="tab-button" data-tab="conferences" aria-selected="false">
                         <i class="fas fa-chalkboard-teacher"></i> Conférences <span class="badge">4</span>
                     </button>
                 </div>
                 <!-- Publications -->
-                <div class="tab-pane active" id="publications">
+                <div role="tabpanel" class="tab-pane active" id="publications" aria-labelledby="publications-tab" aria-hidden="false">
                     <div class="publications-list-compact">
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2025</span>
-                            <span class="pub-title"><a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank">Exploring the Impact of Jump Perturbations on Stochastic SIRS Dynamics</a></span>
+                            <span class="pub-title"><a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" rel="noopener noreferrer">Exploring the Impact of Jump Perturbations on Stochastic SIRS Dynamics</a></span>
                             <span class="pub-authors">El Bakkioui, K. et al.</span>
                             <span class="pub-journal">Appl. Math., 19(3), 671–681</span>
                             <div class="pub-links-compact">
-                                <a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://www.scilit.com/publications/d0d8609e917fdabc8772ceccaab93322" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                 <a href="documents/publications/exploring-jump-perturbations.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                             </div>
                         </div>
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2025</span>
-                            <span class="pub-title"><a href="https://doi.org/10.1234/am.2025.19739" target="_blank">Logistic Growth and Relapse in the Stochastic Dynamics of SIRI Epidemics</a></span>
+                            <span class="pub-title"><a href="https://doi.org/10.1234/am.2025.19739" target="_blank" rel="noopener noreferrer">Logistic Growth and Relapse in the Stochastic Dynamics of SIRI Epidemics</a></span>
                             <span class="pub-authors">Esseroukh, M. et al.</span>
                             <span class="pub-journal">Appl. Math., 19(4), 739–750</span>
                             <div class="pub-links-compact">
-                                <a href="https://doi.org/10.1234/am.2025.19739" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://doi.org/10.1234/am.2025.19739" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                 <a href="documents/publications/logistic-growth-relapse.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                             </div>
                         </div>
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2025</span>
-                            <span class="pub-title"><a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank">Threshold Dynamics of Stochastic SIS Epidemic Models with Logistic Recruitment Rate</a></span>
+                            <span class="pub-title"><a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" rel="noopener noreferrer">Threshold Dynamics of Stochastic SIS Epidemic Models with Logistic Recruitment Rate</a></span>
                             <span class="pub-authors">Aznague, S. et al.</span>
                             <span class="pub-journal">New Math. Nat. Comput., 1–24</span>
                             <div class="pub-links-compact">
-                                <a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://www.worldscientific.com/doi/10.1142/S1793005725500127" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                 <a href="documents/publications/threshold-dynamics.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                             </div>
                         </div>
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2025</span>
-                            <span class="pub-title"><a href="https://doi.org/10.1142/S1793005727500244" target="_blank">Stochastic Analysis of COVID-19 Epidemics Under Quarantine Measures</a></span>
+                            <span class="pub-title"><a href="https://doi.org/10.1142/S1793005727500244" target="_blank" rel="noopener noreferrer">Stochastic Analysis of COVID-19 Epidemics Under Quarantine Measures</a></span>
                             <span class="pub-authors">El Khatib, B. et al.</span>
                             <span class="pub-journal">New Math. Nat. Comput.</span>
                             <div class="pub-links-compact">
-                                <a href="https://doi.org/10.1142/S1793005727500244" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://doi.org/10.1142/S1793005727500244" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                 <a href="documents/publications/covid19-quarantine.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                             </div>
                         </div>
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2026</span>
-                            <span class="pub-title"><a href="#" target="_blank">Thresholds for Stochastic SIRS with Switching Exponents</a></span>
+                            <span class="pub-title"><a href="#" target="_blank" rel="noopener noreferrer">Thresholds for Stochastic SIRS with Switching Exponents</a></span>
                             <span class="pub-authors">El Bakkioui, K. et al.</span>
                             <span class="pub-journal">Mathematical Biosciences</span>
                             <div class="pub-links-compact">
-                                 <a href="#" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                 <a href="#" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                  <a href="documents/publications/thresholds-stochastic-sirs.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                          </div>
                          </div>
                         <div class="pub-item-compact">
                             <span class="pub-year-badge">2025</span>
-                            <span class="pub-title"><a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank">Impact of Scale-Free Network Structures on Stochastic SIRS Epidemics</a></span>
+                            <span class="pub-title"><a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" rel="noopener noreferrer">Impact of Scale-Free Network Structures on Stochastic SIRS Epidemics</a></span>
                             <span class="pub-authors">Settati, A. et al.</span>
                             <span class="pub-journal">J. Theor. Biol., 123456, 128745</span>
                             <div class="pub-links-compact">
-                                <a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://doi.org/10.1016/j.jtbi.2025.128745" target="_blank" rel="noopener noreferrer" class="pub-link"><i class="fas fa-external-link-alt"></i></a>
                                 <a href="documents/publications/scale-free-networks.pdf" class="pub-link pdf-link" download><i class="fas fa-download"></i></a>
                             </div>
                         </div>
@@ -243,7 +260,7 @@
                     </div>
                 </div>
                 <!-- Conférences -->
-                <div class="tab-pane" id="conferences">
+                <div role="tabpanel" class="tab-pane" id="conferences" aria-labelledby="conferences-tab" aria-hidden="true">
                     <div class="conferences-list-compact">
                         <div class="conf-item-compact">
                             <span class="conf-year-badge">2024</span>
@@ -251,7 +268,7 @@
                             <span class="conf-title">Int. Conf. on Artificial Intelligence and Applied Mathematics</span>
                             <span class="conf-location">Al Hoceima, May 11</span>
                             <div class="conf-links-compact">
-                                <a href="https://jiama24.sciencesconf.org/" target="_blank" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://jiama24.sciencesconf.org/" target="_blank" rel="noopener noreferrer" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                         </div>
                         <div class="conf-item-compact">
@@ -260,7 +277,7 @@
                             <span class="conf-title">First Int. School on Fractional Calculus and Systems Theory</span>
                             <span class="conf-location">Meknes, Dec 12-14</span>
                             <div class="conf-links-compact">
-                                <a href="https://sisfca24.sciencesconf.org/" target="_blank" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://sisfca24.sciencesconf.org/" target="_blank" rel="noopener noreferrer" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                         </div>
                         <div class="conf-item-compact">
@@ -269,8 +286,8 @@
                             <span class="conf-title">Influence of Stochastic Jumps on the Dynamics of SIRS Systems</span>
                             <span class="conf-location">Fez, Apr 07-11</span>
                             <div class="conf-links-compact">
-                                <a href="https://idts25.sciencesconf.org/" target="_blank" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
-                                <a href="documents/communications/presentation-iwnam2025.pdf" target="_blank" class="conf-link pdf-link"><i class="fas fa-file-pdf"></i></a>
+                                <a href="https://idts25.sciencesconf.org/" target="_blank" rel="noopener noreferrer" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="documents/communications/presentation-iwnam2025.pdf" target="_blank" rel="noopener noreferrer" class="conf-link pdf-link"><i class="fas fa-file-pdf"></i></a>
                             </div>
                         </div>
                         <div class="conf-item-compact">
@@ -279,8 +296,8 @@
                             <span class="conf-title">Etude de l'effet des perturbations par sauts sur la dynamique stochastique des modèles SIRS</span>
                             <span class="conf-location">Marrakech, Apr 24-26</span>
                             <div class="conf-links-compact">
-                                <a href="https://icramcs2025.sciencesconf.org/data/" target="_blank" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
-                                <a href="documents/communications/presentation-icramcs2025.pdf" target="_blank" class="conf-link pdf-link"><i class="fas fa-file-pdf"></i></a>
+                                <a href="https://icramcs2025.sciencesconf.org/data/" target="_blank" rel="noopener noreferrer" class="conf-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="documents/communications/presentation-icramcs2025.pdf" target="_blank" rel="noopener noreferrer" class="conf-link pdf-link"><i class="fas fa-file-pdf"></i></a>
                             </div>
                         </div>
                     </div>
@@ -294,18 +311,18 @@
         <div class="container">
             <h2 class="section-title">Ressources Pédagogiques CPGE</h2>
             <div class="filiere-tabs">
-                <div class="tab-buttons small" data-tab-group="enseignement">
-                    <button class="tab-button active" data-tab="mpsi" aria-selected="true" aria-controls="mpsi">MPSI</button>
-                    <button class="tab-button" data-tab="psi" aria-selected="false" aria-controls="psi">PSI</button>
-                    <button class="tab-button" data-tab="mp" aria-selected="false" aria-controls="mp">MP</button>
-                    <button class="tab-button" data-tab="ect1" aria-selected="false" aria-controls="ect1">ECT 1ère</button>
-                    <button class="tab-button" data-tab="ect2" aria-selected="false" aria-controls="ect2">ECT 2ème</button>
-                    <button class="tab-button" data-tab="ecs1" aria-selected="false" aria-controls="ecs1">ECS 1ère</button>
-                    <button class="tab-button" data-tab="ecs2" aria-selected="false" aria-controls="ecs2">ECS 2ème</button>
+                <div class="tab-buttons small" data-tab-group="enseignement" role="tablist" aria-label="Filières">
+                    <button id="mpsi-tab" type="button" role="tab" tabindex="0" class="tab-button active" data-tab="mpsi" aria-selected="true" aria-controls="mpsi">MPSI</button>
+                    <button id="psi-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="psi" aria-selected="false" aria-controls="psi">PSI</button>
+                    <button id="mp-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="mp" aria-selected="false" aria-controls="mp">MP</button>
+                    <button id="ect1-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="ect1" aria-selected="false" aria-controls="ect1">ECT 1ère</button>
+                    <button id="ect2-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="ect2" aria-selected="false" aria-controls="ect2">ECT 2ème</button>
+                    <button id="ecs1-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="ecs1" aria-selected="false" aria-controls="ecs1">ECS 1ère</button>
+                    <button id="ecs2-tab" type="button" role="tab" tabindex="-1" class="tab-button" data-tab="ecs2" aria-selected="false" aria-controls="ecs2">ECS 2ème</button>
                 </div>
                 <div class="tab-content">
                     <!-- ====== MPSI ====== -->
-<div class="tab-pane active" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="false">
+<div role="tabpanel" class="tab-pane active" id="mpsi" aria-labelledby="mpsi-tab" aria-hidden="false">
     <div class="enseignement-grid">
         <!-- Programmes officiels MPSI -->
         <div class="ressource-category">
@@ -319,7 +336,7 @@
                     <span class="ri-size">PDF</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
                 <div class="ressource-item-compact">
@@ -330,7 +347,7 @@
                     <span class="ri-size">PDF</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
                 <div class="ressource-item-compact">
@@ -341,7 +358,7 @@
                     <span class="ri-size">PDF</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
                 <div class="ressource-item-compact">
@@ -352,7 +369,7 @@
                     <span class="ri-size">PDF</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
             </div>
@@ -370,7 +387,7 @@
                     <span class="ri-size">PDF</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/cahier-texte-mpsi.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/cahier-texte-mpsi.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/cahier-texte-mpsi.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
             </div>
@@ -1024,7 +1041,7 @@
                     <span class="ri-size">1.5 MB</span>
                     <span class="ri-actions">
                         <a href="documents/enseignement/mpsi/tp-python-mpsi.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                        <a href="documents/enseignement/mpsi/tp-python-mpsi.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                        <a href="documents/enseignement/mpsi/tp-python-mpsi.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                     </span>
                 </div>
             </div>
@@ -1041,7 +1058,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle-mpsi.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle-mpsi.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle-mpsi.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
 
@@ -1052,7 +1069,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle1.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle1.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle1.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <!--
@@ -1062,7 +1079,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle2.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle2.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle2.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1071,7 +1088,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle3.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle3.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle3.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1080,7 +1097,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle4.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle4.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle4.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1089,7 +1106,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle5.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle5.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle5.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1098,7 +1115,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle6.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle6.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle6.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1107,7 +1124,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle7.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle7.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle7.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1116,7 +1133,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle8.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle8.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle8.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1125,7 +1142,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle9.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle9.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle9.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1134,7 +1151,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle10.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle10.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle10.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1143,7 +1160,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle11.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle11.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle11.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1152,7 +1169,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle12.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle12.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle12.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1161,7 +1178,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle13.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle13.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle13.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1170,7 +1187,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle14.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle14.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle14.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1179,7 +1196,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle15.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle15.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle15.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1188,7 +1205,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle16.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle16.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle16.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1197,7 +1214,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle17.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle17.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle17.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1206,7 +1223,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle18.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle18.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle18.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1215,7 +1232,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle19.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle19.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle19.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1224,7 +1241,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/colle20.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/colle20.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/colle20.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         
@@ -1245,7 +1262,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Les_types_de_recurrence_en_mathematiques.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Les_types_de_recurrence_en_mathematiques.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Les_types_de_recurrence_en_mathematiques.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1254,7 +1271,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Majorants_minorants_bornes_superieure_et_inferieure.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/TMajorants_minorants_bornes_superieure_et_inferieure.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Majorants_minorants_bornes_superieure_et_inferieure.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1263,7 +1280,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Exercices_corriges_sur_es_applications.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Exercices_corriges_sur_es_applications.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Exercices_corriges_sur_es_applications.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1272,7 +1289,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1281,7 +1298,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1290,7 +1307,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Cours_Suites_Arithm_Geom_ArithmeticoGeom_Recurrentes_Lineaires_Ordre2.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Cours_Suites_Arithm_Geom_ArithmeticoGeom_Recurrentes_Lineaires_Ordre2.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Cours_Suites_Arithm_Geom_ArithmeticoGeom_Recurrentes_Lineaires_Ordre2.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1299,7 +1316,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/somme_double_exo.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/somme_double_exo.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/somme_double_exo.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1308,7 +1325,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/forme_un_nombre_complexe.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/forme_un_nombre_complexe.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/forme_un_nombre_complexe.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <!-- 
@@ -1318,7 +1335,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1327,7 +1344,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Corrige_du_TD_avance_treillis_algebriques_de_Boole_classes_monotones_ordinaux_et_topologie.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1336,7 +1353,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Complement_Cours_Topologie.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Complement_Cours_Topologie.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Complement_Cours_Topologie.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1345,7 +1362,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/TD_Equations_Differentielles.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/TD_Equations_Differentielles.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/TD_Equations_Differentielles.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         <div class="ressource-item-compact">
@@ -1354,7 +1371,7 @@
             <span class="ri-size">PDF</span>
             <span class="ri-actions">
                 <a href="documents/enseignement/mpsi/Complement_Cours_Probabilites.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                <a href="documents/enseignement/mpsi/Complement_Cours_Probabilites.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                <a href="documents/enseignement/mpsi/Complement_Cours_Probabilites.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
             </span>
         </div>
         -->
@@ -1365,7 +1382,7 @@
         </div>
 
                     <!-- ====== MP ====== -->
-                    <div class="tab-pane" id="mp" aria-labelledby="mp-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="mp" aria-labelledby="mp-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <!-- Programmes officiels MP -->
                             <div class="ressource-category">
@@ -1379,7 +1396,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1390,7 +1407,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Spe_MP_Maroc_2024.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1401,7 +1418,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1412,7 +1429,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/Programme_officiel_Maths_Sup_MPSI_Maroc_2022.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -1429,7 +1446,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/cahier-texte-mp.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/cahier-texte-mp.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/cahier-texte-mp.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -1856,7 +1873,7 @@
                                         <span class="ri-size">1.5 MB</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/tp-python-mp.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/tp-python-mp.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/tp-python-mp.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -1873,7 +1890,7 @@
                                         <span class="ri-size">1.5 MB</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/mp/colle-mp.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/mp/colle-mp.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/mp/colle-mp.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -1882,7 +1899,7 @@
                     </div>
 
                     <!-- ====== PSI ====== -->
-                    <div class="tab-pane" id="psi" aria-labelledby="psi-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="psi" aria-labelledby="psi-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <!-- Programmes officiels PSI -->
                             <div class="ressource-category">
@@ -1896,7 +1913,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1907,7 +1924,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_Maroc_2024.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_Maroc_2024.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Spe_PSI_Maroc_2024.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1918,7 +1935,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_France_2021.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_France_2021.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_France_2021.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                     <div class="ressource-item-compact">
@@ -1929,7 +1946,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_Maroc_2022.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_Maroc_2022.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/Programme_officiel_Maths_Sup_PCSI_Maroc_2022.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -1946,7 +1963,7 @@
                                         <span class="ri-size">PDF</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/cahier-texte.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/cahier-texte.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/cahier-texte.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -2355,7 +2372,7 @@
                                         <span class="ri-size">1.5 MB</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/tp-python-psi.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/tp-python-psi.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/tp-python-psi.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -2372,7 +2389,7 @@
                                         <span class="ri-size">1.5 MB</span>
                                         <span class="ri-actions">
                                             <a href="documents/enseignement/psi/colle-psi.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-                                            <a href="documents/enseignement/psi/colle-psi.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+                                            <a href="documents/enseignement/psi/colle-psi.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -2381,7 +2398,7 @@
                     </div>
 
                     <!-- ====== ECT 1ère ====== -->
-                    <div class="tab-pane" id="ect1" aria-labelledby="ect1-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="ect1" aria-labelledby="ect1-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECT 1ère année</h3>
@@ -2391,7 +2408,7 @@
                     </div>
 
                     <!-- ====== ECT 2ème ====== -->
-                    <div class="tab-pane" id="ect2" aria-labelledby="ect2-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="ect2" aria-labelledby="ect2-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECT 2ème année</h3>
@@ -2401,7 +2418,7 @@
                     </div>
 
                     <!-- ====== ECS 1ère ====== -->
-                    <div class="tab-pane" id="ecs1" aria-labelledby="ecs1-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="ecs1" aria-labelledby="ecs1-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECS 1ère année</h3>
@@ -2411,7 +2428,7 @@
                     </div>
 
                     <!-- ====== ECS 2ème ====== -->
-                    <div class="tab-pane" id="ecs2" aria-labelledby="ecs2-tab" aria-hidden="true">
+                    <div role="tabpanel" class="tab-pane" id="ecs2" aria-labelledby="ecs2-tab" aria-hidden="true">
                         <div class="enseignement-grid">
                             <div class="ressource-category">
                                 <h3><i class="fas fa-book"></i> Cours Complets - ECS 2ème année</h3>
@@ -2429,19 +2446,19 @@
         <div class="container">
             <h2 class="section-title"><i class="fas fa-file-alt"></i> Documents Académiques</h2>
             <div class="documents-tabs-compact">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="these" aria-selected="true">
+                <div class="tab-buttons" role="tablist">
+                    <button id="these-tab" type="button" role="tab" aria-controls="these" tabindex="0" class="tab-button active" data-tab="these" aria-selected="true">
                         <i class="fas fa-graduation-cap"></i> Thèse <span class="badge">3</span>
                     </button>
-                    <button class="tab-button" data-tab="memoires" aria-selected="false">
+                    <button id="memoires-tab" type="button" role="tab" aria-controls="memoires" tabindex="-1" class="tab-button" data-tab="memoires" aria-selected="false">
                         <i class="fas fa-book-open"></i> Mémoires <span class="badge">2</span>
                     </button>
-                    <button class="tab-button" data-tab="livres" aria-selected="false">
+                    <button id="livres-tab" type="button" role="tab" aria-controls="livres" tabindex="-1" class="tab-button" data-tab="livres" aria-selected="false">
                         <i class="fas fa-book"></i> Livres &amp; Manuels <span class="badge">10</span>
                     </button>
                 </div>
                <!-- Thèse -->
-<div class="tab-pane active" id="these">
+<div role="tabpanel" class="tab-pane active" id="these" aria-labelledby="these-tab" aria-hidden="false">
   <div class="these-list-compact">
     
     <!-- Thèse Française -->
@@ -2451,7 +2468,7 @@
       <span class="these-meta"><span><i class="fas fa-calendar"></i> 2021-2025</span> <span><i class="fas fa-file-pdf"></i> 4.2 MB</span> <span><i class="fas fa-university"></i> UAE</span></span>
       <span class="these-actions">
         <a href="documents/these/these-francais.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-        <a href="documents/these/these-francais.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+        <a href="documents/these/these-francais.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
       </span>
     </div>
     
@@ -2462,7 +2479,7 @@
       <span class="these-meta"><span><i class="fas fa-calendar"></i> 2021-2025</span> <span><i class="fas fa-file-pdf"></i> 4.5 MB</span> <span><i class="fas fa-university"></i> UAE</span></span>
       <span class="these-actions">
         <a href="documents/these/thesis-english.pdf" class="btn-link" download><i class="fas fa-download"></i></a>
-        <a href="documents/these/thesis-english.pdf" class="btn-link preview" target="_blank"><i class="fas fa-eye"></i></a>
+        <a href="documents/these/thesis-english.pdf" class="btn-link preview" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
       </span>
     </div>
     
@@ -2473,14 +2490,14 @@
       <span class="these-meta"><span><i class="fas fa-calendar"></i> 18 juillet 2025</span> <span><i class="fas fa-file-pdf"></i> 3.8 MB</span> <span><i class="fas fa-university"></i> UAE</span></span>
       <span class="these-actions">
         <a href="documents/these/diapositives.pdf" class="btn-link" style="color:#e74c3c;border-color:#e74c3c" download><i class="fas fa-download"></i></a>
-        <a href="documents/these/diapositives.pdf" class="btn-link preview" style="color:#e74c3c;border-color:#e74c3c" target="_blank"><i class="fas fa-eye"></i></a>
+        <a href="documents/these/diapositives.pdf" class="btn-link preview" style="color:#e74c3c;border-color:#e74c3c" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i></a>
       </span>
     </div>
     
   </div>
 </div>
                 <!-- Mémoires -->
-                <div class="tab-pane" id="memoires">
+                <div role="tabpanel" class="tab-pane" id="memoires" aria-labelledby="memoires-tab" aria-hidden="true">
                     <div class="memoires-list-compact">
                         <div class="memoire-item-compact">
                             <span class="memoire-icon"><i class="fas fa-graduation-cap"></i></span>
@@ -2501,116 +2518,116 @@
                     </div>
                 </div>
                 <!-- Livres -->
-                <div class="tab-pane" id="livres">
+                <div role="tabpanel" class="tab-pane" id="livres" aria-labelledby="livres-tab" aria-hidden="true">
                     <div class="livres-list-compact">
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_An Introduction to Stochastic Processes and Their Uses.jpg" alt="An Introduction to Stochastic Processes" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_An Introduction to Stochastic Processes and Their Uses.jpg" alt="An Introduction to Stochastic Processes" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">An Introduction to Stochastic Processes <small>Khalid El Bakkioui — Theory, Examples, and Applications</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Apr 2026</span> <span><i class="fas fa-language"></i> EN</span> <span><i class="fas fa-file-alt"></i> 177p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$38.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0GXFJ6R8Q" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Independent Random Variables, Wick Polynomials, and a Non‑Gaussian Stochastic Integral.jpg" alt="Independent Random Variables, Wick Polynomials" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Independent Random Variables, Wick Polynomials, and a Non‑Gaussian Stochastic Integral.jpg" alt="Independent Random Variables, Wick Polynomials" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Independent Random Variables, Wick Polynomials <small>Khalid El Bakkioui — Non‑Gaussian Stochastic Integral</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Apr 2026</span> <span><i class="fas fa-language"></i> EN</span> <span><i class="fas fa-file-alt"></i> 134p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$38.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0GWMQK3XC" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Exercises and Solutions with Key Results on Local Times, Brownian Excursions, and Semimartingales.jpg" alt="Exercises on Local Times" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Exercises and Solutions with Key Results on Local Times, Brownian Excursions, and Semimartingales.jpg" alt="Exercises on Local Times" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Exercises on Local Times, Brownian Excursions <small>Khalid El Bakkioui — Semimartingales</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Apr 2026</span> <span><i class="fas fa-language"></i> EN</span> <span><i class="fas fa-file-alt"></i> 170p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$40.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0GVT7S57W" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Exercises and Solutions in Stochastic Calculus.jpg" alt="Exercises and Solutions in Stochastic Calculus" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Exercises and Solutions in Stochastic Calculus.jpg" alt="Exercises and Solutions in Stochastic Calculus" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Exercises and Solutions in Stochastic Calculus <small>Khalid El Bakkioui — 50 exercises with Python simulations</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Mar 2026</span> <span><i class="fas fa-language"></i> EN</span> <span><i class="fas fa-file-alt"></i> 158p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$45.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0GV3VC7KH" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Mathematiques Appliquees Avancees.jpg" alt="Mathématiques Appliquées Avancées" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Mathematiques Appliquees Avancees.jpg" alt="Mathématiques Appliquées Avancées" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Mathématiques Appliquées Avancées <small>Khalid El Bakkioui — Analyse, algèbre, probabilités, Python</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Mar 2026</span> <span><i class="fas fa-language"></i> FR</span> <span><i class="fas fa-file-alt"></i> 582p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$60.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0GR1F7PNG" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Operateurs Compacts et Propriete dOrlicz-Pettis.jpg" alt="Opérateurs Compacts" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Operateurs Compacts et Propriete dOrlicz-Pettis.jpg" alt="Opérateurs Compacts" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Opérateurs Compacts et Propriété d'Orlicz-Pettis <small>El Bakkioui &amp; El Idrissi — Analyse p-adique</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Feb 2026</span> <span><i class="fas fa-language"></i> FR</span> <span><i class="fas fa-file-alt"></i> 140p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">€68.90</span>
                             <span class="livre-actions">
-                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-44723-5" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-44723-5" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-44723-5" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-44723-5" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Special Subgroups of the General Linear Group.jpg" alt="Special Subgroups" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Special Subgroups of the General Linear Group.jpg" alt="Special Subgroups" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Special Subgroups of the General Linear Group <small>El Bakkioui &amp; El Idrissi — Linear Algebra</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Nov 2025</span> <span><i class="fas fa-language"></i> EN</span> <span><i class="fas fa-file-alt"></i> 124p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">€60.90</span>
                             <span class="livre-actions">
-                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-19243-2" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-19243-2" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-19243-2" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.morebooks.shop/shop-ui/shop/product/978-620-9-19243-2" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Probabilites et theorie de la mesure_tome_1.png" alt="Probabilités Tome 1" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Probabilites et theorie de la mesure_tome_1.png" alt="Probabilités Tome 1" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Probabilités et théorie de la mesure Tome 1 <small>Khalid El Bakkioui — Des phénomènes aléatoires aux fondements axiomatiques</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Jun 2026</span> <span><i class="fas fa-language"></i> FR</span> <span><i class="fas fa-file-alt"></i> 452p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$43.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/Probabilités-théorie-mesure-phénomènes-axiomatiques-ebook/dp/B0H1GT7RR2/" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Probabilites et processus stochastiques_tome_2.jpg" alt="Probabilités Tome 2" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Probabilites et processus stochastiques_tome_2.jpg" alt="Probabilités Tome 2" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Probabilités et processus stochastiques Tome 2 <small>Khalid El Bakkioui — Martingales, Markov, Fonctions caractéristiques</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Jun 2026</span> <span><i class="fas fa-language"></i> FR</span> <span><i class="fas fa-file-alt"></i> 395p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$42.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0H4DB5N52" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                         <div class="livre-item-compact">
-                            <img class="livre-cover" src="documents/memoires/book_Mouvement Brownien et Calcul Stochastique_tome_3.jpg" alt="Mouvement Brownien Tome 3" onerror="this.style.display='none'" />
+                            <img class="livre-cover" src="documents/memoires/book_Mouvement Brownien et Calcul Stochastique_tome_3.jpg" alt="Mouvement Brownien Tome 3" loading="lazy" decoding="async" width="44" height="60" />
                             <span class="livre-title">Mouvement Brownien et Calcul Stochastique Tome 3 <small>Khalid El Bakkioui — Processus, filtrations, martingales, mouvement brownien et calcul stochastiques</small></span>
                             <span class="livre-meta"><span><i class="fas fa-calendar"></i> Juil 2026</span> <span><i class="fas fa-language"></i> FR</span> <span><i class="fas fa-file-alt"></i> 220p</span></span>
                             <span class="badge-new">New</span>
                             <span class="livre-price">$40.00</span>
                             <span class="livre-actions">
-                                <a href="https://www.amazon.com/dp/B0H7SSRP19" target="_blank" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
-                                <a href="https://www.amazon.com/dp/B0H7SSRP19" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
+                                <a href="https://www.amazon.com/dp/B0H7SSRP19" target="_blank" rel="noopener noreferrer" class="btn-link amazon"><i class="fas fa-shopping-cart"></i></a> Acheter
+                                <a href="https://www.amazon.com/dp/B0H7SSRP19" target="_blank" rel="noopener noreferrer" class="btn-link"><i class="fas fa-external-link-alt"></i></a> Voir
                             </span>
                         </div>
                     </div>
@@ -2646,8 +2663,8 @@
                              <div class="ci-value">
                                    <strong>Lycée d'excellence Mohammed VI – CPGE</strong><br>
                                    Établissement d'enseignement préparatoire aux grandes écoles<br>
-                                   <a href="https://lem6.ma/" target="_blank">Site web</a> •
-                                   <a href="#">Directions</a> •
+                                   <a href="https://lem6.ma/" target="_blank" rel="noopener noreferrer">Site web</a> •
+                                   <a href="https://www.google.com/maps/search/?api=1&amp;query=Lyc%C3%A9e+d%27excellence+Mohammed+VI+CPGE+Casablanca" target="_blank" rel="noopener noreferrer">Directions</a> •
                                    0600-069676<br>
                                   📍 Boulevard Mohamed Taieb Naciri, Oum Rabii – Hay Hassani, Casablanca, Maroc.<br>
                                   📞 Téléphone : 06 00 06 96 76.
@@ -2663,18 +2680,21 @@
                     </div>
                 </div>
                 <div class="contact-form-compact">
-                    <div class="form-title"><i class="fas fa-paper-plane" style="color: #667eea;"></i> Envoyez-moi un message</div>
-                    <form id="contactForm">
-                        <div class="form-group"><input type="text" placeholder="Votre nom" required aria-label="Votre nom" /></div>
-                        <div class="form-group"><input type="email" placeholder="Votre email" required aria-label="Votre email" /></div>
-                        <div class="form-group"><input type="text" placeholder="Sujet" required aria-label="Sujet" /></div>
-                        <div class="form-group"><textarea placeholder="Votre message" rows="4" required aria-label="Votre message"></textarea></div>
+                    <div class="form-title"><i class="fas fa-paper-plane" style="color: #667eea;" aria-hidden="true"></i> Envoyez-moi un message</div>
+                    <form id="contactForm" novalidate>
+                        <div class="form-group"><input type="text" name="name" placeholder="Votre nom" required aria-label="Votre nom" autocomplete="name" maxlength="120" /></div>
+                        <div class="form-group"><input type="email" name="email" placeholder="Votre email" required aria-label="Votre email" autocomplete="email" maxlength="190" /></div>
+                        <div class="form-group"><input type="text" name="subject" placeholder="Sujet" required aria-label="Sujet" maxlength="200" /></div>
+                        <div class="form-group"><textarea name="message" placeholder="Votre message" rows="4" required aria-label="Votre message" maxlength="5000"></textarea></div>
+                        <div class="form-group hp-field" aria-hidden="true"><label for="cf-website">Ne pas remplir</label><input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" /></div>
                         <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Envoyer le message</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
+    </main>
 
     <!-- ===== FOOTER ===== -->
     <footer class="footer-compact">
@@ -2685,9 +2705,9 @@
                     <p>Mathématicien • Enseignant CPGE • Chercheur en Mathématiques</p>
                 </div>
                 <div class="footer-social">
-                    <a href="https://linkedin.com/in/votre-profil" target="_blank" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://researchgate.net/profile/votre-profil" target="_blank" title="ResearchGate" aria-label="ResearchGate"><i class="fab fa-researchgate"></i></a>
-                    <a href="https://scholar.google.com/citations?user=votre-id" target="_blank" title="Google Scholar" aria-label="Google Scholar"><i class="fab fa-google-scholar"></i></a>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://researchgate.net/profile/votre-profil" target="_blank" rel="noopener noreferrer" title="ResearchGate" aria-label="ResearchGate"><i class="fab fa-researchgate"></i></a>
+                    <a href="https://scholar.google.com/citations?user=votre-id" target="_blank" rel="noopener noreferrer" title="Google Scholar" aria-label="Google Scholar"><i class="fab fa-google-scholar"></i></a>
                     <a href="mailto:khalid.elbakkioui@etu.uae.ac.ma" title="Email" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
@@ -2698,12 +2718,12 @@
         </div>
     </footer>
 
-    <button id="backToTop" class="back-to-top-compact" aria-label="Retour en haut de page">
+    <button id="backToTop" class="back-to-top-compact" type="button" aria-label="Retour en haut de page">
         <i class="fas fa-chevron-up"></i>
     </button>
 
     <!-- Script -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 
 </body>
 </html>
