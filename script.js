@@ -24,8 +24,8 @@
 //    Google Drive (voir la procédure). Ici, le mode règle l'affichage
 //    (cadenas, indicateur) ; la protection réelle est assurée par Google Drive.
 const MODES_ACTIFS = [];
- // MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
- MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
+ MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
+  // MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
 
 const CONFIG_SITE = {
     // 2) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
@@ -49,14 +49,14 @@ const CONFIG_SITE = {
         { motif: 'documents/enseignement/psi/corrige*', drive: '', libelle: 'Corrigés PSI' },
         { motif: 'documents/enseignement/mp/corrige*', drive: '', libelle: 'Corrigés MP' },
         // Exemples à décommenter et compléter :
-        // { motif: 'documents/enseignement/mpsi/*', drive: 'https://drive.google.com/drive/folders/XXXX', libelle: 'Ressources MPSI' },
-        // { motif: 'documents/these/*',             drive: 'https://drive.google.com/drive/folders/XXXX', libelle: 'Thèse' },
+        //    { motif: 'documents/enseignement/mpsi/corrige*', drive: 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing', libelle: 'Corrigés MPSI' },
+        // { motif: 'documents/these/*',             drive: 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing', libelle: 'Thèse' },
     ],
 
     // Facultatif : lien Drive propre à un fichier (ouvre directement le fichier
     // au lieu du dossier). Prioritaire sur les règles ci-dessus.
     liensDriveFichiers: {
-        // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/file/d/XXXX/view',
+        // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing',
     }
 };
 
