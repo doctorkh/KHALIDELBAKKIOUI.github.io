@@ -42,24 +42,25 @@ const CONFIG_SITE = {
     //    déposez-les dans un dossier Google Drive et collez le lien du dossier.
     //    Jokers : * = n'importe quelle suite de caractères.
     //    Tant que « drive » est vide, la règle est ignorée (le lien GitHub reste).
-    documentsReserves: [
-        { motif: 'documents/enseignement/mpsi/corrige*', drive: '', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/mpsi/Corrige*', drive: '', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: '', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/psi/corrige*', drive: '', libelle: 'Corrigés PSI' },
-        { motif: 'documents/enseignement/mp/corrige*', drive: '', libelle: 'Corrigés MP' },
-        // Exemples à décommenter et compléter :
-        //    { motif: 'documents/enseignement/mpsi/corrige*', drive: 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing', libelle: 'Corrigés MPSI' },
-        // { motif: 'documents/these/*',             drive: 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing', libelle: 'Thèse' },
+        documentsReserves: [
+        { motif: 'documents/enseignement/mpsi/corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/Corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/psi/corrige*',      drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés PSI' },
+        { motif: 'documents/enseignement/mp/corrige*',       drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MP' },
+        // Exemples à décommenter et compléter (un autre dossier Drive par thème si vous le souhaitez) :
+        // { motif: 'documents/these/*',               drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Thèse' },
+        // { motif: 'documents/enseignement/mpsi/*',   drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Ressources MPSI' },
     ],
 
     // Facultatif : lien Drive propre à un fichier (ouvre directement le fichier
     // au lieu du dossier). Prioritaire sur les règles ci-dessus.
+    // Lien d'un fichier : clic droit sur le fichier dans Drive → Partager → Copier le lien
+    // (il a la forme https://drive.google.com/file/d/.../view).
     liensDriveFichiers: {
-        // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOp?usp=sharing',
+        // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/file/d/IDENTIFIANT_DU_FICHIER/view',
     }
 };
-
 const PORTFOLIO_CONFIG = {
     backendPhp: false,                      // false sur GitHub Pages (pas de PHP)
     apiUrl: 'api.php',                      // backend PHP (même dossier que index.html)
