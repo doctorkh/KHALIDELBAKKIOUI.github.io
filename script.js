@@ -31,7 +31,7 @@ const CONFIG_SITE = {
     // 2) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
     //    Indiquez votre code GoatCounter, ex. 'elbakkioui' pour elbakkioui.goatcounter.com.
     //    Vide ('') = compteur local, limité au navigateur de chaque visiteur.
-    goatcounterCode: '',
+    goatcounterCode: 'elbakkioui',
     // Visites antérieures à GoatCounter à ajouter au total (0 si inconnu).
     visitesAnterieures: 0,
     // Fuseau utilisé pour « aujourd'hui » (réglez le même dans GoatCounter → Settings).
