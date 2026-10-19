@@ -24,8 +24,8 @@
 //    Google Drive (voir la procédure). Ici, le mode règle l'affichage
 //    (cadenas, indicateur) ; la protection réelle est assurée par Google Drive.
 const MODES_ACTIFS = [];
- MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
-  // MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
+  //  MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
+   MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
 
 const CONFIG_SITE = {
     // 2) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
