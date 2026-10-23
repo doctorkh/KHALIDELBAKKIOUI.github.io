@@ -50,6 +50,24 @@ const MODES_ACTIFS = [];
 //    partage du parent s'applique automatiquement aux sous-dossiers.
 const DRIVE_PRIVE = 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy';
 
+// Liens des sous-dossiers Google Drive : collez chaque lien entre les apostrophes.
+// Forme d'un lien : https://drive.google.com/drive/folders/XXXXXXXX
+// Tant qu'un lien est vide (''), la rubrique utilise DRIVE_PRIVE (jamais un lien cassé).
+const DRIVE_DOSSIERS = {
+    mpsiCorriges:   'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy',
+    mpCorriges:     '',
+    psiCorriges:    '',
+    mpsi:           '',
+    mp:             '',
+    psi:            '',
+    publications:   '',
+    communications: '',
+    these:          '',
+    memoires:       '',
+    cv:             ''
+};
+const lienDrive = (cle) => DRIVE_DOSSIERS[cle] || DRIVE_PRIVE;
+
 const CONFIG_SITE = {
     // 3) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
     //    Indiquez votre code GoatCounter, ex. 'elbakkioui' pour elbakkioui.goatcounter.com.
@@ -68,34 +86,32 @@ const CONFIG_SITE = {
 
     // 5) DOCUMENTS RÉSERVÉS, HÉBERGÉS SUR GOOGLE DRIVE.
     //    Retirez ces fichiers de GitHub (tout ce qui est sur GitHub est public),
-    //    déposez-les dans un dossier Google Drive et collez le lien du dossier.
+    //    déposez-les dans un dossier Google Drive et collez le lien du dossier
+    //    dans DRIVE_DOSSIERS (plus haut) : inutile de modifier les règles ci-dessous.
     //    Jokers : * = n'importe quelle suite de caractères (y compris des sous-dossiers).
     //    La PREMIÈRE règle qui correspond l'emporte : gardez les plus précises en haut.
-    //    Tant que « drive » est vide, la règle est ignorée (le lien GitHub reste).
         documentsReserves: [
         // --- Corrigés (règles d'origine) ---
-        { motif: 'documents/enseignement/mpsi/corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/mpsi/Corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
-        { motif: 'documents/enseignement/psi/corrige*',      drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés PSI' },
-        { motif: 'documents/enseignement/mp/corrige*',       drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MP' },
+        { motif: 'documents/enseignement/mpsi/corrige*',     drive: lienDrive('mpsiCorriges'), libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/Corrige*',     drive: lienDrive('mpsiCorriges'), libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: lienDrive('mpsiCorriges'), libelle: 'Corrigés MPSI' },
+        { motif: 'documents/enseignement/psi/corrige*',      drive: lienDrive('psiCorriges'),  libelle: 'Corrigés PSI' },
+        { motif: 'documents/enseignement/mp/corrige*',       drive: lienDrive('mpCorriges'),   libelle: 'Corrigés MP' },
 
-        // --- Tous les autres PDF, par thème (remplacez DRIVE_PRIVE par le lien
-        //     d'un sous-dossier si vous souhaitez un dossier distinct par thème) ---
-        { motif: 'documents/enseignement/mpsi/*.pdf',  drive: DRIVE_PRIVE, libelle: 'Ressources MPSI' },
-        { motif: 'documents/enseignement/mp/*.pdf',    drive: DRIVE_PRIVE, libelle: 'Ressources MP' },
-        { motif: 'documents/enseignement/psi/*.pdf',   drive: DRIVE_PRIVE, libelle: 'Ressources PSI' },
-        { motif: 'documents/enseignement/*.pdf',       drive: DRIVE_PRIVE, libelle: 'Ressources pédagogiques' },
-        { motif: 'documents/publications/*.pdf',       drive: DRIVE_PRIVE, libelle: 'Publications' },
-        { motif: 'documents/communications/*.pdf',     drive: DRIVE_PRIVE, libelle: 'Communications' },
-        { motif: 'documents/these/*.pdf',              drive: DRIVE_PRIVE, libelle: 'Thèse' },
-        { motif: 'documents/memoires/*.pdf',           drive: DRIVE_PRIVE, libelle: 'Mémoires' },
-        { motif: 'documents/cv-khalid-elbakkioui.pdf', drive: DRIVE_PRIVE, libelle: 'CV' },
+        // --- Tous les autres PDF, par thème ---
+        { motif: 'documents/enseignement/mpsi/*.pdf',  drive: lienDrive('mpsi'),           libelle: 'Ressources MPSI' },
+        { motif: 'documents/enseignement/mp/*.pdf',    drive: lienDrive('mp'),             libelle: 'Ressources MP' },
+        { motif: 'documents/enseignement/psi/*.pdf',   drive: lienDrive('psi'),            libelle: 'Ressources PSI' },
+        { motif: 'documents/enseignement/*.pdf',       drive: DRIVE_PRIVE,                 libelle: 'Ressources pédagogiques' },
+        { motif: 'documents/publications/*.pdf',       drive: lienDrive('publications'),   libelle: 'Publications' },
+        { motif: 'documents/communications/*.pdf',     drive: lienDrive('communications'), libelle: 'Communications' },
+        { motif: 'documents/these/*.pdf',              drive: lienDrive('these'),          libelle: 'Thèse' },
+        { motif: 'documents/memoires/*.pdf',           drive: lienDrive('memoires'),       libelle: 'Mémoires' },
+        { motif: 'documents/cv-khalid-elbakkioui.pdf', drive: lienDrive('cv'),             libelle: 'CV' },
         // Exemples à décommenter et compléter (un autre dossier Drive par thème si vous le souhaitez) :
         // { motif: 'documents/these/*',               drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Thèse' },
         // { motif: 'documents/enseignement/mpsi/*',   drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Ressources MPSI' },
     ],
-
     // Facultatif : lien Drive propre à un fichier (ouvre directement le fichier
     // au lieu du dossier). Prioritaire sur les règles ci-dessus.
     // Lien d'un fichier : clic droit sur le fichier dans Drive → Partager → Copier le lien
