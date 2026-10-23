@@ -10,8 +10,18 @@
 //  • onglets accessibles au clavier (flèches, Début, Fin) sans piéger la touche Tab ;
 //  • styles dynamiques déplacés dans style.css (sections 25 à 28).
 //
+// Version 3 :
+//  • TOUS les fichiers PDF du site sont désormais réservés (comme les corrigés) :
+//    cours, TD, DS, DM, DL, colles, programmes, cahiers de texte, TP, publications,
+//    communications, thèse, mémoires et CV ;
+//  • un seul paramètre (DRIVE_PRIVE) pour le dossier Google Drive par défaut,
+//    et un interrupteur (tousLesPdfReserves) qui couvre aussi les futurs PDF ;
+//  • notification indiquant le nom du fichier recherché dans le dossier Drive ;
+//  • texte « accès réservé » lisible par les lecteurs d'écran sur chaque lien protégé.
+//
 // IMPORTANT : les cadenas affichés ici sont purement informatifs. La protection
-// réelle des documents est assurée côté serveur par serve.php (voir config.php).
+// réelle des documents est assurée par Google Drive (édition GitHub Pages)
+// ou côté serveur par serve.php (édition PHP, voir config.php).
 
 'use strict';
 
@@ -23,12 +33,25 @@
 //    Changer de mode = modifier cette ligne ET le partage des dossiers
 //    Google Drive (voir la procédure). Ici, le mode règle l'affichage
 //    (cadenas, indicateur) ; la protection réelle est assurée par Google Drive.
+//
+//    • 'libre' : ACCÈS LIBRE — tout le monde ouvre les documents.
+//                Dans Google Drive : Partager → « Tous les utilisateurs disposant du lien ».
+//    • 'prive' : ACCÈS PRIVÉ AVEC AUTORISATION (par défaut) — seuls les comptes
+//                Google que vous avez ajoutés ouvrent les documents.
+//                Dans Google Drive : Partager → « Accès limité » + ajout des adresses autorisées.
 const MODES_ACTIFS = [];
-  //  MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE (par défaut)
-   MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION
+  //  MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE
+   MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION (par défaut)
+
+// 2) DOSSIER GOOGLE DRIVE PRIVÉ PAR DÉFAUT — paramètre unique.
+//    Tous les PDF y sont envoyés, sauf si une règle plus précise (plus bas)
+//    désigne un autre dossier. Conseil : un dossier parent partagé avec vos
+//    étudiants, contenant des sous-dossiers (MPSI, MP, PSI, Thèse...) : le
+//    partage du parent s'applique automatiquement aux sous-dossiers.
+const DRIVE_PRIVE = 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy';
 
 const CONFIG_SITE = {
-    // 2) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
+    // 3) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
     //    Indiquez votre code GoatCounter, ex. 'elbakkioui' pour elbakkioui.goatcounter.com.
     //    Vide ('') = compteur local, limité au navigateur de chaque visiteur.
     goatcounterCode: 'elbakkioui',
@@ -37,17 +60,37 @@ const CONFIG_SITE = {
     // Fuseau utilisé pour « aujourd'hui » (réglez le même dans GoatCounter → Settings).
     fuseauHoraire: 'Africa/Casablanca',
 
-    // 3) DOCUMENTS RÉSERVÉS, HÉBERGÉS SUR GOOGLE DRIVE.
+    // 4) TOUS LES PDF RÉSERVÉS.
+    //    true  = tout lien vers un fichier .pdf du site est redirigé vers Google Drive
+    //            (y compris les PDF que vous ajouterez plus tard), même sans règle dédiée.
+    //    false = seuls les fichiers désignés dans « documentsReserves » sont réservés.
+    tousLesPdfReserves: true,
+
+    // 5) DOCUMENTS RÉSERVÉS, HÉBERGÉS SUR GOOGLE DRIVE.
     //    Retirez ces fichiers de GitHub (tout ce qui est sur GitHub est public),
     //    déposez-les dans un dossier Google Drive et collez le lien du dossier.
-    //    Jokers : * = n'importe quelle suite de caractères.
+    //    Jokers : * = n'importe quelle suite de caractères (y compris des sous-dossiers).
+    //    La PREMIÈRE règle qui correspond l'emporte : gardez les plus précises en haut.
     //    Tant que « drive » est vide, la règle est ignorée (le lien GitHub reste).
         documentsReserves: [
+        // --- Corrigés (règles d'origine) ---
         { motif: 'documents/enseignement/mpsi/corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
         { motif: 'documents/enseignement/mpsi/Corrige*',     drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
         { motif: 'documents/enseignement/mpsi/BIS_Corrige*', drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MPSI' },
         { motif: 'documents/enseignement/psi/corrige*',      drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés PSI' },
         { motif: 'documents/enseignement/mp/corrige*',       drive: 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy', libelle: 'Corrigés MP' },
+
+        // --- Tous les autres PDF, par thème (remplacez DRIVE_PRIVE par le lien
+        //     d'un sous-dossier si vous souhaitez un dossier distinct par thème) ---
+        { motif: 'documents/enseignement/mpsi/*.pdf',  drive: DRIVE_PRIVE, libelle: 'Ressources MPSI' },
+        { motif: 'documents/enseignement/mp/*.pdf',    drive: DRIVE_PRIVE, libelle: 'Ressources MP' },
+        { motif: 'documents/enseignement/psi/*.pdf',   drive: DRIVE_PRIVE, libelle: 'Ressources PSI' },
+        { motif: 'documents/enseignement/*.pdf',       drive: DRIVE_PRIVE, libelle: 'Ressources pédagogiques' },
+        { motif: 'documents/publications/*.pdf',       drive: DRIVE_PRIVE, libelle: 'Publications' },
+        { motif: 'documents/communications/*.pdf',     drive: DRIVE_PRIVE, libelle: 'Communications' },
+        { motif: 'documents/these/*.pdf',              drive: DRIVE_PRIVE, libelle: 'Thèse' },
+        { motif: 'documents/memoires/*.pdf',           drive: DRIVE_PRIVE, libelle: 'Mémoires' },
+        { motif: 'documents/cv-khalid-elbakkioui.pdf', drive: DRIVE_PRIVE, libelle: 'CV' },
         // Exemples à décommenter et compléter (un autre dossier Drive par thème si vous le souhaitez) :
         // { motif: 'documents/these/*',               drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Thèse' },
         // { motif: 'documents/enseignement/mpsi/*',   drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Ressources MPSI' },
@@ -69,6 +112,9 @@ const PORTFOLIO_CONFIG = {
     tabContainers: '.research-tabs-compact, .documents-tabs-compact, .filiere-tabs'
 };
 
+// Lien Google Drive accepté (dossier ou fichier).
+const LIEN_DRIVE_VALIDE = /^https:\/\/(drive|docs)\.google\.com\//;
+
 const log = (...args) => { if (PORTFOLIO_CONFIG.debug) console.log(...args); };
 
 log('🚀 Chargement du script portfolio...');
@@ -84,6 +130,7 @@ class PortfolioApp {
         this.isInitialized = false;
         this.server = null;          // état renvoyé par api.php (null = serveur indisponible)
         this.accessRules = null;     // verrous à afficher
+        this.regexCache = new Map(); // motifs déjà convertis en expressions régulières
         this.init();
     }
 
@@ -774,6 +821,8 @@ class PortfolioApp {
 
     initDownloadLinks() {
         // Délégation d'événement : aucun clonage, aucun conflit avec d'autres écouteurs.
+        // Les liens redirigés vers Google Drive (data-drive) ou protégés par le
+        // serveur (data-protege) sont ignorés ici : ils ont leur propre traitement.
         document.addEventListener('click', (e) => {
             const link = e.target.closest('[download], .download-link');
             if (!link || e.defaultPrevented || link.dataset.protege === '1' || link.dataset.drive) return;
@@ -834,6 +883,11 @@ class PortfolioApp {
 
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            // Champ piège rempli = robot : on simule un succès sans rien envoyer.
+            if (contactForm.querySelector('[name="website"]')?.value) {
+                contactForm.reset();
+                return;
+            }
             if (await this.validateForm(contactForm)) {
                 await this.submitForm(contactForm);
             } else {
@@ -948,7 +1002,7 @@ class PortfolioApp {
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
 
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Envoi...';
         submitBtn.disabled = true;
 
         try {
@@ -1165,11 +1219,11 @@ class PortfolioApp {
         icon.className = `fas ${libre ? 'fa-lock-open' : 'fa-lock'}`;
         icon.setAttribute('aria-hidden', 'true');
         const text = document.createElement('span');
-        text.textContent = libre ? 'Accès libre' : 'Accès privé aux corrigés sur demande pour mes étudiants';
+        text.textContent = libre ? 'Accès libre' : 'Accès privé aux documents sur demande pour mes étudiants';
         indicator.append(icon, text);
         indicator.title = libre
             ? 'Les ressources publiques sont accessibles sans compte.'
-            : 'Certaines ressources sont réservées aux utilisateurs inscrits et autorisés.';
+            : 'Les documents PDF sont réservés aux utilisateurs inscrits et autorisés.';
         indicator.hidden = false;
     }
 
@@ -1202,8 +1256,11 @@ class PortfolioApp {
     // =====================================================================
 
     globToRegex(pattern) {
+        if (this.regexCache.has(pattern)) return this.regexCache.get(pattern);
         const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
-        return new RegExp(`^${escaped}$`, 'i');
+        const regex = new RegExp(`^${escaped}$`, 'i');
+        this.regexCache.set(pattern, regex);
+        return regex;
     }
 
     /** Chemin relatif au site d'une URL interne, ou null si externe. */
@@ -1229,29 +1286,40 @@ class PortfolioApp {
         return locks.some(l => l.portee === 'prive' && matches(l.motif));
     }
 
+    /** Ajoute (une seule fois) le cadenas visuel et le texte pour lecteurs d'écran. */
+    addLockMarker(link) {
+        if (link.querySelector('.acces-verrou')) return;
+        const lock = document.createElement('span');
+        lock.className = 'acces-verrou';
+        lock.setAttribute('aria-hidden', 'true');
+        lock.innerHTML = '<i class="fas fa-lock"></i>';
+        const sr = document.createElement('span');
+        sr.className = 'visually-hidden acces-verrou-texte';
+        sr.textContent = ' (accès réservé)';
+        link.append(lock, sr);
+    }
+
+    removeLockMarker(link) {
+        link.querySelector('.acces-verrou')?.remove();
+        link.querySelector('.acces-verrou-texte')?.remove();
+    }
+
     markProtectedLinks() {
         document.querySelectorAll('a[href]').forEach(link => {
             const path = this.relativePath(link.getAttribute('href'));
             const locked = this.isLocked(path);
-            const marker = link.querySelector('.acces-verrou');
 
             if (locked) {
                 link.dataset.protege = '1';
                 link.classList.add('lien-protege');
                 if (!link.dataset.originalTitle) link.dataset.originalTitle = link.title || '';
                 link.title = 'Réservé aux utilisateurs autorisés — connexion requise';
-                if (!marker) {
-                    const lock = document.createElement('span');
-                    lock.className = 'acces-verrou';
-                    lock.setAttribute('aria-hidden', 'true');
-                    lock.innerHTML = '<i class="fas fa-lock"></i>';
-                    link.appendChild(lock);
-                }
+                this.addLockMarker(link);
             } else if (link.dataset.protege) {
                 delete link.dataset.protege;
                 link.classList.remove('lien-protege');
                 link.title = link.dataset.originalTitle || '';
-                marker?.remove();
+                this.removeLockMarker(link);
             }
         });
     }
@@ -1293,16 +1361,18 @@ class PortfolioApp {
             mode = modes[0];
         }
 
-        const lienValide = (url) => /^https:\/\/(drive|docs)\.google\.com\//.test(url);
+        if (CONFIG_SITE.tousLesPdfReserves && !LIEN_DRIVE_VALIDE.test(DRIVE_PRIVE)) {
+            erreurs.push('DRIVE_PRIVE vide ou invalide : les PDF sans règle dédiée restent publics sur GitHub.');
+        }
         (CONFIG_SITE.documentsReserves || []).forEach((r, i) => {
             if (!r || !r.motif) erreurs.push(`Règle n°${i + 1} sans motif.`);
-            else if (r.drive && !lienValide(r.drive)) erreurs.push(`Règle « ${r.motif} » : lien Google Drive invalide.`);
+            else if (r.drive && !LIEN_DRIVE_VALIDE.test(r.drive)) erreurs.push(`Règle « ${r.motif} » : lien Google Drive invalide.`);
             else if (!r.drive && mode === 'prive') {
                 erreurs.push(`Règle « ${r.motif} » : aucun lien Drive, ces documents restent publics sur GitHub.`);
             }
         });
         Object.entries(CONFIG_SITE.liensDriveFichiers || {}).forEach(([fichier, url]) => {
-            if (!lienValide(url)) erreurs.push(`Lien Drive invalide pour « ${fichier} ».`);
+            if (!LIEN_DRIVE_VALIDE.test(url)) erreurs.push(`Lien Drive invalide pour « ${fichier} ».`);
         });
         if (CONFIG_SITE.goatcounterCode && !/^[a-z0-9-]{2,50}$/.test(CONFIG_SITE.goatcounterCode)) {
             erreurs.push('Code GoatCounter invalide (lettres minuscules, chiffres, tirets).');
@@ -1324,14 +1394,22 @@ class PortfolioApp {
         this.initGoatCounter();
     }
 
-    /** Lien Google Drive applicable à un chemin, ou null. */
+    /**
+     * Lien Google Drive applicable à un chemin, ou null.
+     * Ordre : lien propre au fichier → première règle correspondante →
+     * dossier privé par défaut pour tout autre PDF (si tousLesPdfReserves).
+     */
     driveLinkFor(path) {
         if (!path) return null;
         const fichiers = CONFIG_SITE.liensDriveFichiers || {};
-        if (fichiers[path]) return { url: fichiers[path], libelle: '' };
+        if (fichiers[path] && LIEN_DRIVE_VALIDE.test(fichiers[path])) return { url: fichiers[path], libelle: '' };
         const regle = (CONFIG_SITE.documentsReserves || [])
-            .find(r => r && r.drive && /^https:\/\/(drive|docs)\.google\.com\//.test(r.drive) && this.globToRegex(r.motif).test(path));
-        return regle ? { url: regle.drive, libelle: regle.libelle || '' } : null;
+            .find(r => r && r.motif && r.drive && LIEN_DRIVE_VALIDE.test(r.drive) && this.globToRegex(r.motif).test(path));
+        if (regle) return { url: regle.drive, libelle: regle.libelle || '' };
+        if (CONFIG_SITE.tousLesPdfReserves && /\.pdf$/i.test(path) && LIEN_DRIVE_VALIDE.test(DRIVE_PRIVE)) {
+            return { url: DRIVE_PRIVE, libelle: 'Documents PDF' };
+        }
+        return null;
     }
 
     applyDriveLinks(mode) {
@@ -1352,24 +1430,22 @@ class PortfolioApp {
             if (mode === 'prive') {
                 link.classList.add('lien-protege');
                 link.title = `Réservé${drive.libelle ? ` (${drive.libelle})` : ''} — accès avec le compte Google autorisé`;
-                if (!link.querySelector('.acces-verrou')) {
-                    const lock = document.createElement('span');
-                    lock.className = 'acces-verrou';
-                    lock.setAttribute('aria-hidden', 'true');
-                    lock.innerHTML = '<i class="fas fa-lock"></i>';
-                    link.appendChild(lock);
-                }
+                this.addLockMarker(link);
             } else {
                 link.title = `Ouvrir dans Google Drive${drive.libelle ? ` (${drive.libelle})` : ''}`;
             }
         });
 
         if (count && mode === 'prive') {
+            // Un seul écouteur délégué ; le lien s'ouvre normalement (nouvel onglet),
+            // la notification rappelle la règle et le fichier à chercher dans le dossier.
             document.addEventListener('click', (e) => {
                 const link = e.target.closest('a[data-drive="1"]');
                 if (!link) return;
+                const fichier = (link.dataset.cheminOriginal || '').split('/').pop();
+                const dansDossier = fichier && !/\/file\/d\//.test(link.href) ? ` Fichier : « ${fichier} ».` : '';
                 this.showNotification(
-                    'Document réservé : connectez-vous avec le compte Google autorisé. Pas encore d\'accès ? Demandez-le via le formulaire de contact.',
+                    `Document réservé : connectez-vous avec le compte Google autorisé.${dansDossier} Pas encore d'accès ? Demandez-le via le formulaire de contact.`,
                     'info', 9000);
             });
         }
@@ -1612,6 +1688,7 @@ class PortfolioApp {
         };
 
         updateDateTime();
+        clearInterval(this.dateTimeInterval);
         this.dateTimeInterval = setInterval(updateDateTime, 1000);
 
         log('✅ Date/heure initialisée');
