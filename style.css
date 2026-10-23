@@ -2875,6 +2875,10 @@ a[aria-disabled="true"] { cursor: not-allowed; opacity: 0.6; }
 }
 a.lien-protege { position: relative; }
 
+/* L'attribut hidden doit l'emporter sur display:flex (.info-item, etc.) :
+   sinon l'indicateur de mode apparaît vide avant le chargement du script. */
+[hidden] { display: none !important; }
+
 .access-mode-indicator {
     font-size: 0.8rem;
     font-weight: 600;
