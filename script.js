@@ -40,8 +40,8 @@
 //                Google que vous avez ajoutés ouvrent les documents.
 //                Dans Google Drive : Partager → « Accès limité » + ajout des adresses autorisées.
 const MODES_ACTIFS = [];
-  //  MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE
-   MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION (par défaut)
+    MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE
+  // MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION (par défaut)
 
 // 2) DOSSIER GOOGLE DRIVE PRIVÉ PAR DÉFAUT — paramètre unique.
 //    Tous les PDF y sont envoyés, sauf si une règle plus précise (plus bas)
