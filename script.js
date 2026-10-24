@@ -11,17 +11,29 @@
 //  • styles dynamiques déplacés dans style.css (sections 25 à 28).
 //
 // Version 3 :
-//  • TOUS les fichiers PDF du site sont désormais réservés (comme les corrigés) :
-//    cours, TD, DS, DM, DL, colles, programmes, cahiers de texte, TP, publications,
-//    communications, thèse, mémoires et CV ;
+//  • TOUS les fichiers PDF du site sont désormais réservés (comme les corrigés) ;
 //  • un seul paramètre (DRIVE_PRIVE) pour le dossier Google Drive par défaut,
 //    et un interrupteur (tousLesPdfReserves) qui couvre aussi les futurs PDF ;
-//  • notification indiquant le nom du fichier recherché dans le dossier Drive ;
 //  • texte « accès réservé » lisible par les lecteurs d'écran sur chaque lien protégé.
 //
-// IMPORTANT : les cadenas affichés ici sont purement informatifs. La protection
-// réelle des documents est assurée par Google Drive (édition GitHub Pages)
-// ou côté serveur par serve.php (édition PHP, voir config.php).
+// Version 4 — LECTURE SEULE (modes libre ET privé) :
+//  • chaque PDF s'ouvre dans une visionneuse intégrée au site (fenêtre modale) :
+//    plus aucun lien de téléchargement direct, attributs « download » retirés,
+//    icônes et libellés « Télécharger » remplacés par « Lire » automatiquement ;
+//  • documents Google Drive affichés via l'aperçu intégré de Drive (/preview),
+//    dans un cadre isolé (sandbox) qui bloque les téléchargements et l'impression
+//    lancés depuis le cadre ; dossiers affichés via la vue de dossier intégrée ;
+//  • PDF hébergés sur le site (édition PHP) dessinés page par page avec PDF.js,
+//    sans barre d'outils (ni bouton de téléchargement, ni bouton d'impression) ;
+//  • Ctrl/Cmd+P, Ctrl/Cmd+S, clic droit et glisser-déposer bloqués dans la
+//    visionneuse ; impression de la page remplacée par un message (style.css §29) ;
+//  • correction d'une erreur de syntaxe (apostrophes non échappées) dans
+//    l'indicateur de mode, qui empêchait tout le script de s'exécuter.
+//
+// IMPORTANT : le verrou RÉEL contre le téléchargement et l'impression est le
+// réglage Google Drive de chaque fichier (décocher l'option qui permet aux
+// lecteurs de télécharger, imprimer et copier). Ce script ajoute une couche
+// dissuasive côté site ; aucun site web ne peut empêcher une capture d'écran.
 
 'use strict';
 
@@ -33,25 +45,23 @@
 //    Changer de mode = modifier cette ligne ET le partage des dossiers
 //    Google Drive (voir la procédure). Ici, le mode règle l'affichage
 //    (cadenas, indicateur) ; la protection réelle est assurée par Google Drive.
+//    Dans les DEUX modes, les documents sont en LECTURE SEULE.
 //
-//    • 'libre' : ACCÈS LIBRE — tout le monde ouvre les documents.
-//                Dans Google Drive : Partager → « Tous les utilisateurs disposant du lien ».
+//    • 'libre' : ACCÈS LIBRE — tout le monde lit les documents.
+//                Dans Google Drive : Partager → « Tous les utilisateurs disposant du lien » (Lecteur).
 //    • 'prive' : ACCÈS PRIVÉ AVEC AUTORISATION (par défaut) — seuls les comptes
-//                Google que vous avez ajoutés ouvrent les documents.
-//                Dans Google Drive : Partager → « Accès limité » + ajout des adresses autorisées.
+//                Google que vous avez ajoutés lisent les documents.
+//                Dans Google Drive : Partager → « Accès limité » + ajout des adresses autorisées (Lecteur).
 const MODES_ACTIFS = [];
     MODES_ACTIFS.push('libre');       // ← ACCÈS LIBRE
   // MODES_ACTIFS.push('prive');    // ← ACCÈS PRIVÉ AVEC AUTORISATION (par défaut)
 
 // 2) DOSSIER GOOGLE DRIVE PRIVÉ PAR DÉFAUT — paramètre unique.
 //    Tous les PDF y sont envoyés, sauf si une règle plus précise (plus bas)
-//    désigne un autre dossier. Conseil : un dossier parent partagé avec vos
-//    étudiants, contenant des sous-dossiers (MPSI, MP, PSI, Thèse...) : le
-//    partage du parent s'applique automatiquement aux sous-dossiers.
+//    désigne un autre dossier.
 const DRIVE_PRIVE = 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy';
 
 // Liens des sous-dossiers Google Drive : collez chaque lien entre les apostrophes.
-// Forme d'un lien : https://drive.google.com/drive/folders/XXXXXXXX
 // Tant qu'un lien est vide (''), la rubrique utilise DRIVE_PRIVE (jamais un lien cassé).
 const DRIVE_DOSSIERS = {
     mpsiCorriges:   'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy',
@@ -70,27 +80,21 @@ const lienDrive = (cle) => DRIVE_DOSSIERS[cle] || DRIVE_PRIVE;
 
 const CONFIG_SITE = {
     // 3) COMPTEUR DE VISITES RÉEL (GoatCounter, gratuit).
-    //    Indiquez votre code GoatCounter, ex. 'elbakkioui' pour elbakkioui.goatcounter.com.
-    //    Vide ('') = compteur local, limité au navigateur de chaque visiteur.
     goatcounterCode: 'elbakkioui',
-    // Visites antérieures à GoatCounter à ajouter au total (0 si inconnu).
     visitesAnterieures: 0,
-    // Fuseau utilisé pour « aujourd'hui » (réglez le même dans GoatCounter → Settings).
     fuseauHoraire: 'Africa/Casablanca',
 
     // 4) TOUS LES PDF RÉSERVÉS.
-    //    true  = tout lien vers un fichier .pdf du site est redirigé vers Google Drive
-    //            (y compris les PDF que vous ajouterez plus tard), même sans règle dédiée.
+    //    true  = tout lien vers un fichier .pdf du site est redirigé vers Google Drive.
     //    false = seuls les fichiers désignés dans « documentsReserves » sont réservés.
     tousLesPdfReserves: true,
 
     // 5) DOCUMENTS RÉSERVÉS, HÉBERGÉS SUR GOOGLE DRIVE.
-    //    Retirez ces fichiers de GitHub (tout ce qui est sur GitHub est public),
-    //    déposez-les dans un dossier Google Drive et collez le lien du dossier
-    //    dans DRIVE_DOSSIERS (plus haut) : inutile de modifier les règles ci-dessous.
+    //    Retirez ces fichiers de GitHub (tout ce qui est sur GitHub est public et
+    //    téléchargeable par son adresse directe, quel que soit ce script).
     //    Jokers : * = n'importe quelle suite de caractères (y compris des sous-dossiers).
     //    La PREMIÈRE règle qui correspond l'emporte : gardez les plus précises en haut.
-        documentsReserves: [
+    documentsReserves: [
         // --- Corrigés (règles d'origine) ---
         { motif: 'documents/enseignement/mpsi/corrige*',     drive: lienDrive('mpsiCorriges'), libelle: 'Corrigés MPSI' },
         { motif: 'documents/enseignement/mpsi/Corrige*',     drive: lienDrive('mpsiCorriges'), libelle: 'Corrigés MPSI' },
@@ -108,16 +112,28 @@ const CONFIG_SITE = {
         { motif: 'documents/these/*.pdf',              drive: lienDrive('these'),          libelle: 'Thèse' },
         { motif: 'documents/memoires/*.pdf',           drive: lienDrive('memoires'),       libelle: 'Mémoires' },
         { motif: 'documents/cv-khalid-elbakkioui.pdf', drive: lienDrive('cv'),             libelle: 'CV' },
-        // Exemples à décommenter et compléter (un autre dossier Drive par thème si vous le souhaitez) :
-        // { motif: 'documents/these/*',               drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Thèse' },
-        // { motif: 'documents/enseignement/mpsi/*',   drive: 'https://drive.google.com/drive/folders/LIEN_DU_DOSSIER', libelle: 'Ressources MPSI' },
     ],
-    // Facultatif : lien Drive propre à un fichier (ouvre directement le fichier
-    // au lieu du dossier). Prioritaire sur les règles ci-dessus.
+    // Facultatif mais RECOMMANDÉ : lien Drive propre à un fichier. Le document
+    // s'affiche alors directement dans la visionneuse (au lieu de la liste du dossier).
     // Lien d'un fichier : clic droit sur le fichier dans Drive → Partager → Copier le lien
-    // (il a la forme https://drive.google.com/file/d/.../view).
+    // (forme https://drive.google.com/file/d/.../view).
     liensDriveFichiers: {
         // 'documents/enseignement/mpsi/corrige-td1-mpsi.pdf': 'https://drive.google.com/file/d/IDENTIFIANT_DU_FICHIER/view',
+    },
+
+    // 6) LECTURE SEULE — s'applique dans les deux modes (libre et privé).
+    lectureSeule: {
+        actif: true,                   // true = tous les PDF s'ouvrent dans la visionneuse
+        // Cadre isolé pour Google Drive : bloque téléchargements et impression
+        // lancés depuis le cadre. Si l'aperçu Drive ne s'affiche plus, mettez false.
+        sandboxDrive: true,
+        // En mode privé, certains navigateurs (Safari, Firefox) n'affichent pas la
+        // session Google dans un cadre intégré. true = ouvrir directement Drive dans
+        // un nouvel onglet en mode privé (toujours en lecture seule grâce au réglage Drive).
+        ouvertureDirecteEnPrive: false,
+        // PDF.js : affichage des PDF hébergés sur le site, sans barre d'outils.
+        pdfjs: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+        pdfjsWorker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
     }
 };
 const PORTFOLIO_CONFIG = {
@@ -147,6 +163,12 @@ class PortfolioApp {
         this.server = null;          // état renvoyé par api.php (null = serveur indisponible)
         this.accessRules = null;     // verrous à afficher
         this.regexCache = new Map(); // motifs déjà convertis en expressions régulières
+        this.siteMode = null;        // 'libre' ou 'prive' (édition GitHub Pages)
+        this.reader = null;          // éléments de la visionneuse PDF
+        this.readerToken = 0;        // invalide les rendus en cours à la fermeture
+        this.readerDoc = null;       // document PDF.js ouvert
+        this.pdfjsPromise = null;
+        this.readerReturnFocus = null;
         this.init();
     }
 
@@ -174,6 +196,7 @@ class PortfolioApp {
         if (this.isInitialized) return;
 
         // Chaque module est isolé : une erreur dans l'un n'empêche pas les autres.
+        // L'ordre compte : accessibilité → lecture seule → serveur (redirection Drive).
         const modules = [
             // Navigation & structure de page
             'initNavigation', 'initSmoothScrolling', 'initBackToTop', 'initScrollEffects',
@@ -189,13 +212,18 @@ class PortfolioApp {
             // Fonctionnalités techniques
             'initDownloadLinks', 'initProtectedLinks', 'initThemeToggle', 'initImageLazyLoading',
             'initPerformanceOptimizations',
+            // Lecture seule des PDF (avant la redirection vers Google Drive)
+            'initReadOnlyViewer',
             // Serveur : visites, compte, mode d'accès
             'initServerConnection'
         ];
 
         modules.forEach(name => {
             try {
-                this[name]();
+                const result = this[name]();
+                if (result && typeof result.catch === 'function') {
+                    result.catch(error => console.error(`❌ Erreur dans ${name}:`, error));
+                }
             } catch (error) {
                 console.error(`❌ Erreur dans ${name}:`, error);
             }
@@ -653,6 +681,15 @@ class PortfolioApp {
         log('✅ Tous les boutons initialisés');
     }
 
+    /** Si l'élément est un PDF en lecture seule, l'ouvre dans la visionneuse. */
+    openIfReadOnly(element) {
+        if (element && element.dataset && element.dataset.lecture === '1') {
+            this.openReader(element);
+            return true;
+        }
+        return false;
+    }
+
     initFiliereButtons() {
         const filiereButtons = ['ECT1', 'ECT2', 'ECS1', 'ECS2', 'MPSI', 'MP'];
 
@@ -688,8 +725,6 @@ class PortfolioApp {
         const displayName = filiereNames[filiere] || filiere;
         this.showNotification(`Filière ${displayName} sélectionnée`, 'info', 3000);
 
-        // Les onglets des filières portent les identifiants mpsi, mp, ect1... ;
-        // l'ancien identifiant « section-xxx » reste accepté s'il existe.
         const key = filiere.toLowerCase();
         const targetId = document.getElementById(`section-${key}`) ? `section-${key}` : key;
         const targetSection = document.getElementById(targetId);
@@ -723,6 +758,7 @@ class PortfolioApp {
     }
 
     handleConferenceClick(button) {
+        if (this.openIfReadOnly(button)) return;
         const conferenceTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Conférence';
         this.showNotification(`Conférence: ${conferenceTitle}`, 'info', 3000);
 
@@ -743,6 +779,7 @@ class PortfolioApp {
     }
 
     handleLivreClick(button) {
+        if (this.openIfReadOnly(button)) return;
         const livreTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Livre';
         this.showNotification(`Livre: ${livreTitle}`, 'info', 3000);
 
@@ -763,6 +800,7 @@ class PortfolioApp {
     }
 
     handleMemoireClick(button) {
+        if (this.openIfReadOnly(button)) return;
         const memoireTitle = button.getAttribute('data-title') || button.textContent.trim() || 'Mémoire';
         this.showNotification(`Mémoire: ${memoireTitle}`, 'info', 3000);
 
@@ -780,6 +818,7 @@ class PortfolioApp {
         document.querySelectorAll('.btn-view, .view-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (this.openIfReadOnly(button)) return;
                 const target = button.getAttribute('data-target') || button.getAttribute('href');
                 log(`👀 Vue demandée: ${target}`);
                 this.handleViewClick(target);
@@ -800,9 +839,8 @@ class PortfolioApp {
     // =====================================================================
 
     initResourceCards() {
-        // Le changement de couleur de bordure au survol est désormais géré en CSS
-        // (.ressource-item-compact:hover) : il respecte ainsi les couleurs propres
-        // à chaque section au lieu de les écraser par un style en ligne.
+        // Le changement de couleur de bordure au survol est géré en CSS
+        // (.ressource-item-compact:hover).
         const ressourceItems = document.querySelectorAll('.ressource-item-compact');
         log(`📄 ${ressourceItems.length} ressources pédagogiques`);
     }
@@ -832,16 +870,16 @@ class PortfolioApp {
     }
 
     // =====================================================================
-    // 8. TÉLÉCHARGEMENTS
+    // 8. TÉLÉCHARGEMENTS (fichiers autres que PDF)
     // =====================================================================
 
     initDownloadLinks() {
-        // Délégation d'événement : aucun clonage, aucun conflit avec d'autres écouteurs.
-        // Les liens redirigés vers Google Drive (data-drive) ou protégés par le
-        // serveur (data-protege) sont ignorés ici : ils ont leur propre traitement.
+        // Délégation d'événement. Les PDF (data-lecture), les liens Google Drive
+        // (data-drive) et les liens protégés (data-protege) ont leur propre traitement.
         document.addEventListener('click', (e) => {
             const link = e.target.closest('[download], .download-link');
-            if (!link || e.defaultPrevented || link.dataset.protege === '1' || link.dataset.drive) return;
+            if (!link || e.defaultPrevented) return;
+            if (link.dataset.protege === '1' || link.dataset.drive || link.dataset.lecture === '1') return;
 
             const href = link.getAttribute('href') || '';
             if (!href || href.startsWith('#')) return;
@@ -866,21 +904,21 @@ class PortfolioApp {
         });
     }
 
-    trackDownload(fileName) {
+    trackDownload(fileName, event = 'download') {
         const downloadEvent = {
-            event: 'download',
+            event,
             file: fileName,
             timestamp: new Date().toISOString()
         };
 
-        log('📥 Téléchargement:', downloadEvent);
+        log('📥 Suivi :', downloadEvent);
 
         try {
             const downloads = JSON.parse(localStorage.getItem('portfolioDownloads') || '[]');
             downloads.push(downloadEvent);
             localStorage.setItem('portfolioDownloads', JSON.stringify(downloads.slice(-50)));
         } catch (e) {
-            console.error('❌ Erreur suivi téléchargement:', e);
+            console.error('❌ Erreur suivi:', e);
         }
     }
 
@@ -1005,8 +1043,6 @@ class PortfolioApp {
 
     async submitForm(form) {
         const formData = new FormData(form);
-        // Les données sont envoyées brutes : le serveur les échappe à l'affichage
-        // (un échappement HTML ici produirait des « &amp; » dans les messages reçus).
         const data = {
             name: String(formData.get('name') || '').trim(),
             email: String(formData.get('email') || '').trim(),
@@ -1235,11 +1271,14 @@ class PortfolioApp {
         icon.className = `fas ${libre ? 'fa-lock-open' : 'fa-lock'}`;
         icon.setAttribute('aria-hidden', 'true');
         const text = document.createElement('span');
-        text.textContent = libre ? 'Accès libre : un clic sur le fichier, le système m'envoie la demande et je l'approuve.' : 'Accès privé aux documents sur demande pour mes étudiants';
+        // Correction : guillemets doubles (les apostrophes de « l'approuve » cassaient la chaîne).
+        text.textContent = libre
+            ? "Accès libre aux documents — lecture seule (ni téléchargement ni impression)"
+            : "Accès privé aux documents sur demande pour mes étudiants — lecture seule";
         indicator.append(icon, text);
         indicator.title = libre
-            ? 'Les ressources publiques sont accessibles sans compte.'
-            : 'Les documents PDF sont réservés aux utilisateurs inscrits et autorisés.';
+            ? 'Les documents sont consultables par tous, en lecture seule.'
+            : 'Les documents PDF sont réservés aux comptes autorisés, en lecture seule.';
         indicator.hidden = false;
     }
 
@@ -1341,8 +1380,7 @@ class PortfolioApp {
     }
 
     initProtectedLinks() {
-        // Interception AVANT le téléchargement (phase de capture) : sans cela, un
-        // lien « download » enregistrerait la page de connexion à la place du PDF.
+        // Interception AVANT tout autre traitement (phase de capture).
         document.addEventListener('click', (e) => {
             const link = e.target.closest('a[data-protege="1"]');
             if (!link || !this.server) return;
@@ -1378,13 +1416,13 @@ class PortfolioApp {
         }
 
         if (CONFIG_SITE.tousLesPdfReserves && !LIEN_DRIVE_VALIDE.test(DRIVE_PRIVE)) {
-            erreurs.push('DRIVE_PRIVE vide ou invalide : les PDF sans règle dédiée restent publics sur GitHub.');
+            erreurs.push('DRIVE_PRIVE vide ou invalide : les PDF sans règle dédiée restent sur GitHub (téléchargeables par leur adresse).');
         }
         (CONFIG_SITE.documentsReserves || []).forEach((r, i) => {
             if (!r || !r.motif) erreurs.push(`Règle n°${i + 1} sans motif.`);
             else if (r.drive && !LIEN_DRIVE_VALIDE.test(r.drive)) erreurs.push(`Règle « ${r.motif} » : lien Google Drive invalide.`);
-            else if (!r.drive && mode === 'prive') {
-                erreurs.push(`Règle « ${r.motif} » : aucun lien Drive, ces documents restent publics sur GitHub.`);
+            else if (!r.drive) {
+                erreurs.push(`Règle « ${r.motif} » : aucun lien Drive, ces documents restent sur GitHub (téléchargeables par leur adresse).`);
             }
         });
         Object.entries(CONFIG_SITE.liensDriveFichiers || {}).forEach(([fichier, url]) => {
@@ -1429,8 +1467,10 @@ class PortfolioApp {
     }
 
     applyDriveLinks(mode) {
+        const lecture = !!CONFIG_SITE.lectureSeule?.actif;
         let count = 0;
         document.querySelectorAll('a[href]').forEach(link => {
+            if (link.dataset.drive === '1') return;
             const path = this.relativePath(link.getAttribute('href'));
             const drive = this.driveLinkFor(path);
             if (!drive) return;
@@ -1443,29 +1483,24 @@ class PortfolioApp {
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
 
+            if (lecture) {
+                // Le lien n'est plus un fichier local : il s'ouvre dans la visionneuse.
+                link.dataset.lecture = '1';
+                delete link.dataset.local;
+                this.toReadLabels(link);
+            }
+
+            const nom = drive.libelle ? ` (${drive.libelle})` : '';
             if (mode === 'prive') {
                 link.classList.add('lien-protege');
-                link.title = `Réservé${drive.libelle ? ` (${drive.libelle})` : ''} — accès avec le compte Google autorisé`;
+                link.title = `Réservé${nom} — lecture seule, avec le compte Google autorisé`;
                 this.addLockMarker(link);
             } else {
-                link.title = `Ouvrir dans Google Drive${drive.libelle ? ` (${drive.libelle})` : ''}`;
+                link.title = `Lire en ligne${nom} — lecture seule`;
             }
         });
 
-        if (count && mode === 'prive') {
-            // Un seul écouteur délégué ; le lien s'ouvre normalement (nouvel onglet),
-            // la notification rappelle la règle et le fichier à chercher dans le dossier.
-            document.addEventListener('click', (e) => {
-                const link = e.target.closest('a[data-drive="1"]');
-                if (!link) return;
-                const fichier = (link.dataset.cheminOriginal || '').split('/').pop();
-                const dansDossier = fichier && !/\/file\/d\//.test(link.href) ? ` Fichier : « ${fichier} ».` : '';
-                this.showNotification(
-                    `Document réservé : connectez-vous avec le compte Google autorisé.${dansDossier} Pas encore d'accès ? Demandez-le via le formulaire de contact.`,
-                    'info', 9000);
-            });
-        }
-        log(`🔐 ${count} lien(s) redirigé(s) vers Google Drive (mode ${mode})`);
+        log(`🔐 ${count} lien(s) redirigé(s) vers Google Drive (mode ${mode}, lecture seule : ${lecture})`);
     }
 
     /** Compteur réel via GoatCounter ; repli sur le compteur local. */
@@ -1510,9 +1545,353 @@ class PortfolioApp {
     }
 
     // =====================================================================
+    // 12 ter. LECTURE SEULE : VISIONNEUSE PDF INTÉGRÉE (modes libre ET privé)
+    // =====================================================================
+    //
+    // • Google Drive (fichier) : aperçu intégré /preview dans un cadre isolé.
+    // • Google Drive (dossier) : vue de dossier intégrée ; chaque fichier s'ouvre
+    //   dans la visionneuse Drive, où le réglage « lecture seule » s'applique.
+    // • PDF hébergé sur le site : rendu page par page avec PDF.js (images, sans
+    //   barre d'outils, donc sans bouton de téléchargement ni d'impression).
+    // Le blocage des raccourcis est dissuasif ; le verrou réel est côté Google Drive.
+
+    /** Mode effectif, quelle que soit l'édition (GitHub Pages ou PHP). */
+    currentMode() {
+        return this.siteMode || this.server?.mode || 'prive';
+    }
+
+    initReadOnlyViewer() {
+        if (!CONFIG_SITE.lectureSeule?.actif) return;
+
+        // Clic (y compris Ctrl/Cmd/Maj + clic) sur un PDF → visionneuse.
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[data-lecture="1"]');
+            if (!link || e.defaultPrevented) return;
+            e.preventDefault();
+            this.openReader(link);
+        });
+
+        // Clic molette sur un PDF local : visionneuse au lieu d'un nouvel onglet brut.
+        document.addEventListener('auxclick', (e) => {
+            const link = e.target.closest('a[data-lecture="1"][data-local="1"]');
+            if (link && e.button === 1) {
+                e.preventDefault();
+                this.openReader(link);
+            }
+        });
+
+        // Raccourcis bloqués tant que la visionneuse est ouverte (phase de capture).
+        document.addEventListener('keydown', (e) => {
+            if (!this.isReaderOpen()) return;
+            const key = (e.key || '').toLowerCase();
+            if ((e.ctrlKey || e.metaKey) && (key === 'p' || key === 's')) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.showNotification('Document en lecture seule : impression et téléchargement désactivés.', 'warning', 3000);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                this.closeReader();
+            } else if (e.key === 'Tab') {
+                this.trapFocus(e);
+            }
+        }, true);
+
+        // Clic droit, glisser-déposer et sélection bloqués dans la visionneuse.
+        ['contextmenu', 'dragstart', 'selectstart', 'copy'].forEach(type => {
+            document.addEventListener(type, (e) => {
+                if (e.target.closest && e.target.closest('.pdf-lecteur-corps')) e.preventDefault();
+            });
+        });
+
+        // Premier passage : PDF encore hébergés sur le site (avant redirection Drive).
+        this.prepareReadOnlyLinks();
+    }
+
+    /** Marque tous les liens vers un PDF du site comme « lecture seule ». */
+    prepareReadOnlyLinks() {
+        let local = 0;
+        document.querySelectorAll('a[href]').forEach(link => {
+            if (link.dataset.lecture === '1' || link.dataset.drive === '1') return;
+            let url;
+            try { url = new URL(link.getAttribute('href'), window.location.href); } catch (e) { return; }
+            if (url.origin !== window.location.origin || !/\.pdf$/i.test(url.pathname)) return;
+
+            link.dataset.lecture = '1';
+            link.dataset.local = '1';
+            link.removeAttribute('download');
+            link.removeAttribute('target');
+            this.toReadLabels(link);
+            local++;
+        });
+
+        if (local && !PORTFOLIO_CONFIG.backendPhp) {
+            log(`ℹ️ ${local} lien(s) PDF local(aux) en lecture seule (ceux qui ont une règle Drive seront redirigés).`);
+        }
+    }
+
+    /** Remplace « Télécharger » par « Lire » (icône, texte, libellés). */
+    toReadLabels(link) {
+        link.querySelectorAll('i.fa-download, i.fa-file-download, i.fa-cloud-download-alt').forEach(icon => {
+            icon.classList.remove('fa-download', 'fa-file-download', 'fa-cloud-download-alt');
+            icon.classList.add('fa-eye');
+        });
+
+        const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+            if (/[Tt]élécharger/.test(node.nodeValue)) {
+                node.nodeValue = node.nodeValue.replace(/Télécharger/g, 'Lire').replace(/télécharger/g, 'lire');
+            }
+        }
+
+        const label = link.getAttribute('aria-label');
+        if (label) link.setAttribute('aria-label', label.replace(/^Télécharger/, 'Lire'));
+        if (!link.dataset.drive) link.title = 'Lire en ligne — lecture seule (ni téléchargement ni impression)';
+    }
+
+    /** Titre lisible du document à partir de la carte qui contient le lien. */
+    linkContextTitle(link) {
+        if (link.dataset.titre) return link.dataset.titre;
+        const ctx = link.closest('[class*="-item-compact"], .carte-document')
+            ?.querySelector('.pub-title, .chap-title, .ri-title, .these-title, .memoire-title, .livre-title, .conf-name');
+        if (ctx) {
+            const t = (ctx.firstChild?.textContent || '').trim() || ctx.textContent.trim();
+            if (t) return t;
+        }
+        const own = link.textContent.replace('(accès réservé)', '').trim();
+        return own.length > 3 && !/^(lire|télécharger|pdf|ouvrir|corrigé|voir)$/i.test(own) ? own : '';
+    }
+
+    /** Adresse intégrable d'un lien Google Drive (fichier ou dossier), ou null. */
+    driveEmbed(url) {
+        const dossier = url.match(/\/folders\/([\w-]+)/);
+        if (dossier) {
+            return { type: 'dossier', src: `https://drive.google.com/embeddedfolderview?id=${dossier[1]}#list` };
+        }
+        const fichier = url.match(/\/file\/d\/([\w-]+)/) || url.match(/[?&]id=([\w-]+)/);
+        if (fichier) {
+            return { type: 'fichier', src: `https://drive.google.com/file/d/${fichier[1]}/preview` };
+        }
+        return null;
+    }
+
+    buildReader() {
+        if (this.reader) return this.reader;
+
+        const el = (tag, cls, attrs = {}) => {
+            const node = document.createElement(tag);
+            if (cls) node.className = cls;
+            Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+            return node;
+        };
+
+        const root = el('div', 'pdf-lecteur', { role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pdf-lecteur-titre' });
+        root.hidden = true;
+
+        const fond = el('div', 'pdf-lecteur-fond');
+        fond.addEventListener('click', () => this.closeReader());
+
+        const boite = el('div', 'pdf-lecteur-boite');
+        const entete = el('div', 'pdf-lecteur-entete');
+        const titre = el('h2', 'pdf-lecteur-titre', { id: 'pdf-lecteur-titre' });
+        const badge = el('span', 'pdf-lecteur-badge');
+        badge.innerHTML = '<i class="fas fa-lock" aria-hidden="true"></i> Lecture seule';
+        const drive = el('a', 'pdf-lecteur-drive', { target: '_blank', rel: 'noopener noreferrer' });
+        drive.innerHTML = '<i class="fab fa-google-drive" aria-hidden="true"></i> <span>Ouvrir dans Google Drive</span>';
+        drive.hidden = true;
+        const fermer = el('button', 'pdf-lecteur-fermer', { type: 'button', 'aria-label': 'Fermer la visionneuse' });
+        fermer.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+        fermer.addEventListener('click', () => this.closeReader());
+
+        entete.append(titre, badge, drive, fermer);
+        const aide = el('p', 'pdf-lecteur-aide');
+        const corps = el('div', 'pdf-lecteur-corps');
+        boite.append(entete, aide, corps);
+        root.append(fond, boite);
+        document.body.appendChild(root);
+
+        this.reader = { root, titre, drive, fermer, aide, corps };
+        return this.reader;
+    }
+
+    openReader(link) {
+        const r = this.buildReader();
+        const opts = CONFIG_SITE.lectureSeule || {};
+        const token = ++this.readerToken;
+        const prive = this.currentMode() === 'prive';
+
+        const chemin = link.dataset.cheminOriginal || this.relativePath(link.getAttribute('href')) || '';
+        let fichier = chemin.split('/').pop() || '';
+        try { fichier = decodeURIComponent(fichier); } catch (e) { /* nom déjà décodé */ }
+        const titre = this.linkContextTitle(link) || fichier || 'Document';
+
+        r.titre.textContent = titre;
+        r.corps.replaceChildren();
+        r.aide.textContent = '';
+        r.drive.hidden = true;
+        this.trackDownload(fichier || titre, 'lecture');
+
+        if (link.dataset.drive === '1') {
+            const driveUrl = link.getAttribute('href');
+            const embed = this.driveEmbed(driveUrl);
+            const aide = [];
+            if (embed?.type === 'dossier' && fichier) aide.push(`Ouvrez le fichier « ${fichier} » dans la liste.`);
+            if (prive) {
+                aide.push("Document réservé : connectez-vous avec le compte Google autorisé. Si rien ne s'affiche, utilisez « Ouvrir dans Google Drive ». Pas encore d'accès ? Demandez-le via le formulaire de contact.");
+            }
+
+            // Pas d'aperçu intégrable, ou mode privé avec ouverture directe : nouvel onglet Drive.
+            if (!embed || (prive && opts.ouvertureDirecteEnPrive)) {
+                window.open(driveUrl, '_blank', 'noopener,noreferrer');
+                if (aide.length) this.showNotification(aide.join(' '), 'info', 9000);
+                return;
+            }
+
+            r.aide.textContent = aide.join(' ');
+            r.drive.href = driveUrl;
+            r.drive.hidden = false;
+            r.corps.appendChild(this.createDriveFrame(embed, titre, opts));
+            this.showReader();
+            return;
+        }
+
+        // PDF hébergé sur le site : rendu PDF.js (sans barre d'outils).
+        this.showReader();
+        this.renderLocalPdf(link.getAttribute('href'), r.corps, token);
+    }
+
+    createDriveFrame(embed, titre, opts) {
+        const frame = document.createElement('iframe');
+        frame.className = 'pdf-lecteur-cadre';
+        frame.title = `Lecture seule : ${titre}`;
+        frame.setAttribute('allow', 'fullscreen');
+        frame.allowFullscreen = true;
+        if (opts.sandboxDrive) {
+            // Sans « allow-downloads » ni « allow-modals » : le cadre ne peut ni
+            // télécharger ni ouvrir la boîte d'impression.
+            frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms');
+        }
+        frame.src = embed.src;
+        return frame;
+    }
+
+    loadPdfJs() {
+        const existing = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+        if (existing) return Promise.resolve(existing);
+        if (this.pdfjsPromise) return this.pdfjsPromise;
+
+        const opts = CONFIG_SITE.lectureSeule || {};
+        this.pdfjsPromise = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = opts.pdfjs;
+            s.async = true;
+            s.onload = () => {
+                const lib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+                if (!lib) { reject(new Error('PDF.js introuvable')); return; }
+                lib.GlobalWorkerOptions.workerSrc = opts.pdfjsWorker;
+                resolve(lib);
+            };
+            s.onerror = () => {
+                this.pdfjsPromise = null;
+                reject(new Error('PDF.js indisponible'));
+            };
+            document.head.appendChild(s);
+        });
+        return this.pdfjsPromise;
+    }
+
+    async renderLocalPdf(href, corps, token) {
+        const statut = document.createElement('p');
+        statut.className = 'pdf-lecteur-statut';
+        statut.textContent = 'Chargement du document…';
+        corps.appendChild(statut);
+
+        try {
+            const lib = await this.loadPdfJs();
+            const doc = await lib.getDocument({ url: new URL(href, window.location.href).href }).promise;
+            if (token !== this.readerToken) { doc.destroy(); return; }
+            this.readerDoc = doc;
+            statut.remove();
+
+            const largeur = Math.max(280, Math.min((corps.clientWidth || 800) - 24, 1000));
+            const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+            for (let n = 1; n <= doc.numPages; n++) {
+                if (token !== this.readerToken) return;
+                const page = await doc.getPage(n);
+                const base = page.getViewport({ scale: 1 });
+                const viewport = page.getViewport({ scale: (largeur / base.width) * ratio });
+
+                const canvas = document.createElement('canvas');
+                canvas.className = 'pdf-lecteur-page';
+                canvas.width = Math.floor(viewport.width);
+                canvas.height = Math.floor(viewport.height);
+                canvas.style.width = `${Math.floor(viewport.width / ratio)}px`;
+                canvas.setAttribute('role', 'img');
+                canvas.setAttribute('aria-label', `Page ${n} sur ${doc.numPages}`);
+                corps.appendChild(canvas);
+
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+                page.cleanup();
+            }
+        } catch (error) {
+            if (token !== this.readerToken) return;
+            console.error('❌ Affichage PDF impossible :', error);
+            statut.textContent = "Impossible d'afficher ce document (accès refusé ou fichier introuvable).";
+            if (!statut.isConnected) corps.appendChild(statut);
+        }
+    }
+
+    showReader() {
+        const r = this.reader;
+        if (!this.isReaderOpen()) this.readerReturnFocus = document.activeElement;
+        r.root.hidden = false;
+        document.body.classList.add('pdf-lecteur-ouvert');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => r.root.classList.add('show'));
+        r.fermer.focus();
+    }
+
+    closeReader() {
+        const r = this.reader;
+        if (!r || r.root.hidden) return;
+        this.readerToken++;                 // interrompt un rendu en cours
+        r.root.classList.remove('show');
+        r.root.hidden = true;
+        r.corps.replaceChildren();          // retire le cadre ou les pages
+        if (this.readerDoc) {
+            this.readerDoc.destroy();
+            this.readerDoc = null;
+        }
+        document.body.classList.remove('pdf-lecteur-ouvert');
+        document.body.style.overflow = '';
+        if (this.readerReturnFocus && typeof this.readerReturnFocus.focus === 'function') {
+            this.readerReturnFocus.focus();
+        }
+    }
+
+    isReaderOpen() {
+        return !!(this.reader && !this.reader.root.hidden);
+    }
+
+    /** Garde le focus clavier à l'intérieur de la visionneuse. */
+    trapFocus(e) {
+        const items = [...this.reader.root.querySelectorAll('a[href], button, iframe')]
+            .filter(node => !node.hidden && node.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    }
+
+    // =====================================================================
     // 13. COMPTEUR DE VISITEURS LOCAL (secours sans serveur)
-    // Limite : il ne compte que les visites de CE navigateur ; seul le
-    // backend (api.php) donne un total réel tous visiteurs et appareils.
     // =====================================================================
 
     initVisitorCounter() {
@@ -1547,8 +1926,6 @@ class PortfolioApp {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const stats = JSON.parse(stored);
-                // Correction : on conserve uniquement les visites des dernières 24 h
-                // (l'ancien filtre comparait une durée à une date et ne filtrait rien).
                 const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
                 const visits = Array.isArray(stats.visits) ? stats.visits : [];
 
@@ -1681,7 +2058,6 @@ class PortfolioApp {
     startDateTimeUpdates() {
         const dateEl = document.getElementById('current-date');
         const timeEl = document.getElementById('current-time');
-        // Les régions aria-live annonceraient l'heure chaque seconde : désactivé pour l'heure.
         timeEl?.setAttribute('aria-live', 'off');
 
         const dateFormatter = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1711,7 +2087,6 @@ class PortfolioApp {
     }
 
     capitalizeFirst(str) {
-        // Majuscule à la première lettre uniquement (« Lundi 19 octobre 2026 »).
         return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
     }
 
@@ -1806,8 +2181,7 @@ class PortfolioApp {
                 );
             }
 
-            // Onglets : flèches, Début et Fin (motif ARIA « tabs »). La touche Tab
-            // n'est plus interceptée : elle sort normalement de la liste d'onglets.
+            // Onglets : flèches, Début et Fin (motif ARIA « tabs »).
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('tab-button')) {
                 const keyMap = { ArrowRight: 'next', ArrowDown: 'next', ArrowLeft: 'previous', ArrowUp: 'previous', Home: 'first', End: 'last' };
@@ -1842,7 +2216,7 @@ class PortfolioApp {
         document.querySelectorAll('i.fas, i.far, i.fab').forEach(icon => icon.setAttribute('aria-hidden', 'true'));
         const labels = [
             ['fa-download', 'Télécharger'], ['fa-eye', 'Aperçu'], ['fa-external-link-alt', 'Ouvrir le lien externe'],
-            ['fa-file-pdf', 'Ouvrir le PDF'], ['fa-shopping-cart', 'Acheter'], ['fa-check-circle', 'Corrigé']
+            ['fa-file-pdf', 'Lire le PDF'], ['fa-shopping-cart', 'Acheter'], ['fa-check-circle', 'Corrigé']
         ];
         document.querySelectorAll('a').forEach(link => {
             if (link.textContent.trim() || link.hasAttribute('aria-label')) return;
@@ -1903,6 +2277,7 @@ class PortfolioApp {
         if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
         if (this.visitorInterval) clearInterval(this.visitorInterval);
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        this.closeReader();
         this.isInitialized = false;
     }
 }
@@ -1912,9 +2287,7 @@ log('🎯 Démarrage de l\'application portfolio...');
 const portfolioApp = new PortfolioApp();
 
 // ===== STYLES DYNAMIQUES =====
-// Les styles autrefois injectés ici (animations, notifications, validation,
-// accessibilité, mode sombre, onglets, mouvement réduit) sont désormais dans
-// style.css, sections 25 à 27 : une seule source de vérité, mise en cache.
+// Les styles sont dans style.css (sections 25 à 29 ; la 29 concerne la visionneuse).
 
 // ===== GESTIONNAIRES D'ÉVÉNEMENTS GLOBAUX =====
 // « pagehide » remplace « beforeunload », qui empêche le cache de retour arrière.
