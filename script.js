@@ -1273,7 +1273,7 @@ class PortfolioApp {
         const text = document.createElement('span');
         // Correction : guillemets doubles (les apostrophes de « l'approuve » cassaient la chaîne).
         text.textContent = libre
-            ? "Accès libre aux documents — lecture seule (ni téléchargement ni impression)"
+            ? "Accès libre aux documents"
             : "Accès privé aux documents sur demande pour mes étudiants — lecture seule";
         indicator.append(icon, text);
         indicator.title = libre
