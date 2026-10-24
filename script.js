@@ -1235,7 +1235,7 @@ class PortfolioApp {
         icon.className = `fas ${libre ? 'fa-lock-open' : 'fa-lock'}`;
         icon.setAttribute('aria-hidden', 'true');
         const text = document.createElement('span');
-        text.textContent = libre ? 'Accès libre' : 'Accès privé aux documents sur demande pour mes étudiants';
+        text.textContent = libre ? 'Accès libre : un clic sur le fichier, le système m'envoie la demande et je l'approuve.' : 'Accès privé aux documents sur demande pour mes étudiants';
         indicator.append(icon, text);
         indicator.title = libre
             ? 'Les ressources publiques sont accessibles sans compte.'
