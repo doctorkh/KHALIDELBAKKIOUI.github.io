@@ -55,16 +55,16 @@ const DRIVE_PRIVE = 'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdt
 // Tant qu'un lien est vide (''), la rubrique utilise DRIVE_PRIVE (jamais un lien cassé).
 const DRIVE_DOSSIERS = {
     mpsiCorriges:   'https://drive.google.com/drive/folders/1XwHYqd2GRfHaytLJQdtU2Rj3Cn44BGTy',
-    mpCorriges:     '',
-    psiCorriges:    '',
-    mpsi:           '',
-    mp:             '',
-    psi:            '',
-    publications:   '',
-    communications: '',
-    these:          '',
-    memoires:       '',
-    cv:             ''
+    mpCorriges:     'https://drive.google.com/drive/folders/1B8WLaxfi4fsxyBo0AZg8r3ltOO5a-zHM',
+    psiCorriges:    'https://drive.google.com/drive/folders/17QnMx0OGD_QKvMWvIsfTePKMOkY18D1_',
+    mpsi:           'https://drive.google.com/drive/folders/1dE5SCOa904pde49jbUNT7f4nL8QbyGv0',
+    mp:             'https://drive.google.com/drive/folders/1MljR-N760Gvrxdi1lQwWZGb2gggXcKTg',
+    psi:            'https://drive.google.com/drive/folders/15-kJXd3L39QbPBBblA9C5KAoIoYhEJbL',
+    publications:   'https://drive.google.com/drive/folders/1_QCeLCspOWAEKgy6mYxIhSYA3-fXH94X',
+    communications: 'https://drive.google.com/drive/folders/1r7WaclJveWk-I6RIc3ksb0BuIl5LOaXn',
+    these:          'https://drive.google.com/drive/folders/1O98TDaQY8ljQSMQ-KKT9tMBU8dzON9kr',
+    memoires:       'https://drive.google.com/drive/folders/1X3E3C1OoKs8BIuJD_6CyLFl4SMSLyNv4',
+    cv:             'https://drive.google.com/drive/folders/1-cZQhstww5jqHICpvdYiTZH8K4GnFCgy'
 };
 const lienDrive = (cle) => DRIVE_DOSSIERS[cle] || DRIVE_PRIVE;
 
