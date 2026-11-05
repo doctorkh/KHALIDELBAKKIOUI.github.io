@@ -3294,3 +3294,22 @@ body.pdf-lecteur-ouvert .back-to-top-compact { display: none; }
         text-align: center;
     }
 }
+
+.badge-new {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(255, 65, 108, 0.4);
+    animation: pulse-new 2s infinite;
+}
+
+@keyframes pulse-new {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
