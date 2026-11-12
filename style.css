@@ -641,44 +641,31 @@ main > .section { --accent: var(--bleu); }
 .badge-ect { background: #ede9fe; color: #5b21b6; }
 .badge-ecs { background: #fee2e2; color: #991b1b; }
 
-.badge-new {
-    flex-shrink: 0;
-    padding: 1px 8px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #e0364f, #f05a28);
-    color: #fff;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    animation: pulse-new 2.4s infinite;
-}
-.badge-new.badge-bientot { background: var(--or-clair); color: #8a5a00; animation: none; border: 1px solid #f0d9a4; }
-
-/* Badge « NEW » animé — UNIQUEMENT pour les 4 tomes de la Collection MPSI (.livre-tome) :
-   dégradé qui ondule, reflet lumineux qui balaie, léger battement, halo et étoile.
+/* Badge « NEW » : dégradé qui ondule, reflet lumineux qui balaie, léger battement et halo.
+   S'applique à tous les badges NEW (y compris ceux marqués badge-bientot).
    Les visiteurs qui ont demandé « réduire les animations » voient un badge fixe (section 15). */
-.livre-tome .badge-new,
-.livre-tome .badge-new.badge-bientot {
+.badge-new {
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    flex-shrink: 0;
     overflow: hidden;
     padding: 2px 10px;
-    border: 0;
+    border-radius: 999px;
     background: linear-gradient(110deg, #e0364f, #f05a28, #ffb300, #f05a28, #e0364f);
     background-size: 250% 100%;
     color: #fff;
     font-size: 0.66rem;
     font-weight: 800;
     letter-spacing: 0.6px;
+    text-transform: uppercase;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
     box-shadow: 0 0 0 0 rgba(240, 90, 40, 0.55);
     animation: new-degrade 3s linear infinite, new-battement 1.6s ease-in-out infinite, new-halo 1.6s ease-out infinite;
 }
-.livre-tome .badge-new::before { content: '★'; font-size: 0.7em; animation: new-etoile 1.6s linear infinite; }
-.livre-tome .badge-new::after {
+.badge-new::before { content: '★'; font-size: 0.7em; animation: new-etoile 1.6s linear infinite; }
+.badge-new::after {
     content: '';
     position: absolute;
     top: 0; bottom: 0; left: -60%;
@@ -687,6 +674,7 @@ main > .section { --accent: var(--bleu); }
     transform: skewX(-20deg);
     animation: new-reflet 2.2s ease-in-out infinite;
 }
+.badge-new.badge-bientot { background: linear-gradient(110deg, #e0364f, #f05a28, #ffb300, #f05a28, #e0364f); background-size: 250% 100%; border: 0; color: #fff; }
 
 @keyframes new-degrade { to { background-position: -250% 0; } }
 @keyframes new-battement { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
